@@ -1,4 +1,4 @@
-package co.sixsu.app.mes;
+package co.sixsu.app.domain.common;
 
 import lombok.Data;
 

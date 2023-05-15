@@ -1,4 +1,4 @@
-package co.sixsu.app.mes.mapper;
+package co.sixsu.app.mapper;
 
 import java.util.Date;
 
