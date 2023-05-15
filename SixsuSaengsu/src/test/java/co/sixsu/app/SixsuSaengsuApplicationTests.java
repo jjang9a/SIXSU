@@ -11,19 +11,4 @@ class SixsuSaengsuApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
-	@Autowired
-	StringEncryptor jasyptStringEncryptor;
-	
-	@Test
-	public void jaypt_test() {
-		String[] plainTextList = { "jdbc:oracle:thin:@13.209.152.93/xe",
-									"sixsu", 
-									"sense"				
-								};
-		for(String plainText : plainTextList) {
-			String encyptText = jasyptStringEncryptor.encrypt(plainText);
-			System.out.println(encyptText);
-		}
-	}
 }
