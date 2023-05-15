@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 	layout:decorate="~{layout/template}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
+<div layout:fragment="content">
 	<h1>수정된 톱 페이지입니다.</h1>
 	<ul>
 		<li><a href="user/user">일반 사용자용 페이지로</a></li>
@@ -24,6 +27,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	</div>
 	<div sec:authorize="hasRole('ROLE_USER')">
 		This content is only shown to users.
+	</div>
 	</div>
 </body>
 </html>
