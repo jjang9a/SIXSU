@@ -23,11 +23,27 @@ public class QualityController {
 	public void arr() { // 도착 자재 관리
 	}
 	
-	@RequestMapping("quality/arrList")
 	@ResponseBody
-	public void arrList(Model model) {
+	@RequestMapping("quality/arrList")
+	public List<ArrMatVO> arrList(Model model) {
 		List<ArrMatVO> list = quaService.getArrList();
 		model.addAttribute("arrList", list);
+		return list;
 	}
+	
+	@GetMapping("quality/arrMat")
+	public String arrMat() {
+		return "quality/arrMat";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("quality/arrRegList")
+	public List<ArrMatVO> arrRegList(Model model){
+		List<ArrMatVO> rList = quaService.arrRegList();
+		model.addAttribute("regList", rList);
+		return rList;
+	}
+	
 
 }

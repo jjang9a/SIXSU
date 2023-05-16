@@ -5,6 +5,7 @@
   
 <mapper namespace="co.sixsu.app.mapper.QualityMapper">
 
+<!-- 도착 자재 리스트 -->
 <select id="getArrList" resultType="co.sixsu.app.domain.quality.ArrMatVO">
 	SELECT m.mat_req_id, bus_id, mat_id, arr_qt, arr_date
 	FROM mat_req m JOIN arr_material a
@@ -12,6 +13,17 @@
 	ORDER BY mat_req_id desc
 </select>
 
+<!-- 도착 자재 등록 리스트 -->
+<select id="arrRegList" resultType="co.sixsu.app.domain.quality.ArrMatVO">
+	SELECT mat_req_id, bus_id, mat_id
+	FROM mat_req
+	ORDER BY mat_req_id
+</select>
+
+<!-- 도착 자재 등록 -->
+<insert id="arrRegister" >
+
+</insert>
 
 
 </mapper>
