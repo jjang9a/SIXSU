@@ -1,5 +1,10 @@
 package co.sixsu.app.service;
 
-public class CommonService {
+import java.util.List;
 
+import co.sixsu.app.domain.common.EmpVO;
+
+public interface CommonService {
+
+	List<EmpVO> getEmpList();
 }

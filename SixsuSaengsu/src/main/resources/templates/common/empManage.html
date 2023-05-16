@@ -1,68 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
- 	layout:decorate="~{layout/template}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
+
 <head>
-<meta charset="UTF-8">
-<title>사원관리</title>
-<style>
-        .test {
-            padding: 1.5em;
-            background: #e5edf5
-        }
-</style>
+	<meta charset="UTF-8">
+	<title>사원관리</title>
+	<style>
+		.test {
+			padding: 1.5em;
+			background: #e5edf5
+		}
+	</style>
 </head>
+
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">사원관리</h1>
 		<div class="test">
 			<p>테스트입니다</p>
 		</div>
-	
-	      <div id="grid"></div>
-	
-	
+
+		<div id="grid"></div>
+
+
 		<script>
-		 const grid = new tui.Grid({
-		      el: document.getElementById('grid'),
-		      data: {
-		        api: {
-		          readData: { url: '/api/readData', method: 'GET' }
-		        }
-		      },
-		      scrollX: false,
-		      scrollY: false,
-		      minBodyHeight: 30,
-		      rowHeaders: ['rowNum'],
-		      pageOptions: {
-		        perPage: 5
-		      },
-		      columns: [
-		        {
-		          header: 'Name',
-		          name: 'name'
-		        },
-		        {
-		          header: 'Artist',
-		          name: 'artist'
-		        },
-		        {
-		          header: 'Type',
-		          name: 'type'
-		        },
-		        {
-		          header: 'Release',
-		          name: 'release'
-		        },
-		        {
-		          header: 'Genre',
-		          name: 'genre'
-		        }
-		      ]
-		    });
+			
+			window.onload = function () {
+				$.ajax({
+					url: "/common/empList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+					}
+				});
+				const grid = new tui.Grid({
+					el: document.getElementById('grid'),
+					scrollX: false,
+					scrollY: false,
+					minBodyHeight: 30,
+					rowHeaders: ['rowNum'],
+					/* pageOptions: {
+						useClient : true,s
+						perPage: 5
+					}, */
+					columns: [{
+							header: 'Name',
+							name: 'empId'
+						},
+						{
+							header: 'Artist',
+							name: 'empName'
+						},
+						{
+							header: 'Type',
+							name: 'empDept'
+						}
+					]
+				});
+			}
+
+		
 		</script>
-	
 	</div>
 </body>
+
 </html>

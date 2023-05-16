@@ -9,4 +9,8 @@
 	select sysdate from dual
 </select>
 
+<select id="empList" resultType="co.sixsu.app.domain.common.EmpVO">
+	select emp_id, emp_name, emp_dept from employee
+</select>
+
 </mapper>
