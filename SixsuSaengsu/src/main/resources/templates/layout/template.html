@@ -7,16 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Static Navigation - SB Admin</title>
-    <link href="css/styles.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <title>(주)SIXSU</title>
+    <link href="/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 </head>
 
-<body>
+<body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-deepblue">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html"><img src="assets/img/logo5.png" style="height:55px"></a>
+        <a class="navbar-brand ps-3" href="index.html"><img src="/assets/img/logo5.png" style="height:55px"></a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -81,8 +86,17 @@
                         <div class="collapse" id="collapsePages" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="layout-static.html">Static Navigation</a>
-                                <a class="nav-link-a" href="layout-sidenav-light.html">Light Sidenav</a>
+                                 <a class="nav-link-a" href="layout-static.html">주문서관리</a>
+                                <a class="nav-link-a" href="layout-sidenav-light.html">주문서조회</a>
+                                <a class="nav-link-a" href="#">입고관리</a>
+                                <a class="nav-link-a" href="#">입고조회</a>
+                                <a class="nav-link-a" href="#">출고관리</a>
+                                <a class="nav-link-a" href="#">출고조회</a>
+                                <a class="nav-link-a" href="#">반품관리</a>
+                                <a class="nav-link-a" href="#">반품조회</a>
+                                <a class="nav-link-a" href="#">입출고조회</a>
+                                <a class="nav-link-a" href="#">제품재고조회</a>
+                                <a class="nav-link-a" href="#">판매실적조회</a>
                             </nav>
                         </div>
 
@@ -112,8 +126,24 @@
                         <div class="collapse" id="matnav" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="layout-static.html">Static Navigation</a>
-                                <a class="nav-link-a" href="layout-sidenav-light.html">Light Sidenav</a>
+                                <a class="nav-link-a" href="#">자재조회</a>
+                                <a class="nav-link-a" href="#">자재LOT조회</a>
+                                <a class="nav-link-a" href="/matreq">자재발주관리</a>
+                                <a class="nav-link-a" href="#">자재발주조회</a>
+                                <a class="nav-link-a" href="#">자재입고관리</a>
+                                <a class="nav-link-a" href="#">자재입고조회</a>
+                                <a class="nav-link-a" href="#">자재출고조회</a>
+                                <a class="nav-link-a" href="#">반제품조회</a>
+                                <a class="nav-link-a" href="#">반제품LOT조회</a>
+                                <a class="nav-link-a" href="#">반제품입고관리</a>
+                                <a class="nav-link-a" href="#">반제품입고조회</a>
+                                <a class="nav-link-a" href="#">반제품출고조회</a>    
+                                <a class="nav-link-a" href="#">자재재고조정</a>
+                                <a class="nav-link-a" href="#">반제품재고조정</a>
+                                <a class="nav-link-a" href="#">불량자재관리</a>
+                                <a class="nav-link-a" href="#">불량자재조회</a>
+                                <a class="nav-link-a" href="#">불량반제품관리</a>  
+                                <a class="nav-link-a" href="#">불량반제품조회</a>     
                             </nav>
                         </div>
 
@@ -155,20 +185,12 @@
                     <!--내용 들어가는 자리-->
                 </div>
             </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
+    </script>
+    <script src="/js/scripts.js"></script>
 
 </body>
 
