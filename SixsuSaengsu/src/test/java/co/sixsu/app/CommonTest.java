@@ -1,8 +1,5 @@
 package co.sixsu.app;
 
-import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.Date;
 
 import org.junit.jupiter.api.Test;
