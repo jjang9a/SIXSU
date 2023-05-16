@@ -1,0 +1,10 @@
+package co.sixsu.app.mapper;
+
+import java.util.List;
+
+import co.sixsu.app.domain.quality.ArrMatVO;
+
+public interface QualityMapper {
+	List<ArrMatVO> getArrList(); // 도착 자재 리스트
+
+}
