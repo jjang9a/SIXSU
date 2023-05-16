@@ -36,7 +36,7 @@ public class SecurityConfig{
 			.anyRequest().authenticated())
 		//.formLogin().loginPage("/login").usernameParameter("").and()
 		.formLogin(login -> login.loginPage("/login")
-								.usernameParameter("userId")
+								.usernameParameter("empId")
 								.successHandler(successHandler()))
 		.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/top")); //.deleteCookies(null) 가능
 //			.csrf().disable();
