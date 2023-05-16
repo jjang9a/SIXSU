@@ -5,8 +5,12 @@
   
 <mapper namespace="co.sixsu.app.mapper.QualityMapper">
 
-<select id="gettDate" resultType="Date">
-	select sysdate from dual
+<select id="getArrList" resultType="co.sixsu.app.domain.quality.ArrMatVO">
+	SELECT m.mat_req_id, bus_id, mat_id, arr_qt, arr_date
+	FROM mat_req m JOIN arr_material a
+	ON (m.mat_req_id = a.mat_req_id)
 </select>
+
+
 
 </mapper>

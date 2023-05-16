@@ -100,31 +100,69 @@
 
 <body>
 <div layout:fragment="content">
-	<h3>도착 자재 관리</h3>
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">도착 자재 관리</h1>
 	<label>발주 번호</label>
 	<input type=text>
 	<button>찾기</button>
 	
-	<table>
+<!-- 	<table>
 		<tr>
 		  <th>발주 번호</th>
 		  <th>거래처</th>
 		  <th>자재 코드</th>
-		  <!-- <th>자재명</th> -->
+		  <th>자재명</th>
 		  <th>도착 수량</th>
 		  <th>도착일</th>
 		</tr>
 		
-		<tr>
-		  <td>James</td>
-          <td>Matman</td>
-          <td>(713) 123-8965</td>
-          <td><a href="mailto:jmatman@stewart.com">jmatman@stewart.com</a></td>
-          <td>01/13/1979</td>
+		<tr th:each="arr : ${arrList}">
+		  <td th:text="{arr.matReqId}">1</td>
+          <td th:text="{arr.busId}">1</td>
+          <td th:text="{arr.matId}">1</td>
+          <td th:text="{arr.matName}">물</td>
+          <td th:text="{arr.arrQt}">100000</td>
+          <td th:text="{arr.arrDate}">2023/05/10</td>
 		</tr>
 		
-	</table>
+	</table> -->
+	
+	 <div id="grid"></div>
 	
 	</div>
+	
+	<script>
+	 const grid = new tui.Grid({
+	      el: document.getElementById('grid'),
+	      //data: gridData,
+	      scrollX: false,
+	      scrollY: false,
+	      columns: [
+	        {
+	          header: '발주 번호',
+	          name: 'matReqId'
+	        },
+	        {
+	          header: '거래처',
+	          name: 'busId'
+	        },
+	        {
+	          header: '자재 코드',
+	          name: 'matId'
+	        },
+	        {
+	          header: '자재 명',
+	          name: 'matName'
+	        },
+	        {
+	          header: '도착 수량',
+	          name: 'arrQt'
+	        },
+	        {
+		      header: '도착일',
+		      name: 'arrDate'
+		        }
+	      ]
+	    });
+	</script>
 </body>
 </html>

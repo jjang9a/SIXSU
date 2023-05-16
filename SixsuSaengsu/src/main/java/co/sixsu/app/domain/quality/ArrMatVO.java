@@ -13,5 +13,7 @@ public class ArrMatVO {
 
 	//출력 데이터
 	private String matId;// 자재 코드
+	private String busName;// 거래처
+	private String matName; // 자재 명
 	
 }
