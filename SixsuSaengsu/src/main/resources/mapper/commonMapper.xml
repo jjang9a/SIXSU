@@ -5,7 +5,7 @@
   
 <mapper namespace="co.sixsu.app.mapper.CommonMapper">
 
-<select id="getDate" resultType="Date">
+<select id="getDate" resultType="java.util.Date">
 	select sysdate from dual
 </select>
 
