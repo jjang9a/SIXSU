@@ -1,11 +1,62 @@
 <!DOCTYPE html>
 
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/jquery/jquery-3.6.0.min.js"></script>
+       <script>
+        function toggleSelected(row) {
+            row.classList.toggle("selected");
+        }
+
+        function removeSelectedData() {
+            var selectedRows = document.getElementsByClassName("selected");
+            for (var i = selectedRows.length - 1; i >= 0; i--) {
+                selectedRows[i].remove();
+            }
+        }
+
+        function fetchEmployeeData() {
+            var selectedRows = document.getElementsByClassName("selected");
+            var data = [];
+
+            for (var i = 0; i < selectedRows.length; i++) {
+                var rowData = [];
+                var cells = selectedRows[i].getElementsByTagName("td");
+
+                for (var j = 0; j < cells.length; j++) {
+                    rowData.push(cells[j].innerText);
+                }
+
+                data.push(rowData);
+            }
+
+            // Use the Fetch API to send the data to the server using AJAX
+            fetch("/your-server-endpoint", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // If the request is successful, remove the selected rows from the table
+                        for (var i = selectedRows.length - 1; i >= 0; i--) {
+                            selectedRows[i].remove();
+                        }
+                    } else {
+                        console.error("Error:", response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+    <title>Insert title here</title>
+    <style>
         body {
-           
+
             background: #f5f5f5
         }
 
@@ -91,49 +142,45 @@
                 border-bottom: 1px solid #e5e5e5;
             }
 
-        
+
 
         }
- 			#bottom {
-           
-                padding-left:1900px;
-            }       
+
+        #bottom {
+
+            padding-left: 1900px;
+        }
     </style>
-     
+
 </head>
 
 <body>
-<div layout:fragment="content">
-
-    
-    <h2>거래처목록</h2>
-    <div id="left">
-   
-    거래처명 <input type="text"><button>조회</button><br>
-   	   	
+    <div layout:fragment="content">
+        <h2>거래처목록</h2>
+        <div id="left">
+            거래처명 <input type="text"><button>조회</button><br>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>직원명</th>
+                    <th>직원코드</th>
+                    <th>직책</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr onclick="toggleSelected(this)">
+                    <td>James</td>
+                    <td>Matman</td>
+                    <td>(713) 123-8965</td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="removeSelectedData()">확인</button>
+        <button>취소</button><br>
     </div>
-	    
-	
 
-    <table>
-        <thead>
-            <tr>
-                <th>직원명</th>
-                <th>직원코드</th>
-                <th>직책</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>James</td>
-                <td>Matman</td>
-                <td>(713) 123-8965</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    
 
-</div>
 </body>
+
 </html>
