@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<head>
+ <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
+<title>Insert title here</title>
+<style>
+        body {
+           
+            background: #f5f5f5
+        }
+
+        table {
+            border: 1px #8ca5e9 solid;
+            font-size: .9em;
+            box-shadow: 0 2px 5px rgba(61, 103, 243, 0.25);
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        thead {
+            font-weight: bold;
+            color: #fff;
+            background: #4b63eb;
+        }
+
+        td,
+        th {
+            padding: 1em .5em;
+            vertical-align: middle;
+        }
+
+        td {
+            border-bottom: 1px solid rgb(0, 0, 0);
+            background: #fff;
+        }
+
+        a {
+            color: #0a0500de;
+        }
+
+        @media all and (max-width: 768px) {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            th {
+                text-align: right;
+            }
+
+            table {
+                position: relative;
+                padding-bottom: 0;
+                border: none;
+                box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+            }
+
+            thead {
+                float: left;
+                white-space: nowrap;
+            }
+
+            tbody {
+                overflow-x: auto;
+                overflow-y: hidden;
+                position: relative;
+                white-space: nowrap;
+            }
+
+            tr {
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            th {
+                border-bottom: 1px solid #a1a9ee;
+            }
+
+            td {
+                border-bottom: 1px solid #e5e5e5;
+            }
+
+        
+
+        }
+ 			#bottom {
+           
+                padding-left:1900px;
+            }       
+    </style>
+     
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    
+    <h2>거래처목록</h2>
+    <div id="left">
+   
+    거래처명 <input type="text"><button>조회</button><br>
+   	   	
+    </div>
+	    
+	
+
+    <table>
+        <thead>
+            <tr>
+                <th>거래처명</th>
+                <th>거래처코드</th>
+                <th>사업자번호</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>James</td>
+                <td>Matman</td>
+                <td>(713) 123-8965</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div>
+    <button>조회</button><br>
+    </div>
+    
+
+</div>
+</body>
+</html>

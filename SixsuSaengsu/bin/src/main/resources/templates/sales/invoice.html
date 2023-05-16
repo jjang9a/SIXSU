@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
  	layout:decorate="~{layout/template}">
 <head>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
         body {
+           
             background: #f5f5f5
         }
 
@@ -30,7 +28,7 @@
         thead {
             font-weight: bold;
             color: #fff;
-            background: #99bad7;
+            background: #4b63eb;
         }
 
         td,
@@ -95,52 +93,47 @@
                 border-bottom: 1px solid #e5e5e5;
             }
 
-
-            #left {
-                float:left;
-                width:60%;
-            }
-            #name {
-                float: left;
-            }
-            #right {
-                float:right;
-            }
+        
 
         }
+ 			#bottom {
+           
+                padding-left:1900px;
+            }       
     </style>
-
+      <script language="javascript">
+  function showPopupcus() { window.open("/sales/customer", "거래처", "width=800, height=600, left=100, top=50"); }
+  function showPopupemp() { window.open("/sales/employee", "직원", "width=800, height=600, left=100, top=50"); }
+  </script>
 </head>
 
-
 <body>
-	<div layout:fragment="content">
+<div layout:fragment="content">
+
     
-    <h1 class="mt-4">자재발주관리</h1>
+    <h2>주문서등록</h2>
     <div id="left">
-    발주번호 <input type="number">
+    주문번호 <input type="number"> <button >생성</button> <br>
+    주문날짜 <input type="date"> ~ <input type="date"><br>
+   	납기일자 <input type="date"> ~ <input type="date"><br>
+   	주문자 <input type="text"> <button onclick="showPopupemp();">조회</button> <br>
+    사원번호 <input type="number"><br>
     </div>
-    <div id="left">
-    자재명 <input type="text">
+	    
+	<div id="right">
+    거래처명 <input type="text"> <button onclick="showPopupcus();">조회</button> <br>
+    거래처코드 <input type="number"><br>
+   	사업자번호 <input type="number"><br>
+   	주소 <input type="text"><br>
+    전화번호 <input type="text"><br>
     </div>
-    <div id="left">
-    거래처명 <input type="text">
+   
+    <div id="bottom">
+    <button>등록</button>
+    <button>삭제</button>
+    <button>수정</button>
     </div>
-    <div id="left">
-    발주등록일자 <input type="date"> ~ <input type="date" name="">
-    </div>
-    납기일자 <input type="date"> ~ <input type="date">
-    <div>
-	    <div id="left">
-	    <button onclick="reqCheck()">조회</button>
-	    <button>초기화</button>
-    	</div>
-    	<div id="left">
-	    <button id="reqInsert" onclick="">등록</button>
-	    <button>삭제</button>
-	    <button>수정</button>
-    	</div>
-    </div>
+
     <table>
         <thead>
             <tr>
@@ -158,39 +151,53 @@
         </thead>
         <tbody>
             <tr>
-                <td></td>
-                <td></td>
-                <td><input type="text" style="width : 50px;"></td>
-                <td><input style="width : 50px;"></td>
-                <td><input type="number" style="width : 50px;"></td>
-                <td><input style="width : 50px;"></td>
-                <td></td>
-                <td></td>
-                <td><input style="width : 50px;"></td>
-                <td><input style="width : 50px;"></td>
-            </tr>        
-            <tr th:each="mrq : ${matreqList}">
-                <td>1</td>
-                <td th:text="${mrq.matReqId}"></td>
-                <td th:text="${mrq.matId}">
-                <td >asd</td>
-                <td th:text="${mrq.matReqQt}"></td>
-                <td>거래처미정</td>
-                <td th:text="${mrq.matReqStat}"></td>
-                <td th:text="${mrq.matReqDate}"></td>
-                <td th:text="${mrq.matEndDate}"></td>
-                <td th:text="${mrq.matEndDate}"></td>
+                <td>James</td>
+                <td>Matman</td>
+                <td>(713) 123-8965</td>
+                <td><a href="mailto:jmatman@stewart.com">jmatman@stewart.com</a></td>
+                <td>01/13/1979</td>
+                <td>abc</td>
+                <td>aasda</td>
+                <td>asda</td>
+                <td>asda</td>
+                <td>asda</td>
             </tr>
         </tbody>
     </table>
-	
+    
+    
+    <h2>진행중인주문서</h2>
+       <table>
+        <thead>
+            <tr>
+                <th>NO</th>
+                <th>발주번호</th>
+                <th>자재코드</th>
+                <th>자재명</th>
+                <th>발주량</th>
+                <th>거래처명</th>
+                <th>발주상태</th>
+                <th>발주일</th>
+                <th>납기요청일</th>
+                <th>납기지연일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>James</td>
+                <td>Matman</td>
+                <td>(713) 123-8965</td>
+                <td><a href="mailto:jmatman@stewart.com">jmatman@stewart.com</a></td>
+                <td>01/13/1979</td>
+                <td>abc</td>
+                <td>aasda</td>
+                <td>asda</td>
+                <td>asda</td>
+                <td>asda</td>
+            </tr>
+        </tbody>
+    </table>
 
-	</div>
+</div>
 </body>
-<script>
-	$('#reqInsert').on('click', function(e) {
-		console.log('안녕');
-	})
-</script>
-	
 </html>

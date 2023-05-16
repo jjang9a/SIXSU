@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="co.sixsu.app.mapper.MaterialsMapper">
+
+	<select id="getMatRecList" resultType="co.sixsu.app.domain.material.MatreqVO">
+		select mat_req_id, bus_id, mat_id, mat_req_qt, to_date(mat_req_date,'yyyy-MM-dd'), mat_req_stat, to_date(mat_end_date,'yyyy-MM-dd'), mat_dly_date, emp_id
+		from mat_req
+	</select>
+<!-- to_date(sysdate, 'YYYY-MM-dd') -->
+</mapper>
+
+
+
+
+
+

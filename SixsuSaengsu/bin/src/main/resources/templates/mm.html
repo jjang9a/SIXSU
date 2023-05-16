@@ -7,35 +7,12 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
 </head>
 <body>
 	<div layout:fragment="content">
 	<h1 class="mt-4" style="font-family: 'MaruBuri';">자재발주관리</h1>
-	<div id="left">
-    발주번호 <input type="number">
-    </div>
-    <div id="left">
-    자재명 <input type="text">
-    </div>
-    <div id="left">
-    거래처명 <input type="text">
-    </div>
-    <div id="left">
-    발주등록일자 <input type="date"> ~ <input type="date" name="">
-    </div>
-    납기일자 <input type="date"> ~ <input type="date">
-    <div>
-	    <div id="left">
-	    <button onclick="reqCheck()">조회</button>
-	    <button>초기화</button>
-    	</div>
-    	<div id="left">
-	    <button id="appendBtn" onclick="appendBtn">등록</button>
-	    <button id="delte">삭제</button>
-	    <button>수정</button>
-    	</div>
-    </div>
+		
+	  <button id="appendBtn">등록</button>
 	  <div id="grid"></div>
 	  	
 	  <script>
@@ -61,8 +38,8 @@
 	      //data: gridData,
 	      scrollX: false,
 	      scrollY: false,
-	      
 	      rowHeaders: ['checkbox'],
+	      
 	      columns: [
 	        {
 	          header: 'NO',
@@ -70,8 +47,7 @@
 	        },
 	        {
 		      header: '발주번호',
-		      name: 'matReqId',
-		   	  //editor: 'text'
+		      name: 'matReqId'
 		    },
 	        {
 		      header: '자재코드',
@@ -108,7 +84,6 @@
 		        
 	        
 	      ]
-
 	    });
 	  	  
 	 const appendBtn = document.getElementById('appendBtn');  
@@ -123,11 +98,6 @@
   		    appendBtn.addEventListener('click', () => {
   		      grid.appendRow(appendedData);
   		    });
-  		    
-  		  $('#delte').on("click",function(){
-  			grid.removeCheckedRows(true);
-  			grid.blur();
-  			});
 	 </script>
   	</div>
 </body>
