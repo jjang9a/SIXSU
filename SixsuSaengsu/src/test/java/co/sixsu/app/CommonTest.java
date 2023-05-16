@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import co.sixsu.app.mapper.CommonMapper;
 import lombok.extern.log4j.Log4j2;
 
+
 @SpringBootTest
 @Log4j2
 public class CommonTest {
@@ -19,5 +20,6 @@ public class CommonTest {
 	public void getDateTest() {
 		Date date = mapper.getDate();
 		log.debug(date);
+		System.out.println(date);
 	}
 }
