@@ -42,13 +42,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 			return list;
 		}
 		
-		@RequestMapping("toastDataList")
-		public List toastDataList() {
-			List list = new ArrayList();
-			Data data = new Data("a", "b", "c", "1.1.1.0","M");
-			list.add(data);
-			return list;
-		}
 }
 
 
