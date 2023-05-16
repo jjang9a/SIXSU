@@ -18,5 +18,5 @@ public class SixsuSaengsuApplication {
 	@GetMapping("/top")
 	public void top() {
 	}
-	
+
 }
