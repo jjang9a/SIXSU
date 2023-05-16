@@ -13,4 +13,8 @@ public class SalesController {
  public String customer() {
 	 return "/sales/customer";
  }
+ @GetMapping("/sales/employee")
+ public String employee() {
+	 return "/sales/employee";
+ }
 }
