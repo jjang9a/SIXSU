@@ -10,42 +10,26 @@
 </head>
 
 <body>
+
+
+  
 <div layout:fragment="content">
 	<h1 class="mt-4" style="font-family: 'MaruBuri';">도착 자재 관리</h1>
 	<label>발주 번호</label>
 	<input type=text>
-	<button>찾기</button>
+	<button onclick="showPopupcus();">찾기</button>
 	
-<!-- 	<table>
-		<tr>
-		  <th>발주 번호</th>
-		  <th>거래처</th>
-		  <th>자재 코드</th>
-		  <th>자재명</th>
-		  <th>도착 수량</th>
-		  <th>도착일</th>
-		</tr>
-		
-		<tr th:each="arr : ${arrList}">
-		  <td th:text="{arr.matReqId}">1</td>
-          <td th:text="{arr.busId}">1</td>
-          <td th:text="{arr.matId}">1</td>
-          <td th:text="{arr.matName}">물</td>
-          <td th:text="{arr.arrQt}">100000</td>
-          <td th:text="{arr.arrDate}">2023/05/10</td>
-		</tr>
-		
-	</table> -->
 	
 	 <div id="grid"></div>
 	
-
 	
 	<script>
+	function showPopupcus() { window.open("/quality/arrRegList", "자재 등록", "width=800, height=600, left=100, top=50"); }
 	
+	let gridData = [];
 	 window.onload = function(){
          $.ajax({
-             url : "quality/arrList",
+             url : "/quality/arrList",
              method :"GET",
              dataType : "JSON",
              success : function(result){

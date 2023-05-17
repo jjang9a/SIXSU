@@ -9,8 +9,9 @@
 	select sysdate from dual
 </select>
 
-<select id="empList" resultType="co.sixsu.app.domain.common.EmpVO">
-	select emp_id, emp_name, emp_dept from employee
+<select id="empList" resultType="EmpVO">
+select emp_id, emp_name, emp_tell, TO_CHAR(emp_birth, 'yyyy/MM/dd') emp_birth, TO_CHAR(emp_hire, 'yyyy/MM/dd') emp_hire, emp_dept, emp_rk, emp_stat, emp_note  
+from employee
 </select>
 
 </mapper>
