@@ -48,7 +48,7 @@ public class QualityController {
 	@PostMapping("quality/arrRegister")
 	public String arrRegister(ArrMatVO am, RedirectAttributes rttr) {
 		
-		quaService.addArr(am);
+		quaService.insertArr(am);
 		System.out.println(am);
 		return "redirect:/quality/arr";
 	}
