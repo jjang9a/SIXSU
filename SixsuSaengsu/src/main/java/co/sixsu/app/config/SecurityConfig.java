@@ -38,8 +38,8 @@ public class SecurityConfig{
 		.formLogin(login -> login.loginPage("/login")
 								.usernameParameter("empId")
 								.successHandler(successHandler()))
-		.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/top")); //.deleteCookies(null) 가능
-//			.csrf().disable();
+		.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/top")) //.deleteCookies(null) 가능
+			.csrf().disable();
 		return http.build();
 	}
 	
