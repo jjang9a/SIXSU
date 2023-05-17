@@ -12,10 +12,16 @@ import co.sixsu.app.service.SalesService;
 public class SalesServiceImpl implements SalesService{
 @Autowired SaleMapper mapper;
 
-@Override
+@Override   // 모달창 전체 회원 조회
 public List<EmpVO> getEmpList() {
 	
 	return mapper.empList();
+}
+
+@Override  //모달창 회원이름 조회
+public List<EmpVO> getEmp1List(String keyword) {
+	// TODO Auto-generated method stub
+	return mapper.emp1List(keyword);
 }
 
 }

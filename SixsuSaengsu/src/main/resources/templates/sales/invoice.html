@@ -21,13 +21,13 @@
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">주문서등록</h1>
 		<div id="left">
 			주문번호 <input type="number">
-			<button>생성</button>
+			<button class="sixBtn2">생성</button>
 			<br> 주문날짜 <input type="date"> ~ <input type="date"><br>
 			납기일자 <input type="date"> ~ <input type="date"><br>
 			주문자 <input type="text">
 
 			<button type="button" data-bs-toggle="modal" id="searchBtn"
-				 class="sixBtn1" data-bs-target="#searchModal">
+				 class="sixBtn2" data-bs-target="#searchModal">
 				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 					fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                             <path
@@ -46,9 +46,9 @@
 		</div>
 
 		<div id="bottom">
-			<button>등록</button>
-			<button>삭제</button>
-			<button>수정</button>
+			<button  class="sixBtn2">등록</button>
+			<button class="sixBtn2">삭제</button>
+			<button class="sixBtn2">수정</button>
 		</div>
 
 
@@ -62,21 +62,27 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<div>
-						사원이름 <input type="text" id="employeeName">
-						<button onclick="collect()">조회</button>
+					
+				
+					<div class="btns">
+  						사원이름:  <input id="search-text"/>
+ 					 <button class="sixBtn2"  id="search-btn">조회</button>
+  					<button class="sixBtn2"   id="reset-btn">초기화</button>
 					</div>
+					
 					<div class="modal-body">
 						<div id="grid"></div>
 					</div>
 					<div class="modal-footer">
-						<button type="button">확인</button>
+						<button type="button" class="sixBtn2" id="confirm-btn">확인</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<script>
+	
+		
 	window.onload = function() {
 		$.ajax({
 			url : "/sales/empList",
@@ -96,10 +102,11 @@
 
 	const grid = new tui.Grid({
 		el : document.getElementById('grid'),
+		
 		//data : gridData,
 		scrollX : false,
 		scrollY : false,
-
+		 rowHeaders: ['checkbox'],
 		columns : [ {
 			header : '사원번호',
 			name : 'empId',
@@ -115,16 +122,34 @@
 		]
 
 	});
-	
-	function collect(){
-		 const employeeName = document.getElementById('employeeName').value;
-
-		
-
-		
-		    
-	  }
-	
+    // 모달창 사원조회 기능
+		$("#search-btn").on('click', function(){
+			console.log($("#search-text").val())
+			const result = $("#search-text").val()
+			
+			
+			$.ajax({
+				url : "/sales/emp1List",
+				method : "GET",
+				data : {'result' : result},
+				success : function(result) {
+					grid.resetData(result);
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			});
+		})
+	// 모달창 사원조회 입력값 초기화
+	  	$("#reset-btn").on('click', function(){
+	  	     $("#search-text").val("");
+    })
+    
+    // 모달창에 checkbox 후에 확인버튼 누르면 일어나는 일
+      	$("#confirm-btn").on('click', function(){
+	  	     
+    })
+    
   
 </script>
 
