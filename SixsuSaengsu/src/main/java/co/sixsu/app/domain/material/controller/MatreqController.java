@@ -22,20 +22,20 @@ public class MatreqController {
 //		return "/test";
 //	}
 	
-	@RequestMapping("/matreq")
+	@RequestMapping("/materials/matreq")
 	public String empList(Model model){
 		model.addAttribute("matreqList", mapper.getMatRecList());
 		return "matreq";
 	}
 	
-	@GetMapping("/mm")
+	@GetMapping("/materials/mm")
 	public String mm() {
-		return"/mm";
+		return"/materials/mm";
 	}
 	
 	
 	@ResponseBody
-	@RequestMapping("/mms")
+	@RequestMapping("/materials/mms")
 	public List<MatreqVO> mm(Model modal){
 		List<MatreqVO> list = mapper.getMatRecList();
 		modal.addAttribute("list", list);
