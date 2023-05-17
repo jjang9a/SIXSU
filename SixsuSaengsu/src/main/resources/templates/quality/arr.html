@@ -12,6 +12,10 @@
 <meta charset="UTF-8">
 <title>(주)SIXSU</title>
 
+<style>
+	.sixBtn1 
+</style>
+
 </head>
 
 <body>
@@ -25,14 +29,22 @@
 
 		<!-- 도착 자재 등록 모달창 -->
 		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary m-5"
-			data-bs-toggle="modal" data-bs-target="#staticBackdrop">찾기</button>
+		<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#searchModal">
+			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+                            <path
+					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+		</button>
+		
+		<!-- <button type="button" class="btn btn-primary m-5"
+			data-bs-toggle="modal" data-bs-target="#staticBackdrop">찾기</button> -->
 
 		<!-- Modal -->
-		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+		<div class="modal fade" id="searchModal" data-bs-backdrop="static"
 			data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog">	
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="staticBackdropLabel">도착 자재 등록</h5>
@@ -45,7 +57,7 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary">등록</button>
+						<button type="button" class="btn btn-primary" id="regBtn">등록</button>
 					</div>
 				</div>
 			</div>
@@ -56,17 +68,75 @@
 
 
 		<script>
-			
 		
-			$('#searchBtn').click(function(e) {
-				$('#searchBtn').modal("show");
-				setTimeout(()=> grid2.refreshLayout(), 500);
-			});
+		
+		$('#searchModal').on('shown.bs.modal', function (e) {
+			setTimeout(()=> grid2.refreshLayout(), 1000);
+		})
+		
+	    $('#regBtn').click(function(){
+	    	
+	    });
+	    
+		// 본문 그리드 ajax
+		let gridData = [];
+		window.onload = function() {
+			$.ajax({
+				url : "/quality/arrList",
+				method : "GET",
+				dataType : "JSON",
+				success : function(result) {
+					grid.resetData(result);
+				}
+			});					
+		};
+		
+
+		// 본문 그리드
+		const grid = new tui.Grid({
+			el : document.getElementById('grid'),
+			//data: gridData,
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '발주 번호',
+				name : 'matReqId'
+			}, {
+				header : '거래처',
+				name : 'busId'
+			}, {
+				header : '자재 코드',
+				name : 'matId'
+			}, {
+				header : '자재 명',
+				name : 'matName'
+			}, {
+				header : '도착 수량',
+				name : 'arrQt'
+			}, {
+				header : '도착일',
+				name : 'arrDate'
+			} ]
+		});
+		
+	    tui.Grid.applyTheme('default', {
+            cell: {
+                header: {
+                    background: '#e5edf5'
+                },
+                rowHeader: {
+                    background: '#e5edf5'
+                },
+                normal: {
+                    background: '#ffffff'
+                }
+            }
+        });
+
 			
-			
-			// 모달 그리드
+			// 모달 그리드 ajax
 			let gridData2 = [];
-			window.onload = function() {
+			
 				$.ajax({
 					url : "/quality/arrRegList",
 					method : "GET",
@@ -75,8 +145,8 @@
 						grid2.resetData(result);
 					}
 				});
-			};
 			
+			// 모달 그리드
 			class RowNumberRenderer {
 			      constructor(props) {
 			        const el = document.createElement('span');
@@ -143,19 +213,7 @@
 			    const grid2 = new tui.Grid({
 			      el: document.getElementById('grid2'),
 			      data: gridData2,
-			      rowHeaders: [
-			        {
-			          type: 'checkbox',
-			          header: `
-			          <label for="all-checkbox" class="checkbox">
-			            <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-			            <span class="custom-input"></span>
-			          </label>
-			        `,
-			          renderer: {
-			            type: CheckboxRenderer
-			          }
-			        }
+			      rowHeaders: [ 'checkbox'
 			      ],
 			      columns: [
 			        {
@@ -176,8 +234,14 @@
 			        },
 			        {
 			          header: '도착 수량',
-			          name: 'arrQt'
-			        }
+			          name: 'arrQt',
+			          editor: 'text'
+			        },
+			        {
+				      header: '도착 일자',
+				      name: 'arrDate',
+				      editor: 'text'
+				    }
 			      ]
 			    });
 
@@ -190,45 +254,14 @@
 			    });
 			    
 
-
-			// 본문 그리드
-			let gridData = [];
-			window.onload = function() {
+				// 등록 ajax
 				$.ajax({
-					url : "/quality/arrList",
-					method : "GET",
-					dataType : "JSON",
-					success : function(result) {
-						grid.resetData(result);
-					}
-				});
-			};
-
-			const grid = new tui.Grid({
-				el : document.getElementById('grid'),
-				//data: gridData,
-				scrollX : false,
-				scrollY : false,
-				columns : [ {
-					header : '발주 번호',
-					name : 'matReqId'
-				}, {
-					header : '거래처',
-					name : 'busId'
-				}, {
-					header : '자재 코드',
-					name : 'matId'
-				}, {
-					header : '자재 명',
-					name : 'matName'
-				}, {
-					header : '도착 수량',
-					name : 'arrQt'
-				}, {
-					header : '도착일',
-					name : 'arrDate'
-				} ]
-			});
+					url : "quality/arrRegister",
+					method : "POST",
+					dataType : "Json",
+					success
+				})
+			
 			
 		</script>
 	</div>

@@ -6,7 +6,8 @@ import co.sixsu.app.domain.quality.ArrMatVO;
 
 public interface QualityService {
 	
-		List<ArrMatVO> getArrList(); //도착자재 조회
-		List<ArrMatVO> arrRegList(); //도착 자재 등록 리스트
+		List<ArrMatVO> getArrList(); // 도착자재 조회
+		List<ArrMatVO> arrRegList(); // 도착 자재 등록 리스트
+		int addArr(ArrMatVO vo); // 도착 자재 등록
 
 }
