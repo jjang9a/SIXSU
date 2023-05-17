@@ -7,7 +7,7 @@
 
 <!-- 도착 자재 리스트 -->
 <select id="getArrList" resultType="co.sixsu.app.domain.quality.ArrMatVO">
-	SELECT m.mat_req_id, bus_id, mat_id, arr_qt, arr_date
+	SELECT m.mat_req_id, bus_id, mat_id, arr_qt, to_char(arr_date, 'yyyy-MM-dd') arr_date
 	FROM mat_req m JOIN arr_material a
 	ON (m.mat_req_id = a.mat_req_id)
 	ORDER BY mat_req_id desc
