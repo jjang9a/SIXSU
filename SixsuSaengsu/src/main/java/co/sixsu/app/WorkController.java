@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import co.sixsu.app.service.WorkService;
 
 @Controller
-@SpringBootApplication
 //@MapperScan(basePackages = "co.sixsu.app.**.mapper")
 	public class WorkController {
 	
