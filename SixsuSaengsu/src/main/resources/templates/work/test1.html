@@ -12,8 +12,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 <style>
-	.workColor{
-		background-color: aqua;
+	.workContainer{
+		width: 1200px;
 	}
 </style>
 </head>
@@ -22,8 +22,51 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <h1>생산계획</h1>
 <hr>
 <h2>검색창이 들어옵니다</h2>
+<div class="workContainer">
+  <div class="container filter">
+  <div class="row">
+    <div class="col-5">
+      생성일자 <input type="date"> ~ <input type="date">
+    </div>
+    <div class="col">
+      제품명 <input type="text" name="제품명">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-5">
+      작업일 <input type="date"> ~ <input type="date">
+    </div>
+    <div class="col">
+      계획No. <input type="text" name="계획">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-5">
+      작업지시 <label><input type="checkbox" name="지시여부" value='생성'>생성</label> <label><input type="checkbox" name="지시여부" value='미생성'>미생성</label>
+    </div>
+    <div class="col">
+      작성자 <input type="text" name="작성자">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-5">
+      종결여부 <label><input type="checkbox" name="상태" value='완료'>완료</label> <label><input type="checkbox" name="상태" value='진행중'>진행중</label> <label><input type="checkbox" name="상태" value='취소'>취소</label> <label><input type="checkbox" name="상태" value='대기'>대기</label>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-4">
+      <button class="sixBtn2 filter_submit">검색</button>
+    </div>
+  </div>
+</div>
+
+<br><br><br>
+
+
   <div id="grid"></div>
-	HI
+	</div>
 	<div class="container">
     <div class="row">
         <div class="col-sm-offset-0 col-sm-1" style="background-color: blue;">dddd</div>
@@ -36,12 +79,56 @@ test
     
 
 	<script>
+	//filter submit 버튼관리 시작
+	$(".filter_submit").on("click",function(){
+		console.log($(".filter"))
+		console.log($(".filter").val())
+		console.log($(".filter").children().first())
+		console.log($(".filter").children().first().val())
+		
+		var planCheckbox = [];
+        $('.filter input[name="지시여부"]:checked').each(function() {
+          var checkboxValue = $(this).val();
+          planCheckbox.push(checkboxValue);
+        });
+        
+		var statusCheckbox = [];
+        $('.filter input[name="상태"]:checked').each(function() {
+          var checkboxValue = $(this).val();
+          statusCheckbox.push(checkboxValue);
+        });
+
+		var searchData = {};
+		
+		searchData.productName = $('input[name="제품명"]').val();
+        searchData.planNo = $('input[name="계획"]').val();
+        searchData.writer = $('input[name="작성자"]').val();
+        searchData.planCheckbox = planCheckbox;
+        searchData.statusCheckbox = statusCheckbox;
+        console.log(searchData);
+        
+		$.ajax({
+			url : "/ajax/planFilterAjax",
+			method : "POST",
+			dataType : "JSON",
+			data: searchData,
+			success : function(result){
+				console.dir(result);
+				//gridP.resetData(result);
+			}
+		})
+		
+	})
+	
+	
 	var gridP = new tui.Grid({
         el: document.getElementById('grid'),
         //data: gridData,
         scrollX: false,
         scrollY: false,
+        rowHeaders: ['rowNum'],
         columns: [
+          
           {
             header: '분류',
             name: 'type'
@@ -49,7 +136,7 @@ test
           },
           {
             header: '생산세부번호',
-            name: 'planDetaId'
+            name: 'planHeadId'
           },
           {
             header: '품목코드',
@@ -57,11 +144,11 @@ test
           },
           {
             header: '제품명',
-            name: 'matName'
+            name: 'cpName'
           },
           {
             header: '계획수량',
-            name: 'ordQt'
+            name: 'detaQt'
           },
           {
             header: '완료수량',
@@ -69,7 +156,7 @@ test
           },
           {
             header: '납기일',
-            name: 'ordDueDate'
+            name: 'planDueDate'
           },
           {
             header: '착수일',
@@ -99,19 +186,34 @@ test
           }
         ]
       });
+      
+	
 	window.onload = function(){
 		
 		$.ajax({
-			url : "/ajax/work1Ajax",
+			url : "/ajax/planAjax",
 			method : "GET",
 			dataType : "JSON",
 			success : function(result){
+				console.log("첫 출력값 > ")
 				console.dir(result);
 				gridP.resetData(result);
 			}
 		})
 	}
-	
+	tui.Grid.applyTheme('default', {
+                cell: {
+                    header: {
+                        background: '#e5edf5'
+                    },
+                    rowHeader: {
+                        background: '#e5edf5'
+                    },
+                    normal: {
+                        background: '#ffffff'
+                    }
+                }
+            });
 </script>
 </div>
 </body>

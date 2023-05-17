@@ -5,19 +5,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import co.sixsu.app.service.WorkService;
+
 @Controller
 @SpringBootApplication
 //@MapperScan(basePackages = "co.sixsu.app.**.mapper")
-	public class WorkApplication {
+	public class WorkController {
+	
+		@Autowired WorkService service;
 	
 		@GetMapping("work1")
 		public String test1() {
 			System.out.println("test1 들어옴");
+			System.out.println(service.getDate());
 		return "/work/test1";
 		}
 		
