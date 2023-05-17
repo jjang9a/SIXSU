@@ -27,8 +27,8 @@ public class QualityServiceImpl implements QualityService {
 
 
 	@Override
-	public int addArr(ArrMatVO vo) {
-		return quaMapper.insertArr(vo);
+	public int insertArr(ArrMatVO am) {
+		return quaMapper.insertArr(am);
 	}
 	
 	
