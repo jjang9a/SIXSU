@@ -8,7 +8,7 @@
 	<style>
 		.test {
 			padding: 1.5em;
-			background: #e5edf5
+
 		}
 	</style>
 </head>
@@ -18,8 +18,10 @@
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">사원관리</h1>
 		<div class="test">
 			<p>테스트입니다</p>
-		</div>
+			
 
+		</div>
+		
 		<div id="grid"></div>
 
 
@@ -45,19 +47,60 @@
 						perPage: 5
 					}, */
 					columns: [{
-							header: 'Name',
+							header: '사원번호',
 							name: 'empId'
 						},
 						{
-							header: 'Artist',
+							header: '이름',
 							name: 'empName'
 						},
 						{
-							header: 'Type',
+							header: '연락처',
+							name: 'empTell'
+						},
+						{
+							header: '생년월일',
+							name: 'empBirth'
+							
+						},
+						{
+							header: '입사일',
+							name: 'empHire'
+						},
+						{
+							header: '소속부서',
 							name: 'empDept'
-						}
+						},
+						{
+							header: '직급',
+							name: 'empRk'
+						},
+						{
+							header: '상태',
+							name: 'empStat'
+						},
+						{
+							header: '비고',
+							name: 'empNote'
+						},
+						
 					]
 				});
+				
+				tui.Grid.applyTheme('default', {
+				    cell: {
+				        header: {
+				            background: '#e5edf5'
+				        },
+				        rowHeader: {
+				            background: '#e5edf5'
+				        },
+				        normal: {
+				            background: '#ffffff'
+				        }
+				    }
+				});
+				
 			}
 
 		
