@@ -38,11 +38,14 @@ public class CommonController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/common/empAdd", method = RequestMethod.POST)
-	public String empAdd(EmpVO emp, RedirectAttributes rttr) {
+	public void empAdd(EmpVO emp, RedirectAttributes rttr) {
 		//boolean result = service.empAdd(emp);
-		rttr.addFlashAttribute("msg", "등록완료");
-		rttr.addAttribute("new", emp);
-		return "redirect:common/empList";
+		/*
+		 * rttr.addFlashAttribute("msg", "등록완료"); rttr.addAttribute("new", emp); return
+		 * "redirect:common/empList";
+		 */
+		System.out.println("insert ajax >>>>");
+		System.out.println(emp);
 	}
 	
 	
