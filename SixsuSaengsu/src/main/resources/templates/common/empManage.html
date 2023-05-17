@@ -7,8 +7,30 @@
 	<title>사원관리</title>
 	<style>
 		.test {
-			padding: 1.5em;
-
+			padding: 0.5em;
+			text-align : right;
+		}
+		.modalTbl{
+			margin :auto;
+			text-align : center;
+			height : 330px;
+		}
+		.modal-body{
+			background: #e5edf5;		
+		}
+		.modalTbl td{
+			padding-right : 20px;
+		}
+		.modal-footer{
+			text-align : center;
+		}
+		.modalTbl input, select{
+			padding-left : 7px;
+			width : 150px;
+		}
+		.needStar{
+			color : red;
+			font-size : 10px;
 		}
 	</style>
 </head>
@@ -17,16 +39,93 @@
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">사원관리</h1>
 		<div class="test">
-			<p>테스트입니다</p>
-			
-
+			<button type="button" class="sixBtn2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >등록</button>
+			<button class="sixBtn2">수정</button>
 		</div>
 		
-		<div id="grid"></div>
+		<!-- Modal 시작 -->
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+            <!-- 모달 헤더 -->
+               <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel" style="font-family: 'MaruBuri';">사원 등록</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                     aria-label="Close"></button>
+               </div>
+               <!-- 모달 바디 -->
+               <div class="modal-body">
+                  <table class="modalTbl">
+                  	<tr>
+                  		<td>사원번호<span class="needStar"> *</span></td>
+                  		<td><input type="text" name="empId" id="empId"></td>
+                  	</tr>
+                  	<tr>
+                  		<td>이름<span class="needStar"> *</span></td>
+                  		<td><input type="text" name="empName" id="empName"></td>
+                  	</tr>
+                  	<tr>
+                  		<td>연락처<span class="needStar"> *</span></td>
+                  		<td><input type="text" name="empTell" id="empTell" placeholder="010-1111-1111"></td>
+                  	</tr>
+                  	<tr>
+                  		<td>생년월일<span class="needStar"> *</span></td>
+                  		<td><input type="date" name="empBirth" id="empBirth"></td>
+                  	</tr>
+                  	<tr>
+                  		<td>입사일</td>
+                  		<td><input type="date" name="empHire" id="empHire"></td>
+                  	</tr>
+                  	<tr>
+                  		<td>소속부서<span class="needStar"> *</span></td>
+                  		<td>
+	                  		<select name="empDept">
+	                  			<option value='' selected>----- 선택 -----</option>
+								<option value="관리부">관리부</option>
+								<option value="영업부">영업부</option>
+								<option value="생산부">생산부</option>
+								<option value="자재부">자재부</option>
+								<option value="설비부">설비부</option>
+								<option value="품질부">품질부</option>
+							</select>
+                  		</td>
+                  	</tr>
+                  	<tr>
+                  		<td>직급</td>
+                  		<td>
+							<select name="empRk">
+								<option value='' selected>----- 선택 -----</option>
+								<option value="M">관리자</option>
+								<option value="E">사원</option>
+							</select>
+						</td>
+                  	</tr>
+                  	<tr>
+                  		<td>비고</td>
+                  		<td><input type="text" name="empNote" id="empNote"></td>
+                  	</tr>
+                  </table>           
 
+               </div>
+               <!-- 모달 푸터(버튼부분) -->
+               <div class="modal-footer">
+                  <button type="button" class="sixBtn2">등록</button>
+                  <button type="button" class="sixBtn2"
+                     data-bs-dismiss="modal">닫기</button>
+               </div>
+            </div>
+         </div>
+      </div>
+		<!-- Modal 끝 -->
+		
+		<!-- 사원목록 그리드 -->
+		<div id="grid"></div>
+		<!-- 사원목록 그리드 끝 -->
 
 		<script>
-			
+			// 사원목록 그리드 스크립트
 			window.onload = function () {
 				$.ajax({
 					url: "/common/empList",
@@ -87,6 +186,7 @@
 					]
 				});
 				
+				// 그리드 색 변경 테마 적용
 				tui.Grid.applyTheme('default', {
 				    cell: {
 				        header: {
@@ -102,7 +202,11 @@
 				});
 				
 			}
-
+			
+			// 등록버튼 모달 이벤트
+	      $('#staticBackdrop').on('shown.bs.modal', function (e) {
+	         setTimeout(()=> grid2.refreshLayout(), 500);
+	      })
 		
 		</script>
 	</div>
