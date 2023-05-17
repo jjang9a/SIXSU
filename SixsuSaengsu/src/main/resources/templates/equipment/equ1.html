@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+<head>
+<meta charset="UTF-8">
+<title>설비 관리</title>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<br> 
+	<h1 class="mt-4">설비관리</h1>
+		<br>
+		<hr>
+		<br>
+		* 검색 : <input type="text" name="name">
+		<button class="sixBtn1"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+                            fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg></button>
+		
+		
+		<br><br>
+		<!-- 등록 수정 삭제 전환 -->
+		<div style="float: right" class="btn-group" role="group"
+					aria-label="Basic radio toggle button group">
+					<input type="radio" class="btn-check" name="btnradio"
+						id="btnradio1" autocomplete="off" checked> <label
+						class="btn btn-outline-primary" for="btnradio1">등록</label> <input
+						type="radio" class="btn-check" name="btnradio" id="btnradio2"
+						autocomplete="off"> <label class="btn btn-outline-primary"
+						for="btnradio2">수정</label> <input type="radio" class="btn-check"
+						name="btnradio" id="btnradio3" autocomplete="off"> <label
+						class="btn btn-outline-primary" for="btnradio3">삭제</label>
+				</div>
+		<!-- 설비상태 드롭다운 -->
+		<div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle" type="button"
+				data-bs-toggle="dropdown" aria-expanded="false">설비 가동 상태</button>
+			<ul class="dropdown-menu">
+				<li><a class="dropdown-item" href="#">대기</a></li>
+				<li><a class="dropdown-item" href="#">중지</a></li>
+				<li><a class="dropdown-item" href="#">가동</a></li>
+			</ul>
+		</div>
+	   <br>
+	   
+	   <!-- 인풋창 -->
+				<br> * 설비코드 : <input type="text" name="name"><br>
+				<br> * 공정코드 : <input type="text" name="name"><br>
+				<br> * 모델 : <input type="text" name="name"><br>
+				<br> * 설비명 : <input type="text" name="name"><br>
+				<br> * 설비라인 : <input type="text" name="name"><br>
+				<br> * 점검주기 : <input type="text" name="name"><br>
+				<br> * 담당자 : <input type="text" name="name"><br>
+				<br><br>
+
+	<!-- 설비 리스트 목록 -->			
+<div id="grid"></div>
+
+
+
+    <script>
+    const grid = new tui.Grid({
+        el: document.getElementById('grid'),
+        data: {
+            api: {
+              readData: { url: '/api/readData', method: 'GET' }
+            }
+          },
+        rowData: {weight:500},
+        
+        
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 10,
+        rowHeaders: ['rowNum'],
+       
+        columns: [
+          {
+            header: '설비코드',
+            name: 'equCode'
+          },
+          {
+            header: '공정코드',
+            name: 'procId'
+          },
+          {
+            header: '설비명',
+            name: 'equName'
+          },
+          {
+            header: '모델',
+            name: 'equModel'
+          },
+          {
+            header: '설비상태',
+            name: 'equStat'
+          },
+          {
+             header: '설비라인',
+             name: 'equLine'
+          },
+          {
+              header: '점검주기',
+              name: 'equCheck'
+           },
+          {
+              header: '설비 이미지',
+              name: 'equImg'
+           },
+           {
+               header: '담당자',
+               name: 'empId'
+            }
+        ],
+        data: [
+        {
+          설비코드: 'EQU_001',
+          공정코드: 'PROC_001',
+          모델: 'MODEL_001',
+          설비명: '사출설비',
+          설비라인: '라인 A',
+          설비상태: '비가동',
+          점검주기: '1개월',
+          담당자: '고대준'
+        },
+        {
+            설비코드: 'EQU_002',
+            공정코드: 'PROC_002',
+            모델: 'MODEL_002',
+            설비명: '병입설비',
+            설비라인: '라인 B',
+            설비상태: '가동',
+            점검주기: '2개월',
+            담당자: '고대준'
+        },
+          {
+            설비코드: 'EQU_003',
+            공정코드: 'PROC_003',
+            모델: 'MODEL_003',
+            설비명: '가공설비',
+            설비라인: '라인 C',
+            설비상태: '비가동',
+            점검주기: '3개월',
+            담당자: '고대준'
+          },
+          {
+              설비코드: 'EQU_004',
+              공정코드: 'PROC_004',
+              모델: 'MODEL_004',
+              설비명: '포장설비',
+              설비라인: '라인 D',
+              설비상태: '가동',
+              점검주기: '4개월',
+              담당자: '고대준'
+          },
+          {
+              설비코드: 'EQU_005',
+              공정코드: 'PROC_005',
+              모델: 'MODEL_005',
+              설비명: '가공설비',
+              설비라인: '라인 C',
+              설비상태: '비가동',
+              점검주기: '3개월',
+              담당자: '곽호섭'
+          },
+        ]
+    });
+    window.onload = function(){
+    	
+    	$.ajax({
+    		url : "/ajax/equAjaxConList",
+    		method : "GET",
+    		dataType : "JSON",
+    		success : function(result){
+    			console.dir(result);
+    			grid.resetData(result);
+    		}
+    	})
+    }
+    tui.Grid.applyTheme('default', {
+        cell: {
+            header: {
+                background: '#e5edf5'
+            },
+            rowHeader: {
+                background: '#e5edf5'
+            },
+            normal: {
+                background: '#ffffff'
+            }
+        }
+    });
+    
+    
+    
+    </script>
+    <button type="submit" class="" style="float: right;">저장</button>
+    
+    </div>
+</body>
+</html>
