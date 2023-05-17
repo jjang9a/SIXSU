@@ -11,12 +11,13 @@ public class MatreqVO {
 	String busId;
 	String matId;
 	int matReqQt;
-	Date matReqDate;
+	String matReqDate;
 	String matReqStat;
-	Date matEndDate;
-	int matDlyDate;
+	String matEndDate;
+	String matDlyDate;
 	String empId;
 	
 	String busName;
 	String empName;
+	String matName;
 }

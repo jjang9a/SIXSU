@@ -7,7 +7,7 @@
 
 <!-- 도착 자재 리스트 -->
 <select id="getArrList" resultType="co.sixsu.app.domain.quality.ArrMatVO">
-	SELECT m.mat_req_id, bus_id, mat_id, arr_qt, arr_date
+	SELECT m.mat_req_id, bus_id, mat_id, arr_qt, to_char(arr_date, 'yyyy-MM-dd') arr_date
 	FROM mat_req m JOIN arr_material a
 	ON (m.mat_req_id = a.mat_req_id)
 	ORDER BY mat_req_id desc
@@ -17,12 +17,13 @@
 <select id="arrRegList" resultType="co.sixsu.app.domain.quality.ArrMatVO">
 	SELECT mat_req_id, bus_id, mat_id
 	FROM mat_req
+	WHERE mat_req_stat='입고대기'
 	ORDER BY mat_req_id
 </select>
 
 <!-- 도착 자재 등록 -->
-<insert id="arrRegister" >
-
+<insert id="isnertArr" parameterType="co.sixsu.app.domain.quality.ArrMatVO">
+	INSERT INTO arr_material (arr_mat_num, mat_req_id, arr_qt) VALUES (arr_seq.nextval, #{matReqId}, #{arrQt})
 </insert>
 
 

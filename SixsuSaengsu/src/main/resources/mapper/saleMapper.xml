@@ -9,8 +9,15 @@
 		select* from employee
 
 	</select>
+	<!-- 모달창 전체조회 -->
 	<select id="empList"
 		resultType='co.sixsu.app.domain.common.EmpVO'>
 		select* from employee
+	</select>
+	<!--모달창 이름별 조회 -->
+	<select id="emp1List"
+		resultType='co.sixsu.app.domain.common.EmpVO'>
+		select* from employee
+		where emp_name = #{keyword}
 	</select>
 </mapper>

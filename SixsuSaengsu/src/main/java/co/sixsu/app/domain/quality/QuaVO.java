@@ -14,7 +14,7 @@ public class QuaVO {
 	private int inspNum; // 검사번호
 	private String inspItemId; // 검사 품목 코드
 	private String empName;// 사원 이름
-	private Date inspDate; // 검사 일자
+	private String inspDate; // 검사 일자
 	private int inspQt; // 검사 수량
 	private int suitQt; // 적합 수량
 	private int nsuitQt; // 부적합 수량
