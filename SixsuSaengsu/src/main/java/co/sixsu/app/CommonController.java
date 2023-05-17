@@ -21,7 +21,7 @@ public class CommonController {
 	}
 	
 	@GetMapping("/common/empManage")
-	public void empManage() {	
+	public void empManage() { 	
 	}
 	
 	@ResponseBody
