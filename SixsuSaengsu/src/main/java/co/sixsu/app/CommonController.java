@@ -46,6 +46,12 @@ public class CommonController {
 		 */
 		System.out.println("insert ajax >>>>");
 		System.out.println(emp);
+		emp.setEmpStat("재직");
+		String bir = emp.getEmpBirth();
+		String pw = bir.substring(2, 4) + bir.substring(5,7) + bir.substring(8);
+		System.out.println("pw => " + pw);
+		emp.setEmpPw(pw);
+		System.out.println(emp);
 	}
 	
 	

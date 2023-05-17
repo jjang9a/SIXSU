@@ -16,6 +16,12 @@
 			text-align: center;
 			height: 330px;
 		}
+		
+		.modalTbl2 {
+			margin: auto;
+			text-align: center;
+			height: 100px;
+		}
 
 		.modal-body {
 			background: #e5edf5;
@@ -47,20 +53,21 @@
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">사원관리</h1>
 		<div class="test">
 			<button type="button" class="sixBtn2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">등록</button>
-			<button class="sixBtn2">수정</button>
+			<button type="button" class="sixBtn2">수정</button>
+			<button type="button" class="sixBtn4" data-bs-toggle="modal" data-bs-target="#pwModal">비밀번호</button>
 		</div>
 
-		<!-- Modal 시작 -->
+		<!-- 등록 Modal 시작 -->
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<!-- 모달 헤더 -->
+					<!-- 등록 모달 헤더 -->
 					<div class="modal-header">
 						<h5 class="modal-title" id="staticBackdropLabel" style="font-family: 'MaruBuri';">사원 등록</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-					<!-- 모달 바디 -->
+					<!-- 등록 모달 바디 -->
 					<div class="modal-body">
 						<form action="" method="post" id="addForm">
 							<table class="modalTbl">
@@ -115,7 +122,7 @@
 							</table>
 						</form>
 					</div>
-					<!-- 모달 푸터(버튼부분) -->
+					<!-- 등록 모달 푸터(버튼부분) -->
 					<div class="modal-footer">
 						<button type="button" class="sixBtn2" id="addBtn">등록</button>
 						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
@@ -123,7 +130,36 @@
 				</div>
 			</div>
 		</div>
-		<!-- Modal 끝 -->
+		<!-- 등록 Modal 끝 -->
+		
+		<!-- 비밀번호 수정 Modal 시작 -->
+		<div class="modal fade" id="pwModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="pwModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- 비밀번호 수정 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="pwModalLabel" style="font-family: 'MaruBuri';">비밀번호 수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 비밀번호 수정 모달 바디 -->
+					<div class="modal-body">
+						<form action="" method="post" id="pwForm">
+							<table class="modalTbl2">
+								
+							</table>
+						</form>
+					</div>
+					<!-- 비밀번호 수정 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+						<button type="button" class="sixBtn2" id="pwBtn">변경</button>
+						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 비밀번호 수정 Modal 끝 -->
+		
 
 		<!-- 사원목록 그리드 -->
 		<div id="grid"></div>
@@ -205,13 +241,27 @@
 						}
 					}
 				});
+				
+				grid.on('click', ev=> {
+					console.log(ev.rowKey)
+					console.log(ev.columns)
+					//grid.addSelectionOnly(ev.rowKey);
+					const focusCell = grid.getFocusedCell()
+					console.log(focusCell)
+					
+					let dataRow = grid.getRow(ev.rowKey);
+					console.log(dataRow);
+					
+					console.log('전화번호 : ' + dataRow.empTell);
+				})
 
 			}
 
 			// 기본창 등록버튼 모달 띄우기 이벤트
-			$('#staticBackdrop').on('shown.bs.modal', function (e) {
-				setTimeout(() => grid2.refreshLayout(), 500);
-			})
+			$('#staticBackdrop').on('shown.bs.modal');
+			
+			// 비밀번호 수정 모달 띄우기 이벤트
+			$('#pwModal').on('shown.bs.modal');
 
 			// 모달 내 등록 ajax 이벤트
 			$('#addBtn').on('click', function (e) {
