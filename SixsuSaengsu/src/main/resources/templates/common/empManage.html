@@ -16,7 +16,7 @@
 			text-align: center;
 			height: 330px;
 		}
-		
+
 		.modalTbl2 {
 			margin: auto;
 			text-align: center;
@@ -45,6 +45,10 @@
 			color: red;
 			font-size: 10px;
 		}
+
+		.testclass {
+			background: red;
+		}
 	</style>
 </head>
 
@@ -53,8 +57,8 @@
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">사원관리</h1>
 		<div class="test">
 			<button type="button" class="sixBtn2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">등록</button>
-			<button type="button" class="sixBtn2">수정</button>
-			<button type="button" class="sixBtn4" data-bs-toggle="modal" data-bs-target="#pwModal">비밀번호</button>
+			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+			<button type="button" class="sixBtn4" id="pwBtn" data-bs-toggle="modal">비밀번호</button>
 		</div>
 
 		<!-- 등록 Modal 시작 -->
@@ -131,7 +135,7 @@
 			</div>
 		</div>
 		<!-- 등록 Modal 끝 -->
-		
+
 		<!-- 비밀번호 수정 Modal 시작 -->
 		<div class="modal fade" id="pwModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="pwModal" aria-hidden="true">
@@ -145,21 +149,27 @@
 					<!-- 비밀번호 수정 모달 바디 -->
 					<div class="modal-body">
 						<form action="" method="post" id="pwForm">
+							<input type="hidden" name="empId" id="pwEmpId"> <!-- 정보 넘겨주기용 사원번호 input -->
 							<table class="modalTbl2">
-								
+								<tr>
+									<td id="pwEmpData"></td>
+								</tr>
+								<tr>
+									<td><input type="password" name="empPw"></td>
+								</tr>
 							</table>
 						</form>
 					</div>
 					<!-- 비밀번호 수정 모달 푸터(버튼부분) -->
 					<div class="modal-footer">
-						<button type="button" class="sixBtn2" id="pwBtn">변경</button>
+						<button type="button" class="sixBtn2" id="pwUpdateBtn">변경</button>
 						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- 비밀번호 수정 Modal 끝 -->
-		
+
 
 		<!-- 사원목록 그리드 -->
 		<div id="grid"></div>
@@ -183,7 +193,7 @@
 					minBodyHeight: 30,
 					rowHeaders: ['rowNum'],
 					/* pageOptions: {
-						useClient : true,s
+						useClient : true,
 						perPage: 5
 					}, */
 					columns: [{
@@ -192,16 +202,17 @@
 						},
 						{
 							header: '이름',
-							name: 'empName'
+							name: 'empName',
+							editor: 'text'
 						},
 						{
 							header: '연락처',
-							name: 'empTell'
+							name: 'empTell',
+							editor: 'text'
 						},
 						{
 							header: '생년월일',
 							name: 'empBirth'
-
 						},
 						{
 							header: '입사일',
@@ -209,19 +220,84 @@
 						},
 						{
 							header: '소속부서',
-							name: 'empDept'
+							name: 'empDept',
+							editor: {
+								type: 'select',
+								options: {
+									listItems: [{
+											text: '관리부',
+											value: '관리부'
+										},
+										{
+											text: '영업부',
+											value: '영업부'
+										},
+										{
+											text: '생산부',
+											value: '생산부'
+										},
+										{
+											text: '자재부',
+											value: '자재부'
+										},
+										{
+											text: '설비부',
+											value: '설비부'
+										},
+										{
+											text: '품질부',
+											value: '품질부'
+										}
+									]
+								}
+							}
 						},
 						{
 							header: '직급',
-							name: 'empRk'
+							name: 'empRk',
+							width: 150,
+							editor: {
+								type: 'select',
+								options: {
+									listItems: [{
+											text: '매니저',
+											value: 'M'
+										},
+										{
+											text: '사원',
+											value: 'E'
+										}
+									]
+								}
+							}
 						},
 						{
 							header: '상태',
-							name: 'empStat'
+							name: 'empStat',
+							width: 150,
+							editor: {
+								type: 'radio',
+								options: {
+									listItems: [{
+											text: '재직',
+											value: '재직'
+										},
+										{
+											text: '휴직',
+											value: '휴직'
+										},
+										{
+											text: '퇴사',
+											value: '퇴사'
+										}
+									]
+								}
+							}
 						},
 						{
 							header: '비고',
-							name: 'empNote'
+							name: 'empNote',
+							width: 300
 						},
 
 					]
@@ -241,42 +317,121 @@
 						}
 					}
 				});
-				
-				grid.on('click', ev=> {
+
+				/* 				grid.on('click', function (ev) {
+									console.log("click")
+								});
+
+								grid.on('dblclick', function (ev) {
+									console.log("dblclick");
+									console.log(ev.rowKey)
+									const focusCell = grid.getFocusedCell()
+									console.log(focusCell)
+
+									let dataRow = grid.getRow(ev.rowKey);
+									console.log(dataRow);
+
+									console.log('전화번호 : ' + dataRow.empStat);
+								}); */
+
+
+
+				let selEmpId = '';
+				let selEmpName = '';
+				let selKey = '';
+				grid.on('focusChange', (ev) => {
+					// focus된 셀이 있는 열 전체 select 처리
+					grid.setSelectionRange({
+						start: [ev.rowKey, 0],
+						end: [ev.rowKey, grid.getColumns().length - 1]
+					});
 					console.log(ev.rowKey)
-					console.log(ev.columns)
-					//grid.addSelectionOnly(ev.rowKey);
-					const focusCell = grid.getFocusedCell()
-					console.log(focusCell)
-					
+					/* 
+						// rowKey 얻는법
+						// focus된 cell 내의 정보
+						const focusCell = grid.getFocusedCell()
+						console.log(focusCell)
+					*/
+					selKey = ev.rowKey;
+
+					// 열 전체 정보 얻기
 					let dataRow = grid.getRow(ev.rowKey);
 					console.log(dataRow);
-					
-					console.log('전화번호 : ' + dataRow.empTell);
+					selEmp = dataRow;
+					console.log('사원번호 : ' + dataRow.empStat);
+					selEmpId = dataRow.empId
+					selEmpName = dataRow.empName
+				});
+
+
+				// 기본창 등록버튼 모달 띄우기 이벤트
+				$('#staticBackdrop').on('shown.bs.modal');
+
+				// 모달 내 등록 ajax 이벤트
+				$('#addBtn').on('click', function (e) {
+					$.ajax({
+						url: '/common/empAdd',
+						type: 'post',
+						data: $('#addForm').serialize(),
+						dataType: 'json',
+						success: function (result) {
+							alert('사원이 성공적으로 등록되었습니다');
+							console.log(result);
+							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+							const appendedData = result
+							grid.appendRow(appendedData);
+						},
+						error: function () {
+							alert('사원 등록 중 오류가 발생했습니다!');
+						}
+					});
+					$('#staticBackdrop input').val('');
+					$('#staticBackdrop').modal('hide');
+				})
+
+
+				// 비밀번호 수정 버튼
+				$('#pwBtn').on('click', function (e) {
+					// 사원이 선택되지 않은 경우 알람 띄우기
+					if (selEmpId == '') {
+						alert('사원이 선택되지 않았습니다!');
+						// 특정 사원이 선택 된 경우 사원번호와 이름을 담아 모달 띄우기
+					} else {
+						$('#pwModal').modal('show');
+						console.log(selEmpId)
+						$('#pwEmpData').html(`${selEmpId} ${selEmpName}`);
+						$('#pwEmpId').val(selEmpId);
+					}
+				})
+
+				// 모달 비밀번호 변경 이벤트
+				$('#pwUpdateBtn').on('click', function (e) {
+					$.ajax({
+						url: '/common/empPw',
+						type: 'post',
+						data: $('#pwForm').serialize(),
+						dataType: 'json',
+						success: function () {
+							alert('비밀번호가 성공적으로 업데이트 되었습니다');
+						},
+						error: function () {
+							alert('비밀번호 변경 중 오류가 발생했습니다!');
+						}
+					});
+					$('#pwModal input').val('');
+					$('#pwModal').modal('hide');
+					pwEmpId = '';
+				});
+
+				// 수정 버튼 이벤트
+				$('#modiBtn').on('click', function () {
+					let jsonData = Json.stringify(grid.getRow(selKey))
+					console.log(grid.getRow(selKey))
 				})
 
 			}
-
-			// 기본창 등록버튼 모달 띄우기 이벤트
-			$('#staticBackdrop').on('shown.bs.modal');
-			
-			// 비밀번호 수정 모달 띄우기 이벤트
-			$('#pwModal').on('shown.bs.modal');
-
-			// 모달 내 등록 ajax 이벤트
-			$('#addBtn').on('click', function (e) {
-				$.ajax({
-					url: '/common/empAdd',
-					type: 'post',
-					data: $('#addForm').serialize(),
-					dataType: 'json'/* ,
-					success: function () {
-						alert('성공!')
-					} */
-				});
-
-			})
 		</script>
+
 	</div>
 </body>
 

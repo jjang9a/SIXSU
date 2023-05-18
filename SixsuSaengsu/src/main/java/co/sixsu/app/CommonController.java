@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,21 +37,32 @@ public class CommonController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/common/empAdd", method = RequestMethod.POST)
-	public void empAdd(EmpVO emp, RedirectAttributes rttr) {
+	public EmpVO empAdd(EmpVO emp) {
 		//boolean result = service.empAdd(emp);
 		/*
 		 * rttr.addFlashAttribute("msg", "등록완료"); rttr.addAttribute("new", emp); return
 		 * "redirect:common/empList";
 		 */
 		System.out.println("insert ajax >>>>");
-		System.out.println(emp);
 		emp.setEmpStat("재직");
 		String bir = emp.getEmpBirth();
 		String pw = bir.substring(2, 4) + bir.substring(5,7) + bir.substring(8);
-		System.out.println("pw => " + pw);
 		emp.setEmpPw(pw);
 		System.out.println(emp);
+		boolean result = service.addEmp(emp);
+		return emp;
 	}
+	
+	@ResponseBody
+	@PostMapping("/common/empPw")
+	public boolean empPw(EmpVO emp, RedirectAttributes rttr) {
+		System.out.println("password ajax >>>>>");
+		System.out.println(emp);
+		boolean result = service.updatePw(emp);
+		System.out.println(result);
+		return result;
+	}
+	
 	
 	
 }
