@@ -13,7 +13,7 @@
 <title>(주)SIXSU</title>
 
 <style>
-	.sixBtn1 
+.sixBtn1
 </style>
 
 </head>
@@ -29,14 +29,15 @@
 
 		<!-- 도착 자재 등록 모달창 -->
 		<!-- Button trigger modal -->
-		<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#searchModal">
+		<button class="sixBtn1" data-bs-toggle="modal"
+			data-bs-target="#searchModal">
 			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                             <path
 					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                         </svg>
 		</button>
-		
+
 		<!-- <button type="button" class="btn btn-primary m-5"
 			data-bs-toggle="modal" data-bs-target="#staticBackdrop">찾기</button> -->
 
@@ -44,7 +45,7 @@
 		<div class="modal fade" id="searchModal" data-bs-backdrop="static"
 			data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog">	
+			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="staticBackdropLabel">도착 자재 등록</h5>
@@ -74,9 +75,7 @@
 			setTimeout(()=> grid2.refreshLayout(), 1000);
 		})
 		
-	    $('#regBtn').click(function(){
-	    	
-	    });
+
 	    
 		// 본문 그리드 ajax
 		let gridData = [];
@@ -255,14 +254,22 @@
 			    
 
 				// 등록 ajax
-				$.ajax({
-					url : "quality/arrRegister",
-					method : "POST",
-					dataType : "Json",
-					success : function(data){
-						
-					}
+				
+				$('#regBtn').on('click', function(e){
+					e.preventDefault();
+					
+					//등록할 데이터
+					let data = grid2.getData();
+					
+					$.ajax({
+						url : "/quality/arrRegister",
+						method : "POST",
+						dataType : "json",
+						data : data
 				});
+					
+				});
+
 			
 			
 		</script>

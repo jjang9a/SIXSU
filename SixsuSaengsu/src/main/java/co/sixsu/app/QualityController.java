@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.sixsu.app.domain.quality.ArrMatVO;
 import co.sixsu.app.service.QualityService;
@@ -46,8 +46,11 @@ public class QualityController {
 	// 도착 등록
 	@ResponseBody
 	@PostMapping("quality/arrRegister")
-	public ArrMatVO arrRegister(@RequestBody ArrMatVO vo) {
-		return vo;
+	public String arrRegister(ArrMatVO am, RedirectAttributes rttr) {
+		
+		quaService.insertArr(am);
+		System.out.println(am);
+		return "redirect:/quality/arr";
 	}
 	
 
