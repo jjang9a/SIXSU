@@ -10,11 +10,26 @@
 </select>
 
 <select id="getPlan" resultType="DetaProdPlanVO">
+	SELECT *
+	FROM PLAN_VIEW
+    ORDER BY plan_deta_id
+</select>
+
+<select id="getPlanFilter" resultType="DetaProdPlanVO" parameterType="PlanDataVO">
+	SELECT *
+	FROM PLAN_VIEW
+	WHERE (cp_name = #{productName} OR #{productName} IS NULL)
+  	AND (plan_deta_id = #{planNo} OR #{planNo} IS NULL)
+  	AND (emp_name = #{writer} OR #{writer} IS NULL)
+  	${statusFilter}
+    ORDER BY plan_deta_id
+</select>
+
+<select id="xxxxx" resultType="DetaProdPlanVO">
 	SELECT a.type, a.PLAN_HEAD_ID, b.MAT_ID, c.CP_name, b.deta_qt, b.good_qt,a.plan_due_date, TO_char(b.START_DATE, 'yyyy-MM-dd') AS start_date, TO_char(b.END_DATE, 'yyyy-MM-dd') AS end_date, b.MEMO
 	FROM PROD_PLAN a left JOIN DETA_PROD_PLAN b ON a.PLAN_HEAD_ID = b.PLAN_HEAD_ID
         left JOIN COMPLETE_PROD c ON b.MAT_ID = c.CP_ID
-    ORDER BY a.PLAN_HEAD_ID
+    ORDER BY a.plan_deta_id
 </select>
-
 
 </mapper>
