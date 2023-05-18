@@ -43,7 +43,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <body>
 <div layout:fragment="content">
 
-<h1>생산계획</h1>
+<h1>생산계획 등록</h1>
 <hr>
 
 	<div id="gridContainer1">
@@ -52,25 +52,103 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	</div>
 	<div id="gridContainer2">
 		<div id="grid3"></div>
+		<button class="addBtn">버튼</button>
 		<div id="grid4"></div>
 	</div>
 	<div id="pagination2" class="tui-pagination"></div>
 
 <script>
-var gridData = [
+var gridData1 = [
 	  { name: 'John', age: 30, city: 'New York' },
 	  { name: 'Jane', age: 25, city: 'London' },
 	  { name: 'Bob', age: 35, city: 'Paris' }
 	];
-	while (gridData.length < 8){
-		gridData.push({});
-	}
+	
+var gridData2 = [
+      {
+        name: 'Beautiful Lies',
+        artist: 'Birdy',
+        release: '2016.03.26',
+        type: 'Deluxe',
+        genre: 'Pop'
+      },
+      {
+        name: 'X',
+        artist: 'Ed Sheeran',
+        release: '2014.06.24',
+        type: 'Deluxe',
+        genre: 'Pop',
+        
+      },
+      {
+        name: 'Moves Like Jagger',
+        release: '2011.08.08',
+        artist: 'Maroon5',
+        type: 'Single',
+        genre: 'Pop,Rock',
+        
+      },
+      {
+        name: 'A Head Full Of Dreams',
+        artist: 'Coldplay',
+        release: '2015.12.04',
+        type: 'Deluxe',
+        genre: 'Rock',
+        _attributes: {
+          checked: true, // A checkbox is already checked while rendering
+          className: {
+            // Add class name on a row
+            row: ['red']
+          }
+        }
+      },
+      {
+        name: '19',
+        artist: 'Adele',
+        release: '2008.01.27',
+        type: 'EP',
+        genre: 'Pop,R&B',
+        _attributes: {
+          rowSpan: {
+            // Merge rows
+            artist: 3,
+            genre: 2
+          }
+        }
+      },
+      {
+        name: '21',
+        artist: 'Adele',
+        release: '2011.01.21',
+        type: 'Deluxe',
+        genre: 'Pop,R&B'
+      },
+      {
+        name: '25',
+        artist: 'Adele',
+        release: '2015.11.20',
+        type: 'EP',
+        genre: 'Pop',
+        
+      }
+    ];
+var gridData3 = [{}]
 
+while (gridData1.length < 8){
+	gridData1.push({});
+}
+while (gridData2.length < 8){
+	gridData2.push({});
+}
+while (gridData3.length < 8){
+	gridData3.push({});
+}
 	var grid2 = new tui.Grid({
 	    el: document.getElementById('grid2'),
-	    data: gridData,
+	    data: gridData1,
 	    scrollX: false,
 	    scrollY: false,
+	    
 	    rowHeaders: ['rowNum'],
 	    
 	    columns: [
@@ -82,23 +160,23 @@ var gridData = [
 	      },
 	      {
 	        header: '거래처코드',
-	        name: 'age'
+	        name: 'name'
 	      },
 	      {
 	        header: '거래처',
-	        name: 'matId'
+	        name: 'artist'
 	      },
 	      {
 	        header: '납기일',
-	        name: 'cpName'
+	        name: 'release'
 	      },
 	      {
 	        header: '주문일',
-	        name: 'detaQt'
+	        name: 'type'
 	      },
 	      {
 	        header: '주문상태',
-	        name: 'goodQt'
+	        name: 'genre'
 	      }
 	    ],
 	    pageOptions: { perPage: 10 }
@@ -111,56 +189,40 @@ var gridData = [
 	
 	var grid3 = new tui.Grid({
 	    el: document.getElementById('grid3'),
-	    data: gridData,
+	    data: gridData2,
 	    scrollX: false,
 	    scrollY: false,
-	    rowHeaders: ['rowNum'],
+	    rowHeaders: ['rowNum','checkbox'],
 	    columns: [
 	      
 	      {
-	        header: '분류',
+	        header: '체크박스',
 	        name: 'name'
 	       
 	      },
 	      {
-	        header: '생산세부번호',
-	        name: 'age'
+	        header: '세부게획코드',
+	        name: 'name'
 	      },
 	      {
-	        header: '품목코드',
-	        name: 'matId'
+	        header: '제품코드',
+	        name: 'artist'
 	      },
 	      {
-	        header: '제품명',
-	        name: 'cpName'
+	        header: '제품',
+	        genre: 'release'
 	      },
 	      {
-	        header: '계획수량',
-	        name: 'detaQt'
+	        header: '수량',
+	        name: 'type'
 	      },
 	      {
-	        header: '완료수량',
-	        name: 'goodQt'
+	        header: '주문일',
+	        name: 'release'
 	      },
 	      {
-	          header: '상태',
-	          name: 'status'
-	        },
-	      {
-	        header: '납기일',
-	        name: 'planDueDate'
-	      },
-	      {
-	        header: '착수일',
-	        name: 'startDate'
-	      },
-	      {
-	        header: '완료일',
-	        name: 'endDate'
-	      },
-	      {
-	          header: '작성자',
-	          name: 'empName'
+	          header: '주문상태',
+	          name: 'artist'
 	        }
 	    ]
 	  });
@@ -169,56 +231,40 @@ var gridData = [
 	
 	var grid4 = new tui.Grid({
 	    el: document.getElementById('grid4'),
-	    data: gridData,
+	    data: gridData3,
 	    scrollX: false,
 	    scrollY: false,
-	    rowHeaders: ['rowNum'],
+	    rowHeaders: ['rowNum','checkbox'],
 	    columns: [
 	      
-	      {
-	        header: '분류',
+    	{
+	        header: '체크박스',
 	        name: 'name'
 	       
 	      },
 	      {
-	        header: '생산세부번호',
-	        name: 'age'
+	        header: '세부게획코드',
+	        name: 'name'
 	      },
 	      {
-	        header: '품목코드',
-	        name: 'matId'
+	        header: '제품코드',
+	        name: 'artist'
 	      },
 	      {
-	        header: '제품명',
-	        name: 'cpName'
+	        header: '제품',
+	        genre: 'release'
 	      },
 	      {
-	        header: '계획수량',
-	        name: 'detaQt'
+	        header: '수량',
+	        name: 'type'
 	      },
 	      {
-	        header: '완료수량',
-	        name: 'goodQt'
+	        header: '주문일',
+	        name: 'release'
 	      },
 	      {
-	          header: '상태',
-	          name: 'status'
-	        },
-	      {
-	        header: '납기일',
-	        name: 'planDueDate'
-	      },
-	      {
-	        header: '착수일',
-	        name: 'startDate'
-	      },
-	      {
-	        header: '완료일',
-	        name: 'endDate'
-	      },
-	      {
-	          header: '작성자',
-	          name: 'empName'
+	          header: '주문상태',
+	          name: 'artist'
 	        }
 	    ]
 	  });
@@ -230,6 +276,18 @@ var gridData = [
 	        centerAlign: true
 	    });
 	
+ 	$('.addBtn').on('click', function(){
+ 		var appendedData = grid3.getCheckedRows()
+ 		for(let i of appendedData){
+ 			console.log(i)
+ 			console.log('ㄷㄷ')
+ 			grid4.appendRow(i);
+ 		}
+ 		console.log(appendedData)
+	 	grid3.removeCheckedRows(false);
+ 		grid3.blur();
+ 	})
+	 
 </script>
 </div>
 </body>
