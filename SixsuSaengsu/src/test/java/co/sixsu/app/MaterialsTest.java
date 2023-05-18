@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import co.sixsu.app.domain.material.MatreqVO;
-import co.sixsu.app.mapper.MaterialsMapper;
+import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.material.mapper.MaterialsMapper;
 
 @SpringBootTest
 public class MaterialsTest {

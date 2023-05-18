@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import co.sixsu.app.domain.equipment.EquConVO;
-import co.sixsu.app.service.EquService;
+import co.sixsu.app.equipment.domain.EquConVO;
+import co.sixsu.app.equipment.service.EquService;
 
 @SpringBootTest
 public class EquipmentTest {

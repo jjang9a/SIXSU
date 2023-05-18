@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import co.sixsu.app.domain.common.EmpVO;
-import co.sixsu.app.mapper.CommonMapper;
-import co.sixsu.app.service.CommonService;
+import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.mapper.BasicMapper;
+import co.sixsu.app.basic.service.BasicService;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -17,8 +17,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class CommonTest {
 
-	@Autowired CommonMapper mapper;
-	@Autowired CommonService service;
+	@Autowired BasicMapper mapper;
+	@Autowired BasicService service;
 	
 	@Test
 	public void getDateTest() {

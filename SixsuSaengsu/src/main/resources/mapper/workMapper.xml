@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="co.sixsu.app.mapper.WorkMapper">
+<mapper namespace="co.sixsu.app.work.mapper.WorkMapper">
 
 <select id="getDate" resultType="java.util.Date">
 	select sysdate from dual
