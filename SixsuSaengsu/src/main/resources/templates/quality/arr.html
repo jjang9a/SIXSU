@@ -13,7 +13,9 @@
 <title>(주)SIXSU</title>
 
 <style>
-.sixBtn1
+.search{
+margin 20px;
+}
 </style>
 
 </head>
@@ -27,20 +29,20 @@
 		<!-- <label>발주 번호</label>
 	<input type=text> -->
 
-		<!-- 도착 자재 등록 모달창 -->
-		<!-- Button trigger modal -->
-		<button class="sixBtn1" data-bs-toggle="modal"
+		
+		<!-- 찾기 버튼 -->
+		<div class="search">
+		<label>도착 자재 찾기</label><button class="sixBtn1" data-bs-toggle="modal"
 			data-bs-target="#searchModal">
 			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                             <path
 					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                         </svg>
-		 도착 자재 찾기
 		</button>
-
-		<!-- <button type="button" class="btn btn-primary m-5"
-			data-bs-toggle="modal" data-bs-target="#staticBackdrop">찾기</button> -->
+		</div>
+		
+		<!-- 도착 자재 등록 모달창 -->
 
 		<!-- Modal -->
 		<div class="modal fade" id="searchModal" data-bs-backdrop="static"
