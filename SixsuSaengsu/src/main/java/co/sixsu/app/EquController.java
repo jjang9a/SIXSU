@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import co.sixsu.app.domain.common.EmpVO;
 import co.sixsu.app.domain.equipment.EquConVO;
@@ -24,6 +23,7 @@ public class EquController {
 	@Autowired EquService equService;
 	
 	
+
 	@GetMapping("/equipment/equ1") // 설비 관리 페이지
 	public void equ1() {
 	}
@@ -37,6 +37,7 @@ public class EquController {
 		model.addAttribute("equConList", equService.equConList());
 		return "/equipment/equ1";
 	}
+
 	
 	@ResponseBody
 	@RequestMapping("/equipment/equConList1") // 설비 관리 리스트
@@ -46,6 +47,7 @@ public class EquController {
 		 //modal.addAttribute("list", list);Model modal
 		 return list;
 	}
+
 	
 	@ResponseBody // 모달에 데이터를 보내줌
 	@RequestMapping("/equipment/equInfo") // 설비 조회 상세정보 리스트
@@ -56,15 +58,14 @@ public class EquController {
 		return null; // 모달 창으로 리턴해야함.
 	
 	}
-	//모달창 설비코드 클릭시 상세정보
-	@RequestMapping("/equipment/empInfoList")
-	@ResponseBody
-	public List<EmpVO> empInfoList(@RequestParam String result){
-		System.out.println(result);
-		List<EmpVO> list = equService.empInfoList(result);
-		return list;
-		
-	}
+//	//모달창 설비코드 클릭시 상세정보
+//	@RequestMapping("/equipment/empInfoList")
+//	@ResponseBody
+//	public List<EmpVO> empInfoList(@RequestParam String result){
+//		System.out.println(result);
+//		List<EmpVO> list = equService.empInfoList(result);
+//		
+//	}
 	
 	
 

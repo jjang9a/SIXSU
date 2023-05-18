@@ -8,12 +8,18 @@ import lombok.Data;
 public class DetaProdPlanVO {
 //생산계획세부정보
 	
-	String planDetaId; //계획세부코드 (PK)
-	String planHeadId; //생산계획코드 (FK)
-	int ordDetId; //주문상세코드 (FK)
-	String matId; //제품코
-	int good_qt; //양품수량
-	String cmplt_st; //종결여부
-	Date detaEnd; //종결일
+	String type;
+	String planDetaId; //생산계획코드 (FK)
+	String matId; //제품코드
+	String cpName; //제품이름
+	int detaQt;
+	int goodQt; //양품수량
+	String status;
+	String planDueDate;
+	String startDate;
+	String endDate;
+	String empName;
+	String memo; //비고
+
 
 }
