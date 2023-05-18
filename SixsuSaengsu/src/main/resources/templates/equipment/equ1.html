@@ -5,84 +5,68 @@
 	layout:decorate="~{layout/template}">
 <head>
 <meta charset="UTF-8">
-<title>설비 관리</title>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<style>
 
+	.sixBtn2{
+	margin-right : 7px;
+	}
+	
+</style>
+<title>설비 관리</title>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
+<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>	
 </head>
 <body>
 	<div layout:fragment="content">
-		<br> 
-	<h1 class="mt-4">설비관리</h1>
-		<br>
+		<br><br> 
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">설비관리</h1>
+	<!-- 등록 수정 삭제 전환 -->
+		
+	
+		<button type="button" class="sixBtn2" style="float: right;" >삭제</button>
+		<button type="button" class="sixBtn2" style="float: right;">수정</button>
+		<button type="button" class="sixBtn2" style="float: right;" >등록</button>
+	
+		<br><br>
 		<hr>
 		<br>
-		* 검색 : <input type="text" name="name">
-		<button class="sixBtn1"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-                            fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-                            <path
-                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                        </svg></button>
 		
 		
-		<br><br>
-		<!-- 등록 수정 삭제 전환 -->
-		<div style="float: right" class="btn-group" role="group"
-					aria-label="Basic radio toggle button group">
-					<input type="radio" class="btn-check" name="btnradio"
-						id="btnradio1" autocomplete="off" checked> <label
-						class="btn btn-outline-primary" for="btnradio1">등록</label> <input
-						type="radio" class="btn-check" name="btnradio" id="btnradio2"
-						autocomplete="off"> <label class="btn btn-outline-primary"
-						for="btnradio2">수정</label> <input type="radio" class="btn-check"
-						name="btnradio" id="btnradio3" autocomplete="off"> <label
-						class="btn btn-outline-primary" for="btnradio3">삭제</label>
-				</div>
-		<!-- 설비상태 드롭다운 -->
-		<div class="dropdown">
-			<button class="btn btn-secondary dropdown-toggle" type="button"
-				data-bs-toggle="dropdown" aria-expanded="false">설비 가동 상태</button>
-			<ul class="dropdown-menu">
-				<li><a class="dropdown-item" href="#">대기</a></li>
-				<li><a class="dropdown-item" href="#">중지</a></li>
-				<li><a class="dropdown-item" href="#">가동</a></li>
-			</ul>
-		</div>
-	   <br>
+		
+		
+		
 	   
 	   <!-- 인풋창 -->
-				<br> * 설비코드 : <input type="text" name="name"><br>
-				<br> * 공정코드 : <input type="text" name="name"><br>
-				<br> * 모델 : <input type="text" name="name"><br>
-				<br> * 설비명 : <input type="text" name="name"><br>
-				<br> * 설비라인 : <input type="text" name="name"><br>
-				<br> * 점검주기 : <input type="text" name="name"><br>
-				<br> * 담당자 : <input type="text" name="name"><br>
-				<br><br>
-
-	<!-- 설비 리스트 목록 -->			
+	   	<div>
+			<br> * 설비코드 : <input type="text" name="name"><br>
+			<br> * 공정코드 : <input type="text" name="name"><br>
+			<br> * 모델 : <input type="text" name="name"><br>
+			<br> * 설비명 : <input type="text" name="name"><br>
+			<br> * 설비라인 : <input type="text" name="name"><br>
+			<br> * 점검주기 : <input type="text" name="name"><br>
+			<br> * 담당자 : <input type="text" name="name"><br>
+			<br><br>
+		</div>
+				
 <div id="grid"></div>
 
-
-
-    <script>
-    const grid = new tui.Grid({
+	    <script>
+	    
+	    //const gridData=[];
+			  
+	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: {
-            api: {
-              readData: { url: '/api/readData', method: 'GET' }
-            }
-          },
-        rowData: {weight:500},
-        
-        
+       // data: {
+      
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 10,
+        
+        
         rowHeaders: ['rowNum'],
-       
         columns: [
           {
             header: '설비코드',
@@ -102,26 +86,31 @@
           },
           {
             header: '설비상태',
-            name: 'equStat'
+            name: 'equStat',
+            filter: 'select'
           },
           {
              header: '설비라인',
              name: 'equLine'
           },
           {
-              header: '점검주기',
-              name: 'equCheck'
-           },
+             header: '점검주기',
+             name: 'equCheck'
+          },
           {
-              header: '설비 이미지',
-              name: 'equImg'
-           },
-           {
-               header: '담당자',
-               name: 'empId'
-            }
-        ],
-        data: [
+             header: '설비 이미지',
+             name: 'equImg'
+          },
+          {
+             header: '담당자',
+             name: 'empId'
+          }
+          
+        ]
+	    
+     });
+        
+       /*  data: [
         {
           설비코드: 'EQU_001',
           공정코드: 'PROC_001',
@@ -131,61 +120,20 @@
           설비상태: '비가동',
           점검주기: '1개월',
           담당자: '고대준'
-        },
-        {
-            설비코드: 'EQU_002',
-            공정코드: 'PROC_002',
-            모델: 'MODEL_002',
-            설비명: '병입설비',
-            설비라인: '라인 B',
-            설비상태: '가동',
-            점검주기: '2개월',
-            담당자: '고대준'
-        },
-          {
-            설비코드: 'EQU_003',
-            공정코드: 'PROC_003',
-            모델: 'MODEL_003',
-            설비명: '가공설비',
-            설비라인: '라인 C',
-            설비상태: '비가동',
-            점검주기: '3개월',
-            담당자: '고대준'
-          },
-          {
-              설비코드: 'EQU_004',
-              공정코드: 'PROC_004',
-              모델: 'MODEL_004',
-              설비명: '포장설비',
-              설비라인: '라인 D',
-              설비상태: '가동',
-              점검주기: '4개월',
-              담당자: '고대준'
-          },
-          {
-              설비코드: 'EQU_005',
-              공정코드: 'PROC_005',
-              모델: 'MODEL_005',
-              설비명: '가공설비',
-              설비라인: '라인 C',
-              설비상태: '비가동',
-              점검주기: '3개월',
-              담당자: '곽호섭'
-          },
-        ]
-    });
-    window.onload = function(){
-    	
-    	$.ajax({
-    		url : "/ajax/equAjaxConList",
-    		method : "GET",
-    		dataType : "JSON",
-    		success : function(result){
-    			console.dir(result);
-    			grid.resetData(result);
-    		}
-    	})
-    }
+        }, */
+	    window.onload = function(){
+	    	
+	    	$.ajax({
+	    		url : "/equipment/equConList1",
+	    		method : "GET",
+	    		dataType : "JSON",
+	    		success : function(result){
+	    			console.dir(result);
+	    			grid.resetData(result);
+	    		}
+	    	});
+	    };
+      
     tui.Grid.applyTheme('default', {
         cell: {
             header: {
@@ -200,10 +148,58 @@
         }
     });
     
+    selectedHeader: {               //  selectedHeader : 선택한 제목 색상
+        background: 'rgb(233, 233, 233)',
+    },
+    rowHeader: {                    //  rowHeader : 좌측 제목 행
+        background: 'rgb(233, 233, 233)',
+        border: '#bbbbbb',
+        text: 'black',
+        showVerticalBorder: true,
+        showHorizontalBorder: true,
+    },
+    selectedRowHeader: {            //  selectedRowHeader : 선택한 열 색상
+        background: 'rgb(233, 233, 233)',
+    },
+    focused: {                      //  focused : 선택한 셀 색상 
+        background: "#f5d1ba",
+        border: "#bbbbbb",
+    },
+    focusedInactive: {              //  focusedInactive : 선택 후 표 바깥을 선택하면 나타나는 색상
+        border: "#bbbbbb"
+    },
+    summary: {                      //  summary : 요약 열에 사용할 색상
+        background: '#f1f5ff',
+        border: '#bbbbbb',
+        text: 'black',
+        showVerticalBorder: true,
+        showHorizontalBorder: true,
+    },
+},
+},
+
+     //저장 버튼을 누르면 테이블에 들어갈 데이터 설정 	  
+   	 const appendBtn = document.getElementById('appendBtn');  
+     	 const appendedData = {
+     			equCode: '',
+     			procId: '',
+     			equModel: '',
+     			equName: '',
+     			equLine: '',
+     			equCheck: '',
+     			empId: ''
+     		    };
+
+      appendBtn.addEventListener('click', () => {
+   	     grid.appendRow(appendedData);
+     });
     
-    
+      
+     
+      
     </script>
-    <button type="submit" class="" style="float: right;">저장</button>
+    <br>
+    <button id="appendBtn" onclick="appendBtn" type="submit" class="sixBtn2" style="float: right;">저장</button>
     
     </div>
 </body>
