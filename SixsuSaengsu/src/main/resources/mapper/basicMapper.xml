@@ -26,4 +26,10 @@
 	)
 </insert>
 
+<update id="updateEmp" parameterType="EmpVO">
+	update employee
+	set emp_name=#{empName}, emp_tell=#{empTell}, emp_dept=#{empDept}, emp_rk=#{empRk}, emp_note=#{empNote}
+	where emp_id=#{empId}
+</update>
+
 </mapper>

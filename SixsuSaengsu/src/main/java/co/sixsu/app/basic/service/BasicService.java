@@ -9,5 +9,6 @@ public interface BasicService {
 	List<EmpVO> getEmpList(); // 사원 전체목록 조회
 	boolean updatePw(EmpVO emp); // 비밀번호 변경
 	boolean addEmp(EmpVO emp); // 사원 등록
+	boolean updateEmp(EmpVO emp); // 사원 정보 수정
 	
 }

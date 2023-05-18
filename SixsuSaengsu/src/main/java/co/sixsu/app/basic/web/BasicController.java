@@ -16,19 +16,19 @@ import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.service.BasicService;
 
 @Controller
-public class CommonController {
+public class BasicController {
 	@Autowired BasicService service;
 	
 	@GetMapping("/login")
 	public void login() { // 로그인 화면 불러오기
 	}
 	
-	@GetMapping("/common/empManage")
+	@GetMapping("/basic/empManage")
 	public void empManage() { 	
 	}
 	
 	@ResponseBody
-	@RequestMapping("/common/empList")
+	@RequestMapping("/basic/empList")
 	public List<EmpVO> empList(){
 		List<EmpVO> list = service.getEmpList();
 		//model.addAttribute("list", list);
@@ -36,7 +36,7 @@ public class CommonController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/common/empAdd", method = RequestMethod.POST)
+	@RequestMapping(value = "/basic/empAdd", method = RequestMethod.POST)
 	public EmpVO empAdd(EmpVO emp) {
 		//boolean result = service.empAdd(emp);
 		/*
@@ -54,7 +54,7 @@ public class CommonController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/common/empPw")
+	@PostMapping("/basic/empPw")
 	public boolean empPw(EmpVO emp, RedirectAttributes rttr) {
 		System.out.println("password ajax >>>>>");
 		System.out.println(emp);
@@ -63,6 +63,12 @@ public class CommonController {
 		return result;
 	}
 	
+	@PostMapping("basic/empModify")
+	public String empModify(@RequestBody EmpVO emp) {
+		System.out.println(emp);
+		service.updateEmp(emp);
+		return "result";
+	}
 	
 	
 }
