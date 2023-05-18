@@ -1,8 +1,6 @@
 package co.sixsu.app.domain.material;
 
 
-import java.util.Date;
-
 import lombok.Data;
 
 @Data
