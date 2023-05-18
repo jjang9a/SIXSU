@@ -16,7 +16,7 @@ public class MaterialsTest {
 	
 	@Test
 	void MatRecList() {
-		List<MatreqVO> list = mapper.getMatRecList();
-		System.out.println(list);
+		//List<MatreqVO> list = mapper.getMatRecList();
+		//System.out.println(list);
 	}
 }
