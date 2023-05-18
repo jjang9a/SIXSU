@@ -26,7 +26,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   <div class="container filter">
   <div class="row">
     <div class="col-5">
-      생성일자 <input type="date"> ~ <input type="date">
+      생성일자 <input type="date"> ~ <input type="date"> [미완]
     </div>
     <div class="col">
       제품명 <input type="text" name="제품명">
@@ -34,7 +34,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   </div>
   <div class="row">
     <div class="col-5">
-      작업일 <input type="date"> ~ <input type="date">
+      작업일 <input type="date"> ~ <input type="date"> [미완]
     </div>
     <div class="col">
       계획No. <input type="text" name="계획">
@@ -42,7 +42,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   </div>
   <div class="row">
     <div class="col-5">
-      작업지시 <label><input type="checkbox" name="지시여부" value='생성'>생성</label> <label><input type="checkbox" name="지시여부" value='미생성'>미생성</label>
+      작업지시 <label><input type="checkbox" name="지시여부" value='생성'>생성</label> <label><input type="checkbox" name="지시여부" value='미생성'>미생성</label> [미완]
     </div>
     <div class="col">
       작성자 <input type="text" name="작성자">
@@ -66,6 +66,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 
 
   <div id="grid"></div>
+  
+  <div id="grid1"></div>
 	</div>
 	<div class="container">
     <div class="row">
@@ -97,7 +99,7 @@ test
           var checkboxValue = $(this).val();
           statusCheckbox.push(checkboxValue);
         });
-
+			
 		var searchData = {};
 		
 		searchData.productName = $('input[name="제품명"]').val();
@@ -114,7 +116,7 @@ test
 			data: searchData,
 			success : function(result){
 				console.dir(result);
-				//gridP.resetData(result);
+				gridP.resetData(result);
 			}
 		})
 		
@@ -136,7 +138,7 @@ test
           },
           {
             header: '생산세부번호',
-            name: 'planHeadId'
+            name: 'planDetaId'
           },
           {
             header: '품목코드',
@@ -155,6 +157,10 @@ test
             name: 'goodQt'
           },
           {
+              header: '상태',
+              name: 'status'
+            },
+          {
             header: '납기일',
             name: 'planDueDate'
           },
@@ -166,6 +172,10 @@ test
             header: '완료일',
             name: 'endDate'
           },
+          {
+              header: '작성자',
+              name: 'empName'
+            },
                 
           {
             header: '비고',
@@ -187,7 +197,6 @@ test
         ]
       });
       
-	
 	window.onload = function(){
 		
 		$.ajax({
@@ -214,6 +223,26 @@ test
                     }
                 }
             });
+	gridP.on("click", ev => {
+		let dataRow = gridP.getRow(ev.rowKey);
+		let dataOb = {}
+		dataOb.stringData = dataRow.planDetaId;
+		console.log(dataRow);
+		console.log(dataRow.planDetaId);
+		
+		$.ajax({
+			url : "/ajax/test1",
+			method : "POST",
+			dataType : "JSON",
+			data : dataOb,
+			success : function(result){
+				console.dir(result);
+			}
+		})
+	})
+	
+	
+	
 </script>
 </div>
 </body>
