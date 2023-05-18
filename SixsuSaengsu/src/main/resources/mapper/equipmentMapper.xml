@@ -5,15 +5,19 @@
   
 <mapper namespace="co.sixsu.app.mapper.EquMapper">
 
-<select id="equConList" resultType="EquConVO">
-  		SELECT equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_check, equ_img
+	<select id="equConList" resultType="EquConVO">
+  		SELECT equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_check, equ_img, emp_id
 			FROM equ_con
 			ORDER BY equ_code
   	</select>
-  	<!-- 설비코드 공정코드 설비명 모델
-  		 설비상태 설비라인 점검주기 설비이미지 담당자
-  		 	
-  		 
-  		 -->
+  	
+  	<select id="equInfo" resultType="EquConVO">
+  		
+		SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, i.check_date, i.check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
+			FROM equ_con c LEFT OUTER JOIN equ_insp i
+			ON c.equ_code = i.equ_code
+			LEFT OUTER JOIN equ_oper o
+			ON c.equ_code = o.equ_code;
+  	</select>
 
 </mapper>
