@@ -9,6 +9,8 @@ public interface CommonMapper {
 
 	public Date getDate();
 	
-	public List<EmpVO> empList();
+	public List<EmpVO> empList(); // 사원 전체목록 조회
+	public int addEmp(EmpVO emp); // 사원 등록
+	public int updatePw(EmpVO emp); // 사원 비밀번호 변경
 
 }
