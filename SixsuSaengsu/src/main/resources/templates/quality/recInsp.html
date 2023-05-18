@@ -13,8 +13,8 @@
 <title>(주)SIXSU</title>
 
 <style>
-.search{
-margin 20px;
+.borderBox{
+	border 1px, solid
 }
 </style>
 
@@ -25,33 +25,34 @@ margin 20px;
 
 
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">도착 자재 관리</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 입고 검사</h1>
 		<!-- <label>발주 번호</label>
 	<input type=text> -->
 
-		
-		<!-- 찾기 버튼 -->
-		<div class="search">
-		<label>도착 자재 찾기</label><button class="sixBtn1" data-bs-toggle="modal"
-			data-bs-target="#searchModal">
+
+		<!-- 발주 번호 검색 버튼 -->
+		<label>발주 번호 검색</label>
+		<button class="sixBtn1" data-bs-toggle="modal"
+			data-bs-target="#regModal">
 			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                             <path
 					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                         </svg>
 		</button>
-		</div>
-		
-		<!-- 도착 자재 등록 모달창 -->
 
+		<!-- <button type="button" class="btn btn-primary m-5"
+			data-bs-toggle="modal" data-bs-target="#staticBackdrop">찾기</button> -->
+
+		<!-- 검사 등록 모달창 -->
 		<!-- Modal -->
-		<div class="modal fade" id="searchModal" data-bs-backdrop="static"
+		<div class="modal fade" id="regModal" data-bs-backdrop="static"
 			data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="staticBackdropLabel" >도착 자재 등록</h5>
+						<h5 class="modal-title" id="staticBackdropLabel">입고 검사 등록</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
@@ -70,27 +71,92 @@ margin 20px;
 
 		<div id="grid"></div>
 
+		<!-- 자재 검사 결과 등록 폼 -->
+		<div class="prInsp">
+			<div class="mb-3">
+				<label for="exampleFormControlInput1" class="form-label">발주번호
+				</label> <input type="text" class="form-control"
+					id="exampleFormControlInput1">
+			</div>
+			<div class="mb-3">
+				<label for="exampleFormControlInput1" class="form-label">거래처
+				</label> <input type="text" class="form-control"
+					id="exampleFormControlInput1">
+			</div>
+			<div class="mb-3">
+				<label for="exampleFormControlInput1" class="form-label">자재코드
+				</label> <input type="text" class="form-control"
+					id="exampleFormControlInput1">
+			</div>
+			<div class="mb-3">
+				<label for="exampleFormControlInput1" class="form-label">자재명
+				</label> <input type="text" class="form-control"
+					id="exampleFormControlInput1">
+			</div>
+			<div class="mb-3">
+				<label for="exampleFormControlInput1" class="form-label">검사자
+				</label> <input type="text" class="form-control"
+					id="exampleFormControlInput1">
+				<button class="sixBtn1" data-bs-toggle="modal"
+					data-bs-target="#empModal">
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+						fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+                            <path
+							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+				</button>
+			</div>
+			<div class="mb-3">
+				<label for="exampleFormControlInput1" class="form-label">검사
+					대기 수량 </label> <input type="text" class="form-control"
+					id="exampleFormControlInput1">
+			</div>
+
+			<select class="form-select" aria-label="Default select example">
+				<option selected>불량 코드</option>
+				<option value="1">One</option>
+				<option value="2">Two</option>
+				<option value="3">Three</option>
+			</select>
+			
+			<select class="form-select" aria-label="Default select example">
+				<option selected>처리 상태</option>
+				<option value="1">One</option>
+				<option value="2">Two</option>
+				<option value="3">Three</option>
+			</select>
+			<!-- 세부 검사 항목 boderBox 시작 -->
+			<div id="borderBox">
+			<h5 class="mt-4" style="font-family: 'MaruBuri';">세부 검사 항목</h5>
+			
+			</div>
+			<!-- 세부 검사 항목 끝나는 부분 -->
+		</div>
+		<!-- 폼 끝나는 부분 -->
+
+
 
 		<script>
 		
 		
-		$('#searchModal').on('shown.bs.modal', function (e) {
-			setTimeout(()=> grid2.refreshLayout(), 500);
+		$('#regModal').on('shown.bs.modal', function (e) {
+			setTimeout(()=> grid2.refreshLayout(), 1000);
 		})
 		
 
-		// 본문 그리드 ajax
+	    
+ 		// 본문 그리드 ajax
 		let gridData = [];
 		window.onload = function() {
 			$.ajax({
-				url : "/quality/arrList",
+				url : "/quality/proRecInsp",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
 					grid.resetData(result);
 				}
 			});					
-		};
+		}; 
 		
 
 		// 본문 그리드
@@ -104,7 +170,7 @@ margin 20px;
 				name : 'matReqId'
 			}, {
 				header : '거래처',
-				name : 'busName'
+				name : 'busId'
 			}, {
 				header : '자재 코드',
 				name : 'matId'
@@ -112,11 +178,11 @@ margin 20px;
 				header : '자재 명',
 				name : 'matName'
 			}, {
-				header : '도착 수량',
+				header : '검사 대기 수량',
 				name : 'arrQt'
 			}, {
-				header : '도착일',
-				name : 'arrDate'
+				header : '처리 상태',
+				name : 'inspStat'
 			} ]
 		});
 		
@@ -233,17 +299,7 @@ margin 20px;
 			        {
 			          header: '자재 명',
 			          name: 'matName'
-			        },
-			        {
-			          header: '도착 수량',
-			          name: 'arrQt',
-			          editor: 'text'
-			        },
-			        {
-				      header: '도착 일자',
-				      name: 'arrDate',
-				      editor: 'text'
-				    }
+			        }
 			      ]
 			    });
 
@@ -255,54 +311,37 @@ margin 20px;
 			      console.log('uncheck', ev);
 			    });
 			    
-			    // 행 클릭
-			    let dataRow;
-			    grid2.on('click', ev=> {
+				// 행 클릭
+				grid2.on('click', ev=> {
                console.log(ev.rowKey)
                console.log(ev.columns)
-               const focusCell = grid.getFocusedCell()
+               //grid.addSelectionOnly(ev.rowKey);
+               const focusCell = grid2.getFocusedCell()
                console.log(focusCell)
                
-               dataRow = grid2.getRow(ev.rowKey);
+               let dataRow = grid2.getRow(ev.rowKey);
                console.log(dataRow);
                
-               console.log('도착수량:' + dataRow.arrQt)
-
+               console.log('자재코드 : ' + dataRow.matId);
             })
-			    
+				
 				// 등록				
 				$('#regBtn').on('click', function(e){
-					e.preventDefault();					
+					e.preventDefault();
+					
+					//등록할 데이터
+					let data = grid2.getData();
+					//ajax
+					$.ajax({
+						url : "/quality/arrRegister",
+						method : "POST",
+						dataType : "json",
+						data : data
 
-
-            //등록할 데이터
-			let data = dataRow;
-				
-				//ajax
-				$.ajax({
-					url : "/quality/arrRegister",
-					method : "POST",
-					dataType : "json",
-					data : data,
-/* 					success : function(result){
-						alert('등록되었습니다.')
-					} */
-
-				}); 
-				
-				$.ajax({
-					url : "/quality/arrRegList",
-					method : "GET",
-					dataType : "JSON",
-					success : function(result) {
-						grid2.resetData(result);
-					}
 				});
-
 					
 				});
-			    
-				
+
 			
 			
 		</script>
