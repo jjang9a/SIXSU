@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="co.sixsu.app.mapper.MaterialsMapper">
+
+	<select id="getMatReqList" resultType="co.sixsu.app.domain.material.MatreqVO">
+		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, to_date(mat_end_date,'yyyy-MM-dd')-to_date(mat_req_date,'yyyy-MM-dd') as mat_dly_date, m.emp_id
+		from mat_req m left join business b
+		on m.bus_id = b.bus_id
+		left join employee e
+		on m.emp_id = e.emp_id
+		left join material t
+		on m.mat_id = t.mat_id
+	</select>
+<!-- to_date(sysdate, 'YYYY-MM-dd') -->
+
+	<select id="selectMatReq" resultType="co.sixsu.app.domain.material.MatreqVO">
+		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, to_date(mat_end_date,'yyyy-MM-dd')-to_date(mat_req_date,'yyyy-MM-dd') as mat_dly_date, m.emp_id
+		from mat_req m left join business b
+		on m.bus_id = b.bus_id
+		left join employee e
+		on m.emp_id = e.emp_id
+		left join material t
+		on m.mat_id = t.mat_id
+		where m.mat_req_id = #{reqId}
+		
+	</select>
+	
+	<delete id="deleteMatReq" parameterType="int">
+		delete from mat_req where mat_req_id = #{reqId}
+	</delete>
+</mapper>
+
+
+
+
+

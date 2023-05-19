@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+<head>
+<meta charset="UTF-8">
+<style>
+
+	.sixBtn2{
+	margin-right : 7px;
+	}
+	
+</style>
+<title>설비 관리</title>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
+<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>	
+</head>
+<body>
+	<div layout:fragment="content">
+		<br><br> 
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">설비관리</h1>
+	<!-- 등록 수정 삭제 전환 -->
+		
+	
+		<button type="button" class="sixBtn2" style="float: right;" >삭제</button>
+		<button type="button" class="sixBtn2" style="float: right;">수정</button>
+		<button type="button" class="sixBtn2" style="float: right;" >등록</button>
+	
+		<br><br>
+		<hr>
+		<br>
+		
+		
+		
+		
+		
+	   
+	   <!-- 인풋창 -->
+	   	<div>
+			<br> * 설비코드 : <input type="text" name="name"><br>
+			<br> * 공정코드 : <input type="text" name="name"><br>
+			<br> * 모델 : <input type="text" name="name"><br>
+			<br> * 설비명 : <input type="text" name="name"><br>
+			<br> * 설비라인 : <input type="text" name="name"><br>
+			<br> * 점검주기 : <input type="text" name="name"><br>
+			<br> * 담당자 : <input type="text" name="name"><br>
+			<br><br>
+		</div>
+				
+<div id="grid"></div>
+
+	    <script>
+	    
+	    //const gridData=[];
+			  
+	    const grid = new tui.Grid({
+        el: document.getElementById('grid'),
+       // data: {
+      
+        scrollX: false,
+        scrollY: false,
+        
+        
+        rowHeaders: ['rowNum'],
+        columns: [
+          {
+            header: '설비코드',
+            name: 'equCode'
+          },
+          {
+            header: '공정코드',
+            name: 'procId'
+          },
+          {
+            header: '설비명',
+            name: 'equName'
+          },
+          {
+            header: '모델',
+            name: 'equModel'
+          },
+          {
+            header: '설비상태',
+            name: 'equStat',
+            filter: 'select'
+          },
+          {
+             header: '설비라인',
+             name: 'equLine'
+          },
+          {
+             header: '점검주기',
+             name: 'equCheck'
+          },
+          {
+             header: '설비 이미지',
+             name: 'equImg'
+          },
+          {
+             header: '담당자',
+             name: 'empId'
+          }
+          
+        ]
+	    
+     });
+        
+       /*  data: [
+        {
+          설비코드: 'EQU_001',
+          공정코드: 'PROC_001',
+          모델: 'MODEL_001',
+          설비명: '사출설비',
+          설비라인: '라인 A',
+          설비상태: '비가동',
+          점검주기: '1개월',
+          담당자: '고대준'
+        }, */
+	    window.onload = function(){
+	    	
+	    	$.ajax({
+	    		url : "/equipment/equConList1",
+	    		method : "GET",
+	    		dataType : "JSON",
+	    		success : function(result){
+	    			console.dir(result);
+	    			grid.resetData(result);
+	    		}
+	    	});
+	    };
+      
+    tui.Grid.applyTheme('default', {
+        cell: {
+            header: {
+                background: '#e5edf5'
+            },
+            rowHeader: {
+                background: '#e5edf5'
+            },
+            normal: {
+                background: '#ffffff'
+            }
+        }
+    });
+    
+
+     //저장 버튼을 누르면 테이블에 들어갈 데이터 설정 	  
+   	 const appendBtn = document.getElementById('appendBtn');  
+     	 const appendedData = {
+     			equCode: '',
+     			procId: '',
+     			equModel: '',
+     			equName: '',
+     			equLine: '',
+     			equCheck: '',
+     			empId: ''
+     		    };
+
+      appendBtn.addEventListener('click', () => {
+   	     grid.appendRow(appendedData);
+     });
+    
+      
+    
+      
+    </script>
+    <br>
+    <button id="appendBtn" onclick="appendBtn" type="submit" class="sixBtn2" style="float: right;">저장</button>
+    
+    </div>
+</body>
+</html>

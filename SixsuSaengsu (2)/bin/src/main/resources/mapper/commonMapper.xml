@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="co.sixsu.app.mapper.CommonMapper">
+
+<select id="getDate" resultType="java.util.Date">
+	select sysdate from dual
+</select>
+
+<select id="empList" resultType="EmpVO">
+	select emp_id, emp_name, emp_tell, TO_CHAR(emp_birth, 'yyyy/MM/dd') emp_birth, TO_CHAR(emp_hire, 'yyyy/MM/dd') emp_hire, emp_dept, emp_rk, emp_stat, emp_note  
+	from employee
+</select>
+
+<update id="updatePw" parameterType="EmpVO">
+	update employee
+	set emp_pw = #{empPw}
+	where emp_id = #{empId}
+</update>
+
+<insert id="addEmp" parameterType="EmpVO">
+	insert into employee values (
+	#{empId}, #{empName}, #{empTell}, TO_DATE(#{empBirth}, 'yyyy-MM-dd'), TO_DATE(#{empHire}, 'yyyy-MM-dd'), #{empDept}, #{empRk}, #{empStat}, #{empNote}, #{empPw} 
+	)
+</insert>
+
+</mapper>
