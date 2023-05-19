@@ -124,6 +124,7 @@
 									<td><input type="text" name="empNote" id="empNote"></td>
 								</tr>
 							</table>
+							<input type="hidden" name="empStat" id="empStat">
 						</form>
 					</div>
 					<!-- 등록 모달 푸터(버튼부분) -->
@@ -179,7 +180,7 @@
 			// 사원목록 그리드 스크립트
 			window.onload = function () {
 				$.ajax({
-					url: "/common/empList",
+					url: "/basic/empList",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -297,7 +298,8 @@
 						{
 							header: '비고',
 							name: 'empNote',
-							width: 300
+							width: 300,
+							editor: 'text'
 						},
 
 					]
@@ -370,7 +372,7 @@
 				// 모달 내 등록 ajax 이벤트
 				$('#addBtn').on('click', function (e) {
 					$.ajax({
-						url: '/common/empAdd',
+						url: '/basic/empAdd',
 						type: 'post',
 						data: $('#addForm').serialize(),
 						dataType: 'json',
@@ -407,7 +409,7 @@
 				// 모달 비밀번호 변경 이벤트
 				$('#pwUpdateBtn').on('click', function (e) {
 					$.ajax({
-						url: '/common/empPw',
+						url: '/basic/empPw',
 						type: 'post',
 						data: $('#pwForm').serialize(),
 						dataType: 'json',
@@ -425,8 +427,31 @@
 
 				// 수정 버튼 이벤트
 				$('#modiBtn').on('click', function () {
-					let jsonData = Json.stringify(grid.getRow(selKey))
 					console.log(grid.getRow(selKey))
+					let jsonData = JSON.stringify(grid.getRow(selKey))
+					console.log(jsonData)
+					let modiData = grid.getRow(selKey);
+/* 					$('#empId').val = modiData.empId;
+					$('#empName').val = modiData.empName;
+					$('#empTell').val = modiData.empTell;
+					$('#empDept').val = modiData.empDept;
+					$('#empRk').val = modiData.empRk;
+					$('#empStat').val = modiData.empStat;
+					$('#empNote').val = modiData.empNote; */
+					
+/* 					$.ajax({
+						url: '/basic/empModify',
+						type: 'post',
+						data: JSON.stringify(grid.getRow(selKey)),
+						contentType: 'application/json',
+						success: function () {
+							alert('성공적으로 업데이트 되었습니다');
+						},
+						error: function () {
+							alert('사원 정보 변경 중 오류가 발생했습니다!');
+						}
+					}); */
+					
 				})
 
 			}

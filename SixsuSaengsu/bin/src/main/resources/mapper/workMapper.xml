@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="co.sixsu.app.mapper.WorkMapper">
+<mapper namespace="co.sixsu.app.work.mapper.WorkMapper">
 
 <select id="getDate" resultType="java.util.Date">
 	select sysdate from dual
@@ -31,5 +31,12 @@
         left JOIN COMPLETE_PROD c ON b.MAT_ID = c.CP_ID
     ORDER BY a.plan_deta_id
 </select>
+
+<select id="getSorder" resultType="SorderVO">
+	SELECT a.ORD_ID, a.BUS_ID, c.BUS_NAME, a.ORD_DUE_DATE, a.ORD_DATE,a.ORD_STAT
+	FROM SORDER a LEFT JOIN DET_ORD b ON a.ORD_ID = b.ORD_ID
+    LEFT JOIN BUSINESS C ON a.BUS_ID = c.BUS_ID
+</select>
+
 
 </mapper>

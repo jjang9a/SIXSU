@@ -20,12 +20,10 @@
 	
 	<br>
 		<hr>
-		
-		
 		 * 설비상태  &nbsp&nbsp&nbsp&nbsp
 		
-		 * 설비명 : <input type="text" name="name">
-		<button class="sixBtn1">
+		 * 설비명 : <input type="text" name="ename" >
+		<button class="sixBtn1" id="searchBtn1">
 				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
                 fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                 <path
@@ -33,9 +31,9 @@
                 </svg>
         </button> 
         &nbsp&nbsp&nbsp&nbsp
-        * 설비코드 :  <input type="text" name="name">
+        * 설비코드 :  <input type="text" name="ecode">
         
-        <button class="sixBtn1">
+        <button class="sixBtn1" id="searchBtn2">
 				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
                 fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                 <path
@@ -43,16 +41,7 @@
                 </svg>
         </button> 
         
-        <!--드롭다운-->
-		<div class="dropdown">
-			<button class="btn btn-secondary dropdown-toggle" type="button"
-				data-bs-toggle="dropdown" aria-expanded="false">가동상태</button>
-			<ul class="dropdown-menu">
-				<li><a class="dropdown-item" href="#">대기</a></li>
-				<li><a class="dropdown-item" href="#">중지</a></li>
-				<li><a class="dropdown-item" href="#">가동</a></li>
-			</ul>
-		</div> 
+       
 		<hr>
 		<br>
 				
@@ -73,22 +62,20 @@
                <!-- 모달 바디 -->
                <div class="modal-body">
      
-     			  <div id="equInfo2">
-					<br> * 설비코드 : <input type="text" name="name"><br>
-					<br> * 공정코드 : <input type="text" name="name"><br>
-					<br> * 설비상태 : <input type="text" name="name"><br>
-					<br> * 설비명 : <input type="text" name="name"><br>
-					<br> * 설비라인 : <input type="text" name="name"><br>
-					<br> * 판정 : <input type="text" name="name"><br>
-					<br> * 점검일자 : <input type="text" name="name"><br>
-				 	<br> * 점검주기 : <input type="text" name="name"><br>
-					<br> * 차기 점검일 : <input type="text" name="name"><br>
-					<br> * 점검구분 : <input type="text" name="name"><br>
-					<br> * 점검사유 : <input type="text" name="name"><br>
-					<br> * 비가동시간 : <input type="text" name="name"><br>
-					<br> * 비가동사유 : <input type="text" name="name"><br>
-				 
-				 
+     			  <div id="equInfo">
+					<br> * 설비코드 : <input type="text" id="equCode"><br>
+					<br> * 공정코드 : <input type="text" id="procId"><br>
+					<br> * 설비상태 : <input type="text" id="equStat"><br>
+					<br> * 설비명 : <input type="text" id="equName"><br>
+					<br> * 설비라인 : <input type="text" id="equLine"><br>
+					<br> * 판정 : <input type="text" id="equSuit"><br>
+					<br> * 점검일자 : <input type="text" id="checkDate"><br>
+				 	<br> * 점검주기 : <input type="text" id="equCheck"><br>
+					<br> * 차기 점검일 : <input type="text" id="checkNext"><br>
+					<br> * 점검구분 : <input type="text" id="checkType"><br>
+					<br> * 점검사유 : <input type="text" id="checkInfo"><br>
+					<br> * 비가동시간 : <input type="text" id="operStart"><br>
+					<br> * 비가동사유 : <input type="text" id="opreNote"><br>
 				  </div>
 				
      			
@@ -162,17 +149,7 @@
 	    
      });
         
-       /*  data: [
-        {
-          설비코드: 'EQU_001',
-          공정코드: 'PROC_001',
-          모델: 'MODEL_001',
-          설비명: '사출설비',
-          설비라인: '라인 A',
-          설비상태: '비가동',
-          점검주기: '1개월',
-          담당자: '고대준'
-        }, */
+     
 	    window.onload = function(){
 	    	
 	    	$.ajax({
@@ -180,13 +157,13 @@
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
-	    			console.dir(result);
 	    			grid.resetData(result);
 	    		}
 	    	});
+	  
 	    };
       
-    tui.Grid.applyTheme('default', {
+     tui.Grid.applyTheme('default', {
         cell: {
             header: {
                 background: '#e5edf5'
@@ -196,8 +173,8 @@
             },
             normal: {
                 background: '#ffffff'
-            }
-        }
+            } 
+        } 
     });
     
 
@@ -207,8 +184,21 @@
         let dataRow = grid.getRow(ev.rowKey);
     	console.log(dataRow.equCode);
     	console.log(dataRow);
-    	
-    	modal()
+    
+    	$('#staticBackdrop').modal('show');
+    	$('#equCode').val(dataRow.equCode);
+	      $('#procId').val(dataRow.procId);
+	      $('#equStat').val(dataRow.equStat);
+	      $('#equName').val(dataRow.equName);
+	      $('#equLine').val(dataRow.equLine);
+	      $('#equSuit').val(dataRow.equSuit);
+	      $('#checkDate').val(dataRow.checkDate);
+	      $('#equCheck').val(dataRow.equCheck);
+	      $('#checkNext').val(dataRow.checkNext);
+	      $('#checkType').val(dataRow.checkType);
+	      $('#checkInfo').val(dataRow.checkInfo);
+	      $('#operStart').val(dataRow.operStart);
+	      $('#opreNote').val(dataRow.opreNote);
     	
     	$.ajax({
     		url : "/equipment/equInfo",
@@ -217,17 +207,36 @@
     		data: dataRow,   // == string
     		success : function(result){
     			console.dir(result);
-    			//grid.resetData(result);
+    			grid.resetData(result);
     		}
-    	
- 	     
     	})
       });
 
-<!--설비코드 모달 -->
-    function modal(){
-		$('#staticBackdrop').modal('show');
-    }
+
+    
+    
+    $('#searchBtn2').on('click', function(){
+    
+    
+    var searchData = {};
+    
+    searchData.equName = $('input[name="ename"]').val();
+    searchData.equCode = $('input[name="ecode"]').val();
+    console.log(searchData);
+    
+    $.ajax({
+    	url : "/equipment/equFilterAjax",
+    	method : "POST",
+    	dataType : "JSON",
+    	data : searchData,
+    	success : function(result){
+    		console.dir(result);
+    		grid.resetData(result);
+    	}
+    
+      })
+    })
+    
 
     </script>
     

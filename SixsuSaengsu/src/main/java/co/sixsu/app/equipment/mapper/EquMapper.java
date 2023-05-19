@@ -17,6 +17,8 @@ public interface EquMapper {
 	List<EquConVO> equInfo(); // 설비조회 모달(상세정보) 리스트
 
 	List<EmpVO> empInfoList(String result); // 설비조회 모달(상세정보) 리스트
+
+	List<EquConVO> equFilterList(EquConVO data); // 조회 페이지 검색기능
 	
 	
 	

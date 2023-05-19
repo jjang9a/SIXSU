@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="co.sixsu.app.mapper.CommonMapper">
+<mapper namespace="co.sixsu.app.basic.mapper.BasicMapper">
 
 <select id="getDate" resultType="java.util.Date">
 	select sysdate from dual
@@ -25,5 +25,11 @@
 	#{empId}, #{empName}, #{empTell}, TO_DATE(#{empBirth}, 'yyyy-MM-dd'), TO_DATE(#{empHire}, 'yyyy-MM-dd'), #{empDept}, #{empRk}, #{empStat}, #{empNote}, #{empPw} 
 	)
 </insert>
+
+<update id="updateEmp" parameterType="EmpVO">
+	update employee
+	set emp_name=#{empName}, emp_tell=#{empTell}, emp_dept=#{empDept}, emp_rk=#{empRk}, emp_note=#{empNote}
+	where emp_id=#{empId}
+</update>
 
 </mapper>

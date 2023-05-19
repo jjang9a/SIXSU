@@ -14,5 +14,7 @@ public interface EquService {
 	List<EquConVO> equInfo(String equCode); // (불러올데이터)
 
 	List<EmpVO> empInfoList(String result); // 모달에 띄워줄 리스트
+
+	List<EquConVO> equFilterList(EquConVO data); // 검색
 	
 }

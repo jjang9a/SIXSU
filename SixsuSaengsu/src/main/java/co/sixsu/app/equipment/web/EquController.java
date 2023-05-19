@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.equipment.domain.EquConVO;
@@ -38,7 +39,6 @@ public class EquController {
 		return "/equipment/equ1";
 	}
 
-	
 	@ResponseBody
 	@RequestMapping("/equipment/equConList1") // 설비 관리 리스트
 	public List<EquConVO> equConList() {
@@ -55,23 +55,19 @@ public class EquController {
 		String equCode = info.getEquCode(); // info 안에 필드값 EquCode를
 		System.out.println(equCode); // 콘솔창에 뿌려줌
 		List<EquConVO> list = equService.equInfo(equCode); // 리스트 형식 list에 담아서 
+		System.out.println(list);
 		return null; // 모달 창으로 리턴해야함.
 	
 	}
-//	//모달창 설비코드 클릭시 상세정보
-//	@RequestMapping("/equipment/empInfoList")
-//	@ResponseBody
-//	public List<EmpVO> empInfoList(@RequestParam String result){
-//		System.out.println(result);
-//		List<EmpVO> list = equService.empInfoList(result);
-//		
-//	}
 	
-	
-
-//	@GetMapping("equ/equcon") // 설비관리 페이지 불러오기
-//	public void equcon() {
-//	}
+	@ResponseBody // 검색 기능 / 아작스로 데이터를 요청 리스트로 받음
+	@RequestMapping("/equipment/equFilterAjax")
+	public List equFilterList(@ModelAttribute EquConVO data) {
+		System.out.println("데이터");
+		System.out.println(data);
+		List<EquConVO> list = equService.equFilterList(data);
+		return list;
+	}
 	
 //	@GetMapping("equ/equcheck") // 점검관리 페이지
 //	public void equcheck() {

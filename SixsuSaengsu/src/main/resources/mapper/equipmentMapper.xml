@@ -17,7 +17,19 @@
 			FROM equ_con c LEFT OUTER JOIN equ_insp i
 			ON c.equ_code = i.equ_code
 			LEFT OUTER JOIN equ_oper o
-			ON c.equ_code = o.equ_code;
+			ON c.equ_code = o.equ_code
+  	</select>
+  	
+  	<select id="equFilterList" resultType="EquConVO" parameterType="EquConVO">
+  	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, i.check_date, i.check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
+	FROM EQU_CON c LEFT OUTER JOIN EQU_INSP i
+	ON c.equ_code = i.equ_code
+	LEFT OUTER JOIN EQU_OPER o
+	ON c.equ_code = o.equ_code
+	WHERE ( c.equ_code = #{equCode} OR #{equCode} IS NULL)
+	AND (c.equ_name = #{equName} OR #{equName} IS NULL)
+	  	
+	    
   	</select>
 
 </mapper>

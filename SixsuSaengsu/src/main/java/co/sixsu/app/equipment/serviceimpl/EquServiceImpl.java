@@ -35,4 +35,9 @@ public class EquServiceImpl implements EquService{
 		return mapper.empInfoList(result);
 	}
 
+	@Override
+	public List<EquConVO> equFilterList(EquConVO data) {
+		return mapper.equFilterList(data);
+	}
+
 }
