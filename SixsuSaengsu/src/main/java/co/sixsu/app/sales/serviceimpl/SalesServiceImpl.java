@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.sales.domain.OrdVO;
 import co.sixsu.app.sales.mapper.SalesMapper;
 import co.sixsu.app.sales.service.SalesService;
 @Service("salesService")
@@ -36,5 +37,19 @@ public List<BusVO> getBus1List(String keyword) {
 	// TODO Auto-generated method stub
 	return mapper.bus1List(keyword);
 }
+
+@Override //자동으로 주문번호 등록
+public String getMakeCode() {
+	// TODO Auto-generated method stub
+	return mapper.makeCode();
+}
+
+@Override
+public List<OrdVO> getOrdList() {
+	// TODO Auto-generated method stub
+	return mapper.ordList();
+}
+
+
 
 }

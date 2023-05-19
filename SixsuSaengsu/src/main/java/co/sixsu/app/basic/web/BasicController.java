@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.SearchDTO;
 import co.sixsu.app.basic.service.BasicService;
 
 @Controller
@@ -20,54 +22,71 @@ public class BasicController {
 	@Autowired BasicService service;
 	
 	@GetMapping("/login")
-	public void login() { // 로그인 화면 불러오기
+	public void login() { // 로그인 화면 화면 띄우기
 	}
 	
+	
+	// 사원관리
+	
 	@GetMapping("/basic/empManage")
-	public void empManage() { 	
+	public void empManage() { 	// 사원관리 화면 띄우기
 	}
 	
 	@ResponseBody
-	@RequestMapping("/basic/empList")
-	public List<EmpVO> empList(){
+	@RequestMapping("/basic/empList") // 사원정보 목록 ajax
+	public List<EmpVO> empList(){ 
 		List<EmpVO> list = service.getEmpList();
-		//model.addAttribute("list", list);
 		return list;
 	}
 	
-	@ResponseBody
+	@ResponseBody // 사원 등록 ajax
 	@RequestMapping(value = "/basic/empAdd", method = RequestMethod.POST)
-	public EmpVO empAdd(EmpVO emp) {
-		//boolean result = service.empAdd(emp);
-		/*
-		 * rttr.addFlashAttribute("msg", "등록완료"); rttr.addAttribute("new", emp); return
-		 * "redirect:common/empList";
-		 */
-		System.out.println("insert ajax >>>>");
+	public EmpVO empAdd(EmpVO emp) { 
 		emp.setEmpStat("재직");
 		String bir = emp.getEmpBirth();
 		String pw = bir.substring(2, 4) + bir.substring(5,7) + bir.substring(8);
 		emp.setEmpPw(pw);
-		System.out.println(emp);
-		boolean result = service.addEmp(emp);
+		service.addEmp(emp);
 		return emp;
 	}
 	
 	@ResponseBody
-	@PostMapping("/basic/empPw")
+	@PostMapping("/basic/empPw") // 사원 비밀번호 변경 ajax
 	public boolean empPw(EmpVO emp, RedirectAttributes rttr) {
-		System.out.println("password ajax >>>>>");
-		System.out.println(emp);
 		boolean result = service.updatePw(emp);
-		System.out.println(result);
 		return result;
 	}
 	
-	@PostMapping("basic/empModify")
+	@ResponseBody
+	@PostMapping("/basic/empModify") // 사원정보 수정 ajax
 	public String empModify(@RequestBody EmpVO emp) {
 		System.out.println(emp);
 		service.updateEmp(emp);
 		return "result";
+	}
+	
+	
+	// 공통코드
+	
+	@GetMapping("/basic/codeManage")
+	public void codeManage() { // 공통코드 화면 띄우기
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/groupList")
+	public List<CodeVO> groupList(){
+		List<CodeVO> glist = service.groupList();
+		System.out.println(glist);
+		return glist;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/basic/codeSearch") // 선택, 검색 한 코드 검색
+	public List<CodeVO> empPw(SearchDTO dto) {
+		System.out.println(dto);
+		List<CodeVO> clist = service.commList(dto);
+		System.out.println(clist);
+		return clist;
 	}
 	
 	

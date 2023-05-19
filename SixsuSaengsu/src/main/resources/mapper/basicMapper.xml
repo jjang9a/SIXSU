@@ -9,6 +9,7 @@
 	select sysdate from dual
 </select>
 
+<!-- 사원 관련 -->
 <select id="empList" resultType="EmpVO">
 	select emp_id, emp_name, emp_tell, TO_CHAR(emp_birth, 'yyyy/MM/dd') emp_birth, TO_CHAR(emp_hire, 'yyyy/MM/dd') emp_hire, emp_dept, emp_rk, emp_stat, emp_note  
 	from employee
@@ -31,5 +32,26 @@
 	set emp_name=#{empName}, emp_tell=#{empTell}, emp_dept=#{empDept}, emp_rk=#{empRk}, emp_note=#{empNote}
 	where emp_id=#{empId}
 </update>
+<!-- 사원 관련 종료 -->
+
+<!-- 공통코드 관련 -->
+<select id="groupList" resultType="CodeVO">
+	select * from group_code
+</select>
+
+<select id="commList" parameterType="SearchDTO" resultType="CodeVO">
+	SELECT *
+	FROM common_code
+	WHERE 
+	<if test='searchType.equals("group")'>
+		g_id = #{searchKey}
+	</if>
+	<if test='searchType.equals("code")'>
+		com_code = '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("group")'>
+		com_name = '%'||#{searchKey}||'%'
+	</if>
+</select>
 
 </mapper>
