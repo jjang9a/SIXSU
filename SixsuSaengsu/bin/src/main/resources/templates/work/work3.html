@@ -145,7 +145,7 @@ while (gridData3.length < 8){
 }
 	var grid2 = new tui.Grid({
 	    el: document.getElementById('grid2'),
-	    //data: gridData1,
+	    data: gridData1,
 	    scrollX: false,
 	    scrollY: false,
 	    
@@ -155,51 +155,32 @@ while (gridData3.length < 8){
 	      
 	      {
 	        header: '주문코드',
-	        name: 'ordId'
+	        name: 'name'
 	       
 	      },
 	      {
 	        header: '거래처코드',
-	        name: 'busId'
+	        name: 'name'
 	      },
 	      {
 	        header: '거래처',
-	        name: 'bus_name'
+	        name: 'artist'
 	      },
 	      {
 	        header: '납기일',
-	        name: 'ordDueDate'
+	        name: 'release'
 	      },
 	      {
 	        header: '주문일',
-	        name: 'ordDate'
+	        name: 'type'
 	      },
 	      {
 	        header: '주문상태',
-	        name: 'ordStat'
+	        name: 'genre'
 	      }
 	    ],
 	    pageOptions: { perPage: 10 }
 	  });
-		
-	window.onload = function(){
-			
-			$.ajax({
-				url : "/ajax/sorderListAjax",
-				method : "GET",
-				dataType : "JSON",
-				success : function(result){
-					console.log("첫 출력값 > ")
-					console.dir(result);
-					grid2.resetData(result);
-				}
-			})
-		}
-	
-	grid2.on('click', ev => {
-		let dataRow = grid2.getRow(ev.rowKey);
-		console.log(dataRow);
-	})
 	
 	{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 	
@@ -306,23 +287,6 @@ while (gridData3.length < 8){
 	 	grid3.removeCheckedRows(false);
  		grid3.blur();
  	})
- 	
- 	
- 	
- 	
- 	tui.Grid.applyTheme('default', {
-                cell: {
-                    header: {
-                        background: '#e5edf5'
-                    },
-                    rowHeader: {
-                        background: '#e5edf5'
-                    },
-                    normal: {
-                        background: '#ffffff'
-                    }
-                }
-            });
 	 
 </script>
 </div>

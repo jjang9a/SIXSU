@@ -29,6 +29,11 @@ public class BasicServiceImpl implements BasicService{
 	public boolean addEmp(EmpVO emp) {
 		return mapper.addEmp(emp) == 1;
 	}
+
+	@Override
+	public boolean updateEmp(EmpVO emp) {
+		return mapper.updateEmp(emp) == 1;
+	}
 	
 	
 }
