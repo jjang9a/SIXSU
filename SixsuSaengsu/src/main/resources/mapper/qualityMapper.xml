@@ -50,7 +50,8 @@
 	<insert id="insertArr" parameterType="QuaVO">
 		INSERT INTO arr_material
 		(arr_mat_num, mat_req_id, arr_qt) VALUES
-		(arr_seq.nextval, #{matReqId}, #{arrQt})
+		(arr_seq.nextval, #{matReqId},
+		#{arrQt})
 	</insert>
 
 	<!-- 도착 자재 등록 시 자재 발주 업데이트 -->
@@ -61,20 +62,38 @@
 	</update>
 
 	<!-- 자재 입고 검사 등록 리스트 -->
-	<select id="proRecList">
-		select r.mat_req_id, b.bus_name, r.mat_id, m.mat_name
+	<select id="proRecList" resultType="QuaVO">
+		select r.mat_req_id,
+		b.bus_name, r.mat_id, m.mat_name
+		from mat_req r left join material m
+		on
+		r.mat_id = m.mat_id
+		left join business b
+		on r.bus_id = b.bus_id
+		where
+		r.mat_req_stat='입고대기'
+		order by mat_req_id
+	</select>
+
+	<!-- 입고 검사 등록 -->
+	<insert id="insertPr" parameterType="QuaVO">
+		qua_com (insp_num, insp_unit, insp_qt) values
+		(insf_seq.nextval, #{matReqId}, #{insp_qt})
+	</insert>
+
+	<!-- 자재 입고 검사 리스트 -->
+	<select id="recInspList" resultType="QuaVO">
+		select r.mat_req_id, b.bus_name, r.mat_id, m.mat_name, q.insp_qt
 		from mat_req r left join material m
 		on r.mat_id = m.mat_id
 		left join business b
 		on r.bus_id = b.bus_id
-		where r.mat_req_stat='도착'
-		order by mat_req_id
+		left join qua_com q
+		on r.mat_req_id = q.mat_req_id
+		order by mat_req_id;
 	</select>
 
-	<!-- 자재 입고 검사 리스트 -->
-	<select id="recInspList">
 
-	</select>
 
 
 </mapper>
