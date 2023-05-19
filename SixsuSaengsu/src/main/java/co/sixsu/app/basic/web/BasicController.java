@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.SearchDTO;
 import co.sixsu.app.basic.service.BasicService;
 
 @Controller
@@ -70,7 +72,22 @@ public class BasicController {
 	public void codeManage() { // 공통코드 화면 띄우기
 	}
 	
+	@ResponseBody
+	@GetMapping("/basic/groupList")
+	public List<CodeVO> groupList(){
+		List<CodeVO> glist = service.groupList();
+		System.out.println(glist);
+		return glist;
+	}
 	
+	@ResponseBody
+	@RequestMapping("/basic/codeSearch") // 선택, 검색 한 코드 검색
+	public List<CodeVO> empPw(SearchDTO dto) {
+		System.out.println(dto);
+		List<CodeVO> clist = service.commList(dto);
+		System.out.println(clist);
+		return clist;
+	}
 	
 	
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.mapper.BasicMapper;
 import co.sixsu.app.basic.service.BasicService;
@@ -28,6 +29,14 @@ public class CommonTest {
 	}
 	
 	@Test
+	public void groupTest() {
+		List<CodeVO> list1 = mapper.groupList();
+		System.out.println(list1);
+		
+		List<CodeVO> list = service.groupList();
+		System.out.println(list);
+	}
+	
 	public void serviceTest() {
 		List<EmpVO> list = service.getEmpList();
 		System.out.println(list);

@@ -3,7 +3,9 @@ package co.sixsu.app.basic.mapper;
 import java.util.Date;
 import java.util.List;
 
+import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.SearchDTO;
 
 public interface BasicMapper {
 
@@ -14,4 +16,8 @@ public interface BasicMapper {
 	public int updatePw(EmpVO emp); // 사원 비밀번호 변경
 	public int updateEmp(EmpVO emp); // 사원 정보 수정
 
+	public List<CodeVO> groupList(); // 그룹코드 조회
+	public List<CodeVO> commList(SearchDTO dto); // 특정 공통코드 조회
+	
+	
 }

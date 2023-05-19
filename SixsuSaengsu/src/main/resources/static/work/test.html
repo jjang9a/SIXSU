@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #grid {
+            width: 300px;
+            height: 400px;
+            margin: auto;
+            background-color: white;
+        }
+
+        #grid1 {
+            width: 300px;
+            height: 400px;
+            margin: auto;
+            background-color: red;
+            display: none;
+        }
+
+        .codeBack {
+            background-color: #ccdceb;
+        }
+
+        #group {
+            width: 350px;
+            padding: 30px 20px 30px 20px;
+        }
+
+        button {
+            border: none;
+            height: 27px;
+            width: 70px;
+            background-color: white;
+        }
+
+        .gSel {
+            background-color: #ccdceb;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+
+<body>
+    <div id="group" class="codeBack">
+        <button type="button" id="gc">그룹코드</button><button type="button" id="gs" class="gSel">검색</button>
+        <!-- 사원목록 그리드 -->
+        <div id="grid"></div>
+        <div id="grid1"></div>
+        <!-- 사원목록 그리드 끝 -->
+    </div>
+
+    <script>
+        $('#gc').on('click', function (e) {
+            $(this).toggleClass('gSel');
+            $('#gs').toggleClass('gSel');
+            $('#grid').css('display', 'block')
+            $('#grid1').css('display', 'none')
+        })
+
+        $('#gs').on('click', function (e) {
+            $(this).toggleClass('gSel');
+            $('#gc').toggleClass('gSel');
+            $('#grid').css('display', 'none')
+            $('#grid1').css('display', 'block')
+        })
+    </script>
+</body>
+
+</html>
