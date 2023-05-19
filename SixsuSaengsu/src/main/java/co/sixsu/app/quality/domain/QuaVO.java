@@ -28,6 +28,8 @@ public class QuaVO {
 	private String resVal; // 결과 값
 	private String resStat; // 적합 여부
 	private String inspUnit; // 검사 단위 코드(발주번호, 지시세부코드, 완제품출고코드)
+	private String wkDetaId;// 지시 세부 코드
+	// 완제품 출고 코드
 	
 	// 도착 자재 관련
 	private String arrMatNum; // 도착 자재 번호
