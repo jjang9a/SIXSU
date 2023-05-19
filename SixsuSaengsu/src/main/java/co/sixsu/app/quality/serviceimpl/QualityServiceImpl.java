@@ -26,12 +26,6 @@ public class QualityServiceImpl implements QualityService {
 		return quaMapper.arrRegList();
 	}
 
-
-	/*
-	 * @Override public int insertArr(QuaVO am) { return quaMapper.insertArr(am); }
-	 */
-
-
 	@Override
 	public int mrUpdate(MatreqVO mat) {
 		return quaMapper.mrUpdate(mat);
@@ -47,6 +41,18 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public List<QuaVO> proRecList() {
 		return quaMapper.proRecList();
+	}
+
+
+	@Override
+	public int insertPr(QuaVO am) {
+		return quaMapper.insertPr(am);
+	}
+
+
+	@Override
+	public List<QuaVO> prInspList() {
+		return quaMapper.prInspList();
 	}
 	
 	
