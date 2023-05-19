@@ -47,7 +47,7 @@ public class QualityController {
 	// 도착 등록
 	@ResponseBody
 	@PostMapping("/quality/arrRegister")
-	public String arrRegister(QuaVO am, MatreqVO mat,RedirectAttributes rttr) {
+	public String arrRegister(QuaVO am, MatreqVO mat) {
 		
 		quaService.insertArr(am);
 		System.out.println(am);
@@ -67,14 +67,25 @@ public class QualityController {
 	@RequestMapping("/quality/proRecList")
 	public List<QuaVO> proRecList(Model model){
 		List<QuaVO> prList = quaService.proRecList();
-		model.addAttribute("prList", prList);
+		model.addAttribute("proRecList", prList);
 		return prList;
 	}
 	
 	// 자재 입고 검사 등록
-	
+	@ResponseBody
+	@PostMapping("/quality/prRegister")
+	public QuaVO prRegister(QuaVO am) {
+		return am;
+	}
 	
 	// 입고 검사 대기 리스트
+	@ResponseBody
+	@RequestMapping("/quality/prInspList")
+	public List<QuaVO> prInspList(Model model){
+		List<QuaVO> priList = quaService.prInspList();
+		model.addAttribute("priList", priList);
+		return priList;
+	}
 
 
 }

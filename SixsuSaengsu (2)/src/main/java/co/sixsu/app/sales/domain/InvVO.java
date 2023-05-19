@@ -1,0 +1,17 @@
+package co.sixsu.app.sales.domain;
+
+import java.util.Date;
+
+import lombok.Data;
+
+@Data
+public class InvVO {
+	private int ordId;
+	private Date ordDate;
+	private Date ordDueDate;
+	private String ordStat;
+	private int empId;
+	private int busId;
+	
+	
+}
