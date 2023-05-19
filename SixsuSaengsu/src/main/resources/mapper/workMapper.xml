@@ -33,7 +33,7 @@
 </select>
 
 <select id="getSorder" resultType="SorderVO">
-	SELECT a.ORD_ID, a.BUS_ID, c.BUS_NAME, a.ORD_DUE_DATE, a.ORD_DATE,a.ORD_STAT
+	SELECT a.ORD_ID, a.BUS_ID, c.BUS_NAME, b.ORD_END_DATE, a.ORD_DATE,a.ORD_STAT
 	FROM SORDER a LEFT JOIN DET_ORD b ON a.ORD_ID = b.ORD_ID
     LEFT JOIN BUSINESS C ON a.BUS_ID = c.BUS_ID
 </select>

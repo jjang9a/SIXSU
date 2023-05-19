@@ -7,6 +7,7 @@ import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
 
+
 public interface WorkMapper {
 
 	public Date getDate();

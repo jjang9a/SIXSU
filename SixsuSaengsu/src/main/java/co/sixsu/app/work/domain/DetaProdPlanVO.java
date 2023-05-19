@@ -1,6 +1,5 @@
 package co.sixsu.app.work.domain;
 
-import java.util.Date;
 
 import lombok.Data;
 
@@ -12,14 +11,14 @@ public class DetaProdPlanVO {
 	String planDetaId; //생산계획코드 (FK)
 	String matId; //제품코드
 	String cpName; //제품이름
-	int detaQt;
+	int detaQt; //지시수량
 	int goodQt; //양품수량
-	String status;
-	String planDueDate;
-	String startDate;
-	String endDate;
+	String status; //상태
+	String planDueDate; //납기일
+	String startDate; //작업시작일
+	String endDate; //작업종료일
 	String empName;
 	String memo; //비고
-
+	String rigDate; //작성일. 자바에서 사용할 것
 
 }

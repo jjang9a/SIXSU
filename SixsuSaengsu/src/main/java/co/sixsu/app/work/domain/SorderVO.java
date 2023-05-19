@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class SorderVO {
 
-	int ordId;
-	int busId;
+	String ordId;
+	String busId;
 	String bus_name;
-	String ordDueDate;
+	String ordEndDate;
 	String ordDate;
 	String ordStat;
 }

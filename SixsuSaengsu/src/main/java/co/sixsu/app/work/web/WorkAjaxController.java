@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
@@ -23,6 +24,10 @@ import co.sixsu.app.work.service.WorkService;
 public class WorkAjaxController {
 	
 	@Autowired WorkService service;
+	//@RequestParam(required = false)
+	//@ResponseBody
+	//contentType : application/json  
+	//data : JSON.stringfy()
 	
 	@RequestMapping("planAjax")
 	public List palnListData() {
@@ -55,6 +60,10 @@ public class WorkAjaxController {
 		return list;
 	}
 	
+	
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	@RequestMapping("sorderListAjax")
 	public List sorderList() {
 		List<SorderVO> list = service.getSorder();
@@ -62,10 +71,24 @@ public class WorkAjaxController {
 		return list;
 	}
 	
+	@RequestMapping("addPlanAjax")
+	public void addPlan(@ModelAttribute DetaProdPlanVO data) {
+		System.out.println(data);
+		return ;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping("test1")
-	public List test1(@ModelAttribute  dataVO data) {
+	public List test1(@ModelAttribute()  dataVO data) {
 		System.out.println(data);
 		return null;
 	}
+	
 	
 } 

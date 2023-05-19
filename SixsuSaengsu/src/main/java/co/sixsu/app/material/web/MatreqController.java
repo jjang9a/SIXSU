@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.material.domain.MatreqVO;
-import co.sixsu.app.material.mapper.MaterialsMapper;
 import co.sixsu.app.material.service.MaterialsService;
 
 @Controller
