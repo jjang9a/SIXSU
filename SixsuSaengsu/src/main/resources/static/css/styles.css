@@ -11262,7 +11262,9 @@ body {
 /*추가 한 부분*/
 .sixBtn4,
 .sixBtn2,
-.sixBtn1 {
+.sixBtn1,
+.sixBtn8,
+.sixBtn6 {
   border: none;
   border-radius: 5px;
   background: rgba(0, 74, 140, 0.92);
@@ -11280,5 +11282,13 @@ body {
 }
 
 .sixBtn1 {
-  width: 23px;
+  width: 25px;
+}
+
+.sixBtn8 {
+  width: 145px;
+}
+
+.sixBtn6 {
+  width: 112px;
 }
