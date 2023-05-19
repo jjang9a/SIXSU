@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.sales.domain.OrdVO;
 
 @Mapper
 public interface SalesMapper {
@@ -17,5 +18,9 @@ public interface SalesMapper {
 	public List<BusVO> busList(); // 모달 창의 거래처목록
 	
 	public List<BusVO> bus1List(String keyword); //모달창 거래처이름 조회
+
+	public String makeCode();//자동으로 주문번호 등록
+
+	public List<OrdVO> ordList();
 }
 

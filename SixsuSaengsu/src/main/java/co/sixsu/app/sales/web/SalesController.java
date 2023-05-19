@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.sales.domain.OrdVO;
 import co.sixsu.app.sales.service.SalesService;
 
 @Controller
@@ -34,6 +35,7 @@ public class SalesController {
 @RequestMapping("/sales/empList")
 public List<EmpVO>  empList() {
 	 List<EmpVO> list = service.getEmpList();
+	 
 	 //modal.addAttribute("list", list);
 	 return list;
  }
@@ -65,6 +67,24 @@ public List<BusVO> bus1List(@RequestParam String result){
 	List<BusVO> list = service.getBus1List(result);
 	return list;
 	
+}
+
+//자동으로 주문번호 등록
+@RequestMapping("/sales/makeCode")
+@ResponseBody
+public String makeCode() {
+	
+	String makeCode = service.getMakeCode();
+	System.out.println(makeCode);
+	return makeCode;
+}
+
+
+@RequestMapping("/sales/detailOrd")
+@ResponseBody
+public List<OrdVO> ordList(){
+	List<OrdVO> list = service.getOrdList();
+	return list;
 }
 
 }
