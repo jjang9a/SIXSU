@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
+import co.sixsu.app.work.domain.SorderVO;
 import co.sixsu.app.work.mapper.WorkMapper;
 import co.sixsu.app.work.service.WorkService;
 
@@ -35,6 +36,11 @@ public class WorkServiceImpl implements WorkService{
 		System.out.println(data);
 		List<DetaProdPlanVO> list = mapper.getPlanFilter(data);
 		return list;
+	}
+
+	@Override
+	public List<SorderVO> getSorder() {
+		return mapper.getSorder();
 	}
 	
 	

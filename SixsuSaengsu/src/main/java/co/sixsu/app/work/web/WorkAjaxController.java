@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
+import co.sixsu.app.work.domain.SorderVO;
 import co.sixsu.app.work.domain.dataVO;
 import co.sixsu.app.work.service.WorkService;
 
@@ -54,6 +55,13 @@ public class WorkAjaxController {
 		return list;
 	}
 	
+	@RequestMapping("sorderListAjax")
+	public List sorderList() {
+		List<SorderVO> list = service.getSorder();
+		System.out.println(list);
+		return list;
+	}
+	
 	@RequestMapping("test1")
 	public List test1(@ModelAttribute  dataVO data) {
 		System.out.println(data);
@@ -61,16 +69,3 @@ public class WorkAjaxController {
 	}
 	
 } 
-
-@lombok.Data
-class DataTest {
-	String name;
-	String artist;
-	String type;
-	String release;
-	String genre;
-	
-	public DataTest(String name,String artist,String type,String release,String genre) {
-		
-	}
-}
