@@ -16,4 +16,6 @@ public interface MaterialsMapper {
 	//단건 리스트 삭제
 	int deleteMatReq(int reqId);
 	
+	int insertMatReq(MatreqVO vo);
+	
 }

@@ -13,9 +13,6 @@
 <title>(주)SIXSU</title>
 
 <style>
-.borderBox{
-	border 1px, solid
-}
 </style>
 
 </head>
@@ -29,110 +26,160 @@
 		<!-- <label>발주 번호</label>
 	<input type=text> -->
 
-
-		<!-- 발주 번호 검색 버튼 -->
-		<label>발주 번호 검색</label>
-		<button class="sixBtn1" data-bs-toggle="modal"
-			data-bs-target="#regModal">
-			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-8">
+					<!-- 토스트 그리드 코드 -->
+					<!-- 발주 번호 검색 버튼 -->
+					<label>발주 번호 검색</label>
+					<button class="sixBtn1" data-bs-toggle="modal"
+						data-bs-target="#regModal">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                             <path
-					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                         </svg>
-		</button>
+					</button>
 
-		<!-- <button type="button" class="btn btn-primary m-5"
+					<!-- <button type="button" class="btn btn-primary m-5"
 			data-bs-toggle="modal" data-bs-target="#staticBackdrop">찾기</button> -->
 
-		<!-- 검사 등록 모달창 -->
-		<!-- Modal -->
-		<div class="modal fade" id="regModal" data-bs-backdrop="static"
-			data-bs-keyboard="false" tabindex="-1"
-			aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="staticBackdropLabel">입고 검사 등록</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
+					<!-- 검사 등록 모달창 -->
+					<!-- Modal -->
+					<div class="modal fade" id="regModal" data-bs-backdrop="static"
+						data-bs-keyboard="false" tabindex="-1"
+						aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="staticBackdropLabel">입고 검사 등록</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div id="grid2"></div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-primary" id="regBtn">등록</button>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="modal-body">
-						<div id="grid2"></div>
+
+
+					<div id="grid"></div>
+					<button class=" sixBtn6">검사결과등록</button>
+				</div>
+
+				<!-- 자재 검사 결과 등록 폼 -->
+				<div class="col-lg-4">
+
+					<div class="prInsp">
+						<div class="col-lg-3">
+							<select class="form-select" aria-label="Default select example">
+								<option selected>검사 항목</option>
+								<option value="1">PET CHIP</option>
+								<option value="2">캡 원료</option>
+								<option value="3">라벨</option>
+								<option value="3">원수</option>
+							</select>
+						</div>
+
+						<div class="col-lg-3">
+							<button type="button" class="sixBtn8">검사 항목 내려받기</button>
+						</div>
+						<div class="mb-3">
+							<label for="exampleFormControlInput1" class="form-label">발주번호
+							</label> <input type="text" class="form-control"
+								id="exampleFormControlInput1">
+						</div>
+						<div class="mb-3">
+							<label for="exampleFormControlInput1" class="form-label">거래처
+							</label> <input type="text" class="form-control"
+								id="exampleFormControlInput1">
+						</div>
+						<div class="mb-3">
+							<label for="exampleFormControlInput1" class="form-label">자재코드
+							</label> <input type="text" class="form-control"
+								id="exampleFormControlInput1">
+						</div>
+						<div class="mb-3">
+							<label for="exampleFormControlInput1" class="form-label">자재명
+							</label> <input type="text" class="form-control"
+								id="exampleFormControlInput1">
+						</div>
+						<div class="mb-3">
+							<label for="exampleFormControlInput1" class="form-label">검사자
+							</label> <input type="text" class="form-control"
+								id="exampleFormControlInput1">
+							<button class="sixBtn1" data-bs-toggle="modal"
+								data-bs-target="#empModal">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+									fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+                            <path
+										d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+							</button>
+						</div>
+
+						<div class="row">
+							<div class="col">
+								<label for="exampleFormControlInput1" class="form-label">검사
+									대기 수량 </label> <input type="text" class="form-control"
+									id="exampleFormControlInput1">
+							</div>
+							<div class="col">
+								<label for="exampleFormControlInput1" class="form-label">입고
+									가능 수량 </label> <input type="text" class="form-control"
+									id="exampleFormControlInput1">
+							</div>
+							<div class="col">
+								<label for="exampleFormControlInput1" class="form-label">입고
+									불가 수량 </label> <input type="text" class="form-control"
+									id="exampleFormControlInput1">
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col">
+
+								<select class="form-select" aria-label="Default select example">
+									<option selected>불량 코드</option>
+									<option value="1">One</option>
+									<option value="2">Two</option>
+									<option value="3">Three</option>
+								</select>
+							</div>
+							<div class="col">
+								<select class="form-select" aria-label="Default select example">
+									<option selected>처리 상태</option>
+									<option value="1">One</option>
+									<option value="2">Two</option>
+									<option value="3">Three</option>
+								</select>
+							</div>
+						</div>
+
+
+						<!-- 세부 검사 항목 boderBox 시작 -->
+						<div id="borderBox">
+							<h5 class="mt-4" style="font-family: 'MaruBuri';">세부 검사 항목</h5>
+
+						</div>
+						<!-- 세부 검사 항목 끝나는 부분 -->
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary" id="regBtn">등록</button>
+					<!-- 폼 끝나는 부분 -->
+					<div class="prInsp">
+						<!-- 폼 요소들 -->
 					</div>
 				</div>
 			</div>
 		</div>
 
 
-		<div id="grid"></div>
 
-		<!-- 자재 검사 결과 등록 폼 -->
-		<div class="prInsp">
-			<div class="mb-3">
-				<label for="exampleFormControlInput1" class="form-label">발주번호
-				</label> <input type="text" class="form-control"
-					id="exampleFormControlInput1">
-			</div>
-			<div class="mb-3">
-				<label for="exampleFormControlInput1" class="form-label">거래처
-				</label> <input type="text" class="form-control"
-					id="exampleFormControlInput1">
-			</div>
-			<div class="mb-3">
-				<label for="exampleFormControlInput1" class="form-label">자재코드
-				</label> <input type="text" class="form-control"
-					id="exampleFormControlInput1">
-			</div>
-			<div class="mb-3">
-				<label for="exampleFormControlInput1" class="form-label">자재명
-				</label> <input type="text" class="form-control"
-					id="exampleFormControlInput1">
-			</div>
-			<div class="mb-3">
-				<label for="exampleFormControlInput1" class="form-label">검사자
-				</label> <input type="text" class="form-control"
-					id="exampleFormControlInput1">
-				<button class="sixBtn1" data-bs-toggle="modal"
-					data-bs-target="#empModal">
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-						fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-                            <path
-							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                        </svg>
-				</button>
-			</div>
-			<div class="mb-3">
-				<label for="exampleFormControlInput1" class="form-label">검사
-					대기 수량 </label> <input type="text" class="form-control"
-					id="exampleFormControlInput1">
-			</div>
-
-			<select class="form-select" aria-label="Default select example">
-				<option selected>불량 코드</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
-			</select>
-			
-			<select class="form-select" aria-label="Default select example">
-				<option selected>처리 상태</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
-			</select>
-			<!-- 세부 검사 항목 boderBox 시작 -->
-			<div id="borderBox">
-			<h5 class="mt-4" style="font-family: 'MaruBuri';">세부 검사 항목</h5>
-			
-			</div>
-			<!-- 세부 검사 항목 끝나는 부분 -->
-		</div>
-		<!-- 폼 끝나는 부분 -->
 
 
 
@@ -149,7 +196,7 @@
 		let gridData = [];
 		window.onload = function() {
 			$.ajax({
-				url : "/quality/proRecInsp",
+				url : "/quality/prInspList",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
@@ -179,11 +226,8 @@
 				name : 'matName'
 			}, {
 				header : '검사 대기 수량',
-				name : 'arrQt'
-			}, {
-				header : '처리 상태',
-				name : 'inspStat'
-			} ]
+				name : 'inspQt'
+			}]
 		});
 		
 		// 그리드 색 변경
@@ -206,7 +250,7 @@
 			let gridData2 = [];
 			
 				$.ajax({
-					url : "/quality/arrRegList",
+					url : "/quality/proRecList",
 					method : "GET",
 					dataType : "JSON",
 					success : function(result) {
@@ -299,6 +343,11 @@
 			        {
 			          header: '자재 명',
 			          name: 'matName'
+			        },
+			        {
+			          header: '검사 수량',
+			          name: 'inspQt',
+			          editor: 'text'
 			        }
 			      ]
 			    });
@@ -311,7 +360,11 @@
 			      console.log('uncheck', ev);
 			    });
 			    
-				// 행 클릭
+			    //row 정보를 가져오기 위한 dataRow 선언
+			    let dataRow;
+			    let key;
+			    
+				// row 클릭
 				grid2.on('click', ev=> {
                console.log(ev.rowKey)
                console.log(ev.columns)
@@ -319,28 +372,39 @@
                const focusCell = grid2.getFocusedCell()
                console.log(focusCell)
                
-               let dataRow = grid2.getRow(ev.rowKey);
+               // 클릭한 row 정보 가져오기
+               key=ev.rowKey;
+               dataRow = grid2.getRow(ev.rowKey);
                console.log(dataRow);
                
-               console.log('자재코드 : ' + dataRow.matId);
+               console.log('등록 수량 : ' + dataRow.inspQt);
             })
 				
-				// 등록				
+				// 모달 등록				
 				$('#regBtn').on('click', function(e){
 					e.preventDefault();
 					
-					//등록할 데이터
-					let data = grid2.getData();
+					dataRow=grid2.getRow(key);
+					console.log(dataRow);
+					
+/* 					//등록할 데이터
+					let data = dataRow;
+					console.log(data);
 					//ajax
 					$.ajax({
-						url : "/quality/arrRegister",
+						url : "/quality/prRegister",
 						method : "POST",
 						dataType : "json",
-						data : data
+						data : data,
+						success: function(result){
+							
+						}
 
-				});
+				}); */
 					
-				});
+					
+					$('#regModal').modal('hide');
+			});
 
 			
 			

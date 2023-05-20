@@ -10,10 +10,11 @@ public interface BasicService {
 
 	List<EmpVO> getEmpList(); // 사원 전체목록 조회
 	boolean updatePw(EmpVO emp); // 비밀번호 변경
-	boolean addEmp(EmpVO emp); // 사원 등록
+	EmpVO addEmp(EmpVO emp); // 사원 등록
 	boolean updateEmp(EmpVO emp); // 사원 정보 수정
 	
 	List<CodeVO> groupList(); // 그룹 코드 조회
 	List<CodeVO> commList(SearchDTO dto); // 특정 공통 코드 조회
-	
+	boolean addCode(List<CodeVO> list); // 공통코드 등록(추가)
+	boolean updateCode(List<CodeVO> list); // 공통코드 수정
 }

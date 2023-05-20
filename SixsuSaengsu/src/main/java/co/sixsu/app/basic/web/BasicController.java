@@ -42,12 +42,8 @@ public class BasicController {
 	@ResponseBody // 사원 등록 ajax
 	@RequestMapping(value = "/basic/empAdd", method = RequestMethod.POST)
 	public EmpVO empAdd(EmpVO emp) { 
-		emp.setEmpStat("재직");
-		String bir = emp.getEmpBirth();
-		String pw = bir.substring(2, 4) + bir.substring(5,7) + bir.substring(8);
-		emp.setEmpPw(pw);
-		service.addEmp(emp);
-		return emp;
+		EmpVO result = service.addEmp(emp);
+		return result;
 	}
 	
 	@ResponseBody
@@ -60,7 +56,6 @@ public class BasicController {
 	@ResponseBody
 	@PostMapping("/basic/empModify") // 사원정보 수정 ajax
 	public String empModify(@RequestBody EmpVO emp) {
-		System.out.println(emp);
 		service.updateEmp(emp);
 		return "result";
 	}
@@ -76,17 +71,26 @@ public class BasicController {
 	@GetMapping("/basic/groupList")
 	public List<CodeVO> groupList(){
 		List<CodeVO> glist = service.groupList();
-		System.out.println(glist);
 		return glist;
 	}
 	
 	@ResponseBody
-	@RequestMapping("/basic/codeSearch") // 선택, 검색 한 코드 검색
-	public List<CodeVO> empPw(SearchDTO dto) {
-		System.out.println(dto);
+	@RequestMapping("/basic/commList") // 선택, 검색 기반 공통코드 조회
+	public List<CodeVO> commList(SearchDTO dto) {
 		List<CodeVO> clist = service.commList(dto);
-		System.out.println(clist);
 		return clist;
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/addCode") // 공통코드 등록
+	public boolean addCode(@RequestBody List<CodeVO> list) {
+		return service.addCode(list);
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/modifyCode") // 공통코드 수정
+	public boolean modifyCode(@RequestBody List<CodeVO> list) {
+		return service.updateCode(list);
 	}
 	
 	

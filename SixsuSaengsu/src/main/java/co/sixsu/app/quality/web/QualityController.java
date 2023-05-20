@@ -1,6 +1,7 @@
 package co.sixsu.app.quality.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,8 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.QuaVO;
@@ -74,9 +79,21 @@ public class QualityController {
 	// 자재 입고 검사 등록
 	@ResponseBody
 	@PostMapping("/quality/prRegister")
-	public QuaVO prRegister(QuaVO am) {
-		return am;
+	public String prRegister(@RequestParam Map<String, Object> paramMap) throws JsonMappingException, JsonProcessingException {
+		String jsonData = paramMap.get("list").toString();
+		System.out.println(jsonData);
+		ObjectMapper objectMapper = new ObjectMapper();
+		int[] dataArray = objectMapper.readValue(jsonData, int[].class);
+		System.out.println(dataArray.length);
+		for(int i : dataArray) {
+			System.out.println(i);
+			/*
+			 * quaService.insertPr(i); quaService.mrUpdate(i);
+			 */
+		}
+		return "/quality/proRecList";
 	}
+	
 	
 	// 입고 검사 대기 리스트
 	@ResponseBody

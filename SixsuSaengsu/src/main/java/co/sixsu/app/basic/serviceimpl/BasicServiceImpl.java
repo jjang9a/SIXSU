@@ -29,8 +29,13 @@ public class BasicServiceImpl implements BasicService{
 	}
 
 	@Override // 사원 등록
-	public boolean addEmp(EmpVO emp) {
-		return mapper.addEmp(emp) == 1;
+	public EmpVO addEmp(EmpVO emp) {
+		emp.setEmpStat("재직");
+		String bir = emp.getEmpBirth();
+		String pw = bir.substring(2, 4) + bir.substring(5,7) + bir.substring(8);
+		emp.setEmpPw(pw);
+		mapper.addEmp(emp);
+		return emp;
 	}
 
 	@Override // 사원정보 업데이트
@@ -49,6 +54,32 @@ public class BasicServiceImpl implements BasicService{
 	@Override // 선택된 공통코드 목록
 	public List<CodeVO> commList(SearchDTO dto) {
 		return mapper.commList(dto);
+	}
+
+	@Override
+	public boolean addCode(List<CodeVO> list) {
+		int count = 0;
+		for(int i=0; i<list.size(); i++) {
+			if(list.get(i).getComId() == null || list.get(i).getComId().equals("")){
+				continue;
+			}else {
+				count += mapper.addCode(list.get(i));				
+			}
+		}
+		return count >= 1;
+	}
+
+	@Override
+	public boolean updateCode(List<CodeVO> list) {
+		int count = 0;
+		for(int i=0; i<list.size(); i++) {
+			if(list.get(i).getComId() == null || list.get(i).getComId().equals("")){
+				continue;
+			}else {
+				count += mapper.updateCode(list.get(i));				
+			}
+		}
+		return count >= 1;
 	}
 	
 	

@@ -18,6 +18,7 @@ public interface BasicMapper {
 
 	public List<CodeVO> groupList(); // 그룹코드 조회
 	public List<CodeVO> commList(SearchDTO dto); // 특정 공통코드 조회
-	
+	public int addCode(CodeVO code); // 공통코드 등록(추가)
+	public int updateCode(CodeVO code); // 공통코드 수정
 	
 }

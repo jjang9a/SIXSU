@@ -1,85 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
 
 <head>
-	<meta charset="UTF-8">
-	<title>공통코드 관리</title>
-	<style>
-		h1 {
-			margin-bottom: 100px;
-		}
-		h5{
-			padding-left : 10px;
-			margin-bottom : 11px;
-			font-family: 'MaruBuri';
-		}
+<meta charset="UTF-8">
+<title>공통코드 관리</title>
+<style>
+h1 {
+	margin-bottom: 100px;
+}
 
-		#grid {
-			width: 350px;
-			margin: auto;
-		}
+h5 {
+	padding-left: 10px;
+	margin-bottom: 11px;
+	font-family: 'MaruBuri';
+	float: left;
+}
 
-		#search {
-			width: 350px;
-			margin: auto;
-			height: 440px;
-			background-color: white;
-			padding-top: 130px;
-			display: none;
-		}
+.rightBtn {
+	float: right;
+}
 
-		.codeBack {
-			background-color: #ccdceb;
-			padding: 35px 30px 40px 30px;
-		}
+#grid {
+	width: 350px;
+	margin: auto;
+}
 
-		#group {
-			width: 420px;
-			float: left;
-			margin-left: 70px;
-		}
+#search {
+	width: 350px;
+	margin: auto;
+	height: 440px;
+	background-color: white;
+	padding-top: 130px;
+	display: none;
+}
 
-		#comm {
-			float: left;
-			width: 1000px;
-			margin-left: 70px;
-		}
+.codeBack {
+	background-color: #ccdceb;
+	padding: 35px 30px 40px 30px;
+}
 
-		#gc {
-			margin-left: 15px;
-		}
+#group {
+	width: 420px;
+	float: left;
+	margin-left: 70px;
+}
 
-		button {
-			border: none;
-			height: 35px;
-			width: 80px;
-			background-color: white;
-			font-size: 14px;
-		}
+#comm {
+	float: left;
+	width: 1000px;
+	margin-left: 70px;
+}
 
-		.gSel {
-			background-color: #ccdceb;
-		}
+#gc {
+	margin-left: 15px;
+}
 
-		#searchForm {
-			width: 265px;
-			height: 150px;
-			background-color: #e5edf5;
-			margin: auto;
-			text-align: center;
-			padding-top: 35px;
-			border-radius: 15px;
-		}
+button {
+	border: none;
+	height: 35px;
+	width: 80px;
+	background-color: white;
+	font-size: 14px;
+}
 
-		select {
-			height: 29px;
-		}
+.gSel {
+	background-color: #ccdceb;
+}
 
-		#searchKey {
-			width: 160px;
-		}
-	</style>
+#searchForm {
+	width: 265px;
+	height: 150px;
+	background-color: #e5edf5;
+	margin: auto;
+	text-align: center;
+	padding-top: 35px;
+	border-radius: 15px;
+}
+
+select {
+	height: 29px;
+}
+
+#searchKey {
+	width: 160px;
+}
+</style>
 
 </head>
 
@@ -90,106 +98,252 @@
 		<!-- 왼쪽 틀 시작 -->
 		<div id="group" class="codeBack">
 			<!-- 탭 -->
-			<button type="button" id="gc">그룹코드</button><button type="button" id="gs" class="gSel">검색</button>
+			<button type="button" id="gc">그룹코드</button>
+			<button type="button" id="gs" class="gSel">검색</button>
 			<!-- 그룹코드 선택시 : 그리드 (디폴트) -->
 			<div id="grid"></div>
 			<!-- 검색 선택시 : 검색 폼 -->
 			<div id="search">
 				<form action="" method="post" id="searchForm">
 					<select name="searchType">
-						<option value="com_id">코드 </option>
-						<option value="com_name">이름 </option>
-					</select>
-					<input type="text" id="searchKey" name="gId"><br><br>
+						<option value="code">코드</option>
+						<option value="name">이름</option>
+					</select> <input type="text" id="searchKey" name="searchKey"><br>
+					<br>
 					<button type="button" class="sixBtn2">검색</button>
 				</form>
 			</div>
 		</div>
 		<!-- 왼쪽 틀 끝 -->
 
+		<!-- 오른쪽 틀 -->
 		<div id="comm" class="codeBack">
 			<h5>상세정보</h5>
+			<div class="rightBtn">
+				<button type="button" class="sixBtn2" id="addBtn">추가</button>
+				<button type="button" class="sixBtn2" id="saveBtn">저장</button>
+			</div>
 			<div id="commGrid"></div>
 		</div>
+		<!-- 오른쪽 틀 끝 -->
 
 		<script>
 			// 사원목록 그리드 스크립트
-			window.onload = function () {
+			window.onload = function() {
 				$.ajax({
-					url: "/basic/groupList",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
+					url : "/basic/groupList",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
 						console.log(result)
 						grid.resetData(result);
 					}
 				});
 				const grid = new tui.Grid({
-					el: document.getElementById('grid'),
-					scrollX: false,
-					scrollY: false,
-					minBodyHeight: 400,
-					rowHeaders: ['rowNum'],
-					columns: [{
-						header: '그룹코드',
-						name: 'gid',
-						align: 'center'
+					el : document.getElementById('grid'),
+					scrollX : false,
+					scrollY : true,
+					minBodyHeight : 400,
+					columns : [ {
+						header : '그룹코드',
+						name : 'gid',
+						align : 'center'
 					}, {
-						header: '그룹명',
-						name: 'gname',
-						align: 'center'
-					}]
+						header : '그룹명',
+						name : 'gname',
+						align : 'center'
+					} ]
 				});
 
 				// 그리드 색 변경 테마 적용
 				tui.Grid.applyTheme('default', {
-					cell: {
-						header: {
-							background: '#e5edf5'
+					cell : {
+						header : {
+							background : '#e5edf5'
 						},
-						normal: {
-							background: '#ffffff'
+						normal : {
+							background : '#ffffff'
 						}
 					}
 				});
 
 				// 그룹코드-검색 탭 토글
-				$('#gc').on('click', function (e) {
+				$('#gc').on('click', function(e) {
 					$(this).removeClass('gSel');
 					$('#gs').addClass('gSel');
 					$('#grid').css('display', 'block');
 					$('#search').css('display', 'none');
 				})
 
-				$('#gs').on('click', function (e) {
+				$('#gs').on('click', function(e) {
 					$(this).removeClass('gSel');
 					$('#gc').addClass('gSel');
 					$('#grid').css('display', 'none');
 					$('#search').css('display', 'block');
 				})
-				
+
 				// 오른쪽 그리드 생성
-				const grid2 = new tui.Grid({
-					el: document.getElementById('commGrid'),
-					scrollX: false,
-					scrollY: false,
-					minBodyHeight: 400,
-					rowHeaders: ['rowNum'],
-					columns: [{
-						header: '그룹코드',
-						name: 'gid',
-						align: 'center'
+				const commGrid = new tui.Grid({
+					el : document.getElementById('commGrid'),
+					scrollX : false,
+					scrollY : true,
+					minBodyHeight : 400,
+					rowHeaders : [ 'rowNum' ],
+					columns : [ {
+						header : '그룹코드',
+						name : 'gid',
+						align : 'center'
 					}, {
-						header: '그룹명',
-						name: 'gname',
-						align: 'center'
-					}]
+						header : '공통코드',
+						name : 'comId',
+						align : 'center',
+						editor : 'text'
+					}, {
+						header : '코드명',
+						name : 'comName',
+						align : 'center',
+						editor : 'text'
+					}, {
+						header : '설명',
+						name : 'comNote',
+						align : 'center',
+						editor : 'text'
+					}, {
+						header : '사용여부',
+						name : 'comStat',
+						align : 'center',
+						editor : {
+							type : 'radio',
+							options : {
+								listItems : [ {
+									text : '활성',
+									value : 'Y'
+								}, {
+									text : '비활성',
+									value : 'N'
+								} ]
+							}
+						}
+					} ]
 				});
 				
+				// 오른쪽 그리드에 스크롤 부여
+				commGrid.setBodyHeight(400)
+
+				// 그룹코드 선택 시 선택정보 기반으로 소속 공통코드 데이터 불러오기
+				let groupKey = '';
+				//let oldCount = '';
+				grid.on('dblclick', function(ev) {
+					// 열을 더블클릭하면 그룹코드 정보를 변수에 저장
+					console.log("dblclick");
+					let dataRow = grid.getRow(ev.rowKey);
+					groupKey = dataRow.gid;
+
+					// 오른쪽 그리드 데이터 불러올 ajax호출
+					$.ajax({
+						url : '/basic/commList',
+						type : 'get',
+						data : {
+							"searchType" : "group",
+							"searchKey" : groupKey
+						},
+						dataType : 'json',
+						success : function(result) {
+							commGrid.resetData(result);
+							//oldCount = commGrid.getRowCount();
+						},
+						error : function() {
+							alert('공통코드 조회 중 오류 발생!');
+						}
+					})
+				});
 				
+				// 검색버튼 클릭 시 알맞은 데이터 불러오기
+				$('#searchForm button').on('click', function(e) {
+					$.ajax({
+						url : '/basic/commList',
+						type : 'get',
+						data : $('#searchForm').serialize(),
+						dataType : 'json',
+						success : function(result) {
+							groupKey = ''; // 그룹키가 남아있지 않도록 초기화(추가 불가)
+							commGrid.resetData(result);
+						},
+						error : function() {
+							alert('공통코드 조회 중 오류 발생!');
+						}
+					})
+				})
+
+				// 추가 버튼 이벤트
+
+				//let newCount = '';
+				$('#addBtn').on('click', function(e) {
+					if (groupKey == '') {
+						alert('그룹코드가 선택되지 않았습니다!');
+						// 그룹이 선택되어 있는 경우 그 빈 줄을 띄워 그 그룹에 새 공통코드 추가
+					} else {
+						const newData = { // 빈 데이터 열 생성
+							gid : groupKey,
+							comId : '',
+							comName : '',
+							comNote : '',
+							comStat : 'Y'
+						};
+						// 그리드에 빈 열 추가
+						commGrid.appendRow(newData);
+						//newCount = commGrid.getRowCount();
+					}
+				})
+
+				// 저장 버튼 이벤트
+				$('#saveBtn').on('click', function(e) {
+					/* // 원래 열 개수와 현재 열 개수를 비교하여 추가 된 열의 정보 배열에 저장
+					let newRowsArr = [];
+					for(let i=oldCount; i<newCount; i++){
+						//console.log(commGrid.getRow(i));
+						newRowsArr.push(commGrid.getRow(i));
+					} */
+
+					// 생성된 열이 0개가 아니라면 insert ajax 호출
+					if(commGrid.getModifiedRows().createdRows.length != 0){
+						$.ajax({
+							url : "/basic/addCode",
+							method : "POST",
+							dataType : "JSON",
+							contentType: "application/json",
+							//data: JSON.stringify(newRowsArr), 
+							data: JSON.stringify(commGrid.getModifiedRows().createdRows), 
+							error : function(result){
+								alert('등록 과정에서 에러가 발생하였습니다.')
+							}
+						})
+					}
+					// 수정된 열이 0개가 아니라면 update ajax 호출
+					if(commGrid.getModifiedRows().updatedRows.length != 0){
+						$.ajax({
+							url : "/basic/modifyCode",
+							method : "POST",
+							dataType : "JSON",
+							contentType: "application/json",
+							data: JSON.stringify(commGrid.getModifiedRows().updatedRows), 
+							error : function(result){
+								alert('업데이트 과정에서 에러가 발생하였습니다.')
+							}
+						})
+					}
+
+					alert('코드정보가 저장되었습니다.')
+				})
 				
+				// 수정 버튼 이벤트
+		      
+
+			      
+
 				
-	// 윈도우 온로드 괄호			
+
+				// 윈도우 온로드 괄호			
 			}
 		</script>
 	</div>
