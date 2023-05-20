@@ -28,5 +28,10 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public int deleteMatReq(int num) {
 			return mapper.deleteMatReq(num);
 		}
+
+		@Override
+		public int insertMatReq(MatreqVO vo) {
+			return mapper.insertMatReq(vo);
+		}
 		
 }

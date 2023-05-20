@@ -1,6 +1,5 @@
 package co.sixsu.app.quality.domain;
 
-import java.util.Date;
 
 import lombok.Data;
 
@@ -27,7 +26,7 @@ public class QuaVO {
 	private int detInspNum; // 세부 검사 번호
 	private String resVal; // 결과 값
 	private String resStat; // 적합 여부
-	private String inspUnit; // 검사 단위 코드(발주번호, 지시세부코드, 완제품출고코드)
+	private String inspStdId; // 검사 단위 코드(발주번호, 지시세부코드, 완제품출고코드)
 	private String wkDetaId;// 지시 세부 코드
 	// 완제품 출고 코드
 	

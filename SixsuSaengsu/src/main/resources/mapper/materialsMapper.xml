@@ -31,6 +31,11 @@
 	<delete id="deleteMatReq" parameterType="int">
 		delete from mat_req where mat_req_id = #{reqId}
 	</delete>
+	
+	<insert id="insertMatReq" parameterType="MatreqVO">
+		insert into mat_req (mat_req_id, bus_id, mat_id, mat_req_qt, mat_end_date, emp_id)
+		values (#{matReqId}, #{busId}, #{matId}, #{matReqQt}, #{matEndDate}, '12345')
+	</insert>
 </mapper>
 
 
