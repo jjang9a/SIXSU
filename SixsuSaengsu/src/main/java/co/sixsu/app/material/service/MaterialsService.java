@@ -16,5 +16,8 @@ public interface MaterialsService {
 	List<MatreqVO> selectMatReq(int numId);
 	
 	//행 삭제
-	int deleteMatReq(int num); 
+	int deleteMatReq(int num);
+	
+	//행 등록
+	int insertMatReq(MatreqVO vo);
 }

@@ -1,18 +1,25 @@
 package co.sixsu.app.material.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.service.MaterialsService;
+
+
 
 @Controller
 public class MatreqController {
@@ -23,6 +30,7 @@ public class MatreqController {
 //	public String test() {
 //		return "/test";
 //	}
+	
 	
 	
 	//발주내역 페이지 열어주기
@@ -49,10 +57,11 @@ public class MatreqController {
 		return list;
 	}
 	
+	/*
 	@ResponseBody
 	@RequestMapping("/materials/delmatreq")
 	public String delMatReq(MatreqVO vo, Model modal) {
-		System.out.println(vo);
+		
 		//int result = service.deleteMatReq(vo);
 		  
 		//vo.setMatReqId(vo); 
@@ -74,15 +83,38 @@ public class MatreqController {
 		 }
 		return "/materials/matreq";
 	}
+	*/
+	@ResponseBody
+	@RequestMapping("/materials/delmatreq")
+	public String delMatReq(@RequestParam Map<String, Object> paramMap) throws Exception {
+		String jsonData = paramMap.get("list").toString();
+		System.out.println(jsonData);
+		ObjectMapper objectMapper = new ObjectMapper();
+	    int[] dataArray = objectMapper.readValue(jsonData, int[].class);
+	    System.out.println(dataArray.length);
+	    for(int i : dataArray) {
+	    	System.out.println(i);
+	    	service.deleteMatReq(i);
+	    }
+	    
+	    
+		return "/materials/matreq";
+	}
 	
 	@ResponseBody
-	@RequestMapping("/materials/test1")
-	public String delMatReq(@ModelAttribute MatreqVO vo) {
+	@PostMapping("/materials/insertmatreq")
+	public MatreqVO insertMatReq(@RequestBody MatreqVO vo) {		
 		System.out.println(vo);
-		return null;
+		//service.insertMatReq(vo);
+		
+		return vo;
+		
+		
 	}
 	
 	
 	
-	
 }
+
+
+
