@@ -13,6 +13,7 @@
 <select id="empList" resultType="EmpVO">
 	select emp_id, emp_name, emp_tell, TO_CHAR(emp_birth, 'yyyy/MM/dd') emp_birth, TO_CHAR(emp_hire, 'yyyy/MM/dd') emp_hire, emp_dept, emp_rk, emp_stat, emp_note  
 	from employee
+	order by emp_stat, emp_id
 </select>
 
 <update id="updatePw" parameterType="EmpVO">
@@ -47,11 +48,22 @@
 		g_id = #{searchKey}
 	</if>
 	<if test='searchType.equals("code")'>
-		com_code = '%'||#{searchKey}||'%'
+		com_id like '%'||#{searchKey}||'%'
 	</if>
-	<if test='searchType.equals("group")'>
-		com_name = '%'||#{searchKey}||'%'
+	<if test='searchType.equals("name")'>
+		com_name like '%'||#{searchKey}||'%'
 	</if>
+	ORDER BY com_stat desc, com_id
 </select>
+
+<insert id="addCode" parameterType="CodeVO">
+	INSERT INTO common_code VALUES(#{comId}, #{gId}, #{comName}, #{comNote}, #{comStat})
+</insert>
+
+<update id="updateCode" parameterType="CodeVO">
+	UPDATE common_code
+	SET com_name = #{comName}, com_note = #{comNote}, com_stat = #{comStat}
+	WHERE com_id = #{comId}	
+</update>
 
 </mapper>
