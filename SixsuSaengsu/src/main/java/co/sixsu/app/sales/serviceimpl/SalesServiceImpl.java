@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.sales.domain.OrdVO;
 import co.sixsu.app.sales.mapper.SalesMapper;
 import co.sixsu.app.sales.service.SalesService;
@@ -48,6 +49,12 @@ public String getMakeCode() {
 public List<OrdVO> getOrdList() {
 	// TODO Auto-generated method stub
 	return mapper.ordList();
+}
+
+@Override
+public List<ProductVO> getProdList() {
+	// TODO Auto-generated method stub
+	return mapper.prodList();
 }
 
 

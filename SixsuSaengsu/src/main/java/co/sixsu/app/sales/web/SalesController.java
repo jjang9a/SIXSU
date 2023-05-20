@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.sales.domain.OrdVO;
 import co.sixsu.app.sales.service.SalesService;
 
@@ -26,8 +27,6 @@ public class SalesController {
  } 
  
  
- 
-// 주문서 관리 페이지 등록된 주문서 리스트로 뽑기
  
  
 // 주문서 관리 사원정보 조회 하기 
@@ -80,11 +79,22 @@ public String makeCode() {
 }
 
 
+
+
+//자동으로 상세주문 등록하는방법
 @RequestMapping("/sales/detailOrd")
 @ResponseBody
 public List<OrdVO> ordList(){
 	List<OrdVO> list = service.getOrdList();
 	return list;
 }
+//상품명을 주문등록페이지로 이동하기위해 json타입으로 데이터를 불러오기
+@RequestMapping("/sales/products")
+@ResponseBody
+public List<ProductVO> prodList(){
+	List<ProductVO> list = service.getProdList();
+	return list;
+}
+
 
 }

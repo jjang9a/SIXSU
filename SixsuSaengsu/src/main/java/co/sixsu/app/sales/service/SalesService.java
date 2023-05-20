@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.sales.domain.OrdVO;
 
 public interface SalesService {
@@ -18,4 +19,6 @@ public interface SalesService {
 	String getMakeCode();//자동으로 주문번호 등록
 	
 	List<OrdVO> getOrdList();
+	
+	List<ProductVO> getProdList(); // 상세거래처주문에 상품명을 조회
 }

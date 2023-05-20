@@ -37,12 +37,17 @@
 	</select>
 	
 	<!-- 일반페이지 상세 주문 등록 페이지 -->
-	<select id='ordList'
+	<select id="ordList"
 	resultType='ordVO'>
 	select d.ORD_DET_ID, d.ORD_QT, d.ORD_STAT_DET, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, d.ORD_END_DATE, c.CP_SIZE
 	from SORDER s , DET_ORD d, COMPLETE_PROD c
 	where s.ORD_ID = d.ORD_ID
 	and c.CP_ID = d.CP_ID
+	</select>
+	
+	<select id="prodList"
+		resultType='ProductVO'>
+		select* from complete_prod
 	</select>
 	
 </mapper>
