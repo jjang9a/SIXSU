@@ -1,36 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/template}">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
 
 </head>
+
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재발주관리</h1>
+
 		<div id="left">
-			발주번호 <input type="number" id="reqNum" name="reqNum" >
+			발주번호 <input type="number" id="reqNum" name="reqNum">
 		</div>
 		<div id="left">
-			자재명 <input type="text" id="mname">
+			자재코드 <input type="text" id="mname">
 			<button class="sixBtn1">
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-                    fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-                    <path
-                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-           </button>
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+					viewBox="0 2 16 16">
+					<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+				</svg>
+			</button>
 		</div>
 		<div id="left">
-			거래처명 <input type="text" id="bname">
+			거래처코드 <input type="text" id="bname">
 			<button class="sixBtn1">
-				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-	           	 fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-                <path
-                 d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                </svg></button>
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+					viewBox="0 2 16 16">
+					<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+				</svg></button>
 		</div>
 		<div id="left">
 			발주등록일자 <input type="date" id="matStartDate"> ~ <input type="date" id="matStartDatee">
@@ -38,203 +40,269 @@
 		납기일자 <input type="date" id="matEndDate"> ~ <input type="date" id="matEndDatee">
 		<div>
 			<div id="left">
-				<button id="check">조회</button>
-				<button id="reset">초기화</button>
+				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
 			<div id="left">
-				<button id="appendBtn" onclick="appendBtn">발주등록</button>
-				<button id="delte">삭제</button>
-				<button>수정</button>
+				<button class="sixBtn4" id="appendBtn" onclick="appendBtn">발주등록</button>
+				<button class="sixBtn2" id="delete">삭제</button>
+				<button class="sixBtn2">수정</button>
 			</div>
 		</div>
 
-		
-		
+
+
 		<div id="grid"></div>
 		<script>
-		
-	  	  const gridData=[
-	  		  
-	  	  ];
-		
-		  window.onload = function(){
-		        $.ajax({
-		            url : "/materials/mms",
-		            method :"GET",
-		            dataType : "JSON",
-		            success : function(result){
-		                grid.resetData(result);
-		            } 
-		        });
-		  };
+			const gridData = [
 
+			];
+
+
+			window.onload = function () {
+				
+				$.ajax({
+					url: "/materials/mms",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+						gridInsertRow();
+					}
+				
+				});
+			};
+			
+
+
+			//테이블에 들어갈 데이터 설정(조회)
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				
+				scrollX: false,
+				scrollY: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+
+
+				
+				rowHeaders: ['checkbox'],
+
+
+				columns: [{
+						header: '발주번호',
+						name: 'matReqId',
+						editor: 'text'
+					},
+					{
+						header: '자재코드',
+						name: 'matId',
+						editor: 'text'
+					},
+					{
+						header: '자재명',
+						name: 'matName'
+					},
+					{
+						header: '발주량',
+						name: 'matReqQt',
+						editor: 'text'
+					},
+					{
+						header: '거래처코드',
+						name: 'busId',
+						editor: 'text'
+					},
+					{
+						header: '거래처명',
+						name: 'busName',
+					},
+					{
+						header: '발주일',
+						name: 'matReqDate'
+					},
+					{
+						header: '발주상태',
+						name: 'matReqStat'
+					},
+					{
+						header: '납기요청일',
+						name: 'matEndDate',
+						editor: 'text'
+					}
+					
+
+				]
+				
+			});
+
+			
 	
-	  	  //테이블에 들어갈 데이터 설정(조회)
-	  	  const grid = new tui.Grid({
-	      el: document.getElementById('grid'),
-	      //data: gridData,
-	      scrollX: false,
-	      scrollY: false,
-	  
- 	      pageOptions: {
-	    	    useClient: true,
-	    	    perPage: 10
-	      },
-	      
-	      rowHeaders: ['checkbox','rowNum'],
-	      
-	      
-	      columns: [
-	        {
-		      header: '발주번호',
-		      name: 'matReqId',
-		   	  //editor: 'text'
-		    },
-	        {
-		      header: '자재코드',
-		      name: 'matId'
-		    },
-	        {
-			  header: '자재명',
-			  name: 'matName'
-			},
-	        {
-			  header: '발주량',
-			  name: 'matReqQt'
-			},
-	        {
-			  header: '거래처명',
-			  name: 'busName'
-			},
-	        {
-			  header: '발주일',
-			  name: 'matReqDate'
-			},
-	        {
-			  header: '발주상태',
-			  name: 'matReqStat'
-			},
-	        {
-			  header: '납기요청일',
-			  name: 'matEndDate'
-			},
-	        {
-			  header: '납기지연일',
-			  name: 'matDlyDate'
+
+
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 	  
+/* 			const appendBtn = document.getElementById('appendBtn');
+ 			const appendedData = {
+				matReqId: '',
+				matId: '',
+				matName: '',
+				matReqQt: '',
+				busName: '',
+				matReqDate: '',
+				matReqStat: '',
+				matEndDate: ''
+			};
+
+			appendBtn.addEventListener('click', () => {
+				grid.appendRow(appendedData);
+
+			}); */
+			
+ 			$('#appendBtn').on("click", function () {
+ 				const appendedData = {
+ 						matReqId: grid.getRow(0).matReqId,
+ 						matId: grid.getRow(0).matId,
+ 						matName: grid.getRow(0).matName,
+ 						matReqQt: grid.getRow(0).matReqQt,
+ 						busId: grid.getRow(0).busId,
+ 						busName: grid.getRow(0).busName,
+ 						matReqDate: grid.getRow(0).matReqDate,
+ 						matReqStat: grid.getRow(0).matReqStat,
+ 						matEndDate: grid.getRow(0).matEndDate
+ 				};
+ 				console.log(JSON.stringify(grid.getRow(0)));
+ 				let insertData = JSON.stringify(grid.getRow(0));
+ 				$.ajax({
+					url: "/materials/insertmatreq",
+					type: "POST",
+					data: insertData,
+					contentType: 'application/json',
+					//data : {list : JSON.stringify(matReqIds)},
+					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
+					success: function (result) {}
+
+				})
+ 				
+ 				grid.appendRow(appendedData);
+ 				
+ 				
+ 			});
+ 			
+
+			//그리드 안의 내용 콘솔 찍어보기
+/* 			grid.on('click', ev=> {
+				grid.on('click', ev=> {
+		               console.log(ev.rowKey)
+		               console.log(ev.columns)
+		               //grid.addSelectionOnly(ev.rowKey);
+		               const focusCell = grid.getFocusedCell()
+		               console.log(focusCell)
+		               
+		               let dataRow = grid.getRow(ev.rowKey);
+		               console.log(dataRow);
+		               console.log('발주번호 : ' + dataRow.matReqId);
+		            })
+			})  */
+
+
+			//체크 사항
+			/*        grid.on('check', ev => {
+			  		const focusCell = grid.getFocusedCell();
+			  		console.log(focusCell);
+				  }); */
+
+			//체크된 항목 삭제	    
+			$('#delete').on("click", function () {
+				console.log(grid.getCheckedRows());
+				console.log(grid.getCheckedRows().length);
+				var matReqIds = [];
+				console.log("abcd");
+				for (var i = 0; i < grid.getCheckedRows().length; i++) {
+					console.log(grid.getCheckedRows()[i].matReqId);
+					matReqIds.push(grid.getCheckedRows()[i].matReqId);
+
+				}
+/* 				var dataOb = {}
+				dataOb.list = matReqIds
+				console.log(matReqIds); */
+
+				$.ajax({
+					url: "/materials/delmatreq",
+					type: "GET",
+					contentType: 'application/json',
+					data: {
+						list: JSON.stringify(matReqIds)
+					},
+					//data : {list : JSON.stringify(matReqIds)},
+					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
+					success: function (result) {}
+
+				})
+
+
+				grid.removeCheckedRows(false);
+				grid.blur();
+			});
+			//조회하기
+			$('#check').on("click", function () {
+
+				const reqNum = $('#reqNum').val();
+				console.log(reqNum);
+				const matEndDate = $('#matEndDate').val();
+				console.log(matEndDate);
+			});
+
+			//초기화 버튼 설정
+			$('#reset').on("click", function (e) {
+				$('#reqNum').val('');
+				$('#mname').val('');
+				$('#bname').val('');
+				$('#matStartDate').val('');
+				$('#matStartDatee').val('');
+				$('#matEndDate').val('');
+				$('#matEndDatee').val('');
+
+				//location.reload();
+
+				$.ajax({
+					url: "/materials/mms",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+						gridInsertRow();
+					}
+				});
+			});
+			
+			function gridInsertRow(){
+				let prevData = grid.getData();
+				
+				for(let row of prevData){
+					row.rowKey += 1;
+				}
+				prevData.splice(0, 0, {});
+				
+				grid.resetData(prevData);
 			}
-	        
-	      ]
-	    });
-	  	 
-	  	  
-	  	  
-	  	tui.Grid.applyTheme('default', {
-            cell: {
-                header: {
-                    background: '#e5edf5'
-                },
-                rowHeader: {
-                    background: '#e5edf5'
-                },
-                normal: {
-                    background: '#ffffff'
-                }
-            }
-        });
-	  	  
-	 //등록 버튼을 누르면 테이블에 들어갈 데이터 설정 	  
-	 const appendBtn = document.getElementById('appendBtn');  
-   	 const appendedData = {
-  			matReqId: '',
-  			matId: '',
-  			matReqQt: '',
-  			busName: '',
-  			matReqDate: ''
-  	 };
-
-     appendBtn.addEventListener('click', () => {
-	      grid.appendRow(appendedData);
-	      
-  	 });
-     
-     //그리드 안의 내용 콘솔 찍어보기
-      /* grid.on('click', ev=> {
-         console.log(ev.rowKey)
-         console.log(ev.columns)
-         //grid.addSelectionOnly(ev.rowKey);
-         //const focusCell = grid.getFocusedCell()
-         //console.log(focusCell)
-         let data = []
-         var grid = ToastGrid.get('#grid');
-         var checkedRows = grid.getCheckedRows();
-         console.log(checkedRows);
-         let dataRow = grid.getRow(ev.rowKey);
-         console.log(dataRow);
-         const checkCell = grid.getCheckedRows()[ev.rowKey].matReqId;
-         console.log("abc");
-         console.log(checkCell);
-         const ck = checkedRows.length;
-         console.log(ck);
-         console.log('발주번호 : ' + dataRow.matReqId);
-      }) */
-  	 
-      
-      //체크 사항
-       grid.on('check', ev => {
-  		const focusCell = grid.getFocusedCell();
-  		console.log(focusCell);
-	  });
-  		    
-     //체크된 항목 삭제	    
-  	 $('#delte').on("click",function(){
-  		 console.log(grid.getCheckedRows())
-  		 var vo = grid.getCheckedRows()[0]
-  		$.ajax({
-  			//url : "/materials/test1",
-  			url : "/materials/delmatreq",
-  			type : "GET",
-  			data : {matReqId : grid.getCheckedRows()[0].matReqId},
-  			//data :{matReqId : grid.getCheckedRows()},
-  			success : function(result){
-            } 
-  			
-  		})
-
-
-  		grid.removeCheckedRows(false);
-   		grid.blur();
-  	 });
-     //조회하기
-  	$('#check').on("click",function(){
-  		
-  		const reqNum = $('#reqNum').val();
-  		console.log(reqNum);
-  		const matEndDate = $('#matEndDate').val();
-  		console.log(matEndDate);
-  	});
-  	
-  	//초기화 버튼 설정
-  	$('#reset').on("click",function(e){
-    	$('#reqNum').val('');
-  		$('#mname').val('');
-  		$('#bname').val('');
-  		$('#matStartDate').val('');
-  		$('#matStartDatee').val('');
-  		$('#matEndDate').val('');
-  		$('#matEndDatee').val('');
-  		
-  		//location.reload();
-  		
-  		$.ajax({
-            url : "/materials/mms",
-            method :"GET",
-            dataType : "JSON",
-            success : function(result){
-                grid.resetData(result);
-            } 
-        });
-  	});
-	 </script>
+		</script>
 	</div>
 </body>
+
 </html>

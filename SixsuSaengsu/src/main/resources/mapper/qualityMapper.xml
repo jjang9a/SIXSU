@@ -54,12 +54,6 @@
 		#{arrQt})
 	</insert>
 
-	<!-- 도착 자재 등록 시 자재 발주 업데이트 -->
-	<update id="mrUpdate" parameterType="MatreqVO">
-		update mat_req set
-		mat_req_stat='도착'
-		where mat_req_id=#{matReqId}
-	</update>
 
 	<!-- 자재 입고 검사 등록 리스트 -->
 	<select id="proRecList" resultType="QuaVO">
@@ -77,20 +71,30 @@
 
 	<!-- 입고 검사 등록 -->
 	<insert id="insertPr" parameterType="QuaVO">
-		qua_com (insp_num, insp_unit, insp_qt) values
-		(insf_seq.nextval, #{matReqId}, #{insp_qt})
+		insert into
+		qua_com
+		(insp_num, insp_std_id, insp_qt) values
+		(insf_seq.nextval, #{matReqId}, #{inspQt})
 	</insert>
 
+	<!-- 입고 검사 등록 시 자재 발주 업데이트 -->
+	<update id="mrUpdate" parameterType="MatreqVO">
+		update mat_req set
+		mat_req_stat='검사대기'
+		where mat_req_id=#{matReqId}
+	</update>
+
 	<!-- 자재 입고 검사 리스트 -->
-	<select id="recInspList" resultType="QuaVO">
-		select r.mat_req_id, b.bus_name, r.mat_id, m.mat_name, q.insp_qt
-		from mat_req r left join material m
+	<select id="prInspList" resultType="QuaVO">
+		select q.insp_std_id, b.bus_name, r.mat_id, m.mat_name, q.insp_qt
+		from qua_com q left join mat_req r
+		on q.insp_std_id = r.mat_req_id
+		left join material m
 		on r.mat_id = m.mat_id
 		left join business b
 		on r.bus_id = b.bus_id
-		left join qua_com q
-		on r.mat_req_id = q.mat_req_id
-		order by mat_req_id;
+		where r.mat_req_stat='검사대기'
+		order by insp_std_id
 	</select>
 
 
