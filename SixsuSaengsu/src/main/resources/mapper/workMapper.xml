@@ -33,10 +33,31 @@
 </select>
 
 <select id="getSorder" resultType="SorderVO">
-	SELECT a.ORD_ID, a.BUS_ID, c.BUS_NAME, b.ORD_END_DATE, a.ORD_DATE,a.ORD_STAT
+	SELECT a.ORD_ID, a.BUS_ID, c.BUS_NAME, TO_char(b.ORD_END_DATE, 'yyyy-MM-dd') AS ORD_END_DATE, TO_char(a.ORD_DATE, 'yyyy-MM-dd') AS ORD_DATE ,a.ORD_STAT
 	FROM SORDER a LEFT JOIN DET_ORD b ON a.ORD_ID = b.ORD_ID
     LEFT JOIN BUSINESS C ON a.BUS_ID = c.BUS_ID
 </select>
 
+<select id="getdetOrd" resultType="detOrdVO">
+	SELECT a.ORD_DET_ID, a.CP_ID, b.CP_NAME, a.ord_QT, TO_char(a.ORD_END_DATE, 'yyyy-MM-dd') AS ORD_END_DATE, a.ORD_STAT_DET
+	FROM DET_ORD a LEFT JOIN COMPLETE_PROD b ON a.CP_ID = b.CP_ID
+	WHERE ORD_ID = #{ordId}
+</select>
+
+<select id="getIdDateAndData" resultType="string">
+	SELECT (#{data} || TO_NUMBER(NVL(MAX(SUBSTR(PLAN_HEAD_ID, 10)), 0) + 1))
+	FROM PROD_PLAN
+	WHERE PLAN_HEAD_ID LIKE '${data}%'
+</select>
+
+<insert id="addProdPlan" parameterType="addPlanVO">
+	INSERT INTO PROD_PLAN (PLAN_HEAD_ID, TYPE, PLAN_REG_DATE, EMP_ID,PLAN_START,PLAN_END)
+	values ( #{planHeadId}, #{type}, #{regDate}, #{empName}, TO_DATE(#{startDate},'yyyy-MM-dd'), TO_DATE(#{endDate},'yyyy-MM-dd'))
+</insert>
+
+<insert id="addDetProdPlan" parameterType="addPlanVO">
+	INSERT INTO DETA_PROD_PLAN (PLAN_DETA_ID, ORD_DET_ID, PLAN_HEAD_ID, MAT_ID, DETA_QT, CMPLT_ST, MEMO)
+	values( #{planDetaId}, #{ordDetId}, #{planHeadId}, #{cpId}, #{ordQt}, #{ordStatDet}, #{memo})
+</insert>
 
 </mapper>

@@ -1,22 +1,19 @@
 package co.sixsu.app.work.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
-import co.sixsu.app.work.domain.dataVO;
+import co.sixsu.app.work.domain.addPlanVO;
+import co.sixsu.app.work.domain.detOrdVO;
 import co.sixsu.app.work.service.WorkService;
 
 @RestController
@@ -63,7 +60,20 @@ public class WorkAjaxController {
 	
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	//@RequestMapping(value = "addPlanAjax", method = RequestMethod.POST)
+	@RequestMapping("addPlanAjax")
+	public void addPlan(@RequestBody List<addPlanVO> data) {
+		System.out.println(data.size());
+		for(addPlanVO i : data) {
+			System.out.println(i);
+			System.out.println(i.getOrdDetId());
+			System.out.println(i.getCpId());
+			System.out.println(i.getOrdQt());
+		}
+		int result = service.addPlan(data);
+		return ;
+	}
+		
 	@RequestMapping("sorderListAjax")
 	public List sorderList() {
 		List<SorderVO> list = service.getSorder();
@@ -71,24 +81,15 @@ public class WorkAjaxController {
 		return list;
 	}
 	
-	@RequestMapping("addPlanAjax")
-	public void addPlan(@ModelAttribute DetaProdPlanVO data) {
-		System.out.println(data);
-		return ;
+	@RequestMapping("detOrdListAjax")
+	public List detOrdList(@RequestParam String ordId ) {
+		List<detOrdVO> list = service.getdetOrd(ordId);
+		System.out.println("클릭된 GRID2의 상세주문 내역 >");
+		System.out.println(list);
+		return list;
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	@RequestMapping("test1")
-	public List test1(@ModelAttribute()  dataVO data) {
-		System.out.println(data);
-		return null;
-	}
 	
 	
 } 

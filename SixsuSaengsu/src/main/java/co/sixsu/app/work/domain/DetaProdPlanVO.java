@@ -1,6 +1,8 @@
 package co.sixsu.app.work.domain;
 
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -19,6 +21,17 @@ public class DetaProdPlanVO {
 	String endDate; //작업종료일
 	String empName;
 	String memo; //비고
-	String rigDate; //작성일. 자바에서 사용할 것
+	String regDate; //작성일. 자바에서 사용할 것
+	
+	
+	String ordDetId;
+	int ordQt;
+	String ordStatDet;
+	String cpId;
+	String ordId;
+	int ordDetPrice;
+	int ordSalePrice;
+	Date ordEndDate;
+	String cpSize;
 
 }
