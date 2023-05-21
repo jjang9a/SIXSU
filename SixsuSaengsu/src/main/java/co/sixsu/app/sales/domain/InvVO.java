@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class InvVO {
 	private String ordId;
-	private Date ordDate;
+	private String ordDate;
 	private String ordStat;
-	private int empId;
-	private int busId;
+	private String empId;
+	private String busId;
 	
 	
 }
