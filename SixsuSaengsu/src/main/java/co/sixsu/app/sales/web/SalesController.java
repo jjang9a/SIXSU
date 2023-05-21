@@ -5,13 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.sales.domain.InvVO;
 import co.sixsu.app.sales.domain.OrdVO;
 import co.sixsu.app.sales.service.SalesService;
 
@@ -95,6 +99,23 @@ public List<ProductVO> prodList(){
 	List<ProductVO> list = service.getProdList();
 	return list;
 }
+
+//주문서만 등록
+@ResponseBody
+@RequestMapping(value = "/sales/orderAdd", method =RequestMethod.POST)
+public InvVO orderAdd(InvVO inv){
+	
+	InvVO result =service.orderAdd(inv);	
+
+	return result;
+}
+
+@ResponseBody
+@PostMapping("/sales/ordDetAdd") //상세 주문서 등록
+public boolean ordDetAdd(@RequestBody List<OrdVO> list) {
+	return service.ordDetAdd(list);
+}
+
 
 
 }

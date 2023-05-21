@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.sales.domain.InvVO;
 import co.sixsu.app.sales.domain.OrdVO;
 
 @Mapper
@@ -22,8 +23,12 @@ public interface SalesMapper {
 
 	public String makeCode();//자동으로 주문번호 등록
 
-	public List<OrdVO> ordList();
+	public List<OrdVO> ordList(); //주문상세목록 
 	
-	public List<ProductVO> prodList();
+	public List<ProductVO> prodList(); // 주문상세목록에 상품 모달
+	
+	public int orderAdd(InvVO inv); //주문서만 등록
+	
+	public int ordDetAdd(OrdVO code);//상세주문서등록
 }
 
