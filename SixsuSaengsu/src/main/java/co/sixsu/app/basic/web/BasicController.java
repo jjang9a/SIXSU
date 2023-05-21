@@ -14,8 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.basic.domain.SearchDTO;
 import co.sixsu.app.basic.service.BasicService;
+import co.sixsu.app.sales.domain.OrdVO;
 
 @Controller
 public class BasicController {
@@ -93,5 +95,34 @@ public class BasicController {
 		return service.updateCode(list);
 	}
 	
+	
+	// 완제품 관리
+	
+	@GetMapping("/basic/cpManage")
+	public void cpManage() { // 완제품 관리 화면 띄우기
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/cpList")
+	public List<ProductVO> cpList(){ //완제품 목록
+		return service.cpList();
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/addCp")
+	public ProductVO addCp(ProductVO prod) {
+		System.out.println(prod);
+		service.addCp(prod);
+		return prod;
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/modifyCp")
+	public ProductVO modifyCp(ProductVO prod) {
+		service.updateCp(prod);
+		return prod;
+	}
+	
+
 	
 }
