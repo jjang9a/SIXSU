@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.basic.domain.SearchDTO;
 import co.sixsu.app.basic.mapper.BasicMapper;
 import co.sixsu.app.basic.service.BasicService;
@@ -16,18 +17,17 @@ public class BasicServiceImpl implements BasicService{
 	
 	@Autowired BasicMapper mapper;
 	
-	// 사원 관련
+	// 사원 관리
 	@Override // 전체 사원목록 조회
 	public List<EmpVO> getEmpList() {
 		return mapper.empList();
 	}
-
+	
 	@Override // 비밀번호 업데이트
 	public boolean updatePw(EmpVO emp) {
 		System.out.println("service : " + emp);
 		return 	mapper.updatePw(emp) == 1;
 	}
-
 	@Override // 사원 등록
 	public EmpVO addEmp(EmpVO emp) {
 		emp.setEmpStat("재직");
@@ -45,7 +45,7 @@ public class BasicServiceImpl implements BasicService{
 
 	
 	
-	// 코드 관련
+	// 공통코드 관리
 	@Override // 그룹코드 전체목록
 	public List<CodeVO> groupList() {
 		return mapper.groupList();
@@ -56,10 +56,11 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.commList(dto);
 	}
 
-	@Override
+	@Override // 공통코드 추가
 	public boolean addCode(List<CodeVO> list) {
-		int count = 0;
+		int count = 0; // insert가 발생한 횟수
 		for(int i=0; i<list.size(); i++) {
+			// 공통코드가 빈칸으로 들어 가 있는 열은 extra로 취급해 등록하지 않음
 			if(list.get(i).getComId() == null || list.get(i).getComId().equals("")){
 				continue;
 			}else {
@@ -69,10 +70,11 @@ public class BasicServiceImpl implements BasicService{
 		return count >= 1;
 	}
 
-	@Override
+	@Override // 공통코드 수정
 	public boolean updateCode(List<CodeVO> list) {
-		int count = 0;
+		int count = 0; // update가 발생한 횟수
 		for(int i=0; i<list.size(); i++) {
+			// 공통코드가 빈칸으로 들어 가 있는 열은 실수라고 생각하고 수정하지 않음
 			if(list.get(i).getComId() == null || list.get(i).getComId().equals("")){
 				continue;
 			}else {
@@ -81,6 +83,24 @@ public class BasicServiceImpl implements BasicService{
 		}
 		return count >= 1;
 	}
+
+	// 완제품 관리
+	
+	@Override // 완제품 목록
+	public List<ProductVO> cpList() {
+		return mapper.cpList();
+	}
+
+	@Override // 완제품 등록
+	public boolean addCp(ProductVO prod) {
+		return mapper.addCp(prod) == 1;
+	}
+
+	@Override
+	public boolean updateCp(ProductVO prod) {
+		return mapper.updateCp(prod) == 1;
+	}
+	
 	
 	
 }
