@@ -119,11 +119,17 @@
 	</select>
 
 	<!-- 검사 담당자 등록 리스트 -->
-	<select id="qEmpList" resultType="EmpVO">
+	<select id="empList" resultType="EmpVO">
 		select emp_id, emp_name, emp_dept from employee
 		where emp_stat='재직'
-		and
-		emp_name=#{keyword}
+		
+	</select>
+	
+	<!-- 검사 담당자 리스트 조회 -->
+	<select id="sEmpList" parameterType="String" resultType="EmpVO">
+		select emp_id, emp_name, emp_dept from employee
+		where emp_stat='재직'
+		and emp_name=#{ename}
 	</select>
 
 
