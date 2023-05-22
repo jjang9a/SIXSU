@@ -85,8 +85,41 @@
 	and s.emp_ID = e.emp_ID
 	and s.ord_id = #{keyword}
 	</select>
+	
+	<!--  진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 상세 주문서가 화면에 나오도록 -->
+	<select id="secondOrderingList" resultType='OrdVO'>
+	select d.ORD_DET_ID, d.ORD_QT, d.ORD_STAT_DET, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, d.ORD_END_DATE, c.CP_SIZE
+	from SORDER s , DET_ORD d, COMPLETE_PROD c
+	where s.ORD_ID = d.ORD_ID
+	and c.CP_ID = d.CP_ID
+	and s.ord_id = #{keyword}
+	</select>
+	
+	<update id="orderMod" parameterType="InvVO">
+	update SORDER
+	set emp_id=#{empId}, bus_id=#{busId}
+	where ord_id=#{ordId}
+	</update>
 
-
+	<update id="ordDetMod" parameterType="OrdVO">
+		update det_ord
+		set ord_qt=#{ordQt}, cp_id=#{cpId}, ord_id=#{ordId}, ord_det_price=#{ordDetPrice}, ord_end_date=TO_DATE(#{ordEndDate}, 'yyyy-MM-dd hh24:mi:ss'), ord_sale_price=#{ordSalePrice}
+		where ord_det_id=#{ordDetId}
+	</update>
+	
+	
+	<!-- 상세상품제거 -->
+	<delete id="productDel" parameterType="OrdVO">
+	delete from det_ord where ord_det_id= #{ordDetId}
+	</delete>
+	
+	<!-- 주문서삭제 -->
+	<delete id="orderModDel" parameterType="InvVO">
+	delete from SORDER where ord_id=#{ordId}
+	</delete>
+	<delete id="ordDetModDel" parameterType="OrdVO">
+	delete from det_ord where ord_det_id= #{ordDetId}
+	</delete>
 	
 	
 </mapper>

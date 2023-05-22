@@ -28,11 +28,19 @@ public interface SalesMapper {
 	public List<ProductVO> prodList(); // 주문상세목록에 상품 모달
 	
 	public int orderAdd(InvVO inv); //주문서만 등록
+	public int orderMod(InvVO inv); //주문서만 수정
+	public int orderModDel(InvVO inv); //주문서만 삭제
 	
 	public int ordDetAdd(OrdVO code);//상세주문서등록
+	public int ordDetMod(OrdVO code);//상세주문서수정
+	public int ordDetModDel(OrdVO code);//상세주문서삭제
 	
 	public List<InvVO> orderingList(); //페이지 마지막부분 주문중인 목록
 	
 	public InvVO firstOrderingList(String keyword); //진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 
+	
+	public List<OrdVO> secondOrderingList(String keyword); //진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 상세주문서가 화면에 나오도록 
+	
+	int productDel(String reqId);
 }
 

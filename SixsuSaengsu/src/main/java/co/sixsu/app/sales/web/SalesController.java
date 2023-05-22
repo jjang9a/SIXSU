@@ -1,6 +1,7 @@
 package co.sixsu.app.sales.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
@@ -131,9 +134,76 @@ public List<InvVO> orderingList(){
 @RequestMapping("/sales/firstOrderingList")
 @ResponseBody
 public InvVO firstOrderingList(@RequestParam String result){
+
 	System.out.println(result);
 	InvVO list = service.firstOrderingList(result);
 	return list;
 	
 }
+
+//진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 
+@RequestMapping("/sales/secondOrderingList")
+@ResponseBody
+public List<OrdVO> secondOrderingList(@RequestParam String result){
+	System.out.println(result);
+	List<OrdVO> list = service.secondOrderingList(result);
+	return list;
+	
+}
+
+//주문서 수정
+@ResponseBody
+@PostMapping("/sales/orderMod") // 사원정보 수정 ajax
+public String orderMod(InvVO inv) {
+
+	System.out.println(inv);
+	service.orderMod(inv);
+	return "result";
+}
+
+//상세주문서 수정
+@ResponseBody
+@PostMapping("/sales/ordDetMod") //상세 주문서 등록
+public boolean ordDetMod(@RequestBody List<OrdVO> list) {
+
+	System.out.println(list);
+	return service.ordDetMod(list);
+}
+
+
+@ResponseBody
+@RequestMapping("/sales/productDel")
+public String productDel(@RequestParam Map<String, Object> paramMap) throws Exception {
+	String jsonData = paramMap.get("list").toString();
+	System.out.println(jsonData);
+	ObjectMapper objectMapper = new ObjectMapper();
+    String[] dataArray = objectMapper.readValue(jsonData, String[].class);
+    System.out.println(dataArray.length);
+    for(String i : dataArray) {
+    	System.out.println(i);
+    	service.productDel(i);
+    }
+    
+    
+	return "/sales/productDel";
+}
+
+@ResponseBody
+@PostMapping("/sales/orderModDel") // 사원정보 수정 ajax
+public String orderModDel(InvVO inv) {
+
+	System.out.println(inv);
+	service.orderModDel(inv);
+	return "result";
+}
+
+//상세주문서 수정
+@ResponseBody
+@PostMapping("/sales/ordDetModDel") //상세 주문서 등록
+public boolean ordDetModDel(@RequestBody List<OrdVO> list) {
+
+	System.out.println(list);
+	return service.ordDetModDel(list);
+}
+
 }

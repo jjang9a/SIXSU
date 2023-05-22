@@ -25,11 +25,21 @@ public interface SalesService {
 	
 	InvVO orderAdd(InvVO inv); //주문서만 등록
 	
-	boolean ordDetAdd(List<OrdVO> list); 
+	boolean orderMod(InvVO inv); //주문서만 수정
+	
+	boolean orderModDel(InvVO inv); //주문서만 삭제
+	
+	boolean ordDetAdd(List<OrdVO> list); //상세 주문서만 수정
+	
+	boolean ordDetMod(List<OrdVO> list); //상세 주문서만 수정
+	
+	boolean ordDetModDel(List<OrdVO> list);
 	
 	List<InvVO> getOrderingList();  //페이지 마지막부분 주문중인 목록
 	
 	InvVO firstOrderingList(String keyword); //진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 
+	
+	List<OrdVO> secondOrderingList(String keyword); //진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 상세주문서가 화면에 나오도록 
 
-
+	int productDel(String num);
 }
