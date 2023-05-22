@@ -98,8 +98,8 @@
 							</div>
 
 							<div class="col-lg-3">
-								<button type="button" class="sixBtn8" id="inspIdBtn">검사
-									항목 내려받기</button>
+								<button type="button" class="sixBtn8" id="inspIdBtn" on
+									click="toggleForm()">검사 항목 내려받기</button>
 							</div>
 
 							<div class="row">
@@ -129,7 +129,7 @@
 
 								<label for="exampleFormControlInput1" class="form-label">검사자
 								</label> <input type="text" class="form-control" id="empName">
-								<button class="sixBtn1">
+								<button class="sixBtn1" id="searchBtn">
 									<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 										fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                             <path
@@ -203,7 +203,8 @@
 
 							<!-- 캡 원료(HDPE) 폼 시작 -->
 
-							<form action="" method="post" id="hdpeForm" style="display: none;">
+							<form action="" method="post" id="hdpeForm"
+								style="display: none;">
 								<div class="col-lg-3">
 									<label for="package" class="form-label">색상</label> <input
 										type="text" class="form-control" id="package">
@@ -310,6 +311,33 @@
 						</div>
 					</form>
 					<!-- 폼 끝나는 부분 -->
+				</div>
+			</div>
+
+			<!-- 모달창 사원조회 -->
+			<div class="modal fade" id="searchModal" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="searchModalLabel">사원 조회</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+
+
+							<div class="btns">
+								사원이름: <input id="search-text" />
+								<button class="sixBtn2" id="search-btn">조회</button>
+								<button class="sixBtn2" id="reset-btn">초기화</button>
+							</div>
+
+							<div class="modal-body">
+								<div id="grid"></div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -545,6 +573,20 @@
 		                }
 		            }
 		        });
+				
+			 // 모달창 전체 사원 리스트
+				$.ajax({
+					url : "/sales/empList",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
+						grid.resetData(result);
+					}
+				});
+				$('#searchModal').on('show.bs.modal',function(e){
+					console.log ('사원 모달');
+					setTimeout(()=>grid.refreshLayout(),1000);
+				})
 				
 				//
 				function showPrInspForm() {
