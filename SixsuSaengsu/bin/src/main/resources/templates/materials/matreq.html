@@ -58,19 +58,6 @@
 
 			];
 
-			const emptyRow = {
-					matReqId: '',
-					matId: '',
-					matName: '',
-					matReqQt: '',
-					busName: '',
-					matReqDate: '',
-					matReqStat: '',
-					matEndDate: ''
-				};
-
-			gridData.unshift(emptyRow);
-
 
 			window.onload = function () {
 				
@@ -98,7 +85,7 @@
 					useClient: true,
 					perPage: 10
 				},
-				
+
 
 				
 				rowHeaders: ['checkbox'],
@@ -124,9 +111,13 @@
 						editor: 'text'
 					},
 					{
+						header: '거래처코드',
+						name: 'busId',
+						editor: 'text'
+					},
+					{
 						header: '거래처명',
 						name: 'busName',
-						editor: 'text'
 					},
 					{
 						header: '발주일',
@@ -139,14 +130,18 @@
 					{
 						header: '납기요청일',
 						name: 'matEndDate',
-						editor: 'text'
+						editor: {
+						      type: 'datePicker',
+						      options: {
+						        format: 'yyyy-MM-dd'
+						      }
+						    }
 					},
 					{
-						header: '납기요청일',
-						name: 'matEndDate',
-						editor: 'text'
-						
+						header: '담당자',
+						name: 'empName'
 					}
+					
 
 				]
 				
@@ -188,20 +183,47 @@
 
 			}); */
 			
+			//등록버튼을 누르면 추가
  			$('#appendBtn').on("click", function () {
- 				const appendedData = {
- 						matReqId: '',
+/*  				const appendedData = {
+ 						matReqId: grid.getRow(0).matReqId,
  						matId: grid.getRow(0).matId,
- 						matName: '',
+ 						matName: grid.getRow(0).matName,
  						matReqQt: grid.getRow(0).matReqQt,
+ 						busId: grid.getRow(0).busId,
  						busName: grid.getRow(0).busName,
- 						matReqDate: '',
- 						matReqStat: '',
- 						matEndDate: ''
- 				};
+ 						matReqDate: grid.getRow(0).matReqDate,
+ 						matReqStat: grid.getRow(0).matReqStat,
+ 						matEndDate: grid.getRow(0).matEndDate,
+ 						empName: grid.getRow(0).empName
+ 				}; */
+ 				console.log(JSON.stringify(grid.getRow(0)));
+ 				let insertData = JSON.stringify(grid.getRow(0));
+ 				$.ajax({
+					url: "/materials/insertmatreq",
+					type: "POST",
+					data: insertData,
+					contentType: 'application/json',
+					//data : {list : JSON.stringify(matReqIds)},
+					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
+					success: function (result) {}
 
- 				//console.log(grid.getRow(0).matId);
- 				grid.appendRow(appendedData);
+				})
+ 				
+/*  				grid.appendRow(appendedData); */
+				$.ajax({
+					url: "/materials/mms",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+						gridInsertRow();
+					}
+				});
+				//var lastRow = gridData[gridData.length - 1];
+ 				//console.log(lastRow);
+ 				console.log("abc");
+ 				console.log(gridData.length);
  			});
  			
 
@@ -238,9 +260,9 @@
 					matReqIds.push(grid.getCheckedRows()[i].matReqId);
 
 				}
-				var dataOb = {}
+/* 				var dataOb = {}
 				dataOb.list = matReqIds
-				console.log(matReqIds);
+				console.log(matReqIds); */
 
 				$.ajax({
 					url: "/materials/delmatreq",
@@ -258,6 +280,8 @@
 
 				grid.removeCheckedRows(false);
 				grid.blur();
+				
+				
 			});
 			//조회하기
 			$('#check').on("click", function () {
@@ -289,6 +313,7 @@
 						gridInsertRow();
 					}
 				});
+				
 			});
 			
 			function gridInsertRow(){
