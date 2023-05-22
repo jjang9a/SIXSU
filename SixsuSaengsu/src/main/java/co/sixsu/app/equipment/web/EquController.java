@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.equipment.domain.EquConVO;
@@ -21,23 +22,22 @@ public class EquController {
 	@Autowired EquService equService;
 	
 	
-	// 설비 관리 페이지
-	@GetMapping("/equipment/equCon") 
+	// 설비 관리 페이지 - 관리페이지 기능은 /equipment/equCon - 수행.
+	@GetMapping("/equipment/equConpage") 
 	public void equCon() {
 	}
 	
-	// 설비 조회 페이지
-	@GetMapping("/equipment/equSearch") 
+	@GetMapping("/equipment/equSearch") // 설비 조회 페이지
 	public void equSearch() {
 	}
-    //설비 관리 페이지 리스트
-	@GetMapping("/equipment/equConList") 
+    
+	@GetMapping("/equipment/equCon") //설비 관리 페이지 리스트
 	public String equList(Model model){
 		model.addAttribute("equConList", equService.equConList());
 		return "/equipment/equCon";
 	}
-	// 설비 관리 리스트 ajax
-	@ResponseBody 
+	
+	@ResponseBody // 설비 관리 리스트 ajax
 	@RequestMapping("/equipment/equConList1") 
 	public List<EquConVO> equConList() {
 		 List<EquConVO> list = equService.equConList();
@@ -45,19 +45,35 @@ public class EquController {
 		 return list;
 	}
 	
-	@ResponseBody // 설비 등록 ajax
+	@ResponseBody // 설비관리(등록) 
 	@PostMapping("/equipment/equAdd")
 	public EquConVO equAdd(EquConVO data) { 
 		equService.equAdd(data);
 		return data;
 	}
-	/*
-	 * @ResponseBody // 설비 수정 ajax
-	 * 
-	 * @PostMapping("/equipment/equUpdate") boolean public equUpdate(@RequestBody) {
-	 * int result = equService.equUpdate(data); System.out.println(result); return
-	 * data; }
-	 */
+	
+	@ResponseBody // 설비관리(수정) 
+	@PostMapping("/equipment/equUpdate") 
+	public EquConVO equUpdate(EquConVO data) {
+		equService.equUpdate(data);
+		return data;
+	} 
+	@ResponseBody // 설비관리(삭제) 
+	@PostMapping("/equipment/equDel") 
+	public String equdel(@RequestBody String equCode) {
+		System.err.println("ddd");
+	    System.err.println(equCode);
+		  if(equService.equDel(equCode)) {
+			  return "success" ;
+
+		  }else {
+			  return "fail";
+		  }
+		  
+	} 
+	 
+	  
+	 
 
 	@ResponseBody // 설비조회 상세정보(모달에 데이터를 보내줌)
 	@RequestMapping("/equipment/equInfo") // 설비 조회 상세정보 리스트

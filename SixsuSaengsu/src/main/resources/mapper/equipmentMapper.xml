@@ -35,13 +35,21 @@
 
 	<!-- 설비관리 등록 -->
 	<insert id="equAdd" parameterType="EquConVO">
-		insert into equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_img, emp_id, equ_check)
-		values(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{equImg}, #{empId}, #{equCheck})
+		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_img, emp_id, equ_check)
+		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{equImg}, #{empId}, #{equCheck})
 	</insert>
 	
 	<update id="equUpdate" parameterType="EquConVO">
-		update equ_con
-		set equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, equ_img=#{equImg}, emp_id=#{empId}, equ_check=#{equCheck}
-		where equ_code=#{equcode}
-</update>
+		UPDATE equ_con
+		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, equ_img=#{equImg}, emp_id=#{empId}, equ_check=#{equCheck}
+		WHERE equ_code=#{equCode}
+	</update>
+	
+	<delete id="equDel" parameterType="String">
+		delete from equ_con where equ_code = #{equCode}
+	</delete>
+	
+	
+	
+	
 </mapper>
