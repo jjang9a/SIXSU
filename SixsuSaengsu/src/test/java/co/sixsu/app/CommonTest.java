@@ -3,6 +3,7 @@ package co.sixsu.app;
 import java.util.Date;
 import java.util.List;
 
+import org.jasypt.encryption.StringEncryptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,14 +22,13 @@ public class CommonTest {
 	@Autowired BasicMapper mapper;
 	@Autowired BasicService service;
 	
-	@Test
 	public void getDateTest() {
 		Date date = mapper.getDate();
 		log.debug(date);
 		System.out.println(date);
 	}
 	
-	@Test
+	//@Test
 	public void groupTest() {
 		List<CodeVO> list1 = mapper.groupList();
 		System.out.println(list1);

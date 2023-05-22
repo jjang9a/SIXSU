@@ -2,6 +2,7 @@ package co.sixsu.app.material.mapper;
 
 import java.util.List;
 
+import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 
 public interface MaterialsMapper {
@@ -13,9 +14,13 @@ public interface MaterialsMapper {
 	//단건조회
 	List<MatreqVO> selectMatReq(int reqId);
 	
-	//단건 리스트 삭제
-	int deleteMatReq(int reqId);
+	//발주 리스트에서 삭제
+	int deleteMatReq(String reqId);
 	
+	//발주 등록
 	int insertMatReq(MatreqVO vo);
+	
+	//입고대기 리스트
+	List<MatrecWaitVO> getMatRecWaitList();
 	
 }
