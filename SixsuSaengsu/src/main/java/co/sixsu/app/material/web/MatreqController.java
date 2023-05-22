@@ -32,12 +32,15 @@ public class MatreqController {
 //	}
 	
 	
-	
-	//발주내역 페이지 열어주기
+	//발주관리 페이지 열어주기
 	@GetMapping("/materials/matreq")
 	public void matreqList() {
 	}
 	
+	//자재입고관리 페이지 열어주기
+	@GetMapping("/materials/matrec")
+	public void matrecList() {
+	}
 	
 	
 	//발주내역 DB에서 불러오기
@@ -90,9 +93,9 @@ public class MatreqController {
 		String jsonData = paramMap.get("list").toString();
 		System.out.println(jsonData);
 		ObjectMapper objectMapper = new ObjectMapper();
-	    int[] dataArray = objectMapper.readValue(jsonData, int[].class);
+	    String[] dataArray = objectMapper.readValue(jsonData, String[].class);
 	    System.out.println(dataArray.length);
-	    for(int i : dataArray) {
+	    for(String i : dataArray) {
 	    	System.out.println(i);
 	    	service.deleteMatReq(i);
 	    }
@@ -105,7 +108,7 @@ public class MatreqController {
 	@PostMapping("/materials/insertmatreq")
 	public MatreqVO insertMatReq(@RequestBody MatreqVO vo) {		
 		System.out.println(vo);
-		//service.insertMatReq(vo);
+		service.insertMatReq(vo);
 		
 		return vo;
 		

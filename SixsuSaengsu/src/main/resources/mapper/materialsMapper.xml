@@ -6,18 +6,19 @@
 <mapper namespace="co.sixsu.app.material.mapper.MaterialsMapper">
 
 	<select id="getMatReqList" resultType="MatreqVO">
-		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, to_date(mat_end_date,'yyyy-MM-dd')-to_date(mat_req_date,'yyyy-MM-dd') as mat_dly_date, m.emp_id
+		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
 		from mat_req m left join business b
 		on m.bus_id = b.bus_id
 		left join employee e
 		on m.emp_id = e.emp_id
 		left join material t
 		on m.mat_id = t.mat_id
+		order by TO_DATE(SUBSTR(mat_req_id, 4, 6), 'YYMMDD') ASC, TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1))
 	</select>
 <!-- to_date(sysdate, 'YYYY-MM-dd') -->
 
 	<select id="selectMatReq" resultType="MatreqVO">
-		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, to_date(mat_end_date,'yyyy-MM-dd')-to_date(mat_req_date,'yyyy-MM-dd') as mat_dly_date, m.emp_id
+		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
 		from mat_req m left join business b
 		on m.bus_id = b.bus_id
 		left join employee e
@@ -25,17 +26,29 @@
 		left join material t
 		on m.mat_id = t.mat_id
 		where m.mat_req_id = #{reqId}
+		order by TO_DATE(SUBSTR(mat_req_id, 4, 6), 'YYMMDD') ASC, TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1))
 		
 	</select>
 	
-	<delete id="deleteMatReq" parameterType="int">
+	<delete id="deleteMatReq" parameterType="String">
 		delete from mat_req where mat_req_id = #{reqId}
 	</delete>
 	
 	<insert id="insertMatReq" parameterType="MatreqVO">
 		insert into mat_req (mat_req_id, bus_id, mat_id, mat_req_qt, mat_end_date, emp_id)
-		values (#{matReqId}, #{busId}, #{matId}, #{matReqQt}, #{matEndDate}, '12345')
+		values (get_mat_req_id, #{busId}, #{matId}, #{matReqQt}, #{matEndDate}, '12345')
 	</insert>
+	
+	<select id="selectMatRecWaitList" resultType="MatrecWaitVO">
+		select q.insp_std_id, q.insp_item_id, t.mat_name, q.suit_qt, q.insp_date 
+		from qua_com q left join mat_req m
+		on q.insp_std_id = m.mat_req_id
+		left join material t
+		on q.insp_item_id = t.mat_id
+		order by insp_date
+	</select>
+	
+	
 </mapper>
 
 

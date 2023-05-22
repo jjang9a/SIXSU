@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.sales.domain.InvVO;
 import co.sixsu.app.sales.domain.OrdVO;
 import co.sixsu.app.sales.mapper.SalesMapper;
 import co.sixsu.app.sales.service.SalesService;
@@ -45,18 +46,42 @@ public String getMakeCode() {
 	return mapper.makeCode();
 }
 
-@Override
+@Override  //주문상세목록
 public List<OrdVO> getOrdList() {
 	// TODO Auto-generated method stub
 	return mapper.ordList();
 }
 
-@Override
+@Override // 상세거래처주문에 상품명을 조회
 public List<ProductVO> getProdList() {
 	// TODO Auto-generated method stub
 	return mapper.prodList();
 }
 
+@Override //주문서만 등록
+public InvVO orderAdd(InvVO inv) {
+	inv.setOrdStat("진행중");
+	mapper.orderAdd(inv);
+	return inv;
+}
 
 
+
+@Override
+public boolean ordDetAdd(List<OrdVO> list) {
+   int count =0;
+   for(int i=0; i<list.size(); i++) {
+      if(list.get(i).getOrdDetId() == null || list.get(i).getOrdDetId().equals("")){
+         continue;
+      }else {
+         list.get(i).setOrdStatDet("진행중");
+         String bir = list.get(i).getOrdDetId();
+         String id= bir.substring(0,13);
+         list.get(i).setOrdId(id);
+         System.out.println(list.get(i));
+   count += mapper.ordDetAdd(list.get(i));
+      }
+   }
+   return count >=1;
+}
 }

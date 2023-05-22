@@ -4,7 +4,9 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.sixsu.app.sales.mapper.SalesMapper">
-
+<select id="getDate" resultType="java.util.Date">
+	select sysdate from dual
+</select>
 	<!-- 모달창 사원 전체조회 -->
 	<select id="empList"
 		resultType='EmpVO'>
@@ -45,9 +47,26 @@
 	and c.CP_ID = d.CP_ID
 	</select>
 	
+	<!-- 모달창 주문목록 페이지 -->
 	<select id="prodList"
 		resultType='ProductVO'>
 		select* from complete_prod
 	</select>
+	
+	<!-- 주문등록 (주문서만) -->
+	<insert id="orderAdd" parameterType="InvVO">
+	insert into SORDER values(
+	#{ordId}, TO_DATE(#{ordDate}, 'yyyy-MM-dd'),#{ordStat}, #{empId} , #{busId})
+	</insert>
+	
+	<!-- 상세주문등록 -->
+	<insert id="ordDetAdd" parameterType="OrdVO">
+	insert into det_ord values(
+	#{ordDetId}, #{ordQt}, #{ordStatDet}, #{cpId}, #{ordId}, #{ordDetPrice} , TO_DATE(#{ordEndDate}, 'yyyy-MM-dd'), #{ordSalePrice} 
+	)
+	</insert>
+	
+	  
+	
 	
 </mapper>

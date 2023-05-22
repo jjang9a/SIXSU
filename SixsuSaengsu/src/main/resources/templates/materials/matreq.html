@@ -130,7 +130,16 @@
 					{
 						header: '납기요청일',
 						name: 'matEndDate',
-						editor: 'text'
+						editor: {
+						      type: 'datePicker',
+						      options: {
+						        format: 'yyyy-MM-dd'
+						      }
+						    }
+					},
+					{
+						header: '담당자',
+						name: 'empName'
 					}
 					
 
@@ -174,8 +183,9 @@
 
 			}); */
 			
+			//등록버튼을 누르면 추가
  			$('#appendBtn').on("click", function () {
- 				const appendedData = {
+/*  				const appendedData = {
  						matReqId: grid.getRow(0).matReqId,
  						matId: grid.getRow(0).matId,
  						matName: grid.getRow(0).matName,
@@ -184,8 +194,9 @@
  						busName: grid.getRow(0).busName,
  						matReqDate: grid.getRow(0).matReqDate,
  						matReqStat: grid.getRow(0).matReqStat,
- 						matEndDate: grid.getRow(0).matEndDate
- 				};
+ 						matEndDate: grid.getRow(0).matEndDate,
+ 						empName: grid.getRow(0).empName
+ 				}; */
  				console.log(JSON.stringify(grid.getRow(0)));
  				let insertData = JSON.stringify(grid.getRow(0));
  				$.ajax({
@@ -199,9 +210,20 @@
 
 				})
  				
- 				grid.appendRow(appendedData);
- 				
- 				
+/*  				grid.appendRow(appendedData); */
+				$.ajax({
+					url: "/materials/mms",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+						gridInsertRow();
+					}
+				});
+				//var lastRow = gridData[gridData.length - 1];
+ 				//console.log(lastRow);
+ 				console.log("abc");
+ 				console.log(gridData.length);
  			});
  			
 
@@ -258,6 +280,8 @@
 
 				grid.removeCheckedRows(false);
 				grid.blur();
+				
+				
 			});
 			//조회하기
 			$('#check').on("click", function () {
@@ -289,6 +313,7 @@
 						gridInsertRow();
 					}
 				});
+				
 			});
 			
 			function gridInsertRow(){
