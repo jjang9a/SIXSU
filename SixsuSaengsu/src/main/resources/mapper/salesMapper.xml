@@ -66,7 +66,18 @@
 	)
 	</insert>
 	
-	  
+	<!-- 진행중인 주문서 조회 페이지 가장 하단 부분 -->
+	<select id="orderingList" resultType='InvVO'>
+	
+	select s.ord_id, s.ord_date, b.bus_name, b.bus_id, b.bus_num, s.ord_stat
+	from SORDER s, BUSINESS b
+	where s.bus_id = b.bus_id
+	and s.ord_stat = '진행중'
+	ORDER BY TO_DATE(SUBSTR(s.ord_id, 4, 6), 'YYMMDD') DESC, TO_NUMBER(SUBSTR(s.ord_id, INSTR(s.ord_id, '-') + 1))DESC
+
+
+	
+	</select>
 	
 	
 </mapper>

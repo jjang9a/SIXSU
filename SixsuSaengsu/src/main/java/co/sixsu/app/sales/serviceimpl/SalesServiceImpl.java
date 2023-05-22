@@ -84,4 +84,11 @@ public boolean ordDetAdd(List<OrdVO> list) {
    }
    return count >=1;
 }
+
+//페이지 마지막부분 주문중인 목록
+@Override
+public List<InvVO> getOrderingList() {
+	// TODO Auto-generated method stub
+	return mapper.orderingList();
+}
 }
