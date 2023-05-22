@@ -94,15 +94,14 @@
 
 	    <script>
 	    
-	    //const gridData=[];
-			  
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
-       // data: {
-      
+        pageOptions: {
+			useClient : true,
+			perPage: 10
+		},
         scrollX: false,
         scrollY: false,
-        
         
         rowHeaders: ['rowNum'],
         columns: [
@@ -185,7 +184,9 @@
     	console.log(dataRow.equCode);
     	console.log(dataRow);
     
+    	// 한 열을 클릭시 모달창 띄우기.
     	$('#staticBackdrop').modal('show');
+    	
     	$('#equCode').val(dataRow.equCode);
 	      $('#procId').val(dataRow.procId);
 	      $('#equStat').val(dataRow.equStat);
@@ -216,7 +217,6 @@
     
     
     $('#searchBtn2').on('click', function(){
-    
     
     var searchData = {};
     

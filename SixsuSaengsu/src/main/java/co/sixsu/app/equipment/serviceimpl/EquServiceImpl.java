@@ -40,4 +40,14 @@ public class EquServiceImpl implements EquService{
 		return mapper.equFilterList(data);
 	}
 
+	@Override
+	public boolean equAdd(EquConVO data) { // 설비관리(등록)
+		return mapper.equAdd(data) == 1;
+	}
+
+	@Override
+	public int equUpdate(EquConVO data) { // 설비관리(수정)
+		return mapper.equUpdate(data);
+	}
+
 }

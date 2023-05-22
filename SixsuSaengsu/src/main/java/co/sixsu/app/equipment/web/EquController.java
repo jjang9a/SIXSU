@@ -1,6 +1,5 @@
 package co.sixsu.app.equipment.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.equipment.domain.EquConVO;
-import co.sixsu.app.equipment.mapper.EquMapper;
 import co.sixsu.app.equipment.service.EquService;
 
 
@@ -24,32 +21,45 @@ public class EquController {
 	@Autowired EquService equService;
 	
 	
-
-	@GetMapping("/equipment/equ1") // 설비 관리 페이지
-	public void equ1() {
+	// 설비 관리 페이지
+	@GetMapping("/equipment/equCon") 
+	public void equCon() {
 	}
 	
-	@GetMapping("/equipment/equ2") // 설비 조회 페이지
-	public void equ2() {
+	// 설비 조회 페이지
+	@GetMapping("/equipment/equSearch") 
+	public void equSearch() {
 	}
-	 
-	@GetMapping("/equipment/equConList") //리스트
+    //설비 관리 페이지 리스트
+	@GetMapping("/equipment/equConList") 
 	public String equList(Model model){
 		model.addAttribute("equConList", equService.equConList());
-		return "/equipment/equ1";
+		return "/equipment/equCon";
 	}
-
-	@ResponseBody
-	@RequestMapping("/equipment/equConList1") // 설비 관리 리스트
+	// 설비 관리 리스트 ajax
+	@ResponseBody 
+	@RequestMapping("/equipment/equConList1") 
 	public List<EquConVO> equConList() {
 		 List<EquConVO> list = equService.equConList();
 		 System.out.println(list);
-		 //modal.addAttribute("list", list);Model modal
 		 return list;
 	}
-
 	
-	@ResponseBody // 모달에 데이터를 보내줌
+	@ResponseBody // 설비 등록 ajax
+	@PostMapping("/equipment/equAdd")
+	public EquConVO equAdd(EquConVO data) { 
+		equService.equAdd(data);
+		return data;
+	}
+	/*
+	 * @ResponseBody // 설비 수정 ajax
+	 * 
+	 * @PostMapping("/equipment/equUpdate") boolean public equUpdate(@RequestBody) {
+	 * int result = equService.equUpdate(data); System.out.println(result); return
+	 * data; }
+	 */
+
+	@ResponseBody // 설비조회 상세정보(모달에 데이터를 보내줌)
 	@RequestMapping("/equipment/equInfo") // 설비 조회 상세정보 리스트
 	public List<EquConVO> equInfo(@ModelAttribute EquConVO info) { //담고 담아서
 		String equCode = info.getEquCode(); // info 안에 필드값 EquCode를
@@ -68,6 +78,10 @@ public class EquController {
 		List<EquConVO> list = equService.equFilterList(data);
 		return list;
 	}
+	
+	
+	
+	
 	
 //	@GetMapping("equ/equcheck") // 점검관리 페이지
 //	public void equcheck() {

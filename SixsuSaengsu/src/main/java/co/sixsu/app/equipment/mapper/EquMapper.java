@@ -19,10 +19,13 @@ public interface EquMapper {
 	List<EmpVO> empInfoList(String result); // 설비조회 모달(상세정보) 리스트
 
 	List<EquConVO> equFilterList(EquConVO data); // 조회 페이지 검색기능
+
+	int equAdd(EquConVO data); // 설비관리(등록)
+
+	int equUpdate(EquConVO data); // 설비관리(수정)
 	
 	
 	
-   // int insertequ(EquContVO vo); // 설비관리 등록
 
 
 	
