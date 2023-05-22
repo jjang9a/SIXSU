@@ -127,5 +127,13 @@ public List<InvVO> orderingList(){
 	return list;
 }
 
-
+//진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 
+@RequestMapping("/sales/firstOrderingList")
+@ResponseBody
+public InvVO firstOrderingList(@RequestParam String result){
+	System.out.println(result);
+	InvVO list = service.firstOrderingList(result);
+	return list;
+	
+}
 }

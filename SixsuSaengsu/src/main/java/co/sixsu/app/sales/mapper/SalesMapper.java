@@ -32,5 +32,7 @@ public interface SalesMapper {
 	public int ordDetAdd(OrdVO code);//상세주문서등록
 	
 	public List<InvVO> orderingList(); //페이지 마지막부분 주문중인 목록
+	
+	public InvVO firstOrderingList(String keyword); //진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 
 }
 
