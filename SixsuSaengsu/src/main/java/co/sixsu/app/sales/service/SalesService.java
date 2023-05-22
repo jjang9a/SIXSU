@@ -27,13 +27,13 @@ public interface SalesService {
 	
 	boolean orderMod(InvVO inv); //주문서만 수정
 	
-	boolean orderModDel(InvVO inv); //주문서만 삭제
+	int orderModDel(InvVO inv); //주문서만 삭제
 	
 	boolean ordDetAdd(List<OrdVO> list); //상세 주문서만 수정
 	
 	boolean ordDetMod(List<OrdVO> list); //상세 주문서만 수정
 	
-	boolean ordDetModDel(List<OrdVO> list);
+	/* boolean ordDetModDel(List<OrdVO> list); */
 	
 	List<InvVO> getOrderingList();  //페이지 마지막부분 주문중인 목록
 	

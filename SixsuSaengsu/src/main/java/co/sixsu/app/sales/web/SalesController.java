@@ -193,17 +193,19 @@ public String productDel(@RequestParam Map<String, Object> paramMap) throws Exce
 public String orderModDel(InvVO inv) {
 
 	System.out.println(inv);
+	
 	service.orderModDel(inv);
 	return "result";
 }
 
-//상세주문서 수정
-@ResponseBody
-@PostMapping("/sales/ordDetModDel") //상세 주문서 등록
-public boolean ordDetModDel(@RequestBody List<OrdVO> list) {
-
-	System.out.println(list);
-	return service.ordDetModDel(list);
-}
-
+/*
+ * //상세주문서 수정
+ * 
+ * @ResponseBody
+ * 
+ * @PostMapping("/sales/ordDetModDel") //상세 주문서 등록 public boolean
+ * ordDetModDel(@RequestBody List<OrdVO> list) {
+ * System.out.println("---------------------------------------------");
+ * System.out.println(list); return service.ordDetModDel(list); }
+ */
 }
