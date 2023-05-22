@@ -177,15 +177,8 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 		})	
 		
 		
-	// 상세주문등록 테이블 리스트
-		$.ajax({
-			url : "/sales/ordList",
-			method : "GET",
-			dataType : "JSON",
-			success : function(result) {
-				gridy.resetData(result);
-			}
-		});
+	
+	
 		$("#productConfirm").on("click", function(e) {
 	  		if ($('#ordDate').val() === "" || $('#orderName').val() === "" || $('#busName').val() === "") {
 	    	alert("주문정보를 먼저 입력을 하십시오");
@@ -233,7 +226,7 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 	 //주문서 완료후 상품 등록
 		$('#orderComplete').on('click',function(e){
 			
-			
+		
 			$.ajax({
 				url:'/sales/orderAdd',
 				type:'post',
@@ -273,6 +266,7 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 			})
 			
 			location.reload();
+			
 		})
 
 //주문서 수정후 상품 등록
@@ -305,6 +299,7 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 			$.ajax({
 				url:'/sales/ordDetMod',
 				type:'post',
+				data: 'json',
 				contentType : 'application/json',
 				data:JSON.stringify(gridy.getModifiedRows().updatedRows),
 				success:function(result){
@@ -360,22 +355,9 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 					alert('주문서삭제과정 에러가 발생하였습니다.')
 				}
 			})
-	
-			$.ajax({
-				url:'/sales/ordDetModDel',
-				type:'post',
-				contentType : 'application/json',
-				data:JSON.stringify(gridy.getModifiedRows().deletedRows),
-				success:function(result){
-					alert('주문서상세 삭제가 성공적으로 처리되었습니다.')
-					console.log(result);
-				},
-				error:function(reject){
-					console.log(reject);
-					alert('주문서상세 삭제에서 에러가 발생하였습니다.')
-				}
-			})
-			//location.reload();
+			
+			
+			location.reload();
 	}) 
 	 
 //상품 상세 품목 지우기	
@@ -709,7 +691,7 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 					method : "GET",
 					data : {'result' : dataRow.ordId},
 					success : function(result) {
-				
+					console.log(result)
 						  $('#codeBox').val(result.ordId);
 						  $('#ordDate').val(result.ordDate);
 						  $('#orderName').val(result.empName);

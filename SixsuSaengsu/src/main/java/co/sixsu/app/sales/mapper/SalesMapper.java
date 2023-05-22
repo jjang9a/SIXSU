@@ -33,7 +33,7 @@ public interface SalesMapper {
 	
 	public int ordDetAdd(OrdVO code);//상세주문서등록
 	public int ordDetMod(OrdVO code);//상세주문서수정
-	public int ordDetModDel(OrdVO code);//상세주문서삭제
+	public int ordDetModDel(InvVO inv);//상세주문서삭제
 	
 	public List<InvVO> orderingList(); //페이지 마지막부분 주문중인 목록
 	

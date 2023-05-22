@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
@@ -136,12 +137,18 @@ public int productDel(String num) {
 }
 
 @Override
-public boolean orderModDel(InvVO inv) {
+@Transactional
+public int orderModDel(InvVO inv) {
 	// TODO Auto-generated method stub
-	return mapper.orderModDel(inv) == 1;
+	int result = mapper.ordDetModDel(inv);
+	 result +=  mapper.orderModDel(inv);
+	return result;
+	
 }
 
-@Override
+
+
+/*@Override
 public boolean ordDetModDel(List<OrdVO> list) {
 	 int count =0;
 	   for(int i=0; i<list.size(); i++) {
@@ -157,6 +164,6 @@ public boolean ordDetModDel(List<OrdVO> list) {
 	      }
 	   }
 	   return count >=1;
-	
-}
+	*/
+
 }
