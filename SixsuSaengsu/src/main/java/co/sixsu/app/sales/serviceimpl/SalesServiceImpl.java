@@ -67,7 +67,7 @@ public InvVO orderAdd(InvVO inv) {
 
 
 
-@Override
+@Override // 상세주문서만 수정
 public boolean ordDetAdd(List<OrdVO> list) {
    int count =0;
    for(int i=0; i<list.size(); i++) {
@@ -96,5 +96,67 @@ public List<InvVO> getOrderingList() {
 public InvVO firstOrderingList(String keyword) {
 	// TODO Auto-generated method stub
 	return mapper.firstOrderingList(keyword);
+}
+
+@Override
+public List<OrdVO> secondOrderingList(String keyword) {
+	// TODO Auto-generated method stub
+	return mapper.secondOrderingList(keyword);
+}
+
+@Override
+public boolean orderMod(InvVO inv) {
+	// TODO Auto-generated method stub
+	return mapper.orderMod(inv) == 1;
+}
+
+@Override
+public boolean ordDetMod(List<OrdVO> list) {
+	 int count =0;
+	   for(int i=0; i<list.size(); i++) {
+	      if(list.get(i).getOrdDetId() == null || list.get(i).getOrdDetId().equals("")){
+	         continue;
+	      }else {
+	         
+	         String bir = list.get(i).getOrdDetId();
+	         String id= bir.substring(0,13);
+	         list.get(i).setOrdId(id);
+	         System.out.println(list.get(i));
+	   count += mapper.ordDetMod(list.get(i));
+	      }
+	   }
+	   return count >=1;
+	
+}
+
+@Override
+public int productDel(String num) {
+	// TODO Auto-generated method stub
+	return mapper.productDel(num);
+}
+
+@Override
+public boolean orderModDel(InvVO inv) {
+	// TODO Auto-generated method stub
+	return mapper.orderModDel(inv) == 1;
+}
+
+@Override
+public boolean ordDetModDel(List<OrdVO> list) {
+	 int count =0;
+	   for(int i=0; i<list.size(); i++) {
+	      if(list.get(i).getOrdDetId() == null || list.get(i).getOrdDetId().equals("")){
+	         continue;
+	      }else {
+	         
+	         String bir = list.get(i).getOrdDetId();
+	         String id= bir.substring(0,13);
+	         list.get(i).setOrdId(id);
+	         
+	   count += mapper.ordDetModDel(list.get(i));
+	      }
+	   }
+	   return count >=1;
+	
 }
 }

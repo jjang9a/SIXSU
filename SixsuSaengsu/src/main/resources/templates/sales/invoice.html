@@ -137,6 +137,7 @@
 		</div>
 		<div id="gridy"></div>
 		<button class="sixBtn6" id="orderComplete">주문서 완료</button>
+		<button class="sixBtn6" id="orderModify">주문서 수정</button>
 		<button class="sixBtn6" id="deletComplete">주문서 삭제</button>
 		<div id="orderingGrid"></div>
 		
@@ -231,6 +232,8 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 	
 	 //주문서 완료후 상품 등록
 		$('#orderComplete').on('click',function(e){
+			
+			
 			$.ajax({
 				url:'/sales/orderAdd',
 				type:'post',
@@ -268,9 +271,55 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 					alert('주문서상세등록과정에서 에러가 발생하였습니다.')
 				}
 			})
+			
 			location.reload();
 		})
 
+//주문서 수정후 상품 등록
+		$('#orderModify').on('click',function(e){
+			
+
+			$.ajax({
+				url:'/sales/orderMod',
+				type:'post',
+				data:$('#allOrderList').serialize(),
+				success:function(result){
+					console.log(result)
+					 $('#codeBox').val(null);
+					 $('#ordDate').val(null);
+					 $('#orderName').val(null);
+					 $('#orderNum').val(null);
+					 $('#busName').val(null);
+					 $('#busCode').val(null);
+					 $('#busNum').val(null);
+					 $('#busAddr').val(null);
+					 $('#busTel').val(null);
+				},
+				error:function(reject){
+					console.log(reject);
+					alert('주문서수정과정에서 에러가 발생하였습니다.')
+				}
+			})
+			console.log(JSON.stringify(gridy.getModifiedRows().updatedRows))
+	
+			$.ajax({
+				url:'/sales/ordDetMod',
+				type:'post',
+				contentType : 'application/json',
+				data:JSON.stringify(gridy.getModifiedRows().updatedRows),
+				success:function(result){
+					alert('주문서 수정이 성공적으로 처리되었습니다.')
+					console.log(result);
+					
+				},
+				error:function(reject){
+					console.log(reject);
+					alert('주문서상세등록과정에서 에러가 발생하였습니다.')
+				}
+			}) 
+			
+			location.reload();
+		})
 
 									
 //주문서 입력후 초기화 하는 버튼
@@ -285,9 +334,74 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 		 $('#busAddr').val(null);
 		 $('#busTel').val(null);
 	 })
+	 
+//주문서 삭제
+
+	$("#deletComplete").on("click", function(e){
+		
+		$.ajax({
+				url:'/sales/orderModDel',
+				type:'post',
+				data:$('#allOrderList').serialize(),
+				success:function(result){
+					console.log(result)
+					 $('#codeBox').val(null);
+					 $('#ordDate').val(null);
+					 $('#orderName').val(null);
+					 $('#orderNum').val(null);
+					 $('#busName').val(null);
+					 $('#busCode').val(null);
+					 $('#busNum').val(null);
+					 $('#busAddr').val(null);
+					 $('#busTel').val(null);
+				},
+				error:function(reject){
+					console.log(reject);
+					alert('주문서삭제과정 에러가 발생하였습니다.')
+				}
+			})
+	
+			$.ajax({
+				url:'/sales/ordDetModDel',
+				type:'post',
+				contentType : 'application/json',
+				data:JSON.stringify(gridy.getModifiedRows().deletedRows),
+				success:function(result){
+					alert('주문서상세 삭제가 성공적으로 처리되었습니다.')
+					console.log(result);
+				},
+				error:function(reject){
+					console.log(reject);
+					alert('주문서상세 삭제에서 에러가 발생하였습니다.')
+				}
+			})
+			//location.reload();
+	}) 
+	 
 //상품 상세 품목 지우기	
 	$("#productDelete").on("click", function(e) {	
- 		gridy.removeCheckedRows(false)})
+		var ordDetId = [];
+		for(var i = 0; i< gridy.getCheckedRows().length; i++){
+			ordDetId.push(gridy.getCheckedRows()[i].ordDetId);
+		}
+		
+ 		$.ajax({
+ 			url:"/sales/productDel",
+ 			type:"get",
+ 			contentType: 'application/json',
+ 			data:{
+ 				list:JSON.stringify(ordDetId)
+ 			},
+ 			success:function (result){}
+ 			
+ 		
+ 		
+ 		})
+			gridy.removeCheckedRows(false);
+ 		gridy.blur();
+	
+	
+	});
  //
 	const gridy = new tui.Grid({
 		el : document.getElementById('gridy'),
@@ -587,14 +701,15 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 		orderingGrid.on('click', ev=> {
 			 const focusCell = orderingGrid.getFocusedCell()
 		      let dataRow = orderingGrid.getRow(ev.rowKey);
-			 console.log(dataRow);
+			console.log(dataRow);
+			
 
 				$.ajax({
 					url : "/sales/firstOrderingList",
 					method : "GET",
 					data : {'result' : dataRow.ordId},
 					success : function(result) {
-					console.log(result)
+				
 						  $('#codeBox').val(result.ordId);
 						  $('#ordDate').val(result.ordDate);
 						  $('#orderName').val(result.empName);
@@ -602,13 +717,22 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 					      $('#busName').val(result.busName);
 					      $('#busCode').val(result.busId);
 					      $('#busNum').val(result.busNum);
-
 					      $('#busAddr').val(result.busAddr);
 					      $('#busTel').val(result.busTell);
 					    
 					}
 		    })   
-  
+		    
+			    $.ajax({
+			    	url:"/sales/secondOrderingList",
+			    	method: "GET",
+			    	data : {'result' : dataRow.ordId},
+			    	success : function(result){
+			    		gridy.resetData(result);
+			    		
+			    	}
+			    })
+				
 		})
 
     
