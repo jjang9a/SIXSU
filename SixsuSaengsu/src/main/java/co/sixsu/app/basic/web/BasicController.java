@@ -123,6 +123,11 @@ public class BasicController {
 		return prod;
 	}
 	
-
+	@ResponseBody
+	@GetMapping("/basic/searchCp") // 선택, 검색 기반 공통코드 조회
+	public List<CodeVO> searchCp(SearchDTO dto) {
+		
+		return null;
+	}
 	
 }
