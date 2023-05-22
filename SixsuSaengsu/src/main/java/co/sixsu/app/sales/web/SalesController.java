@@ -117,5 +117,23 @@ public boolean ordDetAdd(@RequestBody List<OrdVO> list) {
 }
 
 
+//
 
+//페이지 하단부분에있는 진행중인 주문서 조회
+@RequestMapping("/sales/orderingList")
+@ResponseBody
+public List<InvVO> orderingList(){
+	List<InvVO> list = service.getOrderingList();
+	return list;
+}
+
+//진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 
+@RequestMapping("/sales/firstOrderingList")
+@ResponseBody
+public InvVO firstOrderingList(@RequestParam String result){
+	System.out.println(result);
+	InvVO list = service.firstOrderingList(result);
+	return list;
+	
+}
 }

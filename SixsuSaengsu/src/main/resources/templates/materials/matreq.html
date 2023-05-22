@@ -93,8 +93,7 @@
 
 				columns: [{
 						header: '발주번호',
-						name: 'matReqId',
-						editor: 'text'
+						name: 'matReqId'
 					},
 					{
 						header: '자재코드',
@@ -209,8 +208,7 @@
 					success: function (result) {}
 
 				})
- 				
-/*  				grid.appendRow(appendedData); */
+				
 				$.ajax({
 					url: "/materials/mms",
 					method: "GET",
@@ -219,7 +217,10 @@
 						grid.resetData(result);
 						gridInsertRow();
 					}
+				
 				});
+/*  				grid.appendRow(appendedData); */
+				
 				//var lastRow = gridData[gridData.length - 1];
  				//console.log(lastRow);
  				console.log("abc");
