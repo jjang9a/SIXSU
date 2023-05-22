@@ -1,5 +1,6 @@
 package co.sixsu.app.material.web;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import co.sixsu.app.material.domain.MatrecListVO;
 import co.sixsu.app.material.domain.MatrecVO;
@@ -138,14 +141,38 @@ public class MatreqController {
 		return list;
 	}
 	
-	@ResponseBody
-	@RequestMapping("/materials/insertmatrec")
-	public String insertMatRec(@RequestBody List<MatrecVO> list) throws Exception {
-		System.out.println(list);
-		
-		return "success";
-		
-	}
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping("/materials/insertmatrec") public String
+	 * insertMatRec(@RequestBody List<MatrecVO> list) throws Exception {
+	 * System.out.println(list);
+	 * 
+	 * return "success";
+	 * 
+	 * }
+	 */
+	
+	//입고등록
+	@PostMapping("/materials/insertmatrec")
+    @ResponseBody
+    public void insertMatRec(@RequestBody String reqId) {
+        System.out.println(reqId);
+        ObjectMapper objectMapper = new ObjectMapper(); //json데이터를 java객체로 변환 or java객체를 json데이터로 변환
+        try {
+            JsonNode rootNode = objectMapper.readTree(reqId); //reqId 문자열을 JSON트리로 변환
+            if (rootNode.isArray()) { //JSON트리의 루트 노드가 배열인지 확인
+                ArrayNode arrayNode = (ArrayNode) rootNode; //배열이면 arrayNode로 형변환
+                for (JsonNode node : arrayNode) {
+                    String value = node.asText(); //각 요소를 문자열로 변환
+                    System.out.println(value);
+                    service.insertMatRec(value);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 
