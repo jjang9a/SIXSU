@@ -57,7 +57,27 @@
 
 <insert id="addDetProdPlan" parameterType="addPlanVO">
 	INSERT INTO DETA_PROD_PLAN (PLAN_DETA_ID, ORD_DET_ID, PLAN_HEAD_ID, MAT_ID, DETA_QT, CMPLT_ST, MEMO)
-	values( #{planDetaId}, #{ordDetId}, #{planHeadId}, #{cpId}, #{ordQt}, #{ordStatDet}, #{memo})
+	values ( #{planDetaId}, #{ordDetId}, #{planHeadId}, #{cpId}, #{ordQt}, #{cmpltSt}, #{memo})
 </insert>
 
+<select id="getProductList" resultType="ProductVO">
+	SELECT *
+	FROM COMPLETE_PROD
+</select>
+
+<select id="getPlanList" resultType="addPlanVO">
+	SELECT PLAN_HEAD_ID, TYPE, TO_char(PLAN_START, 'yyyy-MM-dd') AS PLAN_START,  TO_char(PLAN_END, 'yyyy-MM-dd') AS PLAN_END, PLAN_COMPLETION_STATUS AS cmplt_st
+	FROM PROD_PLAN
+</select>
+
+<select id="getDetaPlanList" resultType="addPlanVO">
+	SELECT a.PLAN_DETA_ID, a.MAT_ID AS CP_ID, c.CP_NAME, a.DETA_QT, b.SUM_QT, a.CMPLT_ST
+	FROM DETA_PROD_PLAN a  LEFT OUTER JOIN (SELECT DISTINCT a.PLAN_DETA_ID, SUM(b.DETA_QT) AS SUM_QT
+	FROM plan_and_worklink a LEFT OUTER JOIN DETA_WORK_ORDR b ON a.WK_DETA_ID = b.WK_DETA_ID
+	GROUP BY a.PLAN_DETA_ID
+	) b ON a.PLAN_DETA_ID = b.PLAN_DETA_ID
+	    LEFT OUTER JOIN COMPLETE_PROD c ON a.MAT_ID = c.CP_ID 
+    WHERE a.PLAN_HEAD_ID = #{planHeadId}
+	ORDER BY a.PLAN_DETA_ID
+</select>
 </mapper>

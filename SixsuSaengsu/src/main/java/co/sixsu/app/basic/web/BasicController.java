@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.MaterialVO;
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.basic.domain.SearchDTO;
 import co.sixsu.app.basic.service.BasicService;
@@ -111,7 +112,6 @@ public class BasicController {
 	@ResponseBody
 	@PostMapping("/basic/addCp")
 	public ProductVO addCp(ProductVO prod) {
-		System.out.println(prod);
 		service.addCp(prod);
 		return prod;
 	}
@@ -125,9 +125,83 @@ public class BasicController {
 	
 	@ResponseBody
 	@GetMapping("/basic/searchCp") // 선택, 검색 기반 공통코드 조회
-	public List<CodeVO> searchCp(SearchDTO dto) {
-		
+	public List<ProductVO> searchCp(SearchDTO dto) {
+		return service.searchCp(dto);
+	}
+	
+	
+	// 반제품 관리
+	
+	@GetMapping("/basic/spManage")
+	public void spManage() { // 반제품 관리 화면 띄우기
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/spList")
+	public List<ProductVO> spList(){ // 반제품 목록
+		return service.spList();
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/addSp")
+	public ProductVO addSp(ProductVO prod) { // 반제품 등록
+		service.addSp(prod);
+		return prod;
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/modifySp")
+	public ProductVO modifySp(ProductVO prod) { // 반제품 수정
+		service.updateSp(prod);
+		return prod;
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/searchSp") // 반제품 검색
+	public List<ProductVO> searchSp(SearchDTO dto) {
+		return service.searchSp(dto);
+	}
+	
+	
+	// 자재 관리
+	
+	@GetMapping("/basic/matManage")
+	public void matManage() { // 반제품 관리 화면 띄우기
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/matList")
+	public List<MaterialVO> matList(){ // 반제품 목록
 		return null;
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/addMat")
+	public MaterialVO addMat(MaterialVO mat) { // 반제품 등록
+		return null;
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/modifyMat")
+	public MaterialVO modifyMat(MaterialVO mat) { // 반제품 수정
+		return null;
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/searchMat") // 반제품 검색
+	public List<MaterialVO> searchMat(SearchDTO dto) {
+		return null;
+	}
+	
+	
+	// 공정 관리
+	@GetMapping("/basic/procManage")
+	public void procManage() { // 반제품 관리 화면 띄우기
+	}
+	
+	// 거래처 관리
+	@GetMapping("/basic/businessManage")
+	public void businessManage() { // 반제품 관리 화면 띄우기
 	}
 	
 }

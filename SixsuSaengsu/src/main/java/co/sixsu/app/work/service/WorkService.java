@@ -3,6 +3,7 @@ package co.sixsu.app.work.service;
 import java.util.Date;
 import java.util.List;
 
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
@@ -22,4 +23,10 @@ public interface WorkService {
 	public List<detOrdVO> getdetOrd(String ordId);
 
 	public int addPlan(List<addPlanVO> data);
+
+	public List<ProductVO> getProductList();
+
+	public List<addPlanVO> getPlanList();
+
+	public List<addPlanVO> getDetaPlanList(String planHeadId);
 }

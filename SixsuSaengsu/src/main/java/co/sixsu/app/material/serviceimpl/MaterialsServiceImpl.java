@@ -52,5 +52,10 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public List<MatrecVO> getMatRecList() {
 			return mapper.selectMatRecList();
 		}
+
+		@Override
+		public int insertMatRec(String reqId) {
+			return mapper.insertMatRec(reqId);
+		}
 		
 }
