@@ -7,7 +7,7 @@ public class SorderVO {
 
 	String ordId;
 	String busId;
-	String bus_name;
+	String busName;
 	String ordEndDate;
 	String ordDate;
 	String ordStat;

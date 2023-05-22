@@ -56,7 +56,6 @@ public class QualityController {
 		
 		quaService.insertArr(am);
 		System.out.println(am);
-		quaService.mrUpdate(mat);
 		System.out.println(mat);
 		return "redirect:/quality/arrRegList";
 	}
@@ -79,20 +78,41 @@ public class QualityController {
 	// 자재 입고 검사 등록
 	@ResponseBody
 	@PostMapping("/quality/prRegister")
-	public String prRegister(@RequestParam Map<String, Object> paramMap) throws JsonMappingException, JsonProcessingException {
-		String jsonData = paramMap.get("list").toString();
+	public String prRegister(@RequestParam("stdIds") int[] stdIds) throws JsonMappingException, JsonProcessingException {
+		/*String jsonData = paramMap.get("stdIds").toString();
 		System.out.println(jsonData);
 		ObjectMapper objectMapper = new ObjectMapper();
 		int[] dataArray = objectMapper.readValue(jsonData, int[].class);
-		System.out.println(dataArray.length);
-		for(int i : dataArray) {
+		System.out.println(dataArray.length);*/
+		
+		for(int i : stdIds) {
 			System.out.println(i);
-			/*
-			 * quaService.insertPr(i); quaService.mrUpdate(i);
-			 */
+			
+			QuaVO am = new QuaVO();
+//			am.setMatReqId(i);
+//			  quaService.insertPr(i);
+//			  quaService.mrUpdate(i);
+			 
 		}
 		return "/quality/proRecList";
 	}
+	
+//	// 자재 입고 검사 등록
+//	@ResponseBody
+//	@PostMapping("/quality/prRegister")
+//	public String prRegister(@RequestParam Map<String, Object> paramMap) throws JsonMappingException, JsonProcessingException {
+//	    String jsonData = paramMap.get("stdIds").toString();
+//	    System.out.println(jsonData);
+//	    ObjectMapper objectMapper = new ObjectMapper();
+//	    int[] dataArray = objectMapper.readValue(jsonData, int[].class);
+//	    System.out.println(dataArray.length);
+//	    for (int i : dataArray) {
+//	        System.out.println(i);
+//	        quaService.insertPr(i);
+//	        quaService.mrUpdate(i);
+//	    }
+//	    return "/quality/proRecList";
+//	}
 	
 	
 	// 입고 검사 대기 리스트

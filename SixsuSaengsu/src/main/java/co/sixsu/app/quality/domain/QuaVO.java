@@ -10,7 +10,7 @@ public class QuaVO {
 	 * 항목 명/ 기준 값 /비고 /검사 품목 코드
 	 */
 	
-	private int inspNum; // 검사번호
+	private String inspNum; // 검사번호
 	private String inspItemId; // 검사 제품 코드
 	private String empName;// 사원 이름
 	private String inspDate; // 검사 일자
@@ -23,7 +23,7 @@ public class QuaVO {
 	private String inspName; // 검사 항목 명
 	private String stdVal; // 기준 값
 	private String inspNote; // 비고
-	private int detInspNum; // 세부 검사 번호
+	private String detInspNum; // 세부 검사 번호
 	private String resVal; // 결과 값
 	private String resStat; // 적합 여부
 	private String inspStdId; // 검사 단위 코드(발주번호, 지시세부코드, 완제품출고코드)
@@ -32,7 +32,7 @@ public class QuaVO {
 	
 	// 도착 자재 관련
 	private String arrMatNum; // 도착 자재 번호
-	private int matReqId; // 발주 번호
+	private String matReqId; // 발주 번호
 	private int arrQt; // 도착 수량
 	private String arrDate; // 도착 날짜
 	private String matId;// 자재 코드
