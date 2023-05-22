@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+<head>
+<meta charset="UTF-8">
+<style>
+
+	.sixBtn2{
+	margin-right : 7px;
+	}
+	
+</style>
+<title>설비 관리</title>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
+<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>	
+</head>
+<body>
+	<div layout:fragment="content">
+		<br><br> 
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">설비관리</h1>
+	<!-- 등록 수정 삭제 전환 -->
+		
+	<div>
+		<button type="button" class="sixBtn2" style="float: right;" id="delBtn">삭제</button>
+		<button type="button" class="sixBtn2" style="float: right;" id="modBtn">수정</button>
+		<button type="button" class="sixBtn2" style="float: right;" id="addBtn">등록</button>
+	</div>	
+		<br><br>
+		<hr>
+		<br>
+
+
+               
+	   <!-- 인풋창 --> 
+	   <form action="" method="post" id="addForm">
+	   	<table>
+	   	 <div id="input">
+			<tr>
+				<td>설비코드<span class="needStar"> * </span></td>
+				<td><input type="text" name="equCode" id="equCode"></td>
+				
+				<td>공정코드<span class="needStar"> * </span></td>
+				<td><input type="text" name="procId" id="procId"></td>
+				<td>설비명<span class="needStar"> * </span></td>
+				<td><input type="text" name="equName" id="equName" ></td>
+				<td>모델<span class="needStar"> * </span></td>
+				<td><input type="text" name="equModel" id="equModel"></td>
+			</tr>
+			<tr>
+				<td>설비상태<span class="needStar"> *</span></td>
+				<td><input type="text" name="equStat" id="equStat"></td>
+				<td>설비라인<span class="needStar"> *</span></td>
+				<td><input type="text" name="equLine" id="equLine"></td>
+				<td>점검주기<span class="needStar"> *</span></td>
+				<td><input type="text" name="equCheck" id="equCheck"></td>
+				<td>설비이미지<span class="needStar"> *</span></td>
+				<td><input type="text" name="equImg" id="equImg"></td>
+				<td>담당자<span class="needStar"> *</span></td>
+				<td><input type="text" name="empId" id="empId"></td>
+			</tr>
+		 </div>
+		</table> 
+		<div>
+			<img src="../equipment/equImg/병입기2.jpg" loading="lazy" weight="100" height="200">
+		</div>
+	  </form>
+	  
+	  
+	  <!-- 이미지 첨부파일 
+	  <form th:action="@{/item/insert>" method="post" enctype="multipart/form-data">
+		 설비 이미지 : <input type="text" name="Img"><br />
+		 설비 이미지입니다 : <input type="file" name="image"><br />
+		 <input type="submit" value="등록">
+		 
+		<button type="button" class="sixBtn2" style="float: right;" id="addBtn">첨부파일</button>
+		  <img src="equipment/equImg/병입기2.jpg" alt="" loading="lazy">
+	 </form> -->
+		
+	  	
+	   
+	   
+<div id="grid"></div>
+
+	    <script>
+	    
+	    const grid = new tui.Grid({
+        el: document.getElementById('grid'),
+        pageOptions: {
+			useClient : true,
+			perPage: 10
+		},
+        scrollX: false,
+        scrollY: false,
+        
+        rowHeaders: ['rowNum'],
+        columns: [
+          {
+            header: '설비코드',
+            name: 'equCode'
+          },
+          {
+            header: '공정코드',
+            name: 'procId'
+          },
+          {
+            header: '설비명',
+            name: 'equName'
+          },
+          {
+            header: '모델',
+            name: 'equModel'
+          },
+          {
+            header: '설비상태',
+            name: 'equStat',
+            filter: 'select'
+          },
+          {
+             header: '설비라인',
+             name: 'equLine'
+          },
+          {
+             header: '점검주기',
+             name: 'equCheck'
+          },
+          {
+             header: '설비 이미지',
+             name: 'equImg'
+          },
+          {
+             header: '담당자',
+             name: 'empId'
+          }
+          
+        ]
+	    
+     });
+	    
+     // 페이지가 열리면 기능작동 - 리스트 띄워주기.  
+	    window.onload = function(){
+	    	
+	    	$.ajax({
+	    		url : "/equipment/equConList1",
+	    		method : "GET",
+	    		dataType : "JSON",
+	    		success : function(result){
+	    			console.dir(result);
+	    			grid.resetData(result);
+	    		}
+	    	});
+	    };
+    // 색 테마 적용
+    tui.Grid.applyTheme('default', {
+        cell: {
+            header: {
+                background: '#e5edf5'
+            },
+            selectedRowHeader: {
+                background: '#e5edf5'
+            },
+            normal: {
+                background: '#ffffff'
+            }
+        }
+    });
+
+    // 클릭시 데이터 받아서 인풋창에 값 불러오기.
+ 	 grid.on('click', ev => {
+
+ 		// focus된 셀이 있는 열 전체 select 처리
+			grid.setSelectionRange({
+				start: [ev.rowKey, 0],
+				end: [ev.rowKey, grid.getColumns().length - 1]
+			});
+ 	 
+    	// 클릭한 Row의 정보를 dataRow에 저장
+        var dataRow = grid.getRow(ev.rowKey);
+    	console.log(dataRow.equCode);
+    	console.log(dataRow);
+
+    	<!--클릭시 인풋창에 데이터 불러오기 -->
+    	
+		  $('#equCode').val(dataRow.equCode);
+	      $('#procId').val(dataRow.procId);
+	      $('#equStat').val(dataRow.equStat);
+	      $('#equName').val(dataRow.equName);
+	      $('#equLine').val(dataRow.equLine);
+	      $('#equCheck').val(dataRow.equCheck);
+	      $('#equImg').val(dataRow.equImg);
+	      $('#empId').val(dataRow.empId);
+	      $('#equModel').val(dataRow.equModel);
+	      
+      });
+ 	 
+	   $('#addBtn').on('click', function (e) {
+		   console.log($('#addForm').serialize())
+ 		$.ajax({
+			url: '/equipment/equAdd',
+			type: 'post',
+			data: $('#addForm').serialize(),
+			dataType: 'json',
+			success: function (result) {
+				alert('설비정보가 등록되었습니다');
+				console.log(result);
+				//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+				const appendedData = result
+				grid.appendRow(appendedData);
+			},
+			error: function (reject) {
+				alert('설비 등록 중 오류가 발생했습니다!');
+				console.log(reject);
+			}
+		});
+		$('#addForm input').val('');
+		
+	})
+	
+	// 설비정보 수정 
+		$('#modBtn').on('click', function (e) {
+		   console.log($('#addForm').serialize())
+ 		$.ajax({
+			url: '/equipment/equUpdate',
+			type: 'post',
+			data: $('#addForm').serialize(),
+			dataType: 'json',
+			success: function (result) {
+				alert('설비정보가 수정되었습니다');
+				console.log(result);
+			},
+			error: function () {
+				alert('설비 수정 중 오류가 발생했습니다!');
+				console.log(reject);
+			}
+		});
+		$('#addForm input').val('');
+		location.reload();
+	})	
+	
+	// 설비정보 삭제
+		$('#delBtn').on('click', function (e) {
+ 			e.preventDefault(); // 기본 동작 방지 (폼 제출 등)
+  
+  	// 선택한 설비의 ID를 추출
+  			var equCode = $('#equCode').val();
+  // 서버로 삭제 요청을 전송
+  		$.ajax({
+   			 url: '/equipment/equDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
+   			 type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
+   			 contentType : "application/json",
+		     data: equCode, // 삭제할 설비의 ID를 전송
+		     success: function (response) {
+		    	  if(response = "sucess"){
+		    		 alert("성공")
+		    	 }else {
+		    		 alert("실패")
+		    	 } 
+		     // 삭제 성공 시의 처리
+		     console.log('설비가 성공적으로 삭제되었습니다.');
+		     // 추가적인 업데이트나 리다이렉션 등의 동작 수행
+		     },
+		     error: function (xhr, status, error) {
+		     // 삭제 실패 시의 처리
+		     console.log('설비 삭제 중 오류가 발생했습니다.');
+		     console.log('오류 메시지:', error);
+		     // 오류 메시지를 사용자에게 표시하거나 추가적인 오류 처리 수행
+		    }
+		 });
+  			$('#addForm input').val('');
+			location.reload();
+		});
+	
+
+	
+	
+     
+ 
+    </script>
+    
+
+    
+    </div>
+</body>
+</html>

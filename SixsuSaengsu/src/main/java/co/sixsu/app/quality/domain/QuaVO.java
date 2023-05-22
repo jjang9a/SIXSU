@@ -28,7 +28,8 @@ public class QuaVO {
 	private String resStat; // 적합 여부
 	private String inspStdId; // 검사 단위 코드(발주번호, 지시세부코드, 완제품출고코드)
 	private String wkDetaId;// 지시 세부 코드
-	// 완제품 출고 코드
+	
+	private String result;// 함수 사용 시 결과 
 	
 	// 도착 자재 관련
 	private String arrMatNum; // 도착 자재 번호
@@ -38,5 +39,6 @@ public class QuaVO {
 	private String matId;// 자재 코드
 	private String busName;// 거래처
 	private String matName; // 자재 명
+	
 	
 }

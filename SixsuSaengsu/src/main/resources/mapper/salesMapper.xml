@@ -74,10 +74,19 @@
 	where s.bus_id = b.bus_id
 	and s.ord_stat = '진행중'
 	ORDER BY TO_DATE(SUBSTR(s.ord_id, 4, 6), 'YYMMDD') DESC, TO_NUMBER(SUBSTR(s.ord_id, INSTR(s.ord_id, '-') + 1))DESC
-
-
 	
 	</select>
+
+	<!-- 진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 -->
+	<select id="firstOrderingList" resultType='InvVO'>
+	select s.ord_id, s.ord_date, e.emp_name, e.emp_id, b.bus_num,b.bus_id,b.bus_name,b.bus_addr,b.bus_tell
+	from SORDER s, BUSINESS b, EMPLOYEE e
+	where s.BUS_ID = b.BUS_ID
+	and s.emp_ID = e.emp_ID
+	and s.ord_id = #{keyword}
+	</select>
+
+
 	
 	
 </mapper>

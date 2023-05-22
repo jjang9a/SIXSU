@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
@@ -89,7 +90,29 @@ public class WorkAjaxController {
 		return list;
 	}
 	
+	@RequestMapping("getProductList")
+	public List getProductList() {
+		List<ProductVO> list = service.getProductList();
+		System.out.println("제품조회 리스트");
+		System.out.println(list);
+		return list;
+	}
 	
+	@RequestMapping("getPlanList")
+	public List getPlanList() {
+		List<addPlanVO> list = service.getPlanList();
+		System.out.println("PROD_PLAN 의 데이터 >");
+		System.out.println(list);
+		return list;
+	}
+	
+	@RequestMapping("getDetaPlanList")
+	public List getDetaPlanList(@RequestParam String planHeadId ) {
+		List<addPlanVO> list = service.getDetaPlanList(planHeadId);
+		System.out.println("클릭된 GRID2의 상세주문 내역 >");
+		System.out.println(list);
+		return list;
+	}
 	
 	
 } 

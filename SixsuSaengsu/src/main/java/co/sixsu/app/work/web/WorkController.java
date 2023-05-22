@@ -37,6 +37,12 @@ import co.sixsu.app.work.service.WorkService;
 		return "/work/work3";
 		}
 		
+		@GetMapping("work4")
+		public String work4() {
+			System.out.println("work4 들어옴");
+		return "/work/work4";
+		}
+		
 		
 		@RequestMapping("toastList")
 		public List toastList() {
