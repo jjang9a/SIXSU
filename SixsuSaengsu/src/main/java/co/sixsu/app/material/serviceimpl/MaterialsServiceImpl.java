@@ -53,6 +53,12 @@ public class MaterialsServiceImpl implements MaterialsService{
 			return mapper.selectMatRecList();
 		}
 
+		/*
+		 * @Override public int insertMatRec(String reqId) { return
+		 * mapper.insertMatRec(reqId); }
+		 */
+		
+		//입고 등록
 		@Override
 		public int insertMatRec(String reqId) {
 			return mapper.insertMatRec(reqId);
