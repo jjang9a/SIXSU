@@ -29,7 +29,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		}
 		#grid1,#grid2,#grid3,#grid4{
 			width: 750px;
-			height: 361px
 		}
 		#grid1,#grid3{
 			margin-bottom: 50px;
@@ -47,28 +46,27 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <body>
 <div layout:fragment="content">
 
-<h1 class="mt-4" style="font-family: 'MaruBuri';">생산계획 등록</h1>
+<h1>생산계획 등록</h1>
 <hr>
 
 	<div id="gridContainer1">
 		<div id="grid1"><h2>검색공간이 도래</h2>
-			분류 <input type="text" class="reg_type"><br>
-			등록일 <input type="date" class="reg_regDate"><br>
-			계획기간 <input type="date" class="reg_startDate"> ~ <input type="date" class="reg_endDate"><br>
-			작성자 <input type="text" class="reg_empName">
-			<button class="sixBtn2 regSubmit">저장</button>
+			분류 <input type="text" class="type"><br>
+			등록일 <input type="date" class="rigDate"><br>
+			계획기간 <input type="date" class="startDate"> ~ <input type="date" class="endDate"><br>
+			작성자 <input type="text" class="empName">
+			<button class="sixBtn2 rig_submit">저장</button>
 		</div>
-		<button class="searchBtn sixBtn4">검색예정</button>
+		<button class="addBtn sixBtn4">버튼</button>
 		<div id="grid2"></div>
 	</div>
 	<div id="gridContainer2">
 		<div id="grid3"></div>
-		<button class="moveBtn sixBtn4">선택</button>
-		<button class="removeBtn sixBtn4">삭제</button>
+		<button class="addBtn sixBtn4">버튼</button>
 		<div id="grid4"></div>
 	</div>
 	
-	<!-- 모달창 -->
+	<!-- 모달창 사원조회 -->
 					<div class="modal fade" id="product_modal" tabindex="-1"
 						aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
@@ -99,8 +97,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				   </div>
 
 <script>
+var gridData1 = [
+	  { name: 'John', age: 30, city: 'New York' },
+	  { name: 'Jane', age: 25, city: 'London' },
+	  { name: 'Bob', age: 35, city: 'Paris' }
+	];
 	
-var gridData2 = [ //
+var gridData2 = [
       {
         name: 'Beautiful Lies',
         artist: 'Birdy',
@@ -154,38 +157,39 @@ var gridData2 = [ //
         
       }
     ];
-var defaultData = [{}]
+var gridData3 = [{}]
 
-while (defaultData.length < 8){
-	defaultData.push({});
+while (gridData1.length < 8){
+	gridData1.push({});
 }
-
-
-
+while (gridData2.length < 8){
+	gridData2.push({});
+}
+while (gridData3.length < 8){
+	gridData3.push({});
+}
 
 
 //1번그리드
 	{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 		var today = new Date().toISOString().slice(0,10);
 		console.log(today + '오늘날')
-		$('.reg_regDate').val(today);
+		$('.rigDate').val(today);
 
 
-	$('.regSubmit').on('click', function(){
-		let dataArr = grid3.getData()
+	$('.rig_submit').on('click', function(){
 		let data = {}
-		data.type = $('.reg_type').val();
-		data.regDate = ($('.reg_regDate').val()).replace(/-/g, '');
-		data.startDate = $('.reg_startDate').val();
-		data.endDate = $('.reg_endDate').val();
-		data.empName = $('.reg_empName').val();
-		dataArr.unshift(data);
+		data.type = $('.type').val();
+		data.rigDate = $('.rigDate').val();
+		data.startDate = $('.startDate').val();
+		data.endDate = $('.endDate').val();
+		data.empName = $('.empName').val();
 		
 		var isEmpty = false;
 		if(data.type == ''){
 			alert('분류를 입력하세요')
 			isEmpty = true;
-		} else if (data.regDate == ''){
+		} else if (data.rigDate == ''){
 			alert('등록일을 입력하세요')
 			isEmpty = true;
 		} else if (data.empName == ''){
@@ -193,25 +197,23 @@ while (defaultData.length < 8){
 			isEmpty = true;
 		}
 		
-		console.log('dataArr의 값1')
-		console.log(dataArr)
-		console.log('dataArr의 값2')
-		console.log(grid3.getData())
 		if(!isEmpty){
+			console.log(data)
 				$.ajax({
 				url : "/ajax/addPlanAjax",
-				method : "POST",
+				method : "GET",
 				dataType : "JSON",
-				contentType: "application/json",
-				data: JSON.stringify(dataArr), 
+				data : data,
 				success : function(result){
 					console.dir(result);
 					//gridP.resetData(result);
 					}
 				})
-			
+			console.log(grid3.getData())
 		}
 	})
+
+
 
 
 
@@ -220,8 +222,10 @@ while (defaultData.length < 8){
 
 	var grid2 = new tui.Grid({
 	    el: document.getElementById('grid2'),
+	    data: gridData1,
 	    scrollX: false,
 	    scrollY: false,
+	    
 	    rowHeaders: ['rowNum'],
 	    
 	    columns: [
@@ -237,7 +241,7 @@ while (defaultData.length < 8){
 	      },
 	      {
 	        header: '거래처',
-	        name: 'busName'
+	        name: 'bus_name'
 	      },
 	      {
 	        header: '납기일',
@@ -252,10 +256,7 @@ while (defaultData.length < 8){
 	        name: 'ordStat'
 	      }
 	    ],
-	    pageOptions: {
-	        useClient: true,
-	        perPage: 8
-	      }
+	    pageOptions: { perPage: 10 }
 	  });
 		
 	window.onload = function(){
@@ -272,24 +273,9 @@ while (defaultData.length < 8){
 			})
 		}
 	
-	//주문서 클릭시 상세데이터 불러옴
 	grid2.on('click', ev => {
-		let data = grid2.getRow(ev.rowKey).ordId;
-		console.log(data);
-		$.ajax({
-			url : "/ajax/detOrdListAjax",
-			method : "GET",
-			dataType : "JSON",
-			data : { ordId: data},
-			success : function(result){
-				console.log("첫 출력값 > ")
-				console.dir(result);
-				while (result.length < 8){
-					result.push({});
-				}
-				grid4.resetData(result);
-			}
-		})
+		let dataRow = grid2.getRow(ev.rowKey);
+		console.log(dataRow);
 	})
 	
 	
@@ -303,42 +289,37 @@ while (defaultData.length < 8){
 	
 	var grid3 = new tui.Grid({
 	    el: document.getElementById('grid3'),
-	    //data: defaultData,
+	    data: gridData3,
 	    scrollX: false,
 	    scrollY: false,
 	    rowHeaders: ['rowNum','checkbox'],
 	    columns: [
 	      
 	      
-    	  {
-	        header: '세부주문코드',
-	        name: 'ordDetId'
+	      {
+	        header: '세부게획코드',
+	        name: 'name'
 	      },
 	      {
 	        header: '제품코드',
-	        name: 'cpId'
+	        name: 'artist'
 	      },
 	      {
-	        header: '제품명',
-	        name: 'cpName'
+	        header: '제품',
+	        name: 'name'
 	      },
 	      {
 	        header: '수량',
-	        name: 'ordQt',
+	        name: 'type',
 	        editor: 'text'
 	      },
 	      {
-	        header: '우선순위',// 아직VO에 없음 정의못했음
-	        name: 'priority',
-	        editor: 'text'
+	        header: '주문일',
+	        name: 'release'
 	      },
 	      {
-	        header: '주문납기일자',
-	        name: 'ordEndDate'
-	      },
-	      {
-	          header: '계획현황',
-	          name: 'cmpltSt',
+	          header: '주문상태',
+	          name: 'status',
 		      editor: {
 		    	  type: 'select',
 		            options: {
@@ -357,65 +338,55 @@ while (defaultData.length < 8){
 	
 	var grid_product = new tui.Grid({
 	    el: document.getElementById('grid_product'),
+	    
 	    scrollX: false,
 	    scrollY: false,
 	    data: gridData2,
 	    rowHeaders: ['rowNum'],
 	    columns : [ {
 			header : '제품코드',
-			name : 'cpId',
+			name : 'type',
+		}, {
+			header : '사원이름',
+			name : 'name'
 		}, {
 			header : '제품명',
-			name : 'cpName'
-		}, {
-			header : '제품명',
-			name : 'cpSize'
-		}, {
-			header : '규격',
-			name : 'cpUnit'
-		}, {
-			header : '상태',
-			name : 'cpStat'
+			name : 'empRk'
 		}
 		]
 	  });
 	
-		$.ajax({
-			url : "/ajax/getProductList",
-			method : "GET",
-			dataType : "JSON",
-			success : function(result){
-				console.log("첫 출력값 > ")
-				console.dir(result);
-				grid_product.resetData(result);
-			}
-		})
-	
 	let cell
+	let nameCell
 	
 	grid3.on('click',ev => {
 		
 		let columnName = ev.columnName;
 		
-		if (columnName === 'cpId'){ //컬럼이름 변경하 시오!
+		if (columnName === 'artist'){ //컬럼이름 변경하 시오!
 			console.log(ev.columnName);
 		    console.log(ev.columnIndex);
-			$('#product_modal').modal('show');
-			//특정 Cell의 열,컬럼이름 데이터
-			cell = grid3.getFocusedCell(ev.rowKey, ev.columnName);
-			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
-			setTimeout(() =>
-		    grid_product.refreshLayout(), 200);
+		    
+		    
+		$('#product_modal').modal('show');
+		console.log(grid3.getFocusedCell(ev.rowKey, ev.columnName))
+		console.log(ev.columnName)
+		console.log(grid_product.getRow(ev.rowKey).artist)
+		console.log(grid_product.getRow(ev.rowKey).release)
+		//특정 Cell의 열,컬럼이름 데이터
+		cell = grid3.getFocusedCell(ev.rowKey, ev.columnName);
+		//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
+		setTimeout(() =>
+	    grid_product.refreshLayout(), 200);
 		}
 	})
 	
 	//모달안에 그리드중 데이터클릭시 작동. 모달닫히는거까지
 	grid_product.on('click',ev => {
-		let cpId = grid_product.getRow(ev.rowKey).cpId
-		let cpName = grid_product.getRow(ev.rowKey).cpName
-		console.log('들어가는 데이터 : ' + cpId + '  ' + cpName)
-		grid3.setValue(cell.rowKey, 'cpId', cpId)
-		grid3.setValue(cell.rowKey, 'cpName', cpName)
+		console.log(grid_product.getRow(ev.rowKey).type)
+		let type = grid_product.getRow(ev.rowKey).type
+		let name = grid_product.getRow(ev.rowKey).name
+		grid3.setValue(cell.rowKey, cell.columnName, type)
 		$('#product_modal').modal('hide');
 	})
 	
@@ -423,85 +394,53 @@ while (defaultData.length < 8){
 	
 	var grid4 = new tui.Grid({
 	    el: document.getElementById('grid4'),
+	    data: gridData2,
 	    scrollX: false,
 	    scrollY: false,
-	    data: defaultData,
 	    rowHeaders: ['rowNum','checkbox'],
 	    columns: [
 	      
 	      {
-	        header: '세부주문코드',
-	        name: 'ordDetId'
+	        header: '세부게획코드',
+	        name: 'name'
 	      },
 	      {
 	        header: '제품코드',
-	        name: 'cpId'
+	        name: 'artist'
 	      },
 	      {
 	        header: '제품',
-	        name: 'cpName'
+	        genre: 'release'
 	      },
 	      {
 	        header: '수량',
-	        name: 'ordQt'
+	        name: 'type'
 	      },
 	      {
-	        header: '주문납기일자',
-	        name: 'ordEndDate'
+	        header: '주문일',
+	        name: 'release'
 	      },
 	      {
 	          header: '주문상태',
-	          name: 'ordStatDet'
+	          name: 'status'
 	        }
 	    ]
 	  });
 	
-	 grid3_data = []
- 	$('.moveBtn').on('click', function(){
+	 
+ 	$('.addBtn').on('click', function(){
  		var appendedData = grid4.getCheckedRows()
- 		let count = 0;
  		for(let i of appendedData){
  			console.log(i)
- 			let swith = false;
- 			if(grid3.getData().length > 0){
- 				for(let j of grid3.getData()){
- 					if(j.ordDetId == i.ordDetId && swith == false && j.ordDetId != null){
- 						console.log('일치 하였음')
- 						count += 1;
- 						swith = true;
- 					}
- 				}	
-				if(swith == false){
-					//grid3.appendRow(i);
-					grid3_data.push(i)
-	 	 			grid4.uncheck(i.rowKey, 'checkbox');
-	 	 			swith = false;
-				}
- 			}else{
- 				//grid3.appendRow(i);
-				grid3_data.push(i)
- 	 			grid4.uncheck(i.rowKey, 'checkbox');
- 			}
+ 			console.log('ㄷㄷ')
+ 			grid3.appendRow(i);
  		}
- 		if(count >0){
- 			alert('중복되는 세부계획이 존재합니다')
- 		}
- 		
- 		/*while (grid3_data.length < 8){
- 			grid3_data.push({});
- 		}*/
- 		
- 		grid3.resetData(grid3_data);
  		console.log(appendedData)
-	 	//grid4.removeCheckedRows(false);
+	 	grid4.removeCheckedRows(false);
  		grid4.blur();
  	})
  	
  	
-	$('.removeBtn').on('click',function(){
-		grid3.removeCheckedRows(false);
-		grid3_data = grid3.getData();
-	})
  	
  	
  	tui.Grid.applyTheme('default', {
