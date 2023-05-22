@@ -137,8 +137,10 @@
 		</div>
 		<div id="gridy"></div>
 		<button class="sixBtn6" id="orderComplete">주문서 완료</button>
-		<button class="sixBtn6">주문서 삭제</button>
+		<button class="sixBtn6" id="deletComplete">주문서 삭제</button>
 		<div id="orderingGrid"></div>
+		
+		
 		<script>
 
 	
@@ -209,7 +211,7 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
     	})
 		} 
       });	
-	  	
+	  	// 마지막페이지 테이블
 		$.ajax({
 			url : "/sales/orderingList",
 			method : "GET",
@@ -224,9 +226,11 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 		
 //윈도우 온로드 마지막 괄호	  	
 	};
+	
+	
+	
 	 //주문서 완료후 상품 등록
 		$('#orderComplete').on('click',function(e){
-			
 			$.ajax({
 				url:'/sales/orderAdd',
 				type:'post',
@@ -248,7 +252,6 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 					alert('주문서등록과정에서 에러가 발생하였습니다.')
 				}
 			})
-		
 			$.ajax({
 				url:'/sales/ordDetAdd',
 				type:'post',
@@ -260,17 +263,12 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 					console.log(result);
 					let row = gridy.getRow(result.rowKey);
 					gridy.removeRows(row);
-					
-					
 				},
 				error:function(result){
 					alert('주문서상세등록과정에서 에러가 발생하였습니다.')
 				}
 			})
-			
-		
-			
-			
+			location.reload();
 		})
 
 
@@ -585,9 +583,33 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 		]
 	});		
   	
-    
+		//진행중인 주문서를 클릭시 모든 상세정보들이 주문서와 주문서 상세페이지에 뜨도록 구현
+		orderingGrid.on('click', ev=> {
+			 const focusCell = orderingGrid.getFocusedCell()
+		      let dataRow = orderingGrid.getRow(ev.rowKey);
+			 console.log(dataRow);
+
+				$.ajax({
+					url : "/sales/firstOrderingList",
+					method : "GET",
+					data : {'result' : dataRow.ordId},
+					success : function(result) {
+					console.log(result)
+						  $('#codeBox').val(result.ordId);
+						  $('#ordDate').val(result.ordDate);
+						  $('#orderName').val(result.empName);
+						  $('#orderNum').val(result.empId);
+					      $('#busName').val(result.busName);
+					      $('#busCode').val(result.busId);
+					      $('#busNum').val(result.busNum);
+
+					      $('#busAddr').val(result.busAddr);
+					      $('#busTel').val(result.busTell);
+					    
+					}
+		    })   
   
-  	
+		})
 
     
     

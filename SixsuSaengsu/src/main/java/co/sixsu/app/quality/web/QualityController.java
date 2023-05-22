@@ -1,21 +1,17 @@
 package co.sixsu.app.quality.web;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.service.QualityService;
@@ -76,28 +72,28 @@ public class QualityController {
 	}
 	
 	// 자재 입고 검사 등록
-	@ResponseBody
-	@PostMapping("/quality/prRegister")
-	public String prRegister(@RequestParam("stdIds") int[] stdIds) throws JsonMappingException, JsonProcessingException {
-		/*String jsonData = paramMap.get("stdIds").toString();
-		System.out.println(jsonData);
-		ObjectMapper objectMapper = new ObjectMapper();
-		int[] dataArray = objectMapper.readValue(jsonData, int[].class);
-		System.out.println(dataArray.length);*/
-		
-		for(int i : stdIds) {
-			System.out.println(i);
-			
-			QuaVO am = new QuaVO();
+//	@ResponseBody
+//	@PostMapping("/quality/prRegister")
+//	public String prRegister(@RequestParam("stdIds") int[] stdIds) throws JsonMappingException, JsonProcessingException {
+//		/*String jsonData = paramMap.get("stdIds").toString();
+//		System.out.println(jsonData);
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		int[] dataArray = objectMapper.readValue(jsonData, int[].class);
+//		System.out.println(dataArray.length);*/
+//		
+//		for(int i : stdIds) {
+//			System.out.println(i);
+//			
+//			QuaVO am = new QuaVO();
 //			am.setMatReqId(i);
 //			  quaService.insertPr(i);
 //			  quaService.mrUpdate(i);
-			 
-		}
-		return "/quality/proRecList";
-	}
+//			 
+//		}
+//		return "/quality/proRecList";
+//	}
 	
-//	// 자재 입고 검사 등록
+	// 자재 입고 검사 등록
 //	@ResponseBody
 //	@PostMapping("/quality/prRegister")
 //	public String prRegister(@RequestParam Map<String, Object> paramMap) throws JsonMappingException, JsonProcessingException {
@@ -114,6 +110,14 @@ public class QualityController {
 //	    return "/quality/proRecList";
 //	}
 	
+	// 자재 입고 검사 등록
+	@ResponseBody
+	@PostMapping("/quality/prRegister")
+	public boolean prRegister(@RequestBody List<QuaVO> list) {
+		System.out.println(list);
+		return quaService.insertpro(list);
+	}
+	
 	
 	// 입고 검사 대기 리스트
 	@ResponseBody
@@ -122,6 +126,15 @@ public class QualityController {
 		List<QuaVO> priList = quaService.prInspList();
 		model.addAttribute("priList", priList);
 		return priList;
+	}
+	
+	// 사원 검색 리스트
+	@ResponseBody
+	@RequestMapping("/quality/empList")
+	public List<EmpVO> empList(Model model){
+		List<EmpVO> list = quaService.empList();
+		model.addAttribute("list", list);
+		return list;
 	}
 
 
