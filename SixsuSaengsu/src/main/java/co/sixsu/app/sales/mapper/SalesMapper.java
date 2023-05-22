@@ -30,5 +30,7 @@ public interface SalesMapper {
 	public int orderAdd(InvVO inv); //주문서만 등록
 	
 	public int ordDetAdd(OrdVO code);//상세주문서등록
+	
+	public List<InvVO> orderingList(); //페이지 마지막부분 주문중인 목록
 }
 

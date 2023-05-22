@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
+import co.sixsu.app.work.domain.addPlanVO;
+import co.sixsu.app.work.domain.detOrdVO;
 import co.sixsu.app.work.mapper.WorkMapper;
 import co.sixsu.app.work.service.WorkService;
 
@@ -41,6 +43,44 @@ public class WorkServiceImpl implements WorkService{
 	@Override
 	public List<SorderVO> getSorder() {
 		return mapper.getSorder();
+	}
+
+	@Override
+	public List<detOrdVO> getdetOrd(String ordId) {
+		return mapper.getdetOrd(ordId);
+	}
+
+	@Override
+	public int addPlan(List<addPlanVO> data) {
+		
+		String hireDate = data.get(0).getRegDate();
+		hireDate += "-";
+		String headId = mapper.getIdDateAndData(hireDate);
+		System.out.println("헤드데이터 : " + headId);
+		//생산계획의 ID 부여
+		data.get(0).setPlanHeadId(headId);
+		System.out.println("data.get(0)");
+		System.out.println(data.get(0));
+		int result = mapper.addProdPlan(data.get(0));
+		System.out.println("result");
+		System.out.println(result);
+		
+		
+		//세부계획의 ID부여
+		System.out.println("세부생산계획 add데이터");
+		for(int i=1;i<data.size();i++) {
+			data.get(i).setPlanHeadId(headId);
+			data.get(i).setPlanDetaId((headId + "-" + i).substring(2));
+			System.out.println("data.get("+i+")");
+			System.out.println(data.get(i));
+			result += mapper.addDetProdPlan(data.get(i));
+		}
+		System.out.println("result");
+		System.out.println(result);
+		//int result = mapper.addPlan(data);
+		
+		
+		return 0;
 	}
 	
 	

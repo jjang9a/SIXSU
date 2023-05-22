@@ -138,6 +138,7 @@
 		<div id="gridy"></div>
 		<button class="sixBtn6" id="orderComplete">주문서 완료</button>
 		<button class="sixBtn6">주문서 삭제</button>
+		<div id="orderingGrid"></div>
 		<script>
 
 	
@@ -209,8 +210,18 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 		} 
       });	
 	  	
-		
+		$.ajax({
+			url : "/sales/orderingList",
+			method : "GET",
+			dataType : "JSON",
+			success : function(result) {
+				orderingGrid.resetData(result);
+				setTimeout(()=>orderingGrid.refreshLayout(),1000);
+			}
+		});
 	
+		
+		
 //윈도우 온로드 마지막 괄호	  	
 	};
 	 //주문서 완료후 상품 등록
@@ -538,6 +549,41 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
     	day = date.getDate();
     	$('#ordDate').val(year + "-" + month + "-" + day);
     })
+    
+   
+    
+    //페이지 가장하단에 있는 거래진행중인 테이블
+    const orderingGrid = new tui.Grid({
+		el : document.getElementById('orderingGrid'),
+		//data : gridData,
+		scrollX : false,
+		scrollY : false,
+		pageOptions: {
+			useClient: true,
+			perPage: 10
+		},
+
+		columns : [ {
+			header : '주문코드',
+			name : 'ordId',
+		}, {
+			header : '주문날짜',
+			name : 'ordDate',
+		}, {
+			header : '거래처명',
+			name : 'busName',
+		},{
+			header : '거래처코드',
+			name : 'busId',
+		},{
+			header : '사업자번호',
+			name : 'busNum'
+		},{
+			header : '진행상태',
+			name : 'ordStat'
+		},
+		]
+	});		
   	
     
   

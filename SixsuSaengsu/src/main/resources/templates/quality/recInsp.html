@@ -73,17 +73,19 @@
 						</div>
 					</div>
 
-
+					<!-- 본문 그리드 부분 -->
 					<div id="grid"></div>
-					<button class=" sixBtn6" id="rrBtn">검사결과등록</button>
+
+					<button class=" sixBtn6" id="rrBtn" onclick="showPrInspForm()">검사결과등록</button>
 				</div>
 
 				<!-- 자재 검사 결과 등록 폼 -->
 				<div class="col-lg-4">
-					<form>
+					<form action="" method="post" id="prInspForm"
+						style="overflow-y: scroll; overflow-x: hidden;">
+						<!-- display: none;  -->
 
-						<div class="prInsp"
-							style="overflow-y: scroll; overflow-x: hidden;">
+						<div class="prInsp">
 							<div class="col-lg-3">
 								<select class="form-select" aria-label="insp"
 									onchange="toggleForm()">
@@ -160,12 +162,147 @@
 							<!-- 세부 검사 항목 끝나는 부분 -->
 
 							<!-- PET CHIP 폼 시작 -->
-							<form action="" method="post" id="petChip" style="display: none;">
-								<label for="package" class="form-label">포장 상태</label> <input
-									type="text" class="form-control" id="package">
-															<div class="col-lg-3">
-								
-							</div>
+							<form action="" method="post" id="petChipForm"
+								style="display: none;">
+								<div class="col-lg-3">
+									<label for="package" class="form-label">포장 상태</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+								<div class="col-lg-3">
+									<label for="package" class="form-label">이물 혼입</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+								<div class="col-lg-3">
+									<label for="package" class="form-label">고유 점도</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">용융점</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">밀도</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">중량</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">외관</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+							</form>
+
+							<!-- 캡 원료(HDPE) 폼 시작 -->
+
+							<form action="" method="post" id="hdpeForm" style="display: none;">
+								<div class="col-lg-3">
+									<label for="package" class="form-label">색상</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+								<div class="col-lg-3">
+									<label for="package" class="form-label">중량</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+								<div class="col-lg-3">
+									<label for="package" class="form-label">외관</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">용융 지수</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">연화점</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">밀도</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+							</form>
+
+							<!-- 상표 라벨 폼 시작 -->
+
+							<form action="" method="post" id="labelForm"
+								style="display: none;">
+								<div class="col-lg-3">
+									<label for="package" class="form-label">포장 상태</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+								<div class="col-lg-3">
+									<label for="package" class="form-label">롤 표면상태</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+								<div class="col-lg-3">
+									<label for="package" class="form-label">외관</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">인쇄 상태</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">제단 상태</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+							</form>
+
+							<!-- 원수 폼 시작 -->
+							<form action="" method="post" id="rawWaterForm"
+								style="display: none;">
+								<div class="col-lg-3">
+									<label for="package" class="form-label">색상</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+								<div class="col-lg-3">
+									<label for="package" class="form-label">중량</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+								<div class="col-lg-3">
+									<label for="package" class="form-label">외관</label> <input
+										type="text" class="form-control" id="package">
+
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">용융지수</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">연화점</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
+								<div class="col-lg-3">
+									<label for="package" class="form-label">밀도</label> <input
+										type="text" class="form-control" id="package">
+								</div>
+
 							</form>
 
 							<button class="sixBtn2">등록</button>
@@ -173,10 +310,6 @@
 						</div>
 					</form>
 					<!-- 폼 끝나는 부분 -->
-					<div class="prInsp">
-
-						<!-- 폼 요소들 -->
-					</div>
 				</div>
 			</div>
 		</div>
@@ -190,7 +323,7 @@
 		
 		
 		$('#regModal').on('shown.bs.modal', function (e) {
-			setTimeout(()=> grid2.refreshLayout(), 1000);
+			setTimeout(()=> grid2.refreshLayout(), 700);
 		})
 		
 
@@ -294,8 +427,15 @@
 			    const grid2 = new tui.Grid({
 			      el: document.getElementById('grid2'),
 			      data: gridData2,
+			      
+			      pageOptions: {
+						useClient: true,
+						perPage: 10
+					},
+			      
 			      rowHeaders: [ 'checkbox'
 			      ],
+			      
 			      columns: [
 			        {
 			          header: '발주 번호',
@@ -351,14 +491,14 @@
 				
 				// 모달 등록				
 				$('#regBtn').on('click', function(e){
-					console.log(grid.getCheckedRows());
-			        console.log(grid.getCheckedRows().length);
+					console.log(grid2.getCheckedRows());
+			        console.log(grid2.getCheckedRows().length);
 			        
-			        let stdid=[];
+			        let stdIds=[];
 			        
-			        for(let i=0; i < grid.getCheckedRows().length; i++){
-			        	console.log(grid.getCheckedRows()[i].matReqId);
-			        	matReqIds.push(grid.getCheckedRows()[i].stdid);
+			        for(let i=0; i < grid2.getCheckedRows().length; i++){
+			        	console.log(grid2.getCheckedRows()[i].matReqId);
+			        	stdIds.push(grid2.getCheckedRows()[i].matReqId);
 
 			        }
 			        
@@ -374,19 +514,19 @@
 						method : "POST",
 						contentType: 'application/json',
 						data :  {
-			                  list: JSON.stringify(matReqIds)
+			                  stdIds: JSON.stringify(stdIds)
 			               },
 						success : function(result){
-						alert('사원이 성공적으로 등록되었습니다.');
+						alert('입고 검사가 등록되었습니다.');
 						console.log(result);
 						const appendedData = result
-						grid.appendRow(appendedData);
+						grid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
 						}
 				}); 
 					/* console.log('숨김 전')
 					$('#regModal').modal('hide');
 					console.log('숨김 후') */
-					grid2.removeCheckedRows(false);
+					//grid2.removeCheckedRows(false);
 		            grid2.blur();
 
 			});
@@ -406,15 +546,32 @@
 		            }
 		        });
 				
+				//
+				function showPrInspForm() {
+  				let prInspForm = document.querySelector('#prinsForm');
+  				prInspForm.style.display = 'block';
+				}
+				
 				//세부 검사 항목 선택 시 폼 바뀌는 함수
 				function toggleForm() {
-			    let selectElement = document.querySelector('.form-select');
-			    let petChipForm = document.getElementById('petChip');
+			    var selectElement = document.getElementById("inspSelect");
+			    var selectedOption = selectElement.options[selectElement.selectedIndex].value;
 			
-			    if (selectElement.value === '1') {
-			      petChipForm.style.display = 'block';
-			    } else {
-			      petChipForm.style.display = 'none';
+			    // 모든 폼을 숨김
+			    document.getElementById("petChipForm").style.display = "none";
+			    document.getElementById("hdpeForm").style.display = "none";
+			    document.getElementById("labelForm").style.display = "none";
+			    document.getElementById("rawWaterForm").style.display = "none";
+			
+			    // 선택한 항목에 따라 해당 폼을 표시
+			    if (selectedOption === "1") {
+			      document.getElementById("petChipForm").style.display = "block";
+			    } else if (selectedOption === "2") {
+			      document.getElementById("hdpeForm").style.display = "block";
+			    } else if (selectedOption === "3") {
+			      document.getElementById("labelForm").style.display = "block";
+			    } else if (selectedOption === "4") {
+			      document.getElementById("rawWaterForm").style.display = "block";
 			    }
 			  }
 			
