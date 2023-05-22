@@ -27,4 +27,5 @@ public interface MaterialsMapper {
 	//입고 리스트
 	List<MatrecVO> selectMatRecList();
 	
+	int insertMatRec(String reqId);
 }
