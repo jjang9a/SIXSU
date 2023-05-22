@@ -117,5 +117,15 @@ public boolean ordDetAdd(@RequestBody List<OrdVO> list) {
 }
 
 
+//
+
+//페이지 하단부분에있는 진행중인 주문서 조회
+@RequestMapping("/sales/orderingList")
+@ResponseBody
+public List<InvVO> orderingList(){
+	List<InvVO> list = service.getOrderingList();
+	return list;
+}
+
 
 }

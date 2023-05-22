@@ -13,4 +13,7 @@ public class InvVO {
 	private String busId;
 	
 	
+	private String busName;
+	private String busNum;
+	
 }
