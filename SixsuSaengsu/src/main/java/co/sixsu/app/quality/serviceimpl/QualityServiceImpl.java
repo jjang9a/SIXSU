@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
@@ -27,8 +29,14 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	@Override
-	public int mrUpdate(MatreqVO mat) {
-		return quaMapper.mrUpdate(mat);
+	public boolean mrUpdate(List<MatreqVO> mlist) {
+		int count = 0; //insert 발생 횟수
+		for(int i=0; i<mlist.size(); i++) {
+
+				count += quaMapper.mrUpdate(mlist.get(i));
+			
+		}
+		return count >= 1;
 	}
 
 
@@ -45,8 +53,14 @@ public class QualityServiceImpl implements QualityService {
 
 
 	@Override
-	public int insertPr(QuaVO am) {
-		return quaMapper.insertPr(am);
+	public boolean insertPr(List<QuaVO> qlist) {
+		int count = 0; //insert 발생 횟수
+		for(int i=0; i<qlist.size(); i++) {
+
+				count += quaMapper.insertPr(qlist.get(i));
+			
+		}
+		return count >= 1;
 	}
 
 
@@ -54,7 +68,34 @@ public class QualityServiceImpl implements QualityService {
 	public List<QuaVO> prInspList() {
 		return quaMapper.prInspList();
 	}
+
+	//입고 검사 등록 시 검사 번호 자동 등록
+	@Override
+	public String psInspNum() {
+		return quaMapper.psInspNum();
+	}
+
+
+	@Override
+	@Transactional
+	public boolean insertpro(List<QuaVO> list) {
+		int count = 0;
+		for(int i=0; i<list.size(); i++) {
+			QuaVO curData = list.get(i);
+			quaMapper.insertPro(curData);
+			if(curData.getInspNum() != null ) count++;
+		}
+		return count >=1;
+	}
+
+
+	@Override
+	public List<EmpVO> empList() {
+		return quaMapper.empList();
+	}
+
 	
-	
+
+
 
 }
