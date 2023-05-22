@@ -13,7 +13,6 @@
 <title>(주)SIXSU</title>
 
 <style>
-
 </style>
 
 </head>
@@ -73,66 +72,67 @@
 					<!-- 본문 그리드 부분 -->
 					<div id="grid"></div>
 
-					<button class="sixBtn6" id="rrBtn" onclick="showPrInspForm()">검사결과등록</button>
+					<button class="sixBtn6" id="rrBtn">검사결과등록</button>
 				</div>
-				
+
 				<!-- 사원 검색 모달 -->
 				<!-- Modal -->
-					<div class="modal fade" id="searchModal" data-bs-backdrop="static"
-						data-bs-keyboard="false" tabindex="-1"
-						aria-labelledby="staticBackdropLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="staticBackdropLabel">검사 담당자 등록</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
-										aria-label="Close"></button>
-								</div>
-								
-								<div>
-									사원 이름 <input id="searchText"/>
-									<button class="sixBtn2" id="search-btn">조회</button>
-									<button class="sixBtn2" id="reset-btn">초기화</button>
-								</div>
-								
-								<div class="modal-body">
-									<div id="searchGrid"></div>
-								</div>
-								
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary"
-										data-bs-dismiss="modal">닫기</button>
-									<button type="button" class="btn btn-primary" id="regBtn"
-										data-bs-dismiss="modal">등록</button>
-								</div>
+				<div class="modal fade" id="searchModal" data-bs-backdrop="static"
+					data-bs-keyboard="false" tabindex="-1"
+					aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="staticBackdropLabel">검사 담당자 등록</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+
+							<div>
+								사원 이름 <input id="searchText" />
+								<button class="sixBtn2" id="search-btn">조회</button>
+								<button class="sixBtn2" id="reset-btn">초기화</button>
+							</div>
+
+							<div class="modal-body">
+								<div id="searchGrid"></div>
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">닫기</button>
+								<button type="button" class="btn btn-primary" id="regBtn"
+									data-bs-dismiss="modal">등록</button>
 							</div>
 						</div>
 					</div>
-				
+				</div>
+
 
 				<!-- 자재 검사 결과 등록 폼 -->
 				<div class="col-lg-6">
 					<form action="" method="post" id="prInspForm"
-						style="overflow-y: scroll; overflow-x: hidden;">
+						style="overflow-y: scroll; overflow-x: hidden; display: none;">
 						<!-- display: none;  -->
 
 						<div class="prInsp">
-						<div class="row">
-							<div class="col">
-								<select class="form-select" aria-label="insp" id="selectInsp"
-									onchange="toggleForm()">
-									<option selected>검사 항목</option>
-									<option value="">PET CHIP</option>
-									<option value="2">캡 원료</option>
-									<option value="3">라벨</option>
-									<option value="3">원수</option>
-								</select>
-							</div>
+							<div class="row">
+								<div class="col">
+									<select class="form-select" aria-label="insp" id="selectInsp"
+										onchange="toggleForm()">
+										<option selected>검사 항목</option>
+										<option value="">PET CHIP</option>
+										<option value="2">캡 원료</option>
+										<option value="3">라벨</option>
+										<option value="3">원수</option>
+									</select>
+								</div>
 
-							<div class="col">
-								<button type="button" class="sixBtn8" id="inspIdBtn" onclick="toggleForm()">검사 항목 내려받기</button>
+								<div class="col">
+									<button type="button" class="sixBtn8" id="inspIdBtn"
+										onclick="toggleForm()">검사 항목 내려받기</button>
+								</div>
 							</div>
-						</div>
 
 							<div class="row">
 								<div class="col">
@@ -190,169 +190,172 @@
 							<div id="borderBox">
 								<h5 class="mt-4" style="font-family: 'MaruBuri';">세부 검사 항목</h5>
 
-							
-							<!-- 세부 검사 항목 끝나는 부분 -->
 
-							<!-- PET CHIP 폼 시작 -->
-							<form action="" method="post" id="petChipForm" style="display: none;">
-								<div class="row">
-								 <div class="col">
-									<label for="package" class="form-label">포장 상태</label> <input
-										type="text" class="form-control" id="pcPackage" name="pcPackage">
+								<!-- 세부 검사 항목 끝나는 부분 -->
 
-								</div>
-								<div class="col">
-									<label for="package" class="form-label">이물 혼입</label> <input
-										type="text" class="form-control" id="fmm" name="fmm">
+								<!-- PET CHIP 폼 시작 -->
+								<form action="" method="post" id="petChipForm"
+									style="display: none;">
+									<div class="row">
+										<div class="col">
+											<label for="package" class="form-label">포장 상태</label> <input
+												type="text" class="form-control" id="pcPackage"
+												name="pcPackage">
 
-								</div>
-								</div>
-								
-								<div class="row">
-								<div class="col">
-									<label for="package" class="form-label">고유 점도</label> <input
-										type="text" class="form-control" id="iv" name="iv">
+										</div>
+										<div class="col">
+											<label for="package" class="form-label">이물 혼입</label> <input
+												type="text" class="form-control" id="fmm" name="fmm">
 
-								</div>
+										</div>
+									</div>
 
-								<div class="col">
-									<label for="package" class="form-label">용융점</label> <input
-										type="text" class="form-control" id="mp" name="mp">
-								</div>
-								</div>
-								
-								<div class="row">
-								<div class="col">
-									<label for="package" class="form-label">밀도</label> <input
-										type="text" class="form-control" id="density" name="density">
-								</div>
+									<div class="row">
+										<div class="col">
+											<label for="package" class="form-label">고유 점도</label> <input
+												type="text" class="form-control" id="iv" name="iv">
 
-								<div class="col">
-									<label for="package" class="form-label">중량</label> <input
-										type="text" class="form-control" id="weight" name="weight">
-								</div>
+										</div>
 
-								<div class="col">
-									<label for="package" class="form-label">외관</label> <input
-										type="text" class="form-control" id="ext" name="ext">
-								</div>
-								</div>
-							</form>
+										<div class="col">
+											<label for="package" class="form-label">용융점</label> <input
+												type="text" class="form-control" id="mp" name="mp">
+										</div>
+									</div>
 
-							<!-- 캡 원료(HDPE) 폼 시작 -->
+									<div class="row">
+										<div class="col">
+											<label for="package" class="form-label">밀도</label> <input
+												type="text" class="form-control" id="density" name="density">
+										</div>
 
-							<form action="" method="post" id="hdpeForm"
-								style="display: none;">
-								<div class="col-lg-3">
-									<label for="package" class="form-label">색상</label> <input
-										type="text" class="form-control" id="color">
+										<div class="col">
+											<label for="package" class="form-label">중량</label> <input
+												type="text" class="form-control" id="weight" name="weight">
+										</div>
 
-								</div>
-								<div class="col-lg-3">
-									<label for="package" class="form-label">중량</label> <input
-										type="text" class="form-control" id="weight">
+										<div class="col">
+											<label for="package" class="form-label">외관</label> <input
+												type="text" class="form-control" id="ext" name="ext">
+										</div>
+									</div>
+								</form>
 
-								</div>
-								<div class="col-lg-3">
-									<label for="package" class="form-label">외관</label> <input
-										type="text" class="form-control" id="ext">
+								<!-- 캡 원료(HDPE) 폼 시작 -->
 
-								</div>
+								<form action="" method="post" id="hdpeForm"
+									style="display: none;">
+									<div class="col-lg-3">
+										<label for="package" class="form-label">색상</label> <input
+											type="text" class="form-control" id="color">
 
-								<div class="col-lg-3">
-									<label for="package" class="form-label">용융 지수</label> <input
-										type="text" class="form-control" id="package">
-								</div>
+									</div>
+									<div class="col-lg-3">
+										<label for="package" class="form-label">중량</label> <input
+											type="text" class="form-control" id="weight">
 
-								<div class="col-lg-3">
-									<label for="package" class="form-label">연화점</label> <input
-										type="text" class="form-control" id="package">
-								</div>
+									</div>
+									<div class="col-lg-3">
+										<label for="package" class="form-label">외관</label> <input
+											type="text" class="form-control" id="ext">
 
-								<div class="col-lg-3">
-									<label for="package" class="form-label">밀도</label> <input
-										type="text" class="form-control" id="package">
-								</div>
+									</div>
 
-							</form>
+									<div class="col-lg-3">
+										<label for="package" class="form-label">용융 지수</label> <input
+											type="text" class="form-control" id="package">
+									</div>
 
-							<!-- 상표 라벨 폼 시작 -->
+									<div class="col-lg-3">
+										<label for="package" class="form-label">연화점</label> <input
+											type="text" class="form-control" id="package">
+									</div>
 
-							<form action="" method="post" id="labelForm"
-								style="display: none;">
-								<div class="col-lg-3">
-									<label for="package" class="form-label">포장 상태</label> <input
-										type="text" class="form-control" id="package">
+									<div class="col-lg-3">
+										<label for="package" class="form-label">밀도</label> <input
+											type="text" class="form-control" id="package">
+									</div>
 
-								</div>
-								<div class="col-lg-3">
-									<label for="package" class="form-label">롤 표면상태</label> <input
-										type="text" class="form-control" id="package">
+								</form>
 
-								</div>
-								<div class="col-lg-3">
-									<label for="package" class="form-label">외관</label> <input
-										type="text" class="form-control" id="package">
+								<!-- 상표 라벨 폼 시작 -->
 
-								</div>
+								<form action="" method="post" id="labelForm"
+									style="display: none;">
+									<div class="col-lg-3">
+										<label for="package" class="form-label">포장 상태</label> <input
+											type="text" class="form-control" id="package">
 
-								<div class="col-lg-3">
-									<label for="package" class="form-label">인쇄 상태</label> <input
-										type="text" class="form-control" id="package">
-								</div>
+									</div>
+									<div class="col-lg-3">
+										<label for="package" class="form-label">롤 표면상태</label> <input
+											type="text" class="form-control" id="package">
 
-								<div class="col-lg-3">
-									<label for="package" class="form-label">제단 상태</label> <input
-										type="text" class="form-control" id="package">
-								</div>
+									</div>
+									<div class="col-lg-3">
+										<label for="package" class="form-label">외관</label> <input
+											type="text" class="form-control" id="package">
 
-							</form>
+									</div>
 
-							<!-- 원수 폼 시작 -->
-							<form action="" method="post" id="rawWaterForm"
-								style="display: none;">
-								<div class="col-lg-3">
-									
-									<label for="package" class="form-label">색상</label> <input
-										type="text" class="form-control" id="package">
+									<div class="col-lg-3">
+										<label for="package" class="form-label">인쇄 상태</label> <input
+											type="text" class="form-control" id="package">
+									</div>
 
-								</div>
-								<div class="col-lg-3">
-									<label for="package" class="form-label">중량</label> <input
-										type="text" class="form-control" id="package">
+									<div class="col-lg-3">
+										<label for="package" class="form-label">제단 상태</label> <input
+											type="text" class="form-control" id="package">
+									</div>
 
-								</div>
-								<div class="col-lg-3">
-									<label for="package" class="form-label">외관</label> <input
-										type="text" class="form-control" id="package">
+								</form>
 
-								</div>
+								<!-- 원수 폼 시작 -->
+								<form action="" method="post" id="rawWaterForm"
+									style="display: none;">
+									<div class="col-lg-3">
 
-								<div class="col-lg-3">
-									<label for="package" class="form-label">용융지수</label> <input
-										type="text" class="form-control" id="package">
-								</div>
+										<label for="package" class="form-label">색상</label> <input
+											type="text" class="form-control" id="package">
 
-								<div class="col-lg-3">
-									<label for="package" class="form-label">연화점</label> <input
-										type="text" class="form-control" id="package">
-								</div>
+									</div>
+									<div class="col-lg-3">
+										<label for="package" class="form-label">중량</label> <input
+											type="text" class="form-control" id="package">
 
-								<div class="col-lg-3">
-									<label for="package" class="form-label">밀도</label> <input
-										type="text" class="form-control" id="package">
-								</div>
+									</div>
+									<div class="col-lg-3">
+										<label for="package" class="form-label">외관</label> <input
+											type="text" class="form-control" id="package">
 
-							
-							</form>
+									</div>
 
+									<div class="col-lg-3">
+										<label for="package" class="form-label">용융지수</label> <input
+											type="text" class="form-control" id="package">
+									</div>
+
+									<div class="col-lg-3">
+										<label for="package" class="form-label">연화점</label> <input
+											type="text" class="form-control" id="package">
+									</div>
+
+									<div class="col-lg-3">
+										<label for="package" class="form-label">밀도</label> <input
+											type="text" class="form-control" id="package">
+									</div>
+
+
+								</form>
+
+
+							</div>
 
 						</div>
-						
-						</div><!-- 세부 검사 항목 border box 끝 -->
-						
+						<!-- 세부 검사 항목 border box 끝 -->
+
 						<button class="sixBtn2" id="inspBtn">등록</button>
-											
+
 					</form>
 					<!-- 폼 끝나는 부분 -->
 				</div>
@@ -378,7 +381,7 @@
 							</div>
 
 							<div class="modal-body">
-								<div id="grid"></div>
+								<div id="searchGrid"></div>
 							</div>
 						</div>
 					</div>
@@ -496,6 +499,8 @@
 			});
 		
 			$('#rrBtn').on('click', function(e){
+				$('#prInspForm').toggle(); // prInspForm의 표시 상태를 토글
+				//선택된 결과 주입
 				$('#inspStdId').val(selStdId);
 				$('#busName').val(selBusName);
 				$('#matId').val(selMatId);
@@ -633,6 +638,54 @@
 			});
 				
 				//사원 등록 그리드
+				const empGrid = new tui.Grid({
+			el : document.getElementById('searchGrid'),
+			
+			pageOptions: {
+				useClient: true,
+				perPage: 10
+			},
+			
+			//data: gridData,
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '사번',
+				name : 'empId'
+			}, {
+				header : '이름',
+				name : 'empName'
+			}, {
+				header : '부서',
+				name : 'empDept'
+			}]
+		});
+				
+				// 모달창 사원조회 기능
+				$('#searchBtn').on('click', function(){
+					
+				// 사원 리스트 ajax
+				$.ajax({
+				url : "/quality/empList",
+				method : "GET",
+				dataType : "JSON",
+				success : function(result) {
+					grid.resetData(result);
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			});
+				
+				})
+				
+				// 모달창 사원 검색 ajax
+				$('#').on('click', function(){
+					
+				})
+				
+				
+				//사원 등록 ajax
 				
 
 				// 그리드 색 변경
@@ -651,13 +704,7 @@
 		        });
 				
 
-				
-				//검사 결과 등록 시 폼 표시
-				function showPrInspForm() {
-  				let prInspForm = document.querySelector('#prinsForm');
-  				prInspForm.style.display = 'block';
-				}
-				
+
 				//세부 검사 항목 선택 시 폼 바뀌는 함수
 				function toggleForm() {
 			    let selectElement = document.getElementById("inspSelect");
