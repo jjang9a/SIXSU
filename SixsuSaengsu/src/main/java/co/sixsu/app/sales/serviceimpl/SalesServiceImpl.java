@@ -91,4 +91,10 @@ public List<InvVO> getOrderingList() {
 	// TODO Auto-generated method stub
 	return mapper.orderingList();
 }
+
+@Override
+public InvVO firstOrderingList(String keyword) {
+	// TODO Auto-generated method stub
+	return mapper.firstOrderingList(keyword);
+}
 }

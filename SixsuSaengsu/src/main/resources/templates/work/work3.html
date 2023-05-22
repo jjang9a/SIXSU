@@ -47,7 +47,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <body>
 <div layout:fragment="content">
 
-<h1>생산계획 등록</h1>
+<h1 class="mt-4" style="font-family: 'MaruBuri';">생산계획 등록</h1>
 <hr>
 
 	<div id="gridContainer1">
@@ -58,17 +58,17 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			작성자 <input type="text" class="reg_empName">
 			<button class="sixBtn2 regSubmit">저장</button>
 		</div>
-		<button class="searchBtn sixBtn4">검색</button>
+		<button class="searchBtn sixBtn4">검색예정</button>
 		<div id="grid2"></div>
 	</div>
 	<div id="gridContainer2">
 		<div id="grid3"></div>
-		<button class="moveBtn sixBtn4">버튼</button>
-		<button class="testBtn sixBtn4">TEST</button>
+		<button class="moveBtn sixBtn4">선택</button>
+		<button class="removeBtn sixBtn4">삭제</button>
 		<div id="grid4"></div>
 	</div>
 	
-	<!-- 모달창 사원조회 -->
+	<!-- 모달창 -->
 					<div class="modal fade" id="product_modal" tabindex="-1"
 						aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
@@ -213,11 +213,6 @@ while (defaultData.length < 8){
 		}
 	})
 
-	$('.testBtn').on('click',function(){
-		console.log('클릭됨')
-		console.log(grid3.getRow(1))
-		
-	})
 
 
 //2번그리드
@@ -324,12 +319,13 @@ while (defaultData.length < 8){
 	        name: 'cpId'
 	      },
 	      {
-	        header: '제품',
-	        genre: 'cpName'
+	        header: '제품명',
+	        name: 'cpName'
 	      },
 	      {
 	        header: '수량',
-	        name: 'ordQt'
+	        name: 'ordQt',
+	        editor: 'text'
 	      },
 	      {
 	        header: '우선순위',// 아직VO에 없음 정의못했음
@@ -341,8 +337,8 @@ while (defaultData.length < 8){
 	        name: 'ordEndDate'
 	      },
 	      {
-	          header: '주문상태',
-	          name: 'ordStatDet',
+	          header: '계획현황',
+	          name: 'cmpltSt',
 		      editor: {
 		    	  type: 'select',
 		            options: {
@@ -361,56 +357,65 @@ while (defaultData.length < 8){
 	
 	var grid_product = new tui.Grid({
 	    el: document.getElementById('grid_product'),
-	    
 	    scrollX: false,
 	    scrollY: false,
 	    data: gridData2,
 	    rowHeaders: ['rowNum'],
 	    columns : [ {
 			header : '제품코드',
-			name : 'type',
-		}, {
-			header : '사원이름',
-			name : 'name'
+			name : 'cpId',
 		}, {
 			header : '제품명',
-			name : 'empRk'
+			name : 'cpName'
+		}, {
+			header : '제품명',
+			name : 'cpSize'
+		}, {
+			header : '규격',
+			name : 'cpUnit'
+		}, {
+			header : '상태',
+			name : 'cpStat'
 		}
 		]
 	  });
 	
+		$.ajax({
+			url : "/ajax/getProductList",
+			method : "GET",
+			dataType : "JSON",
+			success : function(result){
+				console.log("첫 출력값 > ")
+				console.dir(result);
+				grid_product.resetData(result);
+			}
+		})
+	
 	let cell
-	let nameCell
 	
 	grid3.on('click',ev => {
 		
 		let columnName = ev.columnName;
 		
-		if (columnName === 'matId'){ //컬럼이름 변경하 시오!
+		if (columnName === 'cpId'){ //컬럼이름 변경하 시오!
 			console.log(ev.columnName);
 		    console.log(ev.columnIndex);
-		    
-		    
-		$('#product_modal').modal('show');
-		console.log(grid3.getFocusedCell(ev.rowKey, ev.columnName))
-		console.log(ev.columnName)
-		//특정 Cell의 열,컬럼이름 데이터
-		cell = grid3.getFocusedCell(ev.rowKey, ev.columnName);
-		nameCell = ev;
-		console.log(nameCell)
-		//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
-		setTimeout(() =>
-	    grid_product.refreshLayout(), 200);
+			$('#product_modal').modal('show');
+			//특정 Cell의 열,컬럼이름 데이터
+			cell = grid3.getFocusedCell(ev.rowKey, ev.columnName);
+			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
+			setTimeout(() =>
+		    grid_product.refreshLayout(), 200);
 		}
 	})
 	
 	//모달안에 그리드중 데이터클릭시 작동. 모달닫히는거까지
 	grid_product.on('click',ev => {
-		console.log(grid_product.getRow(ev.rowKey).type)
-		let type = grid_product.getRow(ev.rowKey).type
-		let name = grid_product.getRow(ev.rowKey).name
-		grid3.setValue(cell.rowKey, cell.columnName, type)
-		grid3.setValue(nameCell.rowKey, 'name', name)
+		let cpId = grid_product.getRow(ev.rowKey).cpId
+		let cpName = grid_product.getRow(ev.rowKey).cpName
+		console.log('들어가는 데이터 : ' + cpId + '  ' + cpName)
+		grid3.setValue(cell.rowKey, 'cpId', cpId)
+		grid3.setValue(cell.rowKey, 'cpName', cpName)
 		$('#product_modal').modal('hide');
 	})
 	
@@ -434,7 +439,7 @@ while (defaultData.length < 8){
 	      },
 	      {
 	        header: '제품',
-	        genre: 'cpName'
+	        name: 'cpName'
 	      },
 	      {
 	        header: '수량',
@@ -493,6 +498,10 @@ while (defaultData.length < 8){
  	})
  	
  	
+	$('.removeBtn').on('click',function(){
+		grid3.removeCheckedRows(false);
+		grid3_data = grid3.getData();
+	})
  	
  	
  	tui.Grid.applyTheme('default', {

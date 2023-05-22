@@ -68,6 +68,9 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
 				
 				});
@@ -93,8 +96,7 @@
 
 				columns: [{
 						header: '발주번호',
-						name: 'matReqId',
-						editor: 'text'
+						name: 'matReqId'
 					},
 					{
 						header: '자재코드',
@@ -209,8 +211,7 @@
 					success: function (result) {}
 
 				})
- 				
-/*  				grid.appendRow(appendedData); */
+				
 				$.ajax({
 					url: "/materials/mms",
 					method: "GET",
@@ -218,8 +219,14 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
+				
 				});
+/*  				grid.appendRow(appendedData); */
+				
 				//var lastRow = gridData[gridData.length - 1];
  				//console.log(lastRow);
  				console.log("abc");
@@ -273,8 +280,12 @@
 					},
 					//data : {list : JSON.stringify(matReqIds)},
 					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
-					success: function (result) {}
-
+					success: function (result) {
+						console.log(result);
+					},
+ 					error: function(reject){
+						console.log(reject);
+					}
 				})
 
 
@@ -311,6 +322,9 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
 				});
 				

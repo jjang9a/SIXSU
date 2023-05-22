@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재입고관리</h1>
+
+		<div id="left">
+			자재코드 <input type="number" id="matId" name="matId">
+			<button class="sixBtn1">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+					viewBox="0 2 16 16">
+					<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+				</svg>
+			</button>
+		</div>
+		<div id="left">
+			거래처코드 <input type="text" id="bname">
+			<button class="sixBtn1">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+					viewBox="0 2 16 16">
+					<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+				</svg>
+			</button>
+		</div>
+		
+		<div id="left">
+			입고일자 <input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
+		</div>
+		
+		<div>
+			<div id="left">
+				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn4" id="reset">초기화</button>
+			</div>
+			<div id="left">
+				<button class="sixBtn4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">입고등록</button>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- 입고등록 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel" style="font-family: 'MaruBuri';">입고대기 목록</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 입고등록 모달 바디 -->
+					<div class="modal-body">
+						<div id="grid"></div>
+						<script>
+							const gridData = [
+	
+							];
+							window.onload = function () {
+								
+								$.ajax({
+									url: "/materials/mms",
+									method: "GET",
+									dataType: "JSON",
+									success: function (result) {
+										grid.resetData(result);
+										gridInsertRow();
+									}
+								
+								});
+							};
+							
+
+
+							//테이블에 들어갈 데이터 설정(조회)
+							const grid = new tui.Grid({
+								el: document.getElementById('grid'),
+								
+								scrollX: false,
+								scrollY: false,
+								pageOptions: {
+									useClient: true,
+									perPage: 10
+								},
+
+
+								
+								rowHeaders: ['checkbox'],
+
+
+								columns: [{
+										header: '발주번호',
+										name: 'matReqId',
+										editor: 'text'
+									},
+									{
+										header: '자재코드',
+										name: 'matId',
+										editor: 'text'
+									},
+									{
+										header: '자재명',
+										name: 'matName'
+									},
+									{
+										header: '발주량',
+										name: 'matReqQt',
+										editor: 'text'
+									},
+									{
+										header: '거래처코드',
+										name: 'busId',
+										editor: 'text'
+									},
+									{
+										header: '거래처명',
+										name: 'busName',
+									},
+									{
+										header: '발주일',
+										name: 'matReqDate'
+									},
+									{
+										header: '발주상태',
+										name: 'matReqStat'
+									},
+									{
+										header: '납기요청일',
+										name: 'matEndDate',
+										editor: {
+										      type: 'datePicker',
+										      options: {
+										        format: 'yyyy-MM-dd'
+										      }
+										    }
+									},
+									{
+										header: '담당자',
+										name: 'empName'
+									}
+									
+
+								]
+								
+							});
+
+							
+					
+
+
+							tui.Grid.applyTheme('default', {
+								cell: {
+									header: {
+										background: '#e5edf5'
+									},
+									rowHeader: {
+										background: '#e5edf5'
+									},
+									normal: {
+										background: '#ffffff'
+									}
+								}
+							});
+						</script>
+						
+					</div>
+					<!-- 입고등록 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+						<button type="button" class="sixBtn2" id="addBtn">등록</button>
+						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+	</div>
+</body>
+
+</html>

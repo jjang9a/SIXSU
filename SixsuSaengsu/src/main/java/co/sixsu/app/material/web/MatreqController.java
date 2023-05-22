@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import co.sixsu.app.material.domain.MatrecListVO;
+import co.sixsu.app.material.domain.MatrecVO;
+import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.service.MaterialsService;
 
@@ -54,7 +56,7 @@ public class MatreqController {
 	
 	@ResponseBody
 	@RequestMapping("/materials/smatreq")
-	public List<MatreqVO> selectmatList(@RequestParam int num){
+	public List<MatreqVO> selectmatreqList(@RequestParam int num){
 		System.out.println(num);
 		List<MatreqVO> list = service.selectMatReq(num);
 		return list;
@@ -87,6 +89,8 @@ public class MatreqController {
 		return "/materials/matreq";
 	}
 	*/
+	
+	//발주제거 컨트롤
 	@ResponseBody
 	@RequestMapping("/materials/delmatreq")
 	public String delMatReq(@RequestParam Map<String, Object> paramMap) throws Exception {
@@ -104,19 +108,44 @@ public class MatreqController {
 		return "/materials/matreq";
 	}
 	
+	//발주등록 컨트롤
 	@ResponseBody
 	@PostMapping("/materials/insertmatreq")
 	public MatreqVO insertMatReq(@RequestBody MatreqVO vo) {		
 		System.out.println(vo);
 		service.insertMatReq(vo);
-		
 		return vo;
 		
 		
 	}
 	
 	
+	//입고대기 리스트 모달
+	@ResponseBody
+	@RequestMapping("/materials/matrecwait")
+	public List<MatrecWaitVO> selectMatRecWaitList(){
+		List<MatrecWaitVO> list = service.getMatRecWaitList();
+		return list;
+	}
 	
+	
+	//입고 리스트
+	@ResponseBody
+	@RequestMapping("/materials/matreclist")
+	public List<MatrecVO> selectMatRecList(){
+		List<MatrecVO> list = service.getMatRecList();
+		System.out.println(list);
+		return list;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/materials/insertmatrec")
+	public String insertMatRec(@RequestBody List<MatrecVO> list) throws Exception {
+		System.out.println(list);
+		
+		return "success";
+		
+	}
 }
 
 
