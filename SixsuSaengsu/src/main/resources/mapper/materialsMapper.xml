@@ -69,13 +69,22 @@
 		where q.mat_req_stat = '입고완료'
 	</select>
 	
-	<select id="insertMatRec" statementType="CALLABLE">
+<!-- 	<select id="insertMatRec" statementType="CALLABLE">
 		{
 			CALL(
 				#{matReqId  , mode=IN, jdbcType=VARCHAR}
 			)	
 		}
-	</select>
+	</select> -->
+	
+	<insert id="insertMatRec" parameterType="String">
+    <![CDATA[
+	    CALL IN_MAT_REC(
+	      #{matReqId, mode=IN, jdbcType=VARCHAR}
+	    )
+	    ]]>
+  	</insert>
+	
 	
 </mapper>
 

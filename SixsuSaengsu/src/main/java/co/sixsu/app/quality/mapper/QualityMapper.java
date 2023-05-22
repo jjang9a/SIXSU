@@ -19,5 +19,6 @@ public interface QualityMapper {
 	void insertPro(QuaVO am); // 입고 검사 등록 프로시저 사용
 	
 	List<EmpVO> empList(); // 검사 담당자 조회 리스트
+	List<EmpVO> sEmpList(String ename); // 검사 담당자 이름 조회
 
 }

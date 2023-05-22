@@ -75,7 +75,7 @@ public class QualityServiceImpl implements QualityService {
 		return quaMapper.psInspNum();
 	}
 
-
+	// 입고 검사 등록 프로시저 사용
 	@Override
 	@Transactional
 	public boolean insertpro(List<QuaVO> list) {
@@ -92,6 +92,12 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public List<EmpVO> empList() {
 		return quaMapper.empList();
+	}
+
+
+	@Override
+	public List<EmpVO> sEmpList(String ename) {
+		return quaMapper.sEmpList(ename);
 	}
 
 	

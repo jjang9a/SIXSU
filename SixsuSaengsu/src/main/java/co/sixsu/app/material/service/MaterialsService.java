@@ -29,5 +29,8 @@ public interface MaterialsService {
 	//입고 리스트
 	List<MatrecVO> getMatRecList();
 	
+	//int insertMatRec(String reqId);
+	
+	//입고등록
 	int insertMatRec(String reqId);
 }
