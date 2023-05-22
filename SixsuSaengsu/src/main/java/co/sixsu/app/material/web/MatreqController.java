@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import co.sixsu.app.material.domain.MatrecListVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
@@ -113,34 +114,38 @@ public class MatreqController {
 	public MatreqVO insertMatReq(@RequestBody MatreqVO vo) {		
 		System.out.println(vo);
 		service.insertMatReq(vo);
-		
 		return vo;
 		
 		
 	}
 	
 	
-	//입고대기 list 모달
+	//입고대기 리스트 모달
 	@ResponseBody
 	@RequestMapping("/materials/matrecwait")
-	public List<MatrecWaitVO> selectMatRecWaitList(Model modal){
+	public List<MatrecWaitVO> selectMatRecWaitList(){
 		List<MatrecWaitVO> list = service.getMatRecWaitList();
-		System.out.println(list);
-		modal.addAttribute("list", list);
 		return list;
 	}
 	
 	
 	//입고 리스트
 	@ResponseBody
-	@RequestMapping("/materials/matrec")
+	@RequestMapping("/materials/matreclist")
 	public List<MatrecVO> selectMatRecList(){
 		List<MatrecVO> list = service.getMatRecList();
-		
+		System.out.println(list);
 		return list;
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping("/materials/insertmatrec")
+	public String insertMatRec(@RequestBody List<MatrecVO> list) throws Exception {
+		System.out.println(list);
+		
+		return "success";
+		
+	}
 }
 
 

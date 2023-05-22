@@ -68,6 +68,9 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
 				
 				});
@@ -216,6 +219,9 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
 				
 				});
@@ -274,8 +280,12 @@
 					},
 					//data : {list : JSON.stringify(matReqIds)},
 					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
-					success: function (result) {}
-
+					success: function (result) {
+						console.log(result);
+					},
+ 					error: function(reject){
+						console.log(reject);
+					}
 				})
 
 
@@ -312,6 +322,9 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
 				});
 				
