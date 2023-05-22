@@ -12,17 +12,19 @@ public class addPlanVO {
 	String type; //분류
 	String regDate; //작성일
 	String startDate; //시작일
-	
 	String endDate; //종료일
 	String empName; //사원이름 코드로 바꿔야 할듯?..
+	String planStart;
+	String planEnd;
 	
 	//grid데이터
 	String ordDetId; //세부주문코드
 	String cpId; //제품코드
-	//String cpName; //제품이름
+	String cpName; //제품이름
+	int detaQt; //계획수량
 	int ordQt; //주문수량
 	int priority; //우선순위. 차 후에 작업
-	String ordStatDet; //종결여부
+	String cmpltSt; //종결여부
 	String memo;
 	
 }

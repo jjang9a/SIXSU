@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css" rel="stylesheet">
+    <style>
+        .container {
+            background-color: #1E4174;
+        }
+
+        #login-form {
+            padding: 270px 630px 330px;
+        }
+
+        #loginlogo {
+            margin-left: 70px;
+        }
+
+        #login-form td {
+            color: rgba(255, 255, 255, 0.75);
+            padding: 5px 10px;
+            font-family: 'MaruBuri';
+            text-align: center;
+        }
+
+        #loginBtn {
+            font-family: 'MaruBuri';
+            color: #1E4174;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #notlogin {
+            font-size: 12px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form action="" type="post" id="login-form">
+            <img src="assets/img/logo2.png" id="loginlogo">
+            <table>
+                <tr>
+                    <td>사원번호</td>
+                    <td><input type="text" id="empId" name="empId"></td>
+                </tr>
+                <tr>
+                    <td>비밀번호</td>
+                    <td><input type="text" id="empId" name="empId"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button type="button" class="btn btn-light" id="loginBtn">로그인</button></td>
+                </tr>
+            </table>
+            <p id="notlogin">비로그인 화면으로 이동</p>
+        </form>
+
+    </div>
+</body>
+
+</html>

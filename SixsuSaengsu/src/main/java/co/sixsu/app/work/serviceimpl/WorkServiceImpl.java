@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
@@ -81,6 +82,23 @@ public class WorkServiceImpl implements WorkService{
 		
 		
 		return 0;
+	}
+
+	@Override
+	public List<ProductVO> getProductList() {
+		return mapper.getProductList();
+	}
+
+	@Override
+	public List<addPlanVO> getPlanList() {
+		return mapper.getPlanList();
+	}
+
+	@Override
+	public List<addPlanVO> getDetaPlanList(String planHeadId) {
+		List<addPlanVO> list = mapper.getDetaPlanList(planHeadId);
+		System.out.println(list);
+		return list;
 	}
 	
 	
