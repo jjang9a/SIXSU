@@ -83,5 +83,48 @@
 	WHERE cp_id = #{cpId}
 </update>
 
+<select id="searchCp" parameterType="SearchDTO" resultType="ProductVO">
+	SELECT *
+	FROM complete_prod
+	WHERE 
+	<if test='searchType.equals("id")'>
+		cp_id like '%'||#{searchKey}||'%' OR lower(cp_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		cp_name like '%'||#{searchKey}||'%'
+	</if>
+	ORDER BY cp_stat desc, cp_id
+</select>
+<!-- 완제품 관리 종료 -->
+
+<!-- 반제품 관리 -->
+<select id="spList" resultType="ProductVO">
+	select * from semi_prod
+	order by sp_stat desc, sp_id
+</select>
+
+<insert id="addSp" parameterType="ProductVO">
+	INSERT INTO semi_prod VALUES (#{spId}, #{spName}, #{spSize}, #{spLot}, #{spUnit}, #{spStat}, #{spNote})
+</insert>
+
+<update id="updateSp" parameterType="ProductVO">
+	UPDATE semi_prod
+	SET sp_name=#{spName}, sp_size=#{spSize}, sp_lot=#{spLot}, sp_unit=#{spUnit}, sp_stat=#{spStat}, sp_note=#{spNote}
+	WHERE sp_id = #{spId}
+</update>
+
+<select id="searchSp" parameterType="SearchDTO" resultType="ProductVO">
+	SELECT *
+	FROM semi_prod
+	WHERE 
+	<if test='searchType.equals("id")'>
+		sp_id like '%'||#{searchKey}||'%' OR lower(sp_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		sp_name like '%'||#{searchKey}||'%'
+	</if>
+	ORDER BY sp_stat desc, sp_id
+</select>
+<!-- 반제품 관리 종료 -->
 
 </mapper>
