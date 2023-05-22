@@ -94,19 +94,22 @@
 
 		<script>
 			window.onload = function () {
+				let initData = '';
+				let nowData = '';
 				$.ajax({
 					url: "/basic/cpList",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
-						console.log(result)
 						grid.resetData(result);
+						initData = result;
+						nowData = result;
 					}
 				});
 				const grid = new tui.Grid({
 					el: document.getElementById('grid'),
 					scrollX: false,
-					scrollY: true,
+					scrollY: false,
 					minBodyHeight: 400,
 					pageOptions: {
 						useClient: true,
@@ -181,8 +184,6 @@
 					// 열을 더블클릭하면 열 정보를 변수에 저장
 					selRow = e.rowKey;
 					let dataRow = grid.getRow(selRow);
-					console.log(selRow)
-					console.log(dataRow.cpId);
 					$('#cpId').val(dataRow.cpId);
 					$('#cpName').val(dataRow.cpName);
 					$('#cpLot').val(dataRow.cpLot);
@@ -209,8 +210,6 @@
 								alert('완제품이 성공적으로 수정되었습니다');
 								//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
 								const setData = result
-								console.log('데이터 : ' + setData);
-								console.log('열번호 : ' + selRow)
 								grid.setRow(selRow, setData);
 								selRow = '';
 								$('.empty').val('');
@@ -229,16 +228,43 @@
 				let searchKey = '';
 				$('#searchBtn').on('click', function (e) {
 					if ($('#cpId').val() == '' && $('#cpName').val() == '') {
-						alert('완제품 코드 또는 제품명으로 검색이 가능합니다.')
+						if (initData == nowData) {
+							alert('완제품 코드 또는 제품명으로 검색이 가능합니다.')
+						} else {
+							$.ajax({
+								url: "/basic/cpList",
+								method: "GET",
+								dataType: "JSON",
+								success: function (result) {
+									grid.resetData(result);
+								}
+							});
+						}
 					} else {
 						if ($('#cpId').val() != '') {
-							searchType = 'cpId';
+							searchType = 'id';
 							searchKey = $('#cpId').val()
 						} else {
-							searchType = 'cpName';
+							searchType = 'name';
 							searchKey = $('#cpName').val()
 						}
 
+						$.ajax({
+							url: '/basic/searchCp',
+							type: 'get',
+							data: {
+								"searchType": searchType,
+								"searchKey": searchKey
+							},
+							dataType: 'json',
+							success: function (result) {
+								grid.resetData(result);
+								nowData = result;
+							},
+							error: function () {
+								alert('완제품 검색 중 오류 발생!');
+							}
+						})
 					}
 
 				})

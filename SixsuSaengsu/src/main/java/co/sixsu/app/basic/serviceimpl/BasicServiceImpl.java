@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.MaterialVO;
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.basic.domain.SearchDTO;
 import co.sixsu.app.basic.mapper.BasicMapper;
@@ -99,6 +100,57 @@ public class BasicServiceImpl implements BasicService{
 	@Override
 	public boolean updateCp(ProductVO prod) {
 		return mapper.updateCp(prod) == 1;
+	}
+
+	@Override
+	public List<ProductVO> searchCp(SearchDTO dto) {
+		return mapper.searchCp(dto);
+	}
+
+	
+	// 반제품 관리
+	
+	@Override
+	public List<ProductVO> spList() {
+		return mapper.spList();
+	}
+
+	@Override
+	public boolean addSp(ProductVO prod) {
+		return mapper.addSp(prod) == 1;
+	}
+
+	@Override
+	public boolean updateSp(ProductVO prod) {
+		return mapper.updateSp(prod) == 1;
+	}
+
+	@Override
+	public List<ProductVO> searchSp(SearchDTO dto) {
+		return mapper.searchSp(dto);
+	}
+
+	
+	// 자재 관리
+	
+	@Override
+	public List<MaterialVO> matList() {
+		return mapper.matList();
+	}
+
+	@Override
+	public boolean addMat(MaterialVO mat) {
+		return mapper.addMat(mat) == 1;
+	}
+
+	@Override
+	public boolean updateMat(MaterialVO mat) {
+		return mapper.updateMat(mat) == 1;
+	}
+
+	@Override
+	public List<MaterialVO> searchMat(SearchDTO dto) {
+		return mapper.searchMat(dto);
 	}
 	
 	
