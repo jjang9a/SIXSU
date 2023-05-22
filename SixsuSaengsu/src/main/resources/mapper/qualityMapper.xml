@@ -64,8 +64,7 @@
 		r.mat_id = m.mat_id
 		left join business b
 		on r.bus_id = b.bus_id
-		where
-		r.mat_req_stat='입고대기'
+		where r.mat_req_stat='입고대기'
 		order by mat_req_id
 	</select>
 
