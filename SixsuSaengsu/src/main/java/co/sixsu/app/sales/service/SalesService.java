@@ -25,7 +25,9 @@ public interface SalesService {
 	
 	InvVO orderAdd(InvVO inv); //주문서만 등록
 	
-	boolean ordDetAdd(List<OrdVO> list);
+	boolean ordDetAdd(List<OrdVO> list); 
+	
+	List<InvVO> getOrderingList();  //페이지 마지막부분 주문중인 목록
 
 
 }
