@@ -5,19 +5,14 @@
   
 <mapper namespace="co.sixsu.app.equipment.mapper.EquMapper">
 	
-  	<!-- 설비조회 모달(상세정보) -->
-  	<select id="equInfo" resultType="EquConVO">
-  		
-		SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, i.check_date, i.check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
-			FROM equ_con c LEFT OUTER JOIN equ_insp i
-			ON c.equ_code = i.equ_code
-			LEFT OUTER JOIN equ_oper o
-			ON c.equ_code = o.equ_code
-  	</select>
+	<!-- 설비관리 리스트 -->
+	<select id="equList" resultType="EquConVO">
+	
+	</select>
   	
   	<!-- 설비조회 검색 -->
   	<select id="equFilterList" resultType="EquConVO" parameterType="EquConVO">
-  	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, i.check_date, i.check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
+  	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, to_char(check_date, 'yyyy-mm-dd') as check_date, i.check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
 		FROM EQU_CON c LEFT OUTER JOIN EQU_INSP i
 		ON c.equ_code = i.equ_code
 		LEFT OUTER JOIN EQU_OPER o
@@ -28,9 +23,12 @@
 
 	<!-- 설비관리 리스트 -->
 	<select id="equConList" resultType="EquConVO">
-  		SELECT equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_check, equ_img, emp_id
-			FROM equ_con
-			ORDER BY equ_code
+  		SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_model, c.equ_stat, c.equ_line, i.equ_suit, to_char(i.check_date, 'yyyy-mm-dd') as check_date, i.check_next, c.equ_check, i.check_info, o.oper_start, o.oper_fnish, c.equ_img, c.emp_id 
+			FROM equ_con c LEFT OUTER JOIN equ_insp i
+			ON c.equ_code = i.equ_code
+			LEFT OUTER JOIN equ_oper o
+			ON c.equ_code = o.equ_code
+            
   	</select>
 
 	<!-- 설비관리 등록 -->
@@ -39,13 +37,15 @@
 		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{equImg}, #{empId}, #{equCheck})
 	</insert>
 	
+	<!-- 설비관리 수정 -->
 	<update id="equUpdate" parameterType="EquConVO">
 		UPDATE equ_con
 		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, equ_img=#{equImg}, emp_id=#{empId}, equ_check=#{equCheck}
 		WHERE equ_code=#{equCode}
 	</update>
 	
-	<delete id="equDel" parameterType="String">
+	<!-- 설비관리 삭제 -->
+	<delete id="equDel" parameterType="EquConVO">
 		delete from equ_con where equ_code = #{equCode}
 	</delete>
 	

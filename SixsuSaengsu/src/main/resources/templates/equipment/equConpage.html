@@ -44,30 +44,34 @@
 			<tr>
 				<td>설비코드<span class="needStar"> * </span></td>
 				<td><input type="text" name="equCode" id="equCode"></td>
-				
-				<td>공정코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="procId" id="procId"></td>
 				<td>설비명<span class="needStar"> * </span></td>
 				<td><input type="text" name="equName" id="equName" ></td>
+		   	</tr>
+		   	<tr>
 				<td>모델<span class="needStar"> * </span></td>
 				<td><input type="text" name="equModel" id="equModel"></td>
-			</tr>
-			<tr>
 				<td>설비상태<span class="needStar"> *</span></td>
 				<td><input type="text" name="equStat" id="equStat"></td>
+			</tr>	
+		   	<tr>
 				<td>설비라인<span class="needStar"> *</span></td>
 				<td><input type="text" name="equLine" id="equLine"></td>
-				<td>점검주기<span class="needStar"> *</span></td>
-				<td><input type="text" name="equCheck" id="equCheck"></td>
 				<td>설비이미지<span class="needStar"> *</span></td>
 				<td><input type="text" name="equImg" id="equImg"></td>
+			</tr>
+			<tr>
+			
+				<td>공정코드<span class="needStar"> * </span></td>
+				<td><input type="text" name="procId" id="procId"></td>
+				<td>점검주기<span class="needStar"> *</span></td>
+				<td><input type="text" name="equCheck" id="equCheck"></td>
 				<td>담당자<span class="needStar"> *</span></td>
 				<td><input type="text" name="empId" id="empId"></td>
 			</tr>
 		 </div>
 		</table> 
 		<div>
-			<img src="../equipment/equImg/병입기2.jpg" loading="lazy" weight="100" height="200">
+			<!-- <img src="../equipment/equImg/병입기2.jpg" loading="lazy" weight="100" height="200"> -->
 		</div>
 	  </form>
 	  
@@ -88,7 +92,9 @@
 <div id="grid"></div>
 
 	    <script>
-	    
+
+	    	 
+	     
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
         pageOptions: {
@@ -142,19 +148,20 @@
 	    
      });
 	    
-     // 페이지가 열리면 기능작동 - 리스트 띄워주기.  
+	     // 페이지가 열리면 기능작동 - 리스트 띄워주기.  
 	    window.onload = function(){
 	    	
 	    	$.ajax({
-	    		url : "/equipment/equConList1",
+	    		url : "/equipment/equCon",
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
-	    			console.dir(result);
 	    			grid.resetData(result);
 	    		}
 	    	});
 	    };
+	    
+
     // 색 테마 적용
     tui.Grid.applyTheme('default', {
         cell: {
@@ -171,8 +178,9 @@
     });
 
     // 클릭시 데이터 받아서 인풋창에 값 불러오기.
+    let selRow = '';
  	 grid.on('click', ev => {
-
+		selRow = ev.rowKey;
  		// focus된 셀이 있는 열 전체 select 처리
 			grid.setSelectionRange({
 				start: [ev.rowKey, 0],
@@ -230,16 +238,18 @@
 			data: $('#addForm').serialize(),
 			dataType: 'json',
 			success: function (result) {
-				alert('설비정보가 수정되었습니다');
 				console.log(result);
+				const setData = result
+				grid.setRow(selRow, setData);
+				selRow = '';
+				alert('설비정보가 수정되었습니다');
 			},
-			error: function () {
+			error: function (reject) {
 				alert('설비 수정 중 오류가 발생했습니다!');
 				console.log(reject);
 			}
 		});
 		$('#addForm input').val('');
-		location.reload();
 	})	
 	
 	// 설비정보 삭제
@@ -248,31 +258,36 @@
   
   	// 선택한 설비의 ID를 추출
   			var equCode = $('#equCode').val();
-  // 서버로 삭제 요청을 전송
-  		$.ajax({
-   			 url: '/equipment/equDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
-   			 type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
-   			 contentType : "application/json",
-		     data: equCode, // 삭제할 설비의 ID를 전송
-		     success: function (response) {
-		    	  if(response = "sucess"){
-		    		 alert("성공")
-		    	 }else {
-		    		 alert("실패")
-		    	 } 
-		     // 삭제 성공 시의 처리
-		     console.log('설비가 성공적으로 삭제되었습니다.');
-		     // 추가적인 업데이트나 리다이렉션 등의 동작 수행
-		     },
-		     error: function (xhr, status, error) {
-		     // 삭제 실패 시의 처리
-		     console.log('설비 삭제 중 오류가 발생했습니다.');
-		     console.log('오류 메시지:', error);
-		     // 오류 메시지를 사용자에게 표시하거나 추가적인 오류 처리 수행
-		    }
-		 });
+  	// 서버로 삭제 요청을 전송
+		  		$.ajax({
+		   			 url: '/equipment/equDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
+		   			 type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
+		   			dataType : "JSON",
+		  			contentType : "application/json",
+				     data: JSON.stringify( { equCode : $('#equCode').val()}), // 삭제할 설비의 ID를 전송
+				     success: function (response) {
+				    	  if(response == "sucess"){
+				    		 alert("성공")
+				    	 }else {
+				    		 alert("실패")
+				    	 } 
+				     // 삭제 성공 시의 처리
+				     console.log('설비가 성공적으로 삭제되었습니다.');
+				     
+				     
+				     // 추가적인 업데이트나 리다이렉션 등의 동작 수행
+				     },
+				     error: function (error) {
+				     // 삭제 실패 시의 처리
+				     console.log('설비 삭제 중 오류가 발생했습니다.');
+				     console.log('오류 메시지:', error);
+				     // 오류 메시지를 사용자에게 표시하거나 추가적인 오류 처리 수행
+				    }
+				 });
+ 			// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주는?
   			$('#addForm input').val('');
-			location.reload();
+  				grid.removeRow(selRow)
+				selRow = ''; 
 		});
 	
 
