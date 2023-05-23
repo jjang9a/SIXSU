@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.MaterialVO;
+import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.basic.domain.SearchDTO;
 import co.sixsu.app.basic.mapper.BasicMapper;
@@ -97,12 +99,12 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.addCp(prod) == 1;
 	}
 
-	@Override
+	@Override // 완제품 수정
 	public boolean updateCp(ProductVO prod) {
 		return mapper.updateCp(prod) == 1;
 	}
 
-	@Override
+	@Override // 완제품 검색
 	public List<ProductVO> searchCp(SearchDTO dto) {
 		return mapper.searchCp(dto);
 	}
@@ -110,22 +112,22 @@ public class BasicServiceImpl implements BasicService{
 	
 	// 반제품 관리
 	
-	@Override
+	@Override // 반제품 목록
 	public List<ProductVO> spList() {
 		return mapper.spList();
 	}
 
-	@Override
+	@Override // 반제품 등록
 	public boolean addSp(ProductVO prod) {
 		return mapper.addSp(prod) == 1;
 	}
 
-	@Override
+	@Override // 반제품 수정
 	public boolean updateSp(ProductVO prod) {
 		return mapper.updateSp(prod) == 1;
 	}
 
-	@Override
+	@Override // 반제품 검색
 	public List<ProductVO> searchSp(SearchDTO dto) {
 		return mapper.searchSp(dto);
 	}
@@ -133,24 +135,82 @@ public class BasicServiceImpl implements BasicService{
 	
 	// 자재 관리
 	
-	@Override
+	@Override // 자재 목록
 	public List<MaterialVO> matList() {
 		return mapper.matList();
 	}
 
-	@Override
+	@Override // 자재 등록
 	public boolean addMat(MaterialVO mat) {
 		return mapper.addMat(mat) == 1;
 	}
 
-	@Override
+	@Override // 자재 수정
 	public boolean updateMat(MaterialVO mat) {
 		return mapper.updateMat(mat) == 1;
 	}
 
-	@Override
+	@Override // 자재 검색
 	public List<MaterialVO> searchMat(SearchDTO dto) {
 		return mapper.searchMat(dto);
+	}
+
+	
+	// 거래처 관리
+	
+	@Override // 사업자번호 중복 조회
+	public boolean checkBusNum(String num) {
+		boolean result = false;
+		if(mapper.checkBusNum(num) == 0) {
+			result = true;
+		}else {
+			result = false;
+		}
+		return result;
+	}
+
+	@Override // 거래처 목록
+	public List<BusVO> busList() {
+		return mapper.busList();
+	}
+
+	@Override // 거래처 등록
+	public boolean addBus(BusVO bus) {
+		return mapper.addBus(bus) == 1;
+	}
+
+	@Override // 거래처 수정
+	public boolean updateBus(BusVO bus) {
+		return mapper.updateBus(bus) == 1;
+	}
+
+	@Override // 거래처 검색
+	public List<BusVO> searchBus(SearchDTO dto) {
+		return mapper.searchBus(dto);
+	}
+
+	@Override
+	public List<ProcessVO> procList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean addProc(ProcessVO mat) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateProc(ProcessVO mat) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<ProcessVO> searchProc(SearchDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

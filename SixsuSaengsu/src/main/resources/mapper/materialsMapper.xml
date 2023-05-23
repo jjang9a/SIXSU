@@ -6,7 +6,7 @@
 <mapper namespace="co.sixsu.app.material.mapper.MaterialsMapper">
 	<!-- 발주리스트 -->
 	<select id="getMatReqList" resultType="MatreqVO">
-		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
+		select m.mat_req_id, m.bus_id, b.bus_name, m.mat_id, t.mat_name, t.mat_size, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
 		from mat_req m left join business b
 		on m.bus_id = b.bus_id
 		left join employee e
@@ -18,7 +18,7 @@
 <!-- to_date(sysdate, 'YYYY-MM-dd') -->
 
 	<select id="selectMatReq" resultType="MatreqVO">
-		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
+		select m.mat_req_id, m.bus_id, b.bus_name, m.mat_id, t.mat_name, t.mat_size, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
 		from mat_req m left join business b
 		on m.bus_id = b.bus_id
 		left join employee e
@@ -77,6 +77,7 @@
 		}
 	</select> -->
 	
+	<!-- 입고등록 -->
 	<insert id="insertMatRec" parameterType="String">
     <![CDATA[
 	    CALL IN_MAT_REC(
@@ -84,6 +85,11 @@
 	    )
 	    ]]>
   	</insert>
+  	
+  	<!-- 자재목록 -->
+  	<select id="selectMatList" resultType="MatVO">
+  		select mat_id, mat_name, mat_size from material
+  	</select>
 	
 	
 </mapper>

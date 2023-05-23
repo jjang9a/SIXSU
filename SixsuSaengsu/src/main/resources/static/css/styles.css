@@ -11292,3 +11292,12 @@ body {
 .sixBtn6 {
   width: 112px;
 }
+
+.needStar {
+  color: red;
+  font-size: 10px;
+}
+
+.tui-grid-cell.cell-pink {
+  background-color: #faeaea;
+}

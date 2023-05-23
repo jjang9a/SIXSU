@@ -2,9 +2,11 @@ package co.sixsu.app.basic.service;
 
 import java.util.List;
 
+import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.MaterialVO;
+import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.basic.domain.SearchDTO;
 
@@ -34,6 +36,17 @@ public interface BasicService {
 	boolean addMat(MaterialVO mat); // 자재 등록
 	boolean updateMat(MaterialVO mat); // 자재 수정
 	List<MaterialVO> searchMat(SearchDTO dto); // 반제품 검색
+	
+	boolean checkBusNum(String num); // 거래처 중복확인
+	List<BusVO> busList(); // 거래처 목록 조회
+	boolean addBus(BusVO bus); // 거래처 등록
+	boolean updateBus(BusVO bus); // 거래처 수정
+	List<BusVO> searchBus(SearchDTO dto); // 거래처 검색
+	
+	List<ProcessVO> procList(); // 공정 목록 조회
+	boolean addProc(ProcessVO mat); // 공정 등록
+	boolean updateProc(ProcessVO mat); // 공정 수정
+	List<ProcessVO> searchProc(SearchDTO dto); // 공정 검색
 	
 	
 }
