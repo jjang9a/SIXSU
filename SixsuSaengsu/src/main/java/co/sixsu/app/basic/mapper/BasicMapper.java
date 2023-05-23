@@ -47,6 +47,7 @@ public interface BasicMapper {
 	public List<BusVO> searchBus(SearchDTO dto); // 완제품 검색
 	
 	public List<ProcessVO> procList(); // 공정 목록 조회
+	public List<CodeVO> procTypeList(); // 공정 분류 목록
 	public int addProc(ProcessVO proc); // 공정 등록
 	public int updateProc(ProcessVO proc); // 공정 수정
 	public List<ProcessVO> searchProc(SearchDTO dto); // 공정 검색

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -170,36 +171,40 @@ public class BasicController {
 	@ResponseBody
 	@GetMapping("/basic/matList")
 	public List<MaterialVO> matList() { // 자재 목록
-		return null;
+		return service.matList();
 	}
 
 	@ResponseBody
 	@PostMapping("/basic/addMat")
 	public MaterialVO addMat(MaterialVO mat) { // 자재 등록
-		return null;
+		service.addMat(mat);
+		return mat;
 	}
 
 	@ResponseBody
 	@PostMapping("/basic/modifyMat")
 	public MaterialVO modifyMat(MaterialVO mat) { // 자재 수정
-		return null;
+		service.updateMat(mat);
+		return mat;
 	}
 
 	@ResponseBody
 	@GetMapping("/basic/searchMat") // 자재 검색
 	public List<MaterialVO> searchMat(SearchDTO dto) {
-		return null;
+		return service.searchMat(dto);
 	}
 
 	// 공정 관리
 
 	@GetMapping("/basic/procManage")
-	public void procManage() { // 공정 관리 화면 띄우기
+	public void procManage(Model model) { // 공정 관리 화면 띄우기
+		model.addAttribute("types", service.procTypeList());
+		System.out.println(service.procTypeList());
 	}
-
+	
 	@ResponseBody
 	@GetMapping("/basic/procList")
-	public List<ProcessVO> procList() { // 완제품 목록
+	public List<ProcessVO> procList() { // 공정 목록
 		return service.procList();
 	}
 
@@ -260,7 +265,15 @@ public class BasicController {
 	@ResponseBody
 	@GetMapping("/basic/searchBus") // 거래처 검색
 	public List<BusVO> searchBus(SearchDTO dto) {
+		System.out.println(dto);
 		return service.searchBus(dto);
 	}
-
+	
+	
+	// 제품 BOM
+	@GetMapping("/basic/bomManage")
+	public void bodManage() {
+	}
+	
+	
 }

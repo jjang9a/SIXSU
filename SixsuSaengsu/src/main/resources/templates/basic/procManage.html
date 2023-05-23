@@ -42,33 +42,33 @@
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">공정 관리</h1>
 
 		<!-- 정보입력 폼 -->
-		<form action="" method="post" id="matForm">
+		<form action="" method="post" id="manageForm">
 			<table id="manageTbl">
 				<tr>
 					<td>공정 코드</td>
-					<td><input type="text" name="matId" id="matId" class="empty"></td>
+					<td><input type="text" name="procId" id="procId" class="empty"></td>
 					<td>공정 구분</td>
-					<td><select name="matSize" id="matSize">
+					<td><select name="procType" id="procType">
 							<option value="">----- 선택 -----</option>
-							<option value="">필요한 규격 말해주세요</option>
+							<option th:each="type : ${types}" th:value="${type.comId}" th:utext="${type.comName}"></option>
 						</select></td>
 				</tr>
 				<tr>
 					<td>공정명</td>
-					<td><input type="text" name="matName" id="matName" class="empty"></td>
+					<td><input type="text" name="procName" id="procName" class="empty"></td>
 					<td>활성여부</td>
 					<td>
 						<div id="divRadio">
-							<input type="radio" id="matStat1" name="matStat" value="Y" checked>
-							<label for="matStat1">사용</label>
-							<input type="radio" id="matStat2" name="matStat" value="N">
-							<label for="matStat2">비사용</label>
+							<input type="radio" name="procStat" value="Y" checked>
+							<label for="procStat">사용</label>
+							<input type="radio"  name="procStat" value="N">
+							<label for="procStat">비사용</label>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>비고</td>
-					<td colspan="4"><input type="text" name="spNote" id="spNote" class="empty" style="width : 610px;">
+					<td colspan="4"><input type="text" name="procNote" id="procNote" class="empty" style="width : 610px;">
 					</td>
 				</tr>
 			</table>
@@ -88,7 +88,7 @@
 				let initData = '';
 				let nowData = '';
 				$.ajax({
-					url: "/basic/matList",
+					url: "/basic/procList",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -107,32 +107,24 @@
 						perPage: 10
 					},
 					columns: [{
-						header: '자재코드',
-						name: 'matId',
+						header: '공정코드',
+						name: 'procId',
 						align: 'center'
 					}, {
-						header: '자재명',
-						name: 'matName',
+						header: '분류',
+						name: 'procType',
 						align: 'center'
 					}, {
-						header: '규격',
-						name: 'matSize',
-						align: 'center'
-					}, {
-						header: '단위',
-						name: 'matUnit',
-						align: 'center'
-					}, {
-						header: '안전재고량',
-						name: 'matLot',
+						header: '공정명',
+						name: 'procName',
 						align: 'center'
 					}, {
 						header: '비고',
-						name: 'matNote',
+						name: 'procNote',
 						align: 'center'
 					}, {
 						header: '활성여부',
-						name: 'matStat',
+						name: 'procStat',
 						align: 'center'
 					}]
 				});
@@ -152,9 +144,9 @@
 				// 등록 버튼 이벤트
 				$('#addBtn').on('click', function (e) {
 					$.ajax({
-						url: '/basic/addMat',
+						url: '/basic/addProc',
 						type: 'post',
-						data: $('#spForm').serialize(),
+						data: $('#manageForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
 							alert('자재가 성공적으로 등록되었습니다');
@@ -167,6 +159,7 @@
 						}
 					});
 					$('.empty').val('');
+					$('#procType').val('').prop("selected", true);
 				});
 
 				// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
@@ -175,16 +168,15 @@
 					// 열을 더블클릭하면 열 정보를 변수에 저장
 					selRow = e.rowKey;
 					let dataRow = grid.getRow(selRow);
-					$('#matId').val(dataRow.matId);
-					$('#matName').val(dataRow.matName);
-					$('#matLot').val(dataRow.matLot);
-					$('#matNote').val(dataRow.matNote);
+					$('#procId').val(dataRow.procId);
+					$('#procName').val(dataRow.procName);
+					$('#procNote').val(dataRow.procNote);
 					if (dataRow.matStat == 'Y') {
 						$("input:radio[name='matStat']:radio[value='Y']").prop('checked', true);
 					} else {
 						$("input:radio[name='matStat']:radio[value='N']").prop('checked', true);
 					}
-					$('#matSize').val(dataRow.matSize).prop("selected", true);
+					$('#procType').val(dataRow.procType).prop("selected", true);
 				})
 
 				// 수정 버튼 이벤트
@@ -193,22 +185,22 @@
 						alert('수정할 데이터가 없습니다.')
 					} else {
 						$.ajax({
-							url: '/basic/modifyMat',
+							url: '/basic/modifyProc',
 							type: 'post',
-							data: $('#spForm').serialize(),
+							data: $('#manageForm').serialize(),
 							dataType: 'json',
 							success: function (result) {
-								alert('자재정보가 성공적으로 수정되었습니다');
+								alert('공정정보가 성공적으로 수정되었습니다');
 								//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
 								const setData = result
 								grid.setRow(selRow, setData);
 								selRow = '';
 								$('.empty').val('');
-								$('#spSize').val('').prop("selected", true);
+								$('#procType').val('').prop("selected", true);
 								$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
 							},
-							error: function () {
-								alert('자재정보 수정 중 오류가 발생했습니다!');
+							error: function (reject) {
+								console.loe(reject);
 							}
 						});
 					}
@@ -220,7 +212,7 @@
 				$('#searchBtn').on('click', function (e) {
 					if ($('#matId').val() == '' && $('#matName').val() == '') {
 						if (initData == nowData) {
-							alert('자재코드 또는 자재명으로 검색이 가능합니다.')
+							alert('공정코드, 공정명 또는 공정구분으로 검색이 가능합니다.')
 						} else {
 							$.ajax({
 								url: "/basic/matList",
@@ -232,16 +224,21 @@
 							});
 						}
 					} else {
-						if ($('#matId').val() != '') {
+						if ($('procId').val() != '') {
 							searchType = 'id';
-							searchKey = $('#matId').val()
-						} else {
+							searchKey = $('#procId').val()
+						} else if($('procName').val() != ''){
 							searchType = 'name';
-							searchKey = $('#matName').val()
+							searchKey = $('#procName').val()
+						} else {
+							searchType = 'type';
+							searchKey = $('#procType').val()
 						}
+						console.log(searchType);
+						console.log(searchKey);
 
 						$.ajax({
-							url: '/basic/searchMat',
+							url: '/basic/searchProc',
 							type: 'get',
 							data: {
 								"searchType": searchType,
@@ -252,8 +249,8 @@
 								grid.resetData(result);
 								nowData = result;
 							},
-							error: function () {
-								alert('자재 검색 중 오류 발생!');
+							error: function (reject) {
+								console.log(reject);
 							}
 						})
 					}
