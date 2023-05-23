@@ -2,6 +2,7 @@ package co.sixsu.app.material.mapper;
 
 import java.util.List;
 
+import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
@@ -28,8 +29,8 @@ public interface MaterialsMapper {
 	List<MatrecVO> selectMatRecList();
 	
 	//자재 입고
-	///int insertMatRec(String reqId);
-	
-	//자재 입고
 	int insertMatRec(String matReqId);
+	
+	//자재 리스트
+	List<MatVO> selectMatList();
 }
