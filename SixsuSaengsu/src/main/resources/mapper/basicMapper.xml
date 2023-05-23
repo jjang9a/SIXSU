@@ -127,4 +127,84 @@
 </select>
 <!-- 반제품 관리 종료 -->
 
+<!-- 자재 관리 -->
+<select id="matList" resultType="MaterialVO">
+	select * from material
+	order by mat_stat desc, mat_id
+</select>
+
+<insert id="addMat" parameterType="MaterialVO">
+	INSERT INTO material VALUES (#{matId}, #{matName}, #{matSize}, #{matSafe}, #{matUnit}, #{matStat}, #{matNote})
+</insert>
+
+<update id="updateMat" parameterType="MaterialVO">
+	UPDATE material
+	SET mat_name=#{matName}, mat_size=#{matSize}, mat_safe=#{matSafe}, mat_unit=#{matUnit}, mat_stat=#{matStat}, mat_note=#{matNote}
+	WHERE mat_id = #{matId}
+</update>
+
+<select id="searchMat" parameterType="SearchDTO" resultType="MaterialVO">
+	SELECT *
+	FROM material
+	WHERE 
+	<if test='searchType.equals("id")'>
+		mat_id like '%'||#{searchKey}||'%' OR lower(mat_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		mat_name like '%'||#{searchKey}||'%'
+	</if>
+	ORDER BY mat_stat desc, mat_id
+</select>
+<!-- 자재 관리 종료 -->
+
+<!-- 거래처 관리 -->
+<select id="checkBusNum" parameterType="String" resultType="int">
+	select count(bus_num)
+	from business
+	where bus_num = #{num}
+</select>
+
+<select id="busList" resultType="BusVO">
+	select * from business
+	order by bus_stat desc, bus_id
+</select>
+
+<insert id="addBus" parameterType="BusVO">
+	INSERT INTO business VALUES(#{busId}, #{busType} ,#{busName}, #{busNum}, #{busTell}, #{busAddr}, #{busNote}, #{busStat})
+</insert>
+
+<update id="updateBus" parameterType="BusVO">
+	UPDATE business
+	SET bus_type=#{busType} ,bus_name=#{busName}, bus_tell=#{busTell}, bus_num=#{busNum}, bus_addr=#{busAddr}, bus_note=#{busNote}, bus_stat=#{busStat}
+	WHERE bus_id=#{busId}
+</update>
+
+<select id="searchBus" parameterType="SearchDTO" resultType="BusVO">
+	SELECT *
+	FROM business
+	WHERE 
+	<if test='searchType.equals("idOnly")'>
+		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("nameOnly")'>
+		bus_name like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("typeOnly")'>
+		bus_type = #{searchKey}
+	</if>
+	<if test='searchType.equals("buyName")'>
+		bus_type = 'buy' and bus_name like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("buyId")'>
+		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type = 'buy'
+	</if>
+	<if test='searchType.equals("sellName")'>
+		bus_name like '%'||#{searchKey}||'%' and bus_type = 'sel'
+	</if>
+	<if test='searchType.equals("sellId")'>
+		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type= 'sel'
+	</if>
+	ORDER BY bus_stat desc, bus_id
+</select>
+
 </mapper>
