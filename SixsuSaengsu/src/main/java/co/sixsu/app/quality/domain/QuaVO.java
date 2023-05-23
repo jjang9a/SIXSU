@@ -12,7 +12,7 @@ public class QuaVO {
 	
 	private String inspNum; // 검사번호
 	private String inspItemId; // 검사 제품 코드
-	private String empName;// 사원 이름
+
 	private String inspDate; // 검사 일자
 	private int inspQt; // 검사 수량
 	private int suitQt; // 적합 수량
@@ -29,7 +29,10 @@ public class QuaVO {
 	private String inspStdId; // 검사 단위 코드(발주번호, 지시세부코드, 완제품출고코드)
 	private String wkDetaId;// 지시 세부 코드
 	
-
+	// 검사자 사원 관련
+	private String empName; // 사원 이름
+	private String empId; // 사번
+	private String empDept; // 부서
 	
 	// 도착 자재 관련
 	private String arrMatNum; // 도착 자재 번호

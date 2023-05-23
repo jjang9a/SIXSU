@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.basic.domain.EmpVO;
@@ -71,49 +72,11 @@ public class QualityController {
 		return prList;
 	}
 	
-	// 자재 입고 검사 등록
-//	@ResponseBody
-//	@PostMapping("/quality/prRegister")
-//	public String prRegister(@RequestParam("stdIds") int[] stdIds) throws JsonMappingException, JsonProcessingException {
-//		/*String jsonData = paramMap.get("stdIds").toString();
-//		System.out.println(jsonData);
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		int[] dataArray = objectMapper.readValue(jsonData, int[].class);
-//		System.out.println(dataArray.length);*/
-//		
-//		for(int i : stdIds) {
-//			System.out.println(i);
-//			
-//			QuaVO am = new QuaVO();
-//			am.setMatReqId(i);
-//			  quaService.insertPr(i);
-//			  quaService.mrUpdate(i);
-//			 
-//		}
-//		return "/quality/proRecList";
-//	}
-	
-	// 자재 입고 검사 등록
-//	@ResponseBody
-//	@PostMapping("/quality/prRegister")
-//	public String prRegister(@RequestParam Map<String, Object> paramMap) throws JsonMappingException, JsonProcessingException {
-//	    String jsonData = paramMap.get("stdIds").toString();
-//	    System.out.println(jsonData);
-//	    ObjectMapper objectMapper = new ObjectMapper();
-//	    int[] dataArray = objectMapper.readValue(jsonData, int[].class);
-//	    System.out.println(dataArray.length);
-//	    for (int i : dataArray) {
-//	        System.out.println(i);
-//	        quaService.insertPr(i);
-//	        quaService.mrUpdate(i);
-//	    }
-//	    return "/quality/proRecList";
-//	}
 	
 	// 자재 입고 검사 등록
 	@ResponseBody
 	@PostMapping("/quality/prRegister")
-	public boolean prRegister(@RequestBody List<QuaVO> list) {
+	public List<QuaVO> prRegister(@RequestBody List<QuaVO> list) {
 		System.out.println(list);
 		return quaService.insertpro(list);
 	}
@@ -128,13 +91,13 @@ public class QualityController {
 		return priList;
 	}
 	
-	// 사원 검색 리스트
+	
+	// 입고 검사 결과 등록
 	@ResponseBody
-	@RequestMapping("/quality/empList")
-	public List<EmpVO> empList(Model model){
-		List<EmpVO> list = quaService.empList();
-		model.addAttribute("list", list);
-		return list;
+	@PostMapping("/quality/priRegister")
+	public boolean prRegister(QuaVO qua) {
+		System.out.println(qua);
+		return quaService.insertPri(qua);
 	}
 
 
