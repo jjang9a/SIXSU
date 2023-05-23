@@ -17,4 +17,5 @@ public class MatreqVO {
 	String busName;
 	String empName;
 	String matName;
+	String matSize;
 }
