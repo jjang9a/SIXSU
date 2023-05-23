@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+<head>
+<meta charset="UTF-8">
+<title>BOM</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">BOM 관리</h1>
+		<!-- 상품선택 -->
+		<table>
+			<tr>
+				<td>제품코드</td>
+				<td><input type="text" readonly>
+				<button type="button" id="selectBtn" class="sixBtn2">조회</button>
+				</td>					
+			</tr>
+			<tr>
+				<td>제품명</td>
+				<td><input type="text" readonly>
+				<td>규격</td>
+				<td><input type="text" readonly>
+				<td>완제품</td>
+				<td><input type="text" readonly>
+			</tr>
+		</table>
+		<!-- 상품 선택 완료 -->
+		<!-- 소요량 그리드 -->
+		<h2 class="mt-4" style="font-family: 'MaruBuri';">제품 소요량 관리</h2>
+		<div id="grid"></div>
+		<!-- 소요량 그리드 완료 -->
+		
+		<script>
+
+
+		</script>
+
+	</div>
+</body>
+</html>
