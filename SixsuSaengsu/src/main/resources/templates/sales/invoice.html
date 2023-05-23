@@ -461,7 +461,7 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
  		console.log(row.ordQt)
  		if((ev.columnName == 'ordQt' || ev.columnName == 'ordDetPrice') && row.ordQt && row.ordDetPrice ){
  			console.log('asdfasdf');
- 			gridy.setValue(ev.rowKey, 'ordSalePrice' , row.ordQt * row.ordDetPrice, false)
+ 			gridy.setValue(ev.rowKey, 'ordSalePrice' , row.ordQt * row.ordDetPrice, true)
  		}
  	})
  
