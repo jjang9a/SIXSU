@@ -21,16 +21,6 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public List<EquConVO> equInfo(String equCode) { 
-		return mapper.equInfo();
-	}
-
-	@Override
-	public List<EmpVO> empInfoList(String result) { // 설비조회 모달창
-		return mapper.empInfoList(result);
-	}
-
-	@Override
 	public List<EquConVO> equFilterList(EquConVO data) { // 검색기능
 		return mapper.equFilterList(data);
 	}
@@ -51,8 +41,15 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public boolean equDel(String equCode) { // 설비관리(삭제)
+	public boolean equDel(EquConVO equCode) { // 설비관리(삭제)
 		return mapper.equDel(equCode) == 1;
 	}
+
+	@Override
+	public List<EquConVO> equInfo(String equCode) {
+		return mapper.equInfo(equCode);
+	}
+
+	
 
 }

@@ -31,18 +31,28 @@ public class EquController {
 	public void equSearch() {
 	}
     
-	@GetMapping("/equipment/equCon") //설비 관리 페이지 리스트
-	public String equList(Model model){
-		model.addAttribute("equConList", equService.equConList());
-		return "/equipment/equCon";
-	}
 	
-	@ResponseBody // 설비 관리 리스트 ajax
-	@RequestMapping("/equipment/equConList1") 
-	public List<EquConVO> equConList() {
-		 List<EquConVO> list = equService.equConList();
-		 System.out.println(list);
-		 return list;
+	///////////////////
+	
+//	@GetMapping("/equipment/equSearchL") //설비 조회 페이지 리스트
+//	public String equSearchL(Model model){
+//		model.addAttribute("equSearchL", equService.equList());
+//		return "/equipment/equSearch";
+//	}
+//	
+//	@ResponseBody // 설비 조회 리스트 ajax
+//	@RequestMapping("/equipment/equSearchAjax") 
+//	public List<EquConVO> equSearchA() {
+//		 List<EquConVO> list = equService.equList();
+//		 System.out.println(list);
+//		 return list;
+//	}
+	/////////////////////
+	@ResponseBody
+	@GetMapping("/equipment/equCon") //설비 리스트 ajax
+	public List<EquConVO> equList(){
+		List<EquConVO> list = equService.equConList();
+		return list;
 	}
 	
 	@ResponseBody // 설비관리(등록) 
@@ -60,8 +70,7 @@ public class EquController {
 	} 
 	@ResponseBody // 설비관리(삭제) 
 	@PostMapping("/equipment/equDel") 
-	public String equdel(@RequestBody String equCode) {
-		System.err.println("ddd");
+	public String equdel(@RequestBody EquConVO equCode) {
 	    System.err.println(equCode);
 		  if(equService.equDel(equCode)) {
 			  return "success" ;
@@ -72,9 +81,6 @@ public class EquController {
 		  
 	} 
 	 
-	  
-	 
-
 	@ResponseBody // 설비조회 상세정보(모달에 데이터를 보내줌)
 	@RequestMapping("/equipment/equInfo") // 설비 조회 상세정보 리스트
 	public List<EquConVO> equInfo(@ModelAttribute EquConVO info) { //담고 담아서
@@ -85,6 +91,7 @@ public class EquController {
 		return null; // 모달 창으로 리턴해야함.
 	
 	}
+	
 	
 	@ResponseBody // 검색 기능 / 아작스로 데이터를 요청 리스트로 받음
 	@RequestMapping("/equipment/equFilterAjax")

@@ -11,135 +11,142 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <script type="text/javascript"
 	src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
-<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>	
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
 </head>
 <body>
 	<div layout:fragment="content">
-		<br><br>
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">설비조회</h1>
-	
-	<br>
+		<br>
+		<br>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비조회</h1>
+
+		<br>
 		<hr>
-		 * 설비상태  &nbsp&nbsp&nbsp&nbsp
-		
-		 * 설비명 : <input type="text" name="ename" >
-		<button class="sixBtn1" id="searchBtn1">
-				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-                fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+		* 설비상태 &nbsp&nbsp&nbsp&nbsp * 설비명 : <input type="text" name="ename">
+		<button class="sixBtn1" id="searchBtn2">
+			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                 <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                 </svg>
-        </button> 
-        &nbsp&nbsp&nbsp&nbsp
-        * 설비코드 :  <input type="text" name="ecode">
-        
-        <button class="sixBtn1" id="searchBtn2">
-				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-                fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+		</button>
+		&nbsp&nbsp&nbsp&nbsp * 설비코드 : <input type="text" name="ecode">
+
+		<button class="sixBtn1" id="searchBtn2">
+			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                 <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                 </svg>
-        </button> 
-        
-       
+		</button>
+
+
 		<hr>
 		<br>
-				
-		<!-- 설비조회 모달창 -->		
 
-<!-- Modal 시작 -->
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-         data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-         <div class="modal-dialog">
-            <div class="modal-content">
-            <!-- 모달 헤더 -->
-               <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel" style="font-family: 'MaruBuri';">설비 상세 정보</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"
-                     aria-label="Close"></button>
-               </div>
-            <!--설비정보(상세) 모달 바디 -->
-               <div class="modal-body">
-                <form action="" method="post" id="addForm">
-                 <table class="modalTbl">
-     			  <div id="equInfo">
-     			  
-     			  <tr>
-				    <td>설비코드<span class="needStar"> * </span></td>
-					<td><input type="text" name="equCode" id="equCode"></td>
-					
-					<td>공정코드<span class="needStar"> * </span></td>
-					<td><input type="text" name="procId" id="procId"></td>
-					
-					<td>설비상태<span class="needStar"> * </span></td>
-					<td><input type="text" name="equStat" id="equStat" ></td>
-					
-					<td>설비명<span class="needStar"> * </span></td>
-				    <td><input type="text" name="equName" id="equName"></td> 
-				    	
-					<td>설비라인<span class="needStar"> *</span></td>
-					<td><input type="text" name="equLine" id="equLine"></td>
-					
-					<td>판정<span class="needStar"> *</span></td>
-					<td><input type="text" name="equSuit" id="equSuit"></td>
-					
-					<td>점검일자<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkDate" id="checkDate"></td>
-					
-					<td>점검주기<span class="needStar"> *</span></td>
-					<td><input type="text" name="equCheck" id="equCheck"></td>
-					
-					<td>차기 점검일<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkNext" id="checkNext"></td>
-					
-					<td>점검구분<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkType" id="checkType"></td>
-					
-					<td>점검사유<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkInfo" id="checkInfo"></td>
-					
-					<td>비가동시간<span class="needStar"> *</span></td>
-					<td><input type="text" name="operStart" id="operStart"></td>
-					
-					<td>비가동사유<span class="needStar"> *</span></td>
-					<td><input type="text" name="opreNote" id="opreNote"></td>
-				 </tr> 
-     			  
-     			  <!--
-					<br> * 설비코드 : <input type="text" id="equCode"><br>
-					<br> * 공정코드 : <input type="text" id="procId"><br>
-					<br> * 설비상태 : <input type="text" id="equStat"><br>
-					<br> * 설비명 : <input type="text" id="equName"><br>
-					<br> * 설비라인 : <input type="text" id="equLine"><br>
-					<br> * 판정 : <input type="text" id="equSuit"><br>
-					<br> * 점검일자 : <input type="text" id="checkDate"><br>
-				 	<br> * 점검주기 : <input type="text" id="equCheck"><br>
-					<br> * 차기 점검일 : <input type="text" id="checkNext"><br>
-					<br> * 점검구분 : <input type="text" id="checkType"><br>
-					<br> * 점검사유 : <input type="text" id="checkInfo"><br>
-					<br> * 비가동시간 : <input type="text" id="operStart"><br>
-					<br> * 비가동사유 : <input type="text" id="opreNote"><br>
-					
-					-->
-					
-				  </div>
-				 </table>
-     			</form>
-               </div>
-               <!-- 모달 푸터(버튼부분) -->
-               <div class="modal-footer">
-                  <button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
-                    
-               </div>
-            </div>
-         </div>
-      </div>
+		<!-- 설비조회 모달창 -->
+
+		<!-- Modal 시작 -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel"
+							style="font-family: 'MaruBuri';">설비 상세 정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<!--설비정보(상세) 모달 바디 -->
+					<div class="modal-body">
+						<form action="" method="post" id="addForm">
+							<table class="">
+								<div id="equInfo">
+
+									<tr>
+										<br>
+										<td>설비코드<span class="needStar"> * </span></td>
+										<td><input type="text" name="equCode" id="equCode"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>공정코드<span class="needStar"> * </span></td>
+										<td><input type="text" name="procId" id="procId"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>설비상태<span class="needStar"> * </span></td>
+										<td><input type="text" name="equStat" id="equStat"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>설비명<span class="needStar"> * </span></td>
+										<td><input type="text" name="equName" id="equName"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>설비라인<span class="needStar"> *</span></td>
+										<td><input type="text" name="equLine" id="equLine"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>판정<span class="needStar"> *</span></td>
+										<td><input type="text" name="equSuit" id="equSuit"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>점검일자<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkDate" id="checkDate"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>점검주기<span class="needStar"> *</span></td>
+										<td><input type="text" name="equCheck" id="equCheck"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>차기 점검일<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkNext" id="checkNext"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>점검구분<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkType" id="checkType"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>점검사유<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkInfo" id="checkInfo"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비가동시간<span class="needStar"> *</span></td>
+										<td><input type="text" name="operStart" id="operStart"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비가동사유<span class="needStar"> *</span></td>
+										<td><input type="text" name="opreNote" id="opreNote"></td>
+									</tr>
+								</div>
+							</table>
+						</form>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- Modal 끝 -->
-		
-<div id="grid"></div>
 
-	    <script>
+		<div id="grid"></div>
+
+		<script>
 	    
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
@@ -189,17 +196,50 @@
           {
              header: '담당자',
              name: 'empId'
-          }
-          
+          },
+          {
+              header: '차기점검일',
+              name: 'checkNext',
+              hidden : true
+          },
+          {
+              header: '판정',
+              name: 'equSuit',
+              hidden : true
+          },
+          {
+              header: '점검일자',
+              name: 'checkDate',
+              hidden : true
+          },
+          {
+              header: '점검구분',
+              name: 'checkType',
+              hidden : true
+          },
+          {
+              header: '점검사유',
+              name: 'checkInfo',
+              hidden : true
+          },
+          {
+              header: '비가동시간',
+              name: 'operStart',
+              hidden : true
+          },
+          {
+              header: '비사동사유',
+              name: 'operNote',
+              hidden : true
+          }         
         ]
-	    
      });
         
      
 	    window.onload = function(){
 	    	
 	    	$.ajax({
-	    		url : "/equipment/equConList1",
+	    		url : "/equipment/equCon",
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
@@ -226,6 +266,13 @@
 
     
     grid.on('click', ev => {
+    	
+    	// focus된 셀이 있는 열 전체 select 처리
+		grid.setSelectionRange({
+			start: [ev.rowKey, 0],
+			end: [ev.rowKey, grid.getColumns().length - 1]
+		});
+    	
     	// 클릭한 Row의 정보를 dataRow에 저장
         let dataRow = grid.getRow(ev.rowKey);
     	console.log(dataRow.equCode);
@@ -234,30 +281,19 @@
     	// 한 열을 클릭시 모달창 띄우기.
     	$('#staticBackdrop').modal('show');
     	
-    	$('#equCode').val(dataRow.equCode);
-	      $('#procId').val(dataRow.procId);
-	      $('#equStat').val(dataRow.equStat);
-	      $('#equName').val(dataRow.equName);
-	      $('#equLine').val(dataRow.equLine);
-	      $('#equSuit').val(dataRow.equSuit);
-	      $('#checkDate').val(dataRow.checkDate);
-	      $('#equCheck').val(dataRow.equCheck);
-	      $('#checkNext').val(dataRow.checkNext);
-	      $('#checkType').val(dataRow.checkType);
-	      $('#checkInfo').val(dataRow.checkInfo);
-	      $('#operStart').val(dataRow.operStart);
-	      $('#opreNote').val(dataRow.opreNote);
-    	
-    	$.ajax({
-    		url : "/equipment/equInfo",
-    		method : "POST",
-    		dataType : "JSON",
-    		data: dataRow,   // == string
-    		success : function(result){
-    			console.dir(result);
-    			grid.resetData(result);
-    		}
-    	})
+    	$('#equCode').val(dataRow.equCode); // 설비코드
+	      $('#procId').val(dataRow.procId); // 공정코드
+	      $('#equStat').val(dataRow.equStat); // 설비상태
+	      $('#equName').val(dataRow.equName); // 설비명
+	      $('#equLine').val(dataRow.equLine); // 설비라인
+	      $('#equSuit').val(dataRow.equSuit); // 판정
+	      $('#checkDate').val(dataRow.checkDate); // 점검일자
+	      $('#equCheck').val(dataRow.equCheck); // 점검주기
+	      $('#checkNext').val(dataRow.checkNext); // 차기점검일
+	      $('#checkType').val(dataRow.checkType); // 점검구분
+	      $('#checkInfo').val(dataRow.checkInfo); // 점검사유
+	      $('#operStart').val(dataRow.operStart); // 비가동시작
+	      $('#opreNote').val(dataRow.opreNote); // 비가동 사유
       });
 
 
@@ -265,8 +301,8 @@
     
     $('#searchBtn2').on('click', function(){
     
+    console.log('클릭됐음.');
     var searchData = {};
-    
     searchData.equName = $('input[name="ename"]').val();
     searchData.equCode = $('input[name="ecode"]').val();
     console.log(searchData);
@@ -291,7 +327,7 @@
     
 
     </script>
-    
-    </div>
+
+	</div>
 </body>
 </html>
