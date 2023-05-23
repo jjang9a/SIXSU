@@ -6,14 +6,52 @@
 <head>
 <meta charset="UTF-8">
 <title>입고관리</title>
+<style>
+h1{
+margin-bottom:25px;
+}
+
+#product{
+width:auto;
+margin:auto;
+}
+#return{
+width:auto;
+margin:auto;
+display:none;
+}
+.codeBack {
+			padding: 5px 0px 0px 0px ;
+		}
+button {
+			border: 1;
+			background-color: white;
+			font-size: 30px;
+			border-radius: 12px;
+			font-family: 'MaruBuri'
+		}
+.gSel {		color:white;
+			background-color: #00539c;
+		}
+
+
+</style>
 </head>
 <body>
 	<div layout:fragment="content">
 	
 	
 	
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">생산완료현황</h1>
 	
+	
+	<!--  툴 시작 -->
+	
+	<!-- 탭 -->
+	<div id="group" class="codeBack">
+			<button type="button" id="gc">생산완료 입고</button>
+			<button type="button" id="gs" class="gSel">반품완료 재입고</button>
+	<div id="product">
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">생산완료현황</h1>
 	 상품명 <input type="text" name="cpName" id="cpNameBox">
 	 <button type="button" data-bs-toggle="modal" id="searchProductBtn"
 						class="sixBtn1" data-bs-target="#searchModal">
@@ -26,16 +64,16 @@
 	 제조일자 <input type="date" name="startPro" id="startPro"> <input type="date" name="endPro" id="endPro"> <br>
 	 <button class="sixBtn2" id="infoCollect">조회</button>
 	 <button class="sixBtn4" id="infoCollect">초기화</button>
-
+	
 	
 	<!-- 생산완료 grid테이블 -->
 
 	<div id="productGrid"></div>
 	<button class="sixBtn2" id="recRegister">등록</button>
+	</div>
 	
 	
-	
-	
+	<div id="return">
 	<h1 class="mt-4" style="font-family: 'MaruBuri';">반품완료현황</h1>
 	
 	 상품명 <input type="text" name="rpName" id="rpNameBox">
@@ -54,8 +92,9 @@
 	 <!--반품완료 grid테이블 -->
 	 <div id="returnGrid"></div>
 	 <button class="sixBtn2" id="retRegister">등록</button>
-	
 	 
+	 </div>
+	 </div>
 	 
 	 
 	 
@@ -82,8 +121,26 @@
 				</div>
 			</div>
 		</div>
+		
+		
 	 
 	<script>
+	
+	// 그룹코드-검색 탭 토글
+	$('#gc').on('click', function (e) {
+		$(this).removeClass('gSel');
+		$('#gs').addClass('gSel');
+		$('#product').css('display', 'block');
+		$('#return').css('display', 'none');
+	})
+
+	$('#gs').on('click', function (e) {
+		$(this).removeClass('gSel');
+		$('#gc').addClass('gSel');
+		$('#product').css('display', 'none');
+		$('#return').css('display', 'block');
+	})
+
 	//상품조회
 	$("#searchProductBtn").on('click', function(e){
 	$('#productModal').modal('show');
@@ -187,6 +244,7 @@
 							},
 							]
 						});
+					 
 	 
 	 
 	</script>
