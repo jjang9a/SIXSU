@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/template}">
 
 <head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-	<meta charset="UTF-8">
-	<title>(주)SIXSU</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<meta charset="UTF-8">
+<title>(주)SIXSU</title>
 
-	<style>
-		.detail {
-			display: none;
-		}
+<style>
+.detail {
+	display: none;
+}
 
-		#prInspForm {
-			display: none;
-		}
-	</style>
+#prInspForm {
+	display: none;
+}
+</style>
+
 
 </head>
 
@@ -36,9 +41,10 @@
 					<!-- 토스트 그리드 코드 -->
 					<!-- 발주 번호 검색 버튼 -->
 					<label>발주 번호 검색</label>
-					<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#regModal">
-						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
-							class="bi bi-search" viewBox="0 2 16 16">
+					<button class="sixBtn1" data-bs-toggle="modal"
+						data-bs-target="#regModal">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
 							<path
 								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
 						</svg>
@@ -49,8 +55,9 @@
 
 					<!-- 검사 등록 모달창 -->
 					<!-- Modal -->
-					<div class="modal fade" id="regModal" data-bs-backdrop="static" data-bs-keyboard="false"
-						tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal fade" id="regModal" data-bs-backdrop="static"
+						data-bs-keyboard="false" tabindex="-1"
+						aria-labelledby="staticBackdropLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -62,7 +69,8 @@
 									<div id="grid2"></div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">닫기</button>
 									<button type="button" class="btn btn-primary" id="regBtn"
 										data-bs-dismiss="modal">등록</button>
 								</div>
@@ -78,8 +86,9 @@
 
 
 				<!-- 자재 검사 결과 등록 폼 -->
-				<div class="col-lg-6">
-					<form action="" method="post" id="prInspForm" style="overflow-y: scroll; overflow-x: hidden;">
+				<div class="col-lg-6" id="formDiv">
+					<form action="" method="post" id="prInspForm"
+						style="overflow-y: scroll; overflow-x: hidden;">
 						<!-- display: none;  -->
 
 						<div class="prInsp">
@@ -95,42 +104,42 @@
 								</div>
 
 								<div class="col">
-									<button type="button" class="sixBtn8" id="inspIdBtn">검사 항목
-										내려받기</button>
+									<button type="button" class="sixBtn8" id="inspIdBtn">검사
+										항목 내려받기</button>
 								</div>
 							</div>
 
 							<div class="row">
 								<div class="col-3">
-									<label for="inspStdId" class="form-label">발주번호 </label> <input type="text"
-										class="form-control" id="inspStdId">
+									<label for="inspStdId" class="form-label">발주번호 </label> <input
+										type="text" class="form-control" id="inspStdId">
 								</div>
-								
-								<div clss="col-lg-3">
-								<label for="inspStdId" class="form-label">검사번호</label> <input type="text"
-										class="form-control" id="inspNum">
+
+								<div class="col-3">
+									<label for="inspStdId" class="form-label">검사번호</label> <input
+										type="text" class="form-control" id="inspNum">
 								</div>
-								
-								<div clss="col-lg-3">
-								<label for="inspStdId" class="form-label">거래처</label> <input type="text"
-										class="form-control" id="busName">
+
+								<div class="col-3">
+									<label for="inspStdId" class="form-label">거래처</label> <input
+										type="text" class="form-control" id="busName">
 								</div>
-								
+
 							</div>
 
 							<div class="row">
-								<div class="col">
-									<label for="matId" class="form-label">자재코드 </label> <input type="text"
-										class="form-control" id="matId">
+								<div class="col-4">
+									<label for="matId" class="form-label">자재코드 </label> <input
+										type="text" class="form-control" id="matId">
 								</div>
 
-								<div class="col">
+								<div class="col-4">
 									<label for="exampleFormControlInput1" class="form-label">자재명
 									</label> <input type="text" class="form-control" id="matName">
 								</div>
 							</div>
 
-							<div class="col-6">
+							<div class="col-4">
 
 								<label for="exampleFormControlInput1" class="form-label">검사자
 								</label> <input type="text" class="form-control" id="empName">
@@ -139,17 +148,17 @@
 
 
 							<div class="row">
-								<div class="col">
-									<label for="inspQt" class="form-label">검사 대기 수량 </label> <input type="text"
-										class="form-control" id="inspQt">
+								<div class="col-3">
+									<label for="inspQt" class="form-label">검사 대기 수량 </label> <input
+										type="text" class="form-control" id="inspQt">
 								</div>
-								<div class="col">
-									<label for="suitQt" class="form-label">입고 가능 수량 </label> <input type="text"
-										class="form-control" id="suitQt">
+								<div class="col-3">
+									<label for="suitQt" class="form-label">입고 가능 수량 </label> <input
+										type="text" class="form-control" id="suitQt">
 								</div>
-								<div class="col">
-									<label for="nsuitQt" class="form-label">입고 불가 수량 </label> <input type="text"
-										class="form-control" id="nsuitQt">
+								<div class="col-3">
+									<label for="nsuitQt" class="form-label">입고 불가 수량 </label> <input
+										type="text" class="form-control" id="nsuitQt">
 								</div>
 							</div>
 
@@ -164,121 +173,154 @@
 								<div id="sel1" class="detail">
 									<form action="" method="post" id="petChipForm">
 										<div class="row">
-											<div class="col">
+											<div class="col-5">
 												<label for="package" class="form-label">포장 적합 수량</label> <input
-													type="text" class="form-control" id="pcPackage" name="Package">
+													type="text" class="form-control" id="packageY"
+													name="packageY">
 
 											</div>
-											<div class="col">
+											<div class="col-5">
 												<label for="package" class="form-label">포장 부적합 수량</label> <input
-													type="text" class="form-control" id="fmm" name="fmm">
+													type="text" class="form-control" id="packageN"
+													name="packageN">
 											</div>
 										</div>
 
 										<div class="row">
-											<div class="col">
-												<label for="package" class="form-label">이물 혼입 적합 수량</label> <input
-													type="text" class="form-control" id="pcPackage" name="Package">
+											<div class="col-5">
+												<label for="package" class="form-label">이물 혼입 적합 수량</label>
+												<input type="text" class="form-control" id="fmmY"
+													name="fmmY">
 
 											</div>
-											<div class="col">
+											<div class="col-5">
 												<label for="package" class="form-label">이물 혼입 부적합 수량</label>
-												<input type="text" class="form-control" id="fmm" name="fmm">
+												<input type="text" class="form-control" id="fmmN"
+													name="fmmN">
 											</div>
 										</div>
 
 										<div class="row">
-											<div class="col">
-												<label for="package" class="form-label">고유 점도 적합 수량</label> <input
-													type="text" class="form-control" id="pcPackage" name="Package">
+											<div class="col-5">
+												<label for="package" class="form-label">고유 점도 적합 수량</label>
+												<input type="text" class="form-control" id="ivY" name="ivY">
 
 											</div>
-											<div class="col">
+											<div class="col-5">
 												<label for="package" class="form-label">고유 점도 부적합 수량</label>
-												<input type="text" class="form-control" id="fmm" name="fmm">
+												<input type="text" class="form-control" id="ivN" name="ivN">
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-5">
+												<label for="package" class="form-label">융용점 적합 수량</label> <input
+													type="text" class="form-control" id="mpY" name="mpY">
+
+											</div>
+
+											<div class="col-5">
+												<label for="package" class="form-label">용융점 부적합 수량</label> <input
+													type="text" class="form-control" id="mpN" name="mpN">
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-5">
+												<label for="package" class="form-label">밀도 적합 수량</label> <input
+													type="text" class="form-control" id="densityY"
+													name="densityY">
+											</div>
+
+											<div class="col-5">
+												<label for="package" class="form-label">밀도 부적합 수량</label> <input
+													type="text" class="form-control" id="densityN"
+													name="densityN">
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-5">
+												<label for="package" class="form-label">중량 적합 수량</label> <input
+													type="text" class="form-control" id="weightY"
+													name="weightY">
+											</div>
+
+											<div class="col-5">
+												<label for="package" class="form-label">중량 부적합 수량</label> <input
+													type="text" class="form-control" id="weightN"
+													name="weightN">
+											</div>
+										</div>
+
+									</form>
+								</div>
+
+
+
+
+								<!-- 캡 원료(HDPE) 폼 시작 -->
+								<div id="sel2" class="detail">
+									<form action="" method="post" id="hdpeForm">
+
+										<div class="row">
+											<div class="col">
+												<label for="package" class="form-label">색상 적합 수량</label> <input
+													type="text" class="form-control" id="colorY">
+											</div>
+											<div class="col">
+												<label for="package" class="form-label">색상 부적합 수량</label> <input
+													type="text" class="form-control" id="colorN">
 											</div>
 										</div>
 
 										<div class="row">
 											<div class="col">
-												<label for="package" class="form-label">융용점 적합 수량</label> <input
-													type="text" class="form-control" id="iv" name="iv">
-
+												<label for="package" class="form-label">외관 적합 수량</label> <input
+													type="text" class="form-control" id="extY">
 											</div>
-
 											<div class="col">
-												<label for="package" class="form-label">용융점 부적합 수량</label> <input
-													type="text" class="form-control" id="mp" name="mp">
+												<label for="package" class="form-label">외관 부적합 수량</label> <input
+													type="text" class="form-control" id="extN">
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col">
+												<label for="package" class="form-label">용융 지수 적합 수량</label>
+												<input type="text" class="form-control" id="meinY">
+											</div>
+											<div class="col">
+												<label for="package" class="form-label">용융 지수 부적합 수량</label>
+												<input type="text" class="form-control" id="meinN">
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col">
+												<label for="package" class="form-label">연화점 적합 수량</label> <input
+													type="text" class="form-control" id="softpY">
+											</div>
+											<div class="col">
+												<label for="package" class="form-label">연화점 부적합 수량</label> <input
+													type="text" class="form-control" id="softpN">
 											</div>
 										</div>
 
 										<div class="row">
 											<div class="col">
 												<label for="package" class="form-label">밀도 적합 수량</label> <input
-													type="text" class="form-control" id="density" name="density">
+													type="text" class="form-control" id="densityY">
 											</div>
-
 											<div class="col">
 												<label for="package" class="form-label">밀도 부적합 수량</label> <input
-													type="text" class="form-control" id="weight" name="weight">
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col">
-												<label for="package" class="form-label">중량 적합 수량</label> <input
-													type="text" class="form-control" id="density" name="density">
-											</div>
-
-											<div class="col">
-												<label for="package" class="form-label">중량 부적합 수량</label> <input
-													type="text" class="form-control" id="weight" name="weight">
+													type="text" class="form-control" id="densityN">
 											</div>
 										</div>
 
 									</form>
 								</div>
 
-
-								<!-- 캡 원료(HDPE) 폼 시작 -->
-
-								<div id="sel2" class="detail">
-									<form action="" method="post" id="hdpeForm">
-										<div class="row">
-											<div class="col-lg-3">
-												<label for="package" class="form-label">색상</label> <input type="text"
-													class="form-control" id="color">
-											</div>
-											<div class="col-lg-3">
-												<label for="package" class="form-label">중량</label> <input type="text"
-													class="form-control" id="weight">
-											</div>
-											<div class="row">
-
-												<div class="col-lg-3">
-													<label for="package" class="form-label">외관</label> <input
-														type="text" class="form-control" id="ext">
-												</div>
-
-
-												<div class="col-lg-3">
-													<label for="package" class="form-label">용융 지수</label> <input
-														type="text" class="form-control" id="mein">
-												</div>
-
-												<div class="col-lg-3">
-													<label for="package" class="form-label">연화점</label> <input
-														type="text" class="form-control" id="softp">
-												</div>
-
-												<div class="col-lg-3">
-													<label for="package" class="form-label">밀도</label> <input
-														type="text" class="form-control" id="density">
-												</div>
-											</div>
-										</div>
-									</form>
-								</div>
 
 								<!-- 상표 라벨 폼 시작 -->
 								<div id="sel3" class="detail">
@@ -286,23 +328,23 @@
 
 										<div class="row">
 											<div class="col">
-												<label for="package" class="form-label">포장 상태 적합 수량</label> <input
-													type="text" class="form-control" id="packageY">
+												<label for="package" class="form-label">포장 상태 적합 수량</label>
+												<input type="text" class="form-control" id="packageY">
 											</div>
 											<div class="col">
-												<label for="package" class="form-label">포장 상태 적합 수량</label> <input
-													type="text" class="form-control" id="packageN">
+												<label for="package" class="form-label">포장 상태 적합 수량</label>
+												<input type="text" class="form-control" id="packageN">
 											</div>
 										</div>
 
 										<div class="row">
 											<div class="col">
-												<label for="package" class="form-label">롤 표면상태 적합 수량</label> <input
-													type="text" class="form-control" id="rollY">
+												<label for="package" class="form-label">롤 표면상태 적합 수량</label>
+												<input type="text" class="form-control" id="rollY">
 											</div>
 											<div class="col">
-												<label for="package" class="form-label">롤 표면상태 적합 수량</label> <input
-													type="text" class="form-control" id="rollY">
+												<label for="package" class="form-label">롤 표면상태 적합 수량</label>
+												<input type="text" class="form-control" id="rollY">
 											</div>
 										</div>
 
@@ -317,25 +359,25 @@
 											</div>
 										</div>
 
-										<div clss="row">
+										<div class="row">
 											<div class="col">
-												<label for="package" class="form-label">인쇄 상태 적합 수량</label> <input
-													type="text" class="form-control" id="printY">
+												<label for="package" class="form-label">인쇄 상태 적합 수량</label>
+												<input type="text" class="form-control" id="printY">
 											</div>
 											<div class="col">
-												<label for="package" class="form-label">인쇄 상태 부적합 수량</label> <input
-													type="text" class="form-control" id="printN">
+												<label for="package" class="form-label">인쇄 상태 부적합 수량</label>
+												<input type="text" class="form-control" id="printN">
 											</div>
 										</div>
 
-										<div clss="row">
+										<div class="row">
 											<div class="col">
-												<label for="package" class="form-label">재단 상태 적합 수량</label> <input
-													type="text" class="form-control" id="cutstatY">
+												<label for="package" class="form-label">재단 상태 적합 수량</label>
+												<input type="text" class="form-control" id="cutstatY">
 											</div>
 											<div class="col">
-												<label for="package" class="form-label">재단 상태 부적합 수량</label> <input
-													type="text" class="form-control" id="cutstatY">
+												<label for="package" class="form-label">재단 상태 부적합 수량</label>
+												<input type="text" class="form-control" id="cutstatY">
 											</div>
 										</div>
 
@@ -348,46 +390,46 @@
 
 										<div class="row">
 											<div class="col">
-												<label for="package" class="form-label">카드뮴</label> <input type="text"
-													class="form-control" id="cd" name="cd">
+												<label for="package" class="form-label">카드뮴</label> <input
+													type="text" class="form-control" id="cd" name="cd">
 											</div>
 											<div class="col">
-												<label for="package" class="form-label">비소</label> <input type="text"
-													class="form-control" id="as" name="as">
+												<label for="package" class="form-label">비소</label> <input
+													type="text" class="form-control" id="as" name="as">
 											</div>
 											<div class="col">
-												<label for="package" class="form-label">시안</label> <input type="text"
-													class="form-control" id="cya" name="cya">
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col">
-												<label for="package" class="form-label">수은</label> <input type="text"
-													class="form-control" id="hg" name="hg">
-											</div>
-											<div class="col">
-												<label for="package" class="form-label">안티몬</label> <input type="text"
-													class="form-control" id="sb" name="sb">
-											</div>
-											<div class="col">
-												<label for="package" class="form-label">납</label> <input type="text"
-													class="form-control" id="fmm" name="pb">
+												<label for="package" class="form-label">시안</label> <input
+													type="text" class="form-control" id="cya" name="cya">
 											</div>
 										</div>
 
 										<div class="row">
 											<div class="col">
-												<label for="package" class="form-label">벤젠</label> <input type="text"
-													class="form-control" id="ben" name="ben">
+												<label for="package" class="form-label">수은</label> <input
+													type="text" class="form-control" id="hg" name="hg">
 											</div>
 											<div class="col">
-												<label for="package" class="form-label">유기인</label> <input type="text"
-													class="form-control" id="orph" name="orph">
+												<label for="package" class="form-label">안티몬</label> <input
+													type="text" class="form-control" id="sb" name="sb">
 											</div>
 											<div class="col">
-												<label for="package" class="form-label">클로로포름</label> <input type="text"
-													class="form-control" id="chlo" name="chlo">
+												<label for="package" class="form-label">납</label> <input
+													type="text" class="form-control" id="fmm" name="pb">
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col">
+												<label for="package" class="form-label">벤젠</label> <input
+													type="text" class="form-control" id="ben" name="ben">
+											</div>
+											<div class="col">
+												<label for="package" class="form-label">유기인</label> <input
+													type="text" class="form-control" id="orph" name="orph">
+											</div>
+											<div class="col">
+												<label for="package" class="form-label">클로로포름</label> <input
+													type="text" class="form-control" id="chlo" name="chlo">
 											</div>
 										</div>
 
@@ -554,7 +596,7 @@
 
 				const grid2 = new tui.Grid({
 					el: document.getElementById('grid2'),
-					//data: gridData2,
+					data: [],//빈 배열로 초기화
 
 					pageOptions: {
 						useClient: true,
@@ -593,13 +635,6 @@
 					]
 				});
 
-				/* 			    grid2.on('check', function(ev) {
-							      console.log('check', ev);
-							    });
-
-							    grid2.on('uncheck', function(ev) {
-							      console.log('uncheck', ev);
-							    }); */
 
 				//row 정보를 가져오기 위한 dataRow 선언
 				let dataRow;
@@ -620,73 +655,51 @@
 
 					console.log('등록 수량 : ' + dataRow.inspQt);
 				})
-
-				// 모달 등록				
+				
+				// 모달 등록
 				$('#regBtn').on('click', function (e) {
-					/* console.log(grid2.getCheckedRows());
-			        console.log(grid2.getCheckedRows().length);
-			        
-			        let stdIds=[];
-			        
-			        for(let i=0; i < grid2.getCheckedRows().length; i++){
-			        	console.log(grid2.getCheckedRows()[i].matReqId);
-			        	stdIds.push(grid2.getCheckedRows()[i].matReqId);
-			        	
-			        	dataRow=grid2.getRow(key);
-						console.log(dataRow);
+					  // 등록할 데이터
+					  let data = grid2.getModifiedRows().updatedRows;
 
-			        } */
+					  if (data.length === 0) {
+					    alert('검사 결과를 등록해주세요.');
+					  } else {
+					    // Ajax를 통해 데이터를 서버로 전송하고 등록 성공 후 처리
+						  $.ajax({
+							  url: "/quality/prRegister",
+							  method: "POST",
+							  contentType: 'application/json',
+							  data: JSON.stringify(grid2.getModifiedRows().updatedRows),
+							  success: function (result) {
+							    alert('입고 검사가 등록되었습니다.');
+							    console.log(result);
+							    const appendedData = result;
+							    grid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
+							    console.log('숨김 전')
+							    $('#regModal').modal('hide');
+							    console.log('숨김 후')
+							    grid2.removeCheckedRows(false);
 
-					//등록할 데이터
-					let data = dataRow;
-					console.log(data);
-
-					if (dataRow.inspQt == '') {
-						alert('검사 수량을 확인해주세요.')
-					} else {
-						
-						grid2.finishEditing();
-						
-						//ajax
-						$.ajax({
-							url: "/quality/prRegister",
-							method: "POST",
-							contentType: 'application/json',
-							data: JSON.stringify(grid2.getModifiedRows().updatedRows),
-							success: function (result) {
-								alert('입고 검사가 등록되었습니다.');
-								console.log(result);
-								const appendedData = result;
-								grid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
-								console.log('숨김 전')
-								$('#regModal').modal('hide');
-								console.log('숨김 후')
-								grid2.removeCheckedRows(false);
-							},
-							error: function (reject) {
-								alert('입고 검사 등록 중 에러가 발생하였습니다.')
-							}
-						});
-						
-						// 업데이트 된 데이터 출력
-						$.ajax({
-							url: "/quality/prInspList",
-							method: "GET",
-							dataType: "JSON",
-							async : false,
-							success: function (result) {
-								grid.resetData(result);
-							},
-							error: function (reject) {
-								console.log(reject);
-							}
-						});
-
-					}
-					//grid2.blur();
-
-				});
-
+							    // 업데이트 된 데이터 출력
+							    $.ajax({
+							      url: "/quality/prInspList",
+							      method: "GET",
+							      dataType: "JSON",
+							      success: function (result) {
+							        grid.resetData(result);
+							      },
+							      error: function (reject) {
+							        console.log(reject);
+							      }
+							    });
+							  },
+							  error: function (reject) {
+							    alert('입고 검사 등록 중 에러가 발생하였습니다.');
+							  }
+							});
+					  }
+					});
+ 
 
 				// 그리드 색 변경
 				tui.Grid.applyTheme('default', {
@@ -737,33 +750,43 @@
 					}
 				});
 
-				/* //검사항목 내려받기 버튼 클릭
-				$("#inspIdBtn").on('click', function(){
-					console.log('검사항목내려받기버튼클릭');
-					toggleForm();
-					console.log('토글폼');
-				})
-				
-				//세부 검사 항목 선택 시 폼 바뀌는 함수
-				function toggleForm() {
-					let selectedOption = $("#selectInsp").val();
-
-					// 선택한 항목에 따라 해당 폼을 표시
-					if (selectedOption === "1") {
-						$("#petChipForm").show();
-					} else if (selectedOption === "2") {
-						$("#hdpeForm").show();
-					} else if (selectedOption === "3") {
-						$("#labelForm").show();
-					} else if (selectedOption === "4") {
-						$("#rawWaterForm").show();
-					}
-				} */
 				// 검사 버튼 클릭 모달 이벤트
 				function searchEmp() {
 					console.log('클릭됨')
 					$('#searchModal').modal('show');
 				}
+				
+				//
+				$(document).ready(function() {
+					  // 적합 수량과 부적합 수량의 합을 계산하는 함수
+					  function calQt() {
+					    let packageY = parseInt($('#packageY').val()) || 0;
+					    let fmmY = parseInt($('#fmmY').val()) || 0;
+					    let ivY = parseInt($('#ivY').val()) || 0;
+					    let mpY = parseInt($('#mpY').val()) || 0;
+					    let densityY = parseInt($('#densityY').val()) || 0;
+					    let weightY = parseInt($('#weightY').val()) || 0;
+					
+					    let packageN = parseInt($('#packageN').val()) || 0;
+					    let fmmN = parseInt($('#fmmN').val()) || 0;
+					    let ivN = parseInt($('#ivN').val()) || 0;
+					    let mpN = parseInt($('#mpN').val()) || 0;
+					    let densityN = parseInt($('#densityN').val()) || 0;
+					    let weightN = parseInt($('#weightN').val()) || 0;
+					
+					    let suitQt = packageY + fmmY + ivY + mpY + densityY + weightY;
+					    let nsuitQt = packageN + fmmN + ivN + mpN + densityN + weightN;
+					
+					    $('#suitQt').val(suitQt);
+					    $('#nsuitQt').val(nsuitQt);
+					  }
+					
+					  //세부 검사 항목 input 요소에 onchange 이벤트 추가, 함수 호출
+					  $('.detail input').on('change', calQt);
+					});
+
+
+
 			</script>
 		</div>
 </body>
