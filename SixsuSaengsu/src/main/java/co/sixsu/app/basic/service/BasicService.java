@@ -44,6 +44,7 @@ public interface BasicService {
 	List<BusVO> searchBus(SearchDTO dto); // 거래처 검색
 	
 	List<ProcessVO> procList(); // 공정 목록 조회
+	List<CodeVO> procTypeList(); // 공정 구분 목록
 	boolean addProc(ProcessVO mat); // 공정 등록
 	boolean updateProc(ProcessVO mat); // 공정 수정
 	List<ProcessVO> searchProc(SearchDTO dto); // 공정 검색

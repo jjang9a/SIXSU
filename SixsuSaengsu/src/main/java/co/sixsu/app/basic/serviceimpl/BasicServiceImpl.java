@@ -189,29 +189,34 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.searchBus(dto);
 	}
 
-	@Override
+	
+	// 공정관리
+	
+	@Override // 공정 목록
 	public List<ProcessVO> procList() {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.procList();
+	}
+	
+	@Override
+	public List<CodeVO> procTypeList() {
+		return mapper.procTypeList();
 	}
 
 	@Override
 	public boolean addProc(ProcessVO mat) {
-		// TODO Auto-generated method stub
-		return false;
+		return mapper.addProc(mat) == 1;
 	}
 
 	@Override
 	public boolean updateProc(ProcessVO mat) {
-		// TODO Auto-generated method stub
-		return false;
+		return mapper.updateProc(mat) == 1;
 	}
 
 	@Override
 	public List<ProcessVO> searchProc(SearchDTO dto) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.searchProc(dto);
 	}
+
 	
 	
 	

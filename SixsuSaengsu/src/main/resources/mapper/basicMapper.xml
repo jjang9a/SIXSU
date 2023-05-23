@@ -206,5 +206,44 @@
 	</if>
 	ORDER BY bus_stat desc, bus_id
 </select>
+<!-- 거래처 관리 종료 -->
+
+<!-- 공정 관리 -->
+<select id="procList" resultType="ProcessVO">
+	SELECT * FROM PROCESS
+</select>
+
+<select id="procTypeList" resultType="CodeVO">
+	select com_id, com_name
+	from common_code
+	where g_id = 'proc_type'
+</select>
+
+<insert id="addProc" parameterType="ProcessVO">
+	INSERT INTO process VALUES (#{procId}, #{procType}, #{procName}, #{procStat}, #{procNote})
+</insert>
+
+<update id="updateProc" parameterType="ProcessVO">
+	UPDATE process
+	SET proc_type=#{procType}, proc_name=#{procName}, proc_stat=#{procStat}, proc_note=#{procNote}
+	WHERE proc_id=#{procId}
+</update>
+
+<select id="searchProc" parameterType="SearchDTO" resultType="ProcessVO">
+	SELECT *
+	FROM process
+	WHERE 
+	<if test='searchType.equals("id")'>
+		proc_id like '%'||#{searchKey}||'%' OR lower(proc_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		proc_name like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("type")'>
+		proc_type = #{searchKey}
+	</if>
+	ORDER BY proc_stat desc, proc_id
+</select>
+<!-- 공정 관리 종료 -->
 
 </mapper>

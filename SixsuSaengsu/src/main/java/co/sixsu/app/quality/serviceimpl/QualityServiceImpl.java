@@ -82,9 +82,9 @@ public class QualityServiceImpl implements QualityService {
 		int count = 0;
 
 		for(int i=0; i<list.size(); i++) {
-			String num = quaMapper.psInspNum();
-			System.out.println("검사번호:"+num);
-			list.get(i).setInspNum(num);
+			//String num = quaMapper.psInspNum();
+			//System.out.println("검사번호:"+num);
+			//list.get(i).setInspNum(num);
 			
 			QuaVO curData = list.get(i);
 			
