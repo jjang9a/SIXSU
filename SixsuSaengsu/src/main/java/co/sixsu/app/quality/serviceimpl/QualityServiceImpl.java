@@ -78,26 +78,34 @@ public class QualityServiceImpl implements QualityService {
 	// 입고 검사 등록 프로시저 사용
 	@Override
 	@Transactional
-	public boolean insertpro(List<QuaVO> list) {
+	public List<QuaVO> insertpro(List<QuaVO> list) {
 		int count = 0;
+
 		for(int i=0; i<list.size(); i++) {
+			String num = quaMapper.psInspNum();
+			System.out.println("검사번호:"+num);
+			list.get(i).setInspNum(num);
+			
 			QuaVO curData = list.get(i);
+			
+			System.out.println("검사번호 포함된 vo:"+curData);
+			
 			quaMapper.insertPro(curData);
+			System.out.println("insertPor:"+curData);
 			if(curData.getInspNum() != null ) count++;
 		}
-		return count >=1;
+		
+		return list;
 	}
 
 
-	@Override
-	public List<EmpVO> empList() {
-		return quaMapper.empList();
-	}
 
-
+	// 자재 입고 검사 결과 등록
 	@Override
-	public List<EmpVO> sEmpList(String ename) {
-		return quaMapper.sEmpList(ename);
+	public boolean insertPri(QuaVO qua) {
+		int count = 0; // insert 결과
+		quaMapper.insertPri(qua);
+		return count >= 1;
 	}
 
 	
