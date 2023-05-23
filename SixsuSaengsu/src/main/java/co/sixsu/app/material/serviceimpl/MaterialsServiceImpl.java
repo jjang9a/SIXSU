@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
@@ -52,16 +53,17 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public List<MatrecVO> getMatRecList() {
 			return mapper.selectMatRecList();
 		}
-
-		/*
-		 * @Override public int insertMatRec(String reqId) { return
-		 * mapper.insertMatRec(reqId); }
-		 */
 		
 		//입고 등록
 		@Override
 		public int insertMatRec(String reqId) {
 			return mapper.insertMatRec(reqId);
 		}
+
+		@Override
+		public List<MatVO> selectMatList() {
+			return mapper.selectMatList();
+		}
+		
 		
 }

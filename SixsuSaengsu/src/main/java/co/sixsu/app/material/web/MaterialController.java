@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-import co.sixsu.app.material.domain.MatrecListVO;
+import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
@@ -27,7 +27,7 @@ import co.sixsu.app.material.service.MaterialsService;
 
 
 @Controller
-public class MatreqController {
+public class MaterialController {
 	
 	@Autowired MaterialsService service;
 //	
@@ -50,7 +50,7 @@ public class MatreqController {
 	
 	//발주내역 DB에서 불러오기
 	@ResponseBody
-	@RequestMapping("/materials/mms")
+	@RequestMapping("/materials/matreqlist")
 	public List<MatreqVO> matreqList(Model modal){
 		List<MatreqVO> list = service.getMatReqList();
 		modal.addAttribute("list", list);
@@ -141,18 +141,6 @@ public class MatreqController {
 		return list;
 	}
 	
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping("/materials/insertmatrec") public String
-	 * insertMatRec(@RequestBody List<MatrecVO> list) throws Exception {
-	 * System.out.println(list);
-	 * 
-	 * return "success";
-	 * 
-	 * }
-	 */
-	
 	//입고등록
 	@PostMapping("/materials/insertmatrec")
     @ResponseBody
@@ -173,6 +161,17 @@ public class MatreqController {
             e.printStackTrace();
         }
     }
+	
+	//자재 리스트
+	@ResponseBody
+	@RequestMapping("/materials/matlist")
+	public List<MatVO> selectMatList(){
+		List<MatVO> list = service.selectMatList();
+		System.out.println(list);
+		return list;
+	}
+	
+
 }
 
 
