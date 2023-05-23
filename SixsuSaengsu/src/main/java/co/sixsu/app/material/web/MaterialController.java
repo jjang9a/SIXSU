@@ -47,6 +47,10 @@ public class MaterialController {
 	public void matrecList() {
 	}
 	
+	//자재Lot조회 페이지 열어주기
+	@GetMapping("/materials/mlot")
+	public void mlot() {
+	}
 	
 	//발주내역 DB에서 불러오기
 	@ResponseBody
