@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.quality.domain.QilVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
 import co.sixsu.app.quality.service.QualityService;
@@ -115,8 +116,8 @@ public class QualityServiceImpl implements QualityService {
 	
 	// 검사 항목 가져오기
 	@Override
-	public List<QuaVO> inspItem() {
-		return quaMapper.inspItem();
+	public List<QuaVO> inspItem(String matId) {
+		return quaMapper.inspItem(matId);
 	}
 	
 	// 자재 입고 검사 결과 등록
