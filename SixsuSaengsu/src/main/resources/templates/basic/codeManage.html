@@ -258,6 +258,7 @@
 						dataType: 'json',
 						success: function (result) {
 							commGrid.resetData(result);
+							setRowDisabled(commGrid);
 							//oldCount = commGrid.getRowCount();
 						},
 						error: function () {
@@ -266,6 +267,13 @@
 					})
 				});
 
+				function setRowDisabled(grid) {
+					let rowList = grid.getData();
+					rowList.forEach((obj) => {
+						grid.disableCell(obj.rowKey, 'comId');
+					});
+
+				}
 				// 검색버튼 클릭 시 알맞은 데이터 불러오기
 				$('#searchForm button').on('click', function (e) {
 					$.ajax({
