@@ -3,15 +3,12 @@ package co.sixsu.app.material.domain;
 import lombok.Data;
 
 @Data
-public class MatVO {
+public class MatLotVO {
+	String matLotId;
 	String matId;
 	String matName;
 	String matSize;
-	String matUnit;
-	int matSafe;
-	String matStat;
-	String matNote;
-
-
-	String type;
+	int matQt;
+	String matHoldStat;
+	String matRecDate;
 }

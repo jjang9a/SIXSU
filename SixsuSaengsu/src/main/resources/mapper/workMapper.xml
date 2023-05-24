@@ -80,19 +80,4 @@
     WHERE a.PLAN_HEAD_ID = #{planHeadId}
 	ORDER BY a.PLAN_DETA_ID
 </select>
-
-<select id="getProcessList" resultType="ProcessVO">
-	SELECT *
-	FROM PROCESS
-</select>
-
-<select id="getMaterialList" resultType="MatVO">
-	SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
-	FROM MATERIAL
-	UNION ALL
-	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
-	FROM SEMI_PROD
-</select>
-
-
 </mapper>

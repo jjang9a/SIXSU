@@ -45,10 +45,10 @@ public class EquServiceImpl implements EquService{
 		return mapper.equDel(equCode) == 1;
 	}
 
-//	@Override
-//	public List<EquConVO> equCheckList() { // 설비 점검 리스트
-//		return mapper.equCheckList();
-//	}
+	@Override
+	public List<EquConVO> equInfo(String equCode) {
+		return mapper.equInfo(equCode);
+	}
 
 	
 

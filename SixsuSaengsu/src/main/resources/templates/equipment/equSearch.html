@@ -22,8 +22,8 @@
 
 		<br>
 		<hr>
-		 &nbsp&nbsp&nbsp&nbsp * 설비명 : <input type="text" name="ename">
-		<button class="sixBtn1" id="searchBtn1">
+		* 설비상태 &nbsp&nbsp&nbsp&nbsp * 설비명 : <input type="text" name="ename">
+		<button class="sixBtn1" id="searchBtn2">
 			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                 <path
@@ -152,8 +152,7 @@
         el: document.getElementById('grid'),
         pageOptions: {
 			useClient : true,
-			perPage: 10,
-			
+			perPage: 10
 		},
         scrollX: false,
         scrollY: false,
@@ -286,6 +285,7 @@
 	      $('#procId').val(dataRow.procId); // 공정코드
 	      $('#equStat').val(dataRow.equStat); // 설비상태
 	      $('#equName').val(dataRow.equName); // 설비명
+	      $('#equLine').val(dataRow.equLine); // 설비라인
 	      $('#equSuit').val(dataRow.equSuit); // 판정
 	      $('#checkDate').val(dataRow.checkDate); // 점검일자
 	      $('#equCheck').val(dataRow.equCheck); // 점검주기
@@ -295,61 +295,35 @@
 	      $('#operStart').val(dataRow.operStart); // 비가동시작
 	      $('#opreNote').val(dataRow.opreNote); // 비가동 사유
       });
-    
-    // 조건 검색기능
-    $('#searchBtn1').on('click', function(){
-    
-    console.log('클릭됐음.');
-    var searchData = {};
-    searchData.equName = $('input[name="ename"]').val();
-    searchData.equCode = $('input[name="ecode"]').val();
-    console.log(searchData);
-    
-    $.ajax({
-    	url : "/equipment/equFilterAjax",
-    	method : "POST",
-    	dataType : "JSON",
-    	data : searchData,
-    	success : function(result){
-    		console.log(result);
-    		grid.resetData(result);
-    	},
-    	error: function () {
-			alert('오류가 발생했습니다!');
-			console.log(reject);
-		}
-    
-      });
-   
-    })
-    
-      $('#searchBtn2').on('click', function(){
-    
-    console.log('클릭됐음.');
-    var searchData = {};
-    searchData.equName = $('input[name="ename"]').val();
-    searchData.equCode = $('input[name="ecode"]').val();
-    console.log(searchData);
-    
-    $.ajax({
-    	url : "/equipment/equFilterAjax",
-    	method : "POST",
-    	dataType : "JSON",
-    	data : searchData,
-    	success : function(result){
-    		console.log(result);
-    		grid.resetData(result);
-    	},
-    	error: function () {
-			alert('오류가 발생했습니다!');
-			console.log(reject);
-		}
-    
-      });
-   
-    })
-    
 
+
+    
+    
+    $('#searchBtn2').on('click', function(){
+    
+    console.log('클릭됐음.');
+    var searchData = {};
+    searchData.equName = $('input[name="ename"]').val();
+    searchData.equCode = $('input[name="ecode"]').val();
+    console.log(searchData);
+    
+    $.ajax({
+    	url : "/equipment/equFilterAjax",
+    	method : "POST",
+    	dataType : "JSON",
+    	data : searchData,
+    	success : function(result){
+    		console.dir(result);
+    		grid.resetData(result);
+    	},
+    	error: function () {
+			alert('오류가 발생했습니다!');
+			console.log(reject);
+		}
+    
+      });
+   
+    })
     
 
     </script>
