@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
@@ -110,6 +112,22 @@ public class WorkAjaxController {
 	public List getDetaPlanList(@RequestParam String planHeadId ) {
 		List<addPlanVO> list = service.getDetaPlanList(planHeadId);
 		System.out.println("클릭된 GRID2의 상세주문 내역 >");
+		System.out.println(list);
+		return list;
+	}
+	
+	@RequestMapping("getProcessList")
+	public List getDetaPlanList() {
+		List<ProcessVO> list = service.getProcessList();
+		System.out.println("공정리스트 출력 >");
+		System.out.println(list);
+		return list;
+	}
+	
+	@RequestMapping("getMaterialList")
+	public List getMaterialList() {
+		List<MatVO> list = service.getMaterialList();
+		System.out.println("자재 및 반제품 출력 >");
 		System.out.println(list);
 		return list;
 	}
