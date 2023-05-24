@@ -53,6 +53,8 @@ public interface BasicService {
 	List<BomVO> bomList(String id); // bom 내역 조회
 	List<ProductVO> activeCpList(); // 활성화된 완제품 조회
 	List<ProductVO> activeSpList(); // 활성화된 반제품 조회
+	List<ProductVO> activeMaterialList(); // 활성화된 반제품 조회
+	List<ProcessVO> activeProcList(); // 활성화된 공정 조회
 	boolean addBom(List<BomVO> list); // BOM 등록
 	boolean updateBom(List<BomVO> list); // BOM 수정
 	
