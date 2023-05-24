@@ -92,13 +92,35 @@ public class QualityController {
 	}
 	
 	
+	// 입고 검사 항목 불러오기
+	@ResponseBody
+	@RequestMapping("/quality/inspItem")
+	public List<QuaVO> inspItem(Model model){
+		List<QuaVO> list = quaService.inspItem();
+		model.addAttribute("list", list);
+		return list;
+	}
+	
 	// 입고 검사 결과 등록
 	@ResponseBody
 	@PostMapping("/quality/priRegister")
-	public boolean prRegister(QuaVO qua) {
-		System.out.println(qua);
-		return quaService.insertPri(qua);
+	public List<QuaVO> priRegister(@RequestBody List<QuaVO> list) {
+		System.out.println(list);
+		return quaService.insertPri(list);
 	}
+	
+	// 입고 검사 결과 등록 시 업데이트
+	@ResponseBody
+	@PostMapping("/quality/priRegUpdate")
+	public boolean priRegUpdate(QuaVO qua, MatreqVO mat) {
+		boolean result = quaService.priRegUpdate(qua, mat);
+		return result;
+	}
+	
+	
+	
+	
 
+	 
 
 }

@@ -34,11 +34,9 @@ public class QuaVO {
 	private String empId; // 사번
 	private String empDept; // 부서
 	
-	// 도착 자재 관련
-	private String arrMatNum; // 도착 자재 번호
+	// 자재 입고전 검사 관련
 	private String matReqId; // 발주 번호
-	private int arrQt; // 도착 수량
-	private String arrDate; // 도착 날짜
+	int matReqQt; //발주 수량
 	private String matId;// 자재 코드
 	private String busName;// 거래처
 	private String matName; // 자재 명

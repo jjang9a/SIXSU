@@ -19,7 +19,12 @@ public interface QualityService {
 		List<QuaVO> prInspList(); // 자재 입고 검사 리스트
 		String psInspNum(); // 입고 검사 등록 시 검사 번호 자동 등록
 		List<QuaVO> insertpro(List<QuaVO> list); //자재 입고 검사 등록 프로시저 사용
-		boolean insertPri(QuaVO qua); // 자재 입고 검사 결과 등록
+		List<QuaVO> inspItem(); // 입고 검사 항목 불러오기
+		List<QuaVO> insertPri(List<QuaVO> list); // 자재 입고 검사 결과 등록
+		boolean priRegUpdate(QuaVO qua, MatreqVO mat); // 자재 입고 검사 결과 등록 시 업데이트
+		
+		
+		//List<QuaVO> quaInspList(); // 검사 항목 리스트
 
 		
 		
