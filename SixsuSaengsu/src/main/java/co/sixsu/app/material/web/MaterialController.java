@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
@@ -51,6 +52,12 @@ public class MaterialController {
 	@GetMapping("/materials/mlot")
 	public void mlot() {
 	}
+	
+	//자재조회 페이지 열어주기
+	@GetMapping("/materials/materiallist")
+	public void matList() {
+	}
+	
 	
 	//발주내역 DB에서 불러오기
 	@ResponseBody
@@ -175,7 +182,29 @@ public class MaterialController {
 		return list;
 	}
 	
-
+	//입고삭제 컨트롤
+	@ResponseBody
+	@RequestMapping("/materials/delmatrec")
+	public String delMatRec(@RequestParam Map<String, Object> paramMap) throws Exception {
+		String jsonData = paramMap.get("list").toString();
+		System.out.println(jsonData);
+		ObjectMapper objectMapper = new ObjectMapper();
+	    String[] dataArray = objectMapper.readValue(jsonData, String[].class);
+	    System.out.println(dataArray.length);
+	    for(String i : dataArray) {
+	    	System.out.println(i);
+	    	service.deleteMatRec(i);
+	    }
+		return "/materials/matrec";
+	}
+	
+	//lot 리스트
+	@ResponseBody
+	@RequestMapping("/materials/matlotlist")
+	public List<MatLotVO> mLotList(){
+		List<MatLotVO> list = service.mLotList();
+		return list;
+	}
 }
 
 
