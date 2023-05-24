@@ -276,7 +276,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	      },
  	      {
  	        header: '제품코드',
- 	        name: 'cpId'
+ 	        name: 'cpId',
+ 	        editor: 'text'
  	      },
  	      {
  	        header: '제품명',
@@ -289,11 +290,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	      },
  	      {
  	        header: '양품수량',
- 	        name: 'goodQt',
+ 	        name: 'ordQt',
  	        editor: 'text'
  	      },
  	      {
- 	        header: '생산일',// 아직VO에 없음 정의못했음
+ 	        header: '작업일',// 아직VO에 없음 정의못했음
  	        name: 'startDate',
  	        editor: 'datePicker'
  	      },
@@ -302,10 +303,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	        name: 'endDate',
  	        editor: 'datePicker'
  	 	  },
- 	 		{
- 	 	        header: '담당자',// 아직VO에 없음 정의못했음
- 	 	        name: 'endDate'
- 	 	 	  },
 	 	 	{
 		          header: '진행현황',
 		          name: 'cmpltSt',
@@ -377,7 +374,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	let data = []
 	
-	for(let i=0;i<1;i++){
+	for(let i=0;i<9;i++){
 		data.push({})
 	}
 	var plan_search1 = new tui.Grid({
@@ -427,9 +424,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 					console.log("첫 출력값 > ")
 					console.dir(result);
 					plan_search1.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
 				}
 			})
 			
@@ -452,7 +446,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				}
 				plan_search2.resetData(result);
 			},
-			errer : function(reject){
+			error : function(reject){
 				console.log(reject);
 			}
 		})
@@ -539,29 +533,33 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		mat_data.push({})
 		var bom_search2 = new tui.Grid({
 		    el: document.getElementById('bom_search2'),
-		    data : mat_data,
+		    data : data,
 		    scrollX: false,
 		    scrollY: false,
-		    rowHeaders: ['checkbox'],
+		    rowHeaders: ['rowNum'],
 		    
 		    columns: [
 		      
 	 	      {
-	 	        header: '자재명',
-	 	        name: 'matName'
-	 	      },
-	 	      {
-	 	        header: '규격',
-	 	        name: 'matSize'
-	 	      },
-	 	      {
-	 	        header: '개수',
-	 	        name: 'matQt',
+	 	        header: '계획코드',
+	 	        name: 'planHeadId'
 	 	      },
 	 	      {
 	 	        header: '분류',
-	 	        name: 'type',
-	 	      }
+	 	        name: 'type'
+	 	      },
+	 	      {
+	 	        header: '예상시작일',
+	 	        name: 'planStart',
+	 	      },
+	 	      {
+	 	        header: '예상종료일',
+	 	        name: 'planEnd',
+	 	 	  },
+	 	 	  {
+	 	        header: '상태',// 아직VO에 없음 정의못했음
+	 	        name: 'cmpltSt',
+	 	 	  }
 		 	 	
 		    ],
 		    pageOptions: {
@@ -570,126 +568,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		      }
 		  });
 	
-		
-		var grid_product = new tui.Grid({
-		    el: document.getElementById('grid_product'),
-		    scrollX: false,
-		    scrollY: false,
-		    rowHeaders: ['rowNum'],
-		    columns : [ {
-				header : '제품코드',
-				name : 'cpId',
-			}, {
-				header : '제품명',
-				name : 'cpName'
-			}, {
-				header : '제품명',
-				name : 'cpSize'
-			}, {
-				header : '규격',
-				name : 'cpUnit'
-			}, {
-				header : '상태',
-				name : 'cpStat'
-			}
-			]
-		  });
-		
-			$.ajax({
-				url : "/ajax/getProductList",
-				method : "GET",
-				dataType : "JSON",
-				success : function(result){
-					console.log("첫 출력값 > ")
-					console.dir(result);
-					grid_product.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
-				}
-			})
-			
-			
-		var grid_process = new tui.Grid({
-		    el: document.getElementById('grid_process'),
-		    scrollX: false,
-		    scrollY: false,
-		    rowHeaders: ['rowNum'],
-		    columns : [ {
-				header : '공정코드',
-				name : 'procId',
-			}, {
-				header : '구분',
-				name : 'procType'
-			}, {
-				header : '공정명',
-				name : 'procName'
-			}, {
-				header : '활성',
-				name : 'procStat'
-			}
-			]
-		  });
-		
-			$.ajax({
-				url : "/ajax/getProcessList",
-				method : "GET",
-				dataType : "JSON",
-				success : function(result){
-					console.log("첫 출력값 > ")
-					console.dir(result);
-					grid_process.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
-				}
-			})
-			
-			
-		var grid_mat = new tui.Grid({
-		    el: document.getElementById('grid_mat'),
-		    scrollX: false,
-		    scrollY: false,
-		    rowHeaders: ['rowNum'],
-		    columns : [ {
-				header : '코드',
-				name : 'matId',
-			}, {
-				header : '자재명',
-				name : 'matName'
-			}, {
-				header : '단위',
-				name : 'matUnit'
-			}, {
-				header : '규격',
-				name : 'matSize'
-			},{
-				header : '활성',
-				name : 'matStat'
-			},{
-				header : '분류',
-				name : 'type'
-			}
-			]
-		  });
-		
-			$.ajax({
-				url : "/ajax/getMaterialList",
-				method : "GET",
-				dataType : "JSON",
-				success : function(result){
-					console.log("첫 출력값 > ")
-					console.dir(result);
-					grid_mat.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
-				}
-			})	
-			
 	{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-	//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련
-	
+	//버튼 관련
 	
 	let selectDetWorkCode = ''
 	let selectBomWorkCode = ''
@@ -720,44 +600,40 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	let grid1_unique_code = 10;
 	
+	grid1_data = []
 	$('.moveBtn').on('click', function(){
-		let swith = false;
- 		for(let i of plan_search2.getCheckedRows()){
- 			let addswith = true;
- 			for(let j of grid1_data){
-					if(i.planDetaId == j.planDetaId && addswith == true){
-						console.log('일치 하였음')
-						swith = true;
-						addswith = false;
-					}
+ 		var appendedData = plan_search2.getCheckedRows()
+ 		let count = 0;
+ 		for(let i of appendedData){
+ 			console.log(i)
+ 			let swith = false;
+ 			if(grid1.getData().length > 0){
+ 				for(let j of grid1.getData()){
+ 					if(j.planDetaId == i.planDetaId && swith == false && j.planDetaId != null){
+ 						console.log('일치 하였음')
+ 						count += 1;
+ 						swith = true;
+ 					}
+ 				}	
+				if(swith == false){
+					grid1_data.push(i)
+	 	 			plan_search2.uncheck(i.rowKey, 'checkbox');
+	 	 			swith = false;
 				}
- 			if(addswith == true){
- 				let ob = {
- 					planDetaId : i.planDetaId,
- 					cpId : i.cpId,
- 					cpName : i.cpName,
- 					detaQt : i.detaQt,
- 					ordQt : i.ordQt,
- 					cmpLtSt : i.cmpLtSt,
- 					planUnique : grid1_unique_code
- 				}
-				console.log('ob')
-				console.log(ob);
- 				grid1_unique_code *= 2
-				grid1_data.splice(grid1_data.length-1, 0, ob)
- 				console.log('grid1_data')
-				console.log(grid1_data);
+ 			}else{
+				grid1_data.push(i)
+ 	 			plan_search2.uncheck(i.rowKey, 'checkbox');
  			}
  		}
- 		if(swith == true){
+ 		if(count >0){
  			alert('중복되는 세부계획이 존재합니다')
  		}
+ 		
  		grid1.resetData(grid1_data);
+ 		console.log(appendedData)
+	 	//grid4.removeCheckedRows(false);
  		plan_search2.blur();
  	})
- 	
- 	
-
 	
 	$('.planBtn').on('click', function(){
 		$('.plan_monitor').css('display', 'block')	
@@ -1043,9 +919,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			return true
 		}
 	}
-	
-	
-	
 	
 	
 	

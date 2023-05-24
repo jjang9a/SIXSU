@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
@@ -35,4 +36,10 @@ public interface MaterialsService {
 	
 	//자재 리스트
 	List<MatVO> selectMatList();
+	
+	//입고 행 삭제
+	int deleteMatRec(String matLotId);
+	
+	//자재 lot 리스트
+	List<MatLotVO> mLotList();
 }
