@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
@@ -59,10 +60,24 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public int insertMatRec(String reqId) {
 			return mapper.insertMatRec(reqId);
 		}
-
+		
+		//자재 리스트
 		@Override
 		public List<MatVO> selectMatList() {
 			return mapper.selectMatList();
+		}
+		
+		//입고 리스트 삭제
+		@Override
+		public int deleteMatRec(String matLotId) {
+			int result = mapper.deleteMatRec(matLotId);
+			result += mapper.deleteMLot(matLotId);
+			return result;
+		}
+
+		@Override
+		public List<MatLotVO> mLotList() {
+			return mapper.mLotList();
 		}
 		
 		

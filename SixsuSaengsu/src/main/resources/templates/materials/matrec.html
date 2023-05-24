@@ -45,6 +45,7 @@
 			</div>
 			<div id="left">
 				<button class="sixBtn4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">입고등록</button>
+				<button class="sixBtn2" id="delete">삭제</button>
 			</div>
 		</div>
 
@@ -183,7 +184,7 @@
 
 
 
-				rowHeaders: ['rowNum'],
+				rowHeaders: ['checkbox', 'rowNum'],
 
 
 				columns: [{
@@ -256,6 +257,7 @@
 					inspStdId.push(grid.getCheckedRows()[i].inspStdId);
 				}
 				console.log(inspStdId);
+				
 				$.ajax({
 					url: "/materials/insertmatrec",
 					method: "POST",
@@ -266,6 +268,22 @@
 					}, */
 					success: function (result) {
 						console.log(result);
+						$('#staticBackdrop').modal('hide');
+						$.ajax({
+							url: "/materials/matreclist",
+							method: "GET",
+							dataType: "JSON",
+							success: function (result) {
+								grids.resetData(result);
+								grids.refreshLayout();
+							},
+							error : function(reject){
+								console.log(reject);
+							}
+							
+						});
+						
+						
 					},
 					error : function(reject){
 						console.log(reject);
@@ -274,6 +292,43 @@
 				});
 			})
 			
+			
+			//체크된 항목 삭제	    
+			$('#delete').on("click", function () {
+				console.log(grids.getCheckedRows());
+				console.log(grids.getCheckedRows().length);
+				var matLotIds = [];
+				console.log("abcd");
+				for (var i = 0; i < grids.getCheckedRows().length; i++) {
+					console.log(grids.getCheckedRows()[i].matLotId);
+					matLotIds.push(grids.getCheckedRows()[i].matLotId);
+
+				}
+				
+
+				$.ajax({
+					url: "/materials/delmatrec",
+					type: "GET",
+					contentType: 'application/json',
+					data: {
+						list: JSON.stringify(matLotIds)
+					},
+					//data : {list : JSON.stringify(matReqIds)},
+					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
+					success: function (result) {
+						console.log(result);
+					},
+ 					error: function(reject){
+						console.log(reject);
+					}
+				})
+
+				grids.removeCheckedRows(false);
+				
+				grids.blur();
+				
+				
+			});
 			
 		</script>
 

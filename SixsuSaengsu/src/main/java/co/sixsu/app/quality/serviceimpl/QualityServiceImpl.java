@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
@@ -99,16 +98,67 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 
-
+	/*
+	 * // 자재 입고 검사 결과 등록
+	 * 
+	 * @Override
+	 * 
+	 * @Transactional public boolean insertPri(QuaVO qua, MatreqVO mat) {
+	 * 
+	 * int count = 0; // insert 결과
+	 * 
+	 * for() quaMapper.insertPri(qua); quaMapper.qComUpdate(qua);
+	 * quaMapper.mUpdate(mat);
+	 * 
+	 * return count >= 1; }
+	 */
+	
+	// 검사 항목 가져오기
+	@Override
+	public List<QuaVO> inspItem() {
+		return quaMapper.inspItem();
+	}
+	
 	// 자재 입고 검사 결과 등록
 	@Override
-	public boolean insertPri(QuaVO qua) {
-		int count = 0; // insert 결과
-		quaMapper.insertPri(qua);
+	public List<QuaVO> insertPri(List<QuaVO> list) {
+		
+		
+		int count = 0; //insert 발생 횟수
+		
+		for(int i=0; i<list.size(); i++) {
+				QuaVO qua = list.get(i);
+				String detNum = qua.getInspNum(); //세부 지시 검사번호
+				
+				detNum += -i;
+				qua.setDetInspNum(detNum);
+				System.out.println(detNum);
+				count += quaMapper.insertPr(list.get(i));
+				System.out.println(count);
+			
+		}
+
+		
+		return list;
+	}
+
+	// 자재 입고 검사 결과 등록 시 업데이트
+	@Override
+	@Transactional
+	public boolean priRegUpdate(QuaVO qua, MatreqVO mat) {
+		int count = 0; // update 발생 횟수
+		
+		count += quaMapper.qComUpdate(qua);
+		count += quaMapper.mUpdate(mat);
+			
+		
 		return count >= 1;
 	}
 
-	
+
+
+
+
 
 
 

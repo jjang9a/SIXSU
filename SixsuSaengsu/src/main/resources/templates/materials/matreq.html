@@ -208,13 +208,11 @@
 					},
 					{
 						header: '발주량',
-						name: 'matReqQt',
-						editor: 'text'
+						name: 'matReqQt'
 					},
 					{
 						header: '거래처코드',
-						name: 'busId',
-						editor: 'text'
+						name: 'busId'
 					},
 					{
 						header: '거래처명',
@@ -380,6 +378,8 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+						grid.setValue(0, 'busId', grid.getRow(1).busId , false);
+						grid.setValue(0, 'busName', grid.getRow(1).busName , false);
 					},
  					error: function(reject){
 						console.log(reject);
@@ -392,6 +392,7 @@
  				//console.log(lastRow);
  				console.log("abc");
  				console.log(gridData.length);
+ 				
  			});
  			
 			
