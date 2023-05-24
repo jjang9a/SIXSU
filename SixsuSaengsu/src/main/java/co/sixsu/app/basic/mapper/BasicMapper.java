@@ -3,6 +3,7 @@ package co.sixsu.app.basic.mapper;
 import java.util.Date;
 import java.util.List;
 
+import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
@@ -46,10 +47,18 @@ public interface BasicMapper {
 	public int updateBus(BusVO bus); // 완제품 수정
 	public List<BusVO> searchBus(SearchDTO dto); // 완제품 검색
 	
+	public List<CodeVO> getComList(String key); // 공통코드 분류 목록
+	
 	public List<ProcessVO> procList(); // 공정 목록 조회
-	public List<CodeVO> procTypeList(); // 공정 분류 목록
 	public int addProc(ProcessVO proc); // 공정 등록
 	public int updateProc(ProcessVO proc); // 공정 수정
 	public List<ProcessVO> searchProc(SearchDTO dto); // 공정 검색
+	
+	public List<BomVO> bomList(String id); // BOM내역 조회
+	public List<ProductVO> activeCpList(); // 사용중인 완제품 조회
+	public List<ProductVO> activeSpList(); // 사용중인 반제품 조회
+	public int addBom(BomVO bom); // BOM 등록
+	public int updateBom(BomVO bom); // BOM 수정
+	
 	
 }

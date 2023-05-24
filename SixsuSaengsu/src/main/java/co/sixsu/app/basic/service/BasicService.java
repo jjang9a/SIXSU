@@ -2,6 +2,7 @@ package co.sixsu.app.basic.service;
 
 import java.util.List;
 
+import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
@@ -44,10 +45,15 @@ public interface BasicService {
 	List<BusVO> searchBus(SearchDTO dto); // 거래처 검색
 	
 	List<ProcessVO> procList(); // 공정 목록 조회
-	List<CodeVO> procTypeList(); // 공정 구분 목록
+	List<CodeVO> getComList(String key); // 공정 구분 목록
 	boolean addProc(ProcessVO mat); // 공정 등록
 	boolean updateProc(ProcessVO mat); // 공정 수정
 	List<ProcessVO> searchProc(SearchDTO dto); // 공정 검색
 	
+	List<BomVO> bomList(String id); // bom 내역 조회
+	List<ProductVO> activeCpList(); // 활성화된 완제품 조회
+	List<ProductVO> activeSpList(); // 활성화된 반제품 조회
+	boolean addBom(List<BomVO> list); // BOM 등록
+	boolean updateBom(List<BomVO> list); // BOM 수정
 	
 }

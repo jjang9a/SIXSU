@@ -170,7 +170,7 @@
 </select>
 
 <insert id="addBus" parameterType="BusVO">
-	INSERT INTO business VALUES(#{busId}, #{busType} ,#{busName}, #{busNum}, #{busTell}, #{busAddr}, #{busNote}, #{busStat})
+	INSERT INTO business VALUES(#{busId}, #{busType} ,#{busName}, #{busNum}, #{busTell}, #{busAddr}, #{busStat}, #{busNote})
 </insert>
 
 <update id="updateBus" parameterType="BusVO">
@@ -210,13 +210,16 @@
 
 <!-- 공정 관리 -->
 <select id="procList" resultType="ProcessVO">
-	SELECT * FROM PROCESS
+	select *
+	from process p left outer join common_code c
+	on p.proc_type = c.com_id
+	order by proc_stat desc, proc_id
 </select>
 
-<select id="procTypeList" resultType="CodeVO">
+<select id="getComList" parameterType="String" resultType="CodeVO">
 	select com_id, com_name
 	from common_code
-	where g_id = 'proc_type'
+	where g_id = #{key}
 </select>
 
 <insert id="addProc" parameterType="ProcessVO">
@@ -231,7 +234,8 @@
 
 <select id="searchProc" parameterType="SearchDTO" resultType="ProcessVO">
 	SELECT *
-	FROM process
+	FROM process p left outer join common_code c
+	ON p.proc_type = c.com_id
 	WHERE 
 	<if test='searchType.equals("id")'>
 		proc_id like '%'||#{searchKey}||'%' OR lower(proc_id) like '%'||#{searchKey}||'%'
@@ -245,5 +249,18 @@
 	ORDER BY proc_stat desc, proc_id
 </select>
 <!-- 공정 관리 종료 -->
+
+<!-- BOM 관리 -->
+<select id="activeCpList" resultType="ProductVO">
+	SELECT *
+	FROM complete_prod
+	WHERE cp_stat = 'Y'
+</select>
+
+<select id="activeSpList" resultType="ProductVO">
+	SELECT sp_id as cp_id, sp_name as cp_name, sp_size as cp_size
+	FROM semi_prod
+	WHERE sp_stat = 'Y'
+</select>
 
 </mapper>

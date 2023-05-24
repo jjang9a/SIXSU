@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
@@ -198,8 +199,8 @@ public class BasicController {
 
 	@GetMapping("/basic/procManage")
 	public void procManage(Model model) { // 공정 관리 화면 띄우기
-		model.addAttribute("types", service.procTypeList());
-		System.out.println(service.procTypeList());
+		String key = "proc_type";
+		model.addAttribute("types", service.getComList(key));
 	}
 	
 	@ResponseBody
@@ -273,6 +274,36 @@ public class BasicController {
 	// 제품 BOM
 	@GetMapping("/basic/bomManage")
 	public void bodManage() {
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/bomList")
+	public List<BomVO> bomList(@RequestParam String id) { // 거래처 목록
+		return service.bomList(id);
+	}
+
+	@ResponseBody
+	@GetMapping("/basic/activeCpList")
+	public List<ProductVO> activeCpList() { // 활성화된 완제품 목록
+		return service.activeCpList();
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/activeSpList")
+	public List<ProductVO> activeSpList() { // 활성화된 반제품 목록
+		return service.activeSpList();
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/addBom") // BOM 등록
+	public boolean addBom(@RequestBody List<BomVO> list) {
+		return service.addBom(list);
+	}
+
+	@ResponseBody
+	@PostMapping("/basic/modifyBom") // BOM 수정
+	public boolean modifyBom(@RequestBody List<BomVO> list) {
+		return service.updateBom(list);
 	}
 	
 	

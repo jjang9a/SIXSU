@@ -11,4 +11,5 @@ public class ProcessVO { // 공정(Process) 테이블
 	private char procStat; // 활성여부(Y/N)
 	private String procNote; // 비고
 	
+	private String comName; // 공정분류명
 }

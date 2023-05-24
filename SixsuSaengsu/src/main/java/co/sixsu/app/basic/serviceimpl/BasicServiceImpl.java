@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
@@ -198,8 +199,8 @@ public class BasicServiceImpl implements BasicService{
 	}
 	
 	@Override
-	public List<CodeVO> procTypeList() {
-		return mapper.procTypeList();
+	public List<CodeVO> getComList(String key) {
+		return mapper.getComList(key);
 	}
 
 	@Override
@@ -215,6 +216,52 @@ public class BasicServiceImpl implements BasicService{
 	@Override
 	public List<ProcessVO> searchProc(SearchDTO dto) {
 		return mapper.searchProc(dto);
+	}
+
+	
+	// BOM 관리
+	
+	@Override
+	public List<BomVO> bomList(String id) {
+		return mapper.bomList(id);
+	}
+
+	@Override
+	public List<ProductVO> activeCpList() {
+		return mapper.activeCpList();
+	}
+
+	@Override
+	public List<ProductVO> activeSpList() {
+		return mapper.activeSpList();
+	}
+
+	@Override
+	public boolean addBom(List<BomVO> list) {
+		int count = 0; // insert가 발생한 횟수
+		for(int i=0; i<list.size(); i++) {
+			// 소요 자재코드가 빈칸으로 들어 가 있는 열은 extra로 취급해 등록하지 않음
+			if(list.get(i).getBomMat() == null || list.get(i).getBomMat().equals("")){
+				continue;
+			}else {
+				count += mapper.addBom(list.get(i));				
+			}
+		}
+		return count >= 1;
+	}
+
+	@Override
+	public boolean updateBom(List<BomVO> list) {
+		int count = 0; // insert가 발생한 횟수
+		for(int i=0; i<list.size(); i++) {
+			// 소요 자재코드가 빈칸으로 들어 가 있는 열은 extra로 취급해 등록하지 않음
+			if(list.get(i).getBomMat() == null || list.get(i).getBomMat().equals("")){
+				continue;
+			}else {
+				count += mapper.addBom(list.get(i));				
+			}
+		}
+		return count >= 1;
 	}
 
 	

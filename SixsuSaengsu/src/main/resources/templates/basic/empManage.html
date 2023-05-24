@@ -352,13 +352,14 @@
 					*/
 					selKey = ev.rowKey;
 
+
 					// 열 전체 정보 얻기
 					let dataRow = grid.getRow(ev.rowKey);
 					console.log(dataRow);
 					selEmp = dataRow;
-					console.log('사원번호 : ' + dataRow.empStat);
-					//selEmpId = dataRow.empId
-					//selEmpName = dataRow.empName
+					console.log('열번호 : ' + selKey);
+					selEmpId = dataRow.empId
+					selEmpName = dataRow.empName
 				});
 
 
