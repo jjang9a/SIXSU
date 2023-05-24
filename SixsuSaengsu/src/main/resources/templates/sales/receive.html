@@ -12,11 +12,11 @@ margin-bottom:25px;
 }
 
 #product{
-width:auto;
+
 margin:auto;
 }
 #return{
-width:auto;
+
 margin:auto;
 display:none;
 }
@@ -48,28 +48,28 @@ button {
 	
 	<!-- 탭 -->
 	<div id="group" class="codeBack">
-			<button type="button" id="gc">생산완료 입고</button>
-			<button type="button" id="gs" class="gSel">반품완료 재입고</button>
+			<button type="button" id="gc">생산 입고</button>
+			<button type="button" id="gs" class="gSel">반품 입고</button>
 	<div id="product">
 	<h1 class="mt-4" style="font-family: 'MaruBuri';">생산완료현황</h1>
 	 상품명 <input type="text" name="cpName" id="cpNameBox">
 	 <button type="button" data-bs-toggle="modal" id="searchProductBtn"
-						class="sixBtn1" data-bs-target="#searchModal">
+						class="sixBtn1">
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                 <path
 								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                 </svg></button> <br>
 	 상품코드 <input type="text" name="cpId" id="cpIdBox"> <br>
-	 제조일자 <input type="date" name="startPro" id="startPro"> <input type="date" name="endPro" id="endPro"> <br>
+	 입고일자 <input type="date" name="startPro" id="startPro"> <input type="date" name="endPro" id="endPro"> <br>
 	 <button class="sixBtn2" id="infoCollect">조회</button>
-	 <button class="sixBtn4" id="infoCollect">초기화</button>
-	
+	 <button class="sixBtn4" id="infoCollect">초기화</button><BR>
+	 <button class="sixBtn4" id="recRegister">입고등록</button>	
 	
 	<!-- 생산완료 grid테이블 -->
 
 	<div id="productGrid"></div>
-	<button class="sixBtn2" id="recRegister">등록</button>
+	
 	</div>
 	
 	
@@ -77,15 +77,15 @@ button {
 	<h1 class="mt-4" style="font-family: 'MaruBuri';">반품완료현황</h1>
 	
 	 상품명 <input type="text" name="rpName" id="rpNameBox">
-	 <button type="button" data-bs-toggle="modal" id="searchProductBtn"
-						class="sixBtn1" data-bs-target="#searchModal">
+	 <button type="button" data-bs-toggle="modal" id="searchProductBtn1"
+						class="sixBtn1">
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                 <path
 								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                 </svg></button> <br>
      상품코드 <input type="text" name="rpId" id="rpIdBox"> <br>
-	 반품일자 <input type="date" name="startRet" id="startRet"> <input type="date" name="endRet" id="endRet"> <br>
+	 재입고일자 <input type="date" name="startRet" id="startRet"> <input type="date" name="endRet" id="endRet"> <br>
 	 <button class="sixBtn2" id="infoCollect">조회</button>
 	 <button class="sixBtn4" id="infoCollect">초기화</button>
 	 
@@ -116,6 +116,30 @@ button {
 
 						<div class="modal-body">
 							<div id="gridp"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 입고전 생상완료 모달창 -->
+	 	<div class="modal fade" id="comProductModel" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="searchModalLabel">생산완료 조회</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+
+
+						<div class="btns"></div>
+
+						<div class="modal-body">
+							<div id="completProductGrid"></div>
+							
+							
 						</div>
 					</div>
 				</div>
@@ -155,6 +179,20 @@ button {
     		}
     	})
 	})
+	//상품조회 (반품)
+	$("#searchProductBtn1").on('click', function(e){
+	$('#productModal').modal('show');
+	 $.ajax({
+    		url : "/sales/products",
+    		method : "get",
+    		dataType : "JSON",
+    		success : function(result){
+    			gridp.resetData(result);
+    			console.log ('거래처 모달');
+    			setTimeout(()=>gridp.refreshLayout(),1000);
+    		}
+    	})
+	})
 	
 	const gridp = new tui.Grid({
 		el : document.getElementById('gridp'),
@@ -173,6 +211,16 @@ button {
 		}
 		]
 	});		
+	
+	//모달 사원리스트 행 클릭시 자동으로 생산완료현황 페이지로 값이 이동
+	gridp.on('click', ev=>{
+		const focusCell = gridp.getFocusedCell()
+		let dataRow = gridp.getRow(ev.rowKey);
+		$('#cpNameBox').val(dataRow.cpName);
+		$('#cpIdBox').val(dataRow.cpId);
+		$('#productModal').modal('hide');
+	})
+	
 	//생산완료 grid테이블
 					 const productGrid = new tui.Grid({
 							el : document.getElementById('productGrid'),
@@ -244,8 +292,52 @@ button {
 							},
 							]
 						});
-					 
-	 
+		//입고전 생산완료품목 모달			 
+		 $("#recRegister").on('click', function(e){
+				$('#comProductModel').modal('show');
+				 $.ajax({
+			    		url : "/sales/completeList",
+			    		method : "get",
+			    		dataType : "JSON",
+			    		success : function(result){
+			    			completProductGrid.resetData(result);
+			    			console.log ('생산완료현황');
+			    			setTimeout(()=>completProductGrid.refreshLayout(),200);
+			    		}
+			    	})
+				})
+				 const completProductGrid = new tui.Grid({
+							el : document.getElementById('completProductGrid'),
+							//data : gridData,
+							scrollX : false,
+							scrollY : false,
+							pageOptions: {
+								useClient: true,
+								perPage: 10
+							},
+							 rowHeaders: ['checkbox','rowNum'],
+							columns : [{
+								header : '지시세부코드',
+								name : 'wkDetaId',
+							}, {
+								header : '제품코드',
+								name : 'matId',
+							}, {
+								header : '제품명',
+								name : 'matName',
+								filter: 'select'
+							},{
+								header : '생산수량',
+								name : 'goodQt',
+							},{
+								header : '생산완료날짜',
+								name : 'cmpltDate'
+							}
+							]
+						});
+		 
+		 
+		 
 	 
 	</script>
 	</div>
