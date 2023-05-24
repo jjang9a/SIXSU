@@ -135,7 +135,7 @@
 	<!-- 검사 항목 리스트 -->
 	<select id="inspItem" resultType="QuaVO">
 		select * from qua_insp_list
-		where insp_item_id={matId}
+		where insp_item_id=#{matId} 
 	</select>
 	
 	<!-- 입고 검사 상세 결과 등록 -->

@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.quality.domain.QilVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.service.QualityService;
 
@@ -95,8 +94,8 @@ public class QualityController {
 	// 입고 검사 항목 불러오기
 	@ResponseBody
 	@RequestMapping("/quality/inspItem")
-	public List<QuaVO> inspItem(Model model){
-		List<QuaVO> list = quaService.inspItem();
+	public List<QuaVO> inspItem(Model model, String matId){
+		List<QuaVO> list = quaService.inspItem(matId);
 		model.addAttribute("list", list);
 		return list;
 	}

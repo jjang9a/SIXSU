@@ -616,10 +616,20 @@
 					selInspQt = dataRow.inspQt;
 					selMatReqQt = dataRow.matReqQt;
 				});
-
+				
+				
+				
+				
+				// 검사 결과 등록 버튼 클릭 이벤트
 				$('#rrBtn').on('click', function (e) {
 					console.log('rrBtn클릭');
+					
+					
 					$('#prInspForm').toggle(); // prInspForm의 표시 상태를 토글
+					
+					
+					let matId = selMatId;
+					
 					//선택된 결과 주입
 					$('#inspStdId').val(selStdId);
 					$('#inspNum').val(selInspNum);
@@ -627,8 +637,36 @@
 					$('#matId').val(selMatId);
 					$('#matName').val(selMatName);
 					$('#inspQt').val(selInspQt);
+					
+					console.log(matId);
+					
+					// 검사 항목 ajax 호출
+ 					$.ajax({
+						url: "/quality/inspItem",
+						method: "GET",
+						data: {
+							matId:matId
+						},
+						dataType: "JSON",
+						success: function (result) {
+							console.log(result);
+							
+						    // createInspItem 함수 호출
+						    for (let i = 0; i < result.length; i++) {
+						      createInspItem(result[i]);
+						    }
+							
+						 	
+						},
+						error: function (reject) {
+							console.log(reject);
+						}
+					});
+					
+					
+					
 
-				})
+				}) 
 
 
 				// 모달 그리드 ajax
@@ -761,8 +799,9 @@
 						}
 					}
 				});
-
-				$("#inspIdBtn").click(function () {
+				
+				
+				/* $("#inspIdBtn").click(function () {
 					let selectedOption = $("#selectInsp").val();
 					console.log(selectedOption);
 					if (selectedOption == 'yet') {
@@ -793,24 +832,10 @@
 							$("#sel1").css('display', 'none');
 							$("#sel4").css('display', 'block')
 						}
-					}
+					} */
 					
 					
-					// 검사 항목 ajax 호출
-					$.ajax({
-						url: "/quality/inspItem",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							console.log(result);
-						 	
-						},
-						error: function (reject) {
-							console.log(reject);
-						}
-					});
-					
-				}); 
+
 				
 		
 
