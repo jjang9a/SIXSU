@@ -57,6 +57,8 @@ public interface BasicMapper {
 	public List<BomVO> bomList(String id); // BOM내역 조회
 	public List<ProductVO> activeCpList(); // 사용중인 완제품 조회
 	public List<ProductVO> activeSpList(); // 사용중인 반제품 조회
+	public List<ProductVO> activeMatList(); // 사용중인 자재 조회
+	public List<ProcessVO> activeProcList(); // 사용중인 공정 조회
 	public int addBom(BomVO bom); // BOM 등록
 	public int updateBom(BomVO bom); // BOM 수정
 	

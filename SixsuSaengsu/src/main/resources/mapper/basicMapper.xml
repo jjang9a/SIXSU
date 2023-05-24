@@ -263,4 +263,17 @@
 	WHERE sp_stat = 'Y'
 </select>
 
+<select id="activeMatList" resultType="ProductVO">
+	SELECT mat_id as cp_id, mat_name as cp_name, mat_size as cp_size
+	FROM material
+	WHERE mat_stat = 'Y'
+</select>
+
+<select id="activeProcList" resultType="ProcessVO">
+	SELECT com_name, proc_id, proc_name
+	FROM process p left outer join common_code c
+	ON p.proc_type = c.com_id
+	WHERE proc_stat = 'Y'
+</select>
+
 </mapper>

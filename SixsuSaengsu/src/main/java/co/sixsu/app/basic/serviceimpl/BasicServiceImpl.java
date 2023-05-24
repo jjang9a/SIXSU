@@ -264,6 +264,16 @@ public class BasicServiceImpl implements BasicService{
 		return count >= 1;
 	}
 
+	@Override
+	public List<ProductVO> activeMaterialList() {
+		return mapper.activeMatList();
+	}
+
+	@Override
+	public List<ProcessVO> activeProcList() {
+		return mapper.activeProcList();
+	}
+
 	
 	
 	

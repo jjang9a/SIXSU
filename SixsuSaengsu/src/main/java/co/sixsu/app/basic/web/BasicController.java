@@ -295,6 +295,18 @@ public class BasicController {
 	}
 	
 	@ResponseBody
+	@GetMapping("/basic/activeMatList")
+	public List<ProductVO> activeMatList() { // 활성화된 자재 목록
+		return service.activeMaterialList();
+	}
+	
+	@ResponseBody
+	@GetMapping("/basic/activeProcList")
+	public List<ProcessVO> activeProcList() { // 활성화된 공정 목록
+		return service.activeProcList();
+	}
+	
+	@ResponseBody
 	@PostMapping("/basic/addBom") // BOM 등록
 	public boolean addBom(@RequestBody List<BomVO> list) {
 		return service.addBom(list);
