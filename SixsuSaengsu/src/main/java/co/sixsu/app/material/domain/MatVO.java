@@ -11,5 +11,7 @@ public class MatVO {
 	int matSafe;
 	String matStat;
 	String matNote;
-	
+
+
+	String type;
 }
