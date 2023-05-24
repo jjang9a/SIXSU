@@ -31,7 +31,7 @@
 
 
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 입고 검사</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">제품 품질 관리</h1>
 		<!-- <label>발주 번호</label>
 	<input type=text> -->
 
@@ -92,19 +92,35 @@
 						<!-- display: none;  -->
 
 						<div class="prInsp">
-
 							<div class="row">
 								<div class="col">
+									<select class="form-select" aria-label="insp" id="selectInsp">
+										<option value="yet" selected>검사 항목</option>
+										<option value="1">PET CHIP</option>
+										<option value="2">캡 원료</option>
+										<option value="3">라벨</option>
+										<option value="4">원수</option>
+									</select>
+								</div>
+
+								<div class="col">
+									<button type="button" class="sixBtn8" id="inspIdBtn">검사
+										항목 내려받기</button>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
 									<label for="inspStdId" class="form-label">발주번호 </label> <input
 										type="text" class="form-control" id="inspStdId">
 								</div>
 
-								<div class="col">
+								<div class="col-3">
 									<label for="inspStdId" class="form-label">검사번호</label> <input
 										type="text" class="form-control" id="inspNum">
 								</div>
 
-								<div class="col">
+								<div class="col-3">
 									<label for="inspStdId" class="form-label">거래처</label> <input
 										type="text" class="form-control" id="busName">
 								</div>
@@ -112,25 +128,23 @@
 							</div>
 
 							<div class="row">
-								<div class="col">
+								<div class="col-4">
 									<label for="matId" class="form-label">자재코드 </label> <input
 										type="text" class="form-control" id="matId">
 								</div>
 
-								<div class="col">
+								<div class="col-4">
 									<label for="exampleFormControlInput1" class="form-label">자재명
 									</label> <input type="text" class="form-control" id="matName">
 								</div>
-
-								<div class="col">
-
-									<label for="exampleFormControlInput1" class="form-label">검사자
-									</label> <input type="text" class="form-control" id="empName">
-	
-								</div>
 							</div>
 
+							<div class="col-4">
 
+								<label for="exampleFormControlInput1" class="form-label">검사자
+								</label> <input type="text" class="form-control" id="empName">
+
+							</div>
 
 
 							<div class="row">
@@ -157,20 +171,19 @@
 
 								<!-- PET CHIP 폼 시작 -->
 								<div id="sel1" class="detail">
-									<form action="" method="post" id="detailForm">
+									<form action="" method="post" id="petChipForm">
 										<div class="row">
 											<div class="col-5">
 												<label for="package" class="form-label">포장 적합 기준</label> <input
-													type="text" class="form-control" id="inspExp"
-													name="inspExp" readonly>
+													type="text" class="form-control" id="packageY"
+													name="packageY" value="포장지 찢어짐 여부" readonly>
 
 											</div>
 											<div class="col-5">
 												<label for="package" class="form-label">포장 부적합 수량</label> <input
-													type="text" class="form-control" id="reslVal"
-													name="reslVal">
+													type="text" class="form-control" id="packageN"
+													name="packageN">
 											</div>
-											
 										</div>
 
 										<div class="row">
@@ -426,13 +439,13 @@
 								</div>
 
 							</div>
-							<!-- 검사 등록 버튼 -->
-						<button type="button" class="sixBtn2" id="inspBtn">등록</button>
+
 
 						</div>
 						<!-- 세부 검사 항목 border box 끝 -->
 
-						
+						<!-- 검사 등록 버튼 -->
+						<button type="button" class="sixBtn2" id="inspBtn">등록</button>
 
 					</form>
 					<!-- 검사 폼 끝나는 부분 -->
@@ -441,61 +454,9 @@
 				<!-- div class-6 끝나는 부분 -->
 			</div>
 
-			<template id="itemRow">
-				<div class="row">
-					<div class="col-5">
-						<label for="package" class="form-label">포장 적합 기준</label> 
-						<input
-							type="text" class="form-control" id="packageY"
-							name="packageY" value="포장지 찢어짐 여부" readonly>
 
-					</div>
-					<div class="col-5">
-						<label for="package" class="form-label">포장 부적합 수량</label>
-						 <input
-							type="text" class="form-control" id="packageN"
-							name="packageN">
-					</div>
-					
-				</div>
-			</template>
 
 			<script>
-
-				function createInspItem(obj){
-					// 템플릿 엘리먼트의 컨텐츠 존재 유무를 통해
-					// 브라우저가 HTML 템플릿 엘리먼트를 지원하는지 확인합니다
-					if ('content' in document.createElement('template')) {
-
-						// 기존 HTML tbody 와 템플릿 열로 테이블을 인스턴스화합니다
-						var t = document.querySelector('#itemRow');
-
-						// 새로운 열을 복제하고 테이블에 삽입합니다
-						var tb = document.getElementById('sel1');
-
-						var clone = document.importNode(t.content, true);
-
-						var label1 = clone.querySelector('label');
-						label1.text = '검사항목명';
-
-						if(obj.기준값 == null){
-							var input1 = clone.querySelector('#inspExp');
-							input1.value='검사항목설명';
-
-							var label1 = clone.querySelector('#reslVal');
-							label1.text = '검사 부적합 수량';
-						}else{
-							var input1 = clone.querySelector('#inspExp');
-							input1.value='기준값';
-
-							var label1 = clone.querySelector('#reslVal');
-							label1.text = '검사 결과';
-						}
-
-						tb.appendChild(clone);
-					}
-				}
-
 				$('#regModal').on('shown.bs.modal', function (e) {
 					$.ajax({
 						url: "/quality/proRecList",
@@ -795,53 +756,39 @@
 						}
 					}
 					
-					
 					// 검사 항목 ajax 호출
 					$.ajax({
-						url: "/quality/inspItem",
+						url: "/quality/quaInspList",
 						method: "GET",
 						dataType: "JSON",
 						success: function (result) {
 							console.log(result);
-						 	
+						/* 	$('#packageY').val=(result.inspId);
+							$('#fmmY').val=(result.) */
 						},
 						error: function (reject) {
 							console.log(reject);
 						}
 					});
 					
-				}); 
+				});
 				
+				// 검사 항목 불러오기
+				let packageY;
+				let fmmY;
+				let ivY;
+				let mpY;
+				let densityY;
+				let weightY;
 		
 
 				// 검사 버튼 클릭 모달 이벤트
-/* 				function searchEmp() {
+				function searchEmp() {
 					console.log('클릭됨')
 					$('#searchModal').modal('show');
-				} */
+				}
 				
-				// inspBtn 등록 버튼 클릭 이벤트
-				$('#inspBtn').on('click', function(e){
-					$.ajax({
-						url: '/quality/priRegister',
-						type: 'post',
-						data: $('#prInspForm').serialize(),
-						contentType: 'application/json',
-						success: function (result) {
-							console.log(result);   
-							alert('검사 결과 등록이 완료되었습니다.');
-							
-						},
-						error: function () {
-							alert('검사 결과 등록 중 오류가 발생했습니다!');
-						}
-					});
-					$('#prInspForm input').val('');
-				})
-				
-				
-				
-				// 적합 수량 계산
+				//
 				$(document).ready(function() {
 					  // 적합 수량과 부적합 수량의 합을 계산하는 함수
 					  function calQt() {
@@ -866,8 +813,6 @@
 					  $('.detail input').on('change', calQt);
 					
 				});// $(document).ready(function()) 끝나는 부분
-				
-				
 				
 
 
