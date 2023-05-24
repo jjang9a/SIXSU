@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,8 +39,10 @@ import co.sixsu.app.work.service.WorkService;
 		}
 		
 		@GetMapping("work4")
-		public String work4() {
+		public String work4(Model model) {
 			System.out.println("work4 들어옴");
+			String orderCode = service.addWork();
+			model.addAttribute("orderCode", orderCode);
 		return "/work/work4";
 		}
 		
