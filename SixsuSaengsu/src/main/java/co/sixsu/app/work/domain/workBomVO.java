@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class workBomVO {
 
+	
+	
 	String wkBomId;
 	String wkDetaId;
 	String procId;
