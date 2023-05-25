@@ -13,16 +13,18 @@ public class EquConVO {
 		String equName; // 설비명
 		String equLine; // 설비라인
 		String equModel; // 설비모델
+		String equImg; // 설비 이미지
 		String equSuit; // 판정
 		String checkDate; // 점검일자 Date
 		String equCheck; // 점검주기 개월
 		String checkNext; // 차기점검일 Date
 		String checkType; // 점검구분 
-		String checkInfo; //점검사유
+		String checkInfo; // 점검사유
 		String operStart;  // 비가동시작 Date
-		String opreNote; // 비가동사유
-		String equImg; // 설비 이미지
+		String operType; // 비가동구분
+		String operNote; // 비가동사유
 		String empId; // 사원코드
+		int ctemp; // 기준온도
 		
 		/*
 		 * public EquConVO() {

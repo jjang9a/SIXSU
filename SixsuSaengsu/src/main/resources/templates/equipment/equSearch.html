@@ -22,23 +22,18 @@
 
 		<br>
 		<hr>
-		* 설비상태 &nbsp&nbsp&nbsp&nbsp * 설비명 : <input type="text" name="ename">
-		<button class="sixBtn1" id="searchBtn2">
-			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-                <path
-					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                </svg>
-		</button>
 		&nbsp&nbsp&nbsp&nbsp * 설비코드 : <input type="text" name="ecode">
 
-		<button class="sixBtn1" id="searchBtn2">
+		
+		 &nbsp&nbsp&nbsp&nbsp * 설비명 : <input type="text" name="ename">
+		<button class="sixBtn1" id="searchBtn">
 			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
                 <path
 					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                 </svg>
 		</button>
+		
 		<hr>
 		<br>
 
@@ -90,6 +85,11 @@
 									</tr>
 									<tr>
 										<br>
+										<td>기준온도<span class="needStar"> *</span></td>
+										<td><input type="text" name="ctemp" id="ctemp"></td>
+									</tr>
+									<tr>
+										<br>
 										<td>판정<span class="needStar"> *</span></td>
 										<td><input type="text" name="equSuit" id="equSuit"></td>
 									</tr>
@@ -126,7 +126,12 @@
 									<tr>
 										<br>
 										<td>비가동사유<span class="needStar"> *</span></td>
-										<td><input type="text" name="opreNote" id="opreNote"></td>
+										<td><input type="text" name="operNote" id="operNote"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비가동구분<span class="needStar"> *</span></td>
+										<td><input type="text" name="operType" id="operType"></td>
 									</tr>
 								</div>
 							</table>
@@ -177,7 +182,6 @@
             header: '설비상태',
             name: 'equStat',
             filter: 'select'
-            
           },
           {
              header: '설비라인',
@@ -229,7 +233,17 @@
               header: '비사동사유',
               name: 'operNote',
               hidden : true
-          }         
+          },
+          {
+              header: '비가동구분',
+              name: 'operType',
+              hidden : true
+          },
+          {
+              header: '기준온도',
+              name: 'ctemp',
+              hidden : true
+          },
         ]
      });
         
@@ -291,18 +305,20 @@
 	      $('#checkType').val(dataRow.checkType); // 점검구분
 	      $('#checkInfo').val(dataRow.checkInfo); // 점검사유
 	      $('#operStart').val(dataRow.operStart); // 비가동시작
-	      $('#opreNote').val(dataRow.opreNote); // 비가동 사유
+	      $('#operNote').val(dataRow.operNote); // 비가동 사유
+	      $('#operType').val(dataRow.operType); // 비가동 구분
+	      $('#ctemp').val(dataRow.ctemp); // 비가동 구분
       });
 
 
     
     
-    $('#searchBtn2').on('click', function(){
+    $('#searchBtn').on('click', function(){
     
     console.log('클릭됐음.');
     var searchData = {};
     searchData.equName = $('input[name="ename"]').val();
-    searchData.equCode = $('input[name="ecode"]').val();
+    
     console.log(searchData);
     
     $.ajax({

@@ -42,17 +42,31 @@
 	   	<table>
 	   	 <div id="input">
 			<tr>
-				<td>설비코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="equCode" id="equCode"></td>
+						<td>설비코드<span class="needStar"> * </span></td>
+				<td><input type="text" name="equCode" id="equCode" ></td>
 				<td>설비명<span class="needStar"> * </span></td>
 				<td><input type="text" name="equName" id="equName" ></td>
 		   	</tr>
 		   	<tr>
 				<td>모델<span class="needStar"> * </span></td>
 				<td><input type="text" name="equModel" id="equModel"></td>
+				
+				
+				
+			<tr>	
+				<td>설비상태<span class="needStar"> *</span></td>
+				<td>
+					<div id="divRadio">
+						<input type="radio" id="equSuit" name="equStat" value="Y" checked>
+						<label for="equStat1">가동</label>
+						<input type="radio" id="equSuit" name="equStat" value="N">
+						<label for="equStat2">비가동</label>
+				</td>
+			</tr>
 				<td>설비상태<span class="needStar"> *</span></td>
 				<td><input type="text" name="equStat" id="equStat"></td>
-			</tr>	
+			</td>
+				
 		   	<tr>
 				<td>설비라인<span class="needStar"> *</span></td>
 				<td><input type="text" name="equLine" id="equLine"></td>
@@ -62,9 +76,11 @@
 			<tr>
 			
 				<td>공정코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="procId" id="procId"></td>
+				<td><input type="text" name="procId" id="procId" ></td>
 				<td>점검주기<span class="needStar"> *</span></td>
 				<td><input type="text" name="equCheck" id="equCheck"></td>
+			</tr>
+			<tr>
 				<td>담당자<span class="needStar"> *</span></td>
 				<td><input type="text" name="empId" id="empId"></td>
 			</tr>
@@ -140,10 +156,14 @@
              name: 'equImg'
           },
           {
+        	  header: '기준온도',
+              name: 'ctemp',
+              hidden : true
+          },
+          {
              header: '담당자',
              name: 'empId'
-          }
-          
+           }
         ]
 	    
      });
@@ -196,13 +216,14 @@
     	
 		  $('#equCode').val(dataRow.equCode);
 	      $('#procId').val(dataRow.procId);
-	      $('#equStat').val(dataRow.equStat);
 	      $('#equName').val(dataRow.equName);
+	      $('#equModel').val(dataRow.equModel);
+	      $('#equStat').val(dataRow.equStat);
 	      $('#equLine').val(dataRow.equLine);
 	      $('#equCheck').val(dataRow.equCheck);
 	      $('#equImg').val(dataRow.equImg);
 	      $('#empId').val(dataRow.empId);
-	      $('#equModel').val(dataRow.equModel);
+	      $('#ctemp').val(dataRow.ctemp);
 	      
       });
  	 
@@ -239,10 +260,10 @@
 			dataType: 'json',
 			success: function (result) {
 				console.log(result);
+				alert('설비정보가 수정되었습니다');
 				const setData = result
 				grid.setRow(selRow, setData);
 				selRow = '';
-				alert('설비정보가 수정되었습니다');
 			},
 			error: function (reject) {
 				alert('설비 수정 중 오류가 발생했습니다!');
@@ -262,26 +283,21 @@
 		  		$.ajax({
 		   			 url: '/equipment/equDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
 		   			 type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
-		   			dataType : "JSON",
-		  			contentType : "application/json",
+		   			 dataType : "JSON",
+		  			 contentType : "application/json",
 				     data: JSON.stringify( { equCode : $('#equCode').val()}), // 삭제할 설비의 ID를 전송
-				     success: function (response) {
-				    	  if(response == "sucess"){
-				    		 alert("성공")
-				    	 }else {
-				    		 alert("실패")
-				    	 } 
-				    	  
+				     success: function (result) {
+				    	 
 				     // 삭제 성공 시의 처리
 				     console.log('설비가 성공적으로 삭제되었습니다.');
-				     
+				     alert('설비정보가 성공적으로 삭제되었습니다.');
 				     
 				     // 추가적인 업데이트나 리다이렉션 등의 동작 수행
 				     },
-				     error: function (error) {
-				     // 삭제 실패 시의 처리
+				     error: function (reject) {
 				     console.log('설비 삭제 중 오류가 발생했습니다.');
-				     console.log('오류 메시지:', error);
+				     console.log('오류 메시지:', reject);
+				     alert('설비 삭제 중 오류가 발생했습니다..');
 				     // 오류 메시지를 사용자에게 표시하거나 추가적인 오류 처리 수행
 				    }
 				 });
