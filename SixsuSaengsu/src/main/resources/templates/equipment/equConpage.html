@@ -10,11 +10,6 @@
 	.sixBtn2{
 	margin-right : 7px;
 	}
-	#divRadio input {
-			padding-left: 7px;
-			width: 20px;
-	}
-	
 	
 </style>
 <title>설비 관리</title>
@@ -48,33 +43,16 @@
 	   	 <div id="input">
 			<tr>
 				<td>설비코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="equCode" id="equCode" ></td>
+				<td><input type="text" name="equCode" id="equCode"></td>
 				<td>설비명<span class="needStar"> * </span></td>
 				<td><input type="text" name="equName" id="equName" ></td>
 		   	</tr>
 		   	<tr>
 				<td>모델<span class="needStar"> * </span></td>
 				<td><input type="text" name="equModel" id="equModel"></td>
-				
-				
-				
-			<tr>	
-				<td>설비상태<span class="needStar"> *</span></td>
-				<td>
-					<div id="divRadio">
-						<input type="radio" id="equSuit" name="equStat" value="Y" checked>
-						<label for="equStat1">가동</label>
-						<input type="radio" id="equSuit" name="equStat" value="N">
-						<label for="equStat2">비가동</label>
-				</td>
-			</tr>
-				
-				
-				
 				<td>설비상태<span class="needStar"> *</span></td>
 				<td><input type="text" name="equStat" id="equStat"></td>
-			</td>
-				
+			</tr>	
 		   	<tr>
 				<td>설비라인<span class="needStar"> *</span></td>
 				<td><input type="text" name="equLine" id="equLine"></td>
@@ -84,21 +62,9 @@
 			<tr>
 			
 				<td>공정코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="procId" id="procId" ></td>
+				<td><input type="text" name="procId" id="procId"></td>
 				<td>점검주기<span class="needStar"> *</span></td>
 				<td><input type="text" name="equCheck" id="equCheck"></td>
-			</tr>
-			<tr>	
-				<td>판정<span class="needStar"> *</span></td>
-				<td>
-					<div id="divRadio">
-						<input type="radio" id="equSuit" name="equSuit" value="Y" checked>
-						<label for="equSuit1">적합</label>
-						<input type="radio" id="equSuit" name="equSuit" value="N">
-						<label for="equSuit2">부적합</label>
-				</td>
-			</tr>
-			<tr>
 				<td>담당자<span class="needStar"> *</span></td>
 				<td><input type="text" name="empId" id="empId"></td>
 			</tr>
@@ -140,32 +106,51 @@
         
         rowHeaders: ['rowNum'],
         columns: [
-          { header: '설비코드' ,
-            name: 'equCode'    },
-          { header: '공정코드',
-            name: 'procId'    },
-          { header: '설비명',
-            name: 'equName'   },
-          { header: '모델',
-            name: 'equModel'  },
-          { header: '설비상태',
+          {
+            header: '설비코드',
+            name: 'equCode'
+          },
+          {
+            header: '공정코드',
+            name: 'procId'
+          },
+          {
+            header: '설비명',
+            name: 'equName'
+          },
+          {
+            header: '모델',
+            name: 'equModel'
+          },
+          {
+            header: '설비상태',
             name: 'equStat',
-            filter: 'select'  },
-          { header: '설비라인',
-             name: 'equLine'  },
-          { header: '점검주기',
-             name: 'equCheck' },
-          { header: '설비 이미지',
-             name: 'equImg'   },
-          { header: '판정',
-             name: 'equSuit'    },
-          { header: '담당자',
-             name: 'empId'    }  
-         ]
+            filter: 'select'
+          },
+          {
+             header: '설비라인',
+             name: 'equLine'
+          },
+          {
+             header: '점검주기',
+             name: 'equCheck'
+          },
+          {
+             header: '설비 이미지',
+             name: 'equImg'
+          },
+          {
+             header: '담당자',
+             name: 'empId'
+          }
+          
+        ]
+	    
      });
 	    
-	    // 페이지가 열리면 기능작동 - 리스트 띄워주기.  
+	     // 페이지가 열리면 기능작동 - 리스트 띄워주기.  
 	    window.onload = function(){
+	    	
 	    	$.ajax({
 	    		url : "/equipment/equCon",
 	    		method : "GET",
@@ -211,44 +196,17 @@
     	
 		  $('#equCode').val(dataRow.equCode);
 	      $('#procId').val(dataRow.procId);
-	      $('#equModel').val(dataRow.equModel);
 	      $('#equStat').val(dataRow.equStat);
-	      $('#equSuit').val(dataRow.equSuit);
 	      $('#equName').val(dataRow.equName);
 	      $('#equLine').val(dataRow.equLine);
 	      $('#equCheck').val(dataRow.equCheck);
 	      $('#equImg').val(dataRow.equImg);
 	      $('#empId').val(dataRow.empId);
+	      $('#equModel').val(dataRow.equModel);
 	      
-	      
-	      
-	      
-	      
-	    /*   if (dataRow.equStat == 'Y') {
-				$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
-			} else {
-				$("input:radio[name='equStat']:radio[value='N']").prop('checked', true);
-			}
-			 */
-		
       });
  	 
- 
- 	 
- 	 
- 	 
- 	// 공정코드 클릭시 모달창 띄우기.
-	//	$('#procId').modal('show');
-		
- 	
- 	
- 	
- 	
- 	 
- 	 // 등록 버튼 클릭시 기능수행
 	   $('#addBtn').on('click', function (e) {
-		   
-	   
 		   console.log($('#addForm').serialize())
  		$.ajax({
 			url: '/equipment/equAdd',
@@ -264,11 +222,13 @@
 			},
 			error: function (reject) {
 				alert('설비 등록 중 오류가 발생했습니다!');
+				console.log(reject);
 			}
 		});
 		$('#addForm input').val('');
-	});
- 	 
+		
+	})
+	
 	// 설비정보 수정 
 		$('#modBtn').on('click', function (e) {
 		   console.log($('#addForm').serialize())
@@ -278,13 +238,11 @@
 			data: $('#addForm').serialize(),
 			dataType: 'json',
 			success: function (result) {
-				
-				alert('설비정보가 수정되었습니다');
-				selRow = '';
 				console.log(result);
-				
 				const setData = result
 				grid.setRow(selRow, setData);
+				selRow = '';
+				alert('설비정보가 수정되었습니다');
 			},
 			error: function (reject) {
 				alert('설비 수정 중 오류가 발생했습니다!');
@@ -308,7 +266,7 @@
 		  			contentType : "application/json",
 				     data: JSON.stringify( { equCode : $('#equCode').val()}), // 삭제할 설비의 ID를 전송
 				     success: function (response) {
-				    	  if(response = "sucess"){
+				    	  if(response == "sucess"){
 				    		 alert("성공")
 				    	 }else {
 				    		 alert("실패")
@@ -316,7 +274,8 @@
 				    	  
 				     // 삭제 성공 시의 처리
 				     console.log('설비가 성공적으로 삭제되었습니다.');
-				     alert('설비정보가 성공적으로 삭제되었습니다.');
+				     
+				     
 				     // 추가적인 업데이트나 리다이렉션 등의 동작 수행
 				     },
 				     error: function (error) {
@@ -332,7 +291,15 @@
 				selRow = ''; 
 		});
 	
+
+	
+	
+     
+ 
     </script>
+    
+
+    
     </div>
 </body>
 </html>

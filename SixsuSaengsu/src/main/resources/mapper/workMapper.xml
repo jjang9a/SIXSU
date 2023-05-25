@@ -5,10 +5,6 @@
   
 <mapper namespace="co.sixsu.app.work.mapper.WorkMapper">
 
-<select id="getDate" resultType="java.util.Date">
-	select sysdate from dual
-</select>
-
 <select id="getPlan" resultType="DetaProdPlanVO">
 	SELECT *
 	FROM PLAN_VIEW
@@ -94,5 +90,96 @@
 	FROM SEMI_PROD
 </select>
 
+<select id="getOrderCode" resultType="String">
+	SELECT (to_CHAR(sysdate, 'yyyyMMdd')||'-'|| (NVL(MAX(TO_NUMBER(SUBSTR(WK_HEAD_ID, 10))), 0) + 1))
+	FROM WORK_ORDR
+	WHERE WK_HEAD_ID LIKE to_CHAR(sysdate, 'yyyyMMdd')||'-%'
+</select>
 
+<insert id="addWork">
+	INSERT INTO WORK_ORDR (WK_HEAD_ID, WK_CMPLT_ST) values(#{orderCode},'작성중')
+</insert>
+
+<select id="getDetaCode" resultType="String">
+	SELECT #{subData} || '-' ||(NVL(MAX(TO_NUMBER(SUBSTR(WK_DETA_ID, LENGTH(#{subData})+2))), 0) + 1)
+	FROM DETA_WORK_ORDR
+	WHERE WK_DETA_ID like '${subData}%'
+</select>
+
+<insert id="addDetaWork" parameterType="DetaWorkOrdrVO">
+	INSERT INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST) values(#{wkHeadId},#{wkDetaId},'작성중')
+</insert>
+<insert id="addWkBom">
+	INSERT INTO WORK_BOM (WK_BOM_ID, WK_DETA_ID) values('WKB'||wk_BOM_SEQ.nextVal, #{detaCode})
+</insert>
+	
+<select id="getDetaWorkHeadList" resultType="DetaWorkOrdrVO">
+	SELECT *
+	FROM DETA_WORK_ORDR
+	WHERE WK_HEAD_ID = #{data}
+	ORDER BY WK_DETA_ID
+</select>	
+
+<select id="getWkBomList" resultType="workBomVO">
+	SELECT *
+	FROM WORK_BOM
+	WHERE WK_DETA_ID = #{data}
+	ORDER BY WK_BOM_ID
+</select>
+
+<select id="getBomCode" resultType="String">
+	SELECT MAX(WK_BOM_ID)
+	FROM WORK_BOM
+	WHERE WK_DETA_ID = #{detaCode}
+</select>
+<insert id="addWorkMatBom">
+	INSERT INTO WORK_BOM_MAT (BOM_MAT_ID, WK_BOM_ID)values('workMat'||work_mat_seq.nextVal, #{bomCode})
+</insert>
+
+<select id="getWkMatList" resultType="bomMatVO">
+	SELECT *
+	FROM WORK_BOM_MAT
+	WHERE WK_BOM_ID = #{data}
+	ORDER BY BOM_MAT_ID
+</select>
+
+<delete id="delBomList" parameterType="List">
+	DELETE WORK_BOM
+	WHERE WK_BOM_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.wkBomId}
+	</foreach>
+</delete>
+
+<delete id="delMatList" parameterType="List">
+	DELETE WORK_BOM_MAT
+	WHERE BOM_MAT_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.bomMatId}
+	</foreach>
+</delete>
+
+<delete id="delBeideMat" parameterType="List">
+	DELETE WORK_BOM_MAT
+	WHERE WK_BOM_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.wkBomId}
+	</foreach>
+</delete>
+
+<delete id="delDetWorkList" parameterType="List">
+	DELETE DETA_WORK_ORDR
+	WHERE WK_DETA_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.wkDetaId}
+	</foreach>
+</delete>
+
+<delete id="delBeideBom" parameterType="List">
+	DELETE WORK_BOM
+	WHERE WK_DETA_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.wkDetaId}
+	</foreach>
+</delete>
 </mapper>

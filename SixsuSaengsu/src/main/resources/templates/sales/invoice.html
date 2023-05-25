@@ -313,7 +313,15 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 				}
 			}) 
 			
-			location.reload();
+			
+		
+	
+				
+			
+			
+			//location.reload();
+		  
+		
 		})
 
 									
@@ -363,6 +371,8 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
 //상품 상세 품목 지우기	
 	$("#productDelete").on("click", function(e) {	
 		var ordDetId = [];
+	
+		
 		for(var i = 0; i< gridy.getCheckedRows().length; i++){
 			ordDetId.push(gridy.getCheckedRows()[i].ordDetId);
 		}
@@ -379,8 +389,10 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
  		
  		
  		})
+ 		
 			gridy.removeCheckedRows(false);
  		gridy.blur();
+ 		
 	
 	
 	});
@@ -461,7 +473,7 @@ let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이
  		console.log(row.ordQt)
  		if((ev.columnName == 'ordQt' || ev.columnName == 'ordDetPrice') && row.ordQt && row.ordDetPrice ){
  			console.log('asdfasdf');
- 			gridy.setValue(ev.rowKey, 'ordSalePrice' , row.ordQt * row.ordDetPrice, true)
+ 			gridy.setValue(ev.rowKey, 'ordSalePrice' , row.ordQt * row.ordDetPrice, false)
  		}
  	})
  

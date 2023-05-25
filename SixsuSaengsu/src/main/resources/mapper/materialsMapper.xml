@@ -88,7 +88,26 @@
   	
   	<!-- 자재목록 -->
   	<select id="selectMatList" resultType="MatVO">
-  		select mat_id, mat_name, mat_size from material
+  		select * from material
+  	</select>
+  	
+  	<!-- 입고삭제 -->
+  	<delete id="deleteMatRec" parameterType="String">
+  		delete from mat_rec where mat_lot_id = #{mlotnum}
+  	</delete>
+  	
+  	<!-- 자재 lot 삭제 -->
+  	<delete id="deleteMLot" parameterType="String">
+  		delete from mat_lot where mat_lot_id = #{mlotnum}
+  	</delete>
+  	
+  	<!-- 자재lot리스트 -->
+  	<select id="mLotList" resultType="MatLotVO">
+		select m.mat_lot_id, m.mat_id, l.mat_name, l.mat_size, m.mat_qt, m.mat_hold_stat, to_char(c.mat_rec_date,'yyyy-MM-dd') as mat_rec_date
+		from mat_lot m left join mat_rec c
+		on m.mat_rec_id = c.mat_rec_id
+		left join material l
+		on m.mat_id = l.mat_id
   	</select>
 	
 	

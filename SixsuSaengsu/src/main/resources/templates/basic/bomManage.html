@@ -1,43 +1,485 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/template}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
+
 <head>
-<meta charset="UTF-8">
-<title>BOM</title>
+	<meta charset="UTF-8">
+	<title>BOM</title>
+	<style>
+		h1 {
+			margin-bottom: 70px;
+		}
+
+		h2 {
+			padding: 40px 20px 0px 20px;
+		}
+
+		.divBtn {
+			float: right;
+			padding: 10px;
+		}
+
+		.sixBtn {
+			border: none;
+			border-radius: 5px;
+			background: #99bad7;
+			color: rgba(255, 255, 255, 0.9);
+			font-size: 15px;
+			height: 27px;
+			width: 46px;
+		}
+
+		#infoTbl td {
+			padding: 5px 15px;
+			text-align: center;
+		}
+
+		#infoTbl {
+			margin: auto;
+		}
+
+		.modal-body {
+			background: #e5edf5;
+		}
+
+		.sel {
+			width: 232.5px;
+			text-align: center;
+			padding: 10px;
+			font-size: 15px;
+			font-weight: bold;
+		}
+
+		.sel1 {
+			float: left;
+		}
+
+		.sel2 {
+			float: right;
+		}
+
+		.sel3 {
+			background-color: white;
+		}
+	</style>
 </head>
+
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">BOM 관리</h1>
 		<!-- 상품선택 -->
-		<table>
+		<table id="infoTbl">
 			<tr>
 				<td>제품코드</td>
-				<td><input type="text" readonly>
-				<button type="button" id="selectBtn" class="sixBtn2">조회</button>
-				</td>					
+				<td colspan="2"><input type="text" id="pdId" readonly>
+					<button type="button" id="pdBtn" class="sixBtn" style="margin-right: 10px;"
+						data-bs-toggle="modal">조회</button>
+				</td>
 			</tr>
 			<tr>
-				<td>제품명</td>
-				<td><input type="text" readonly>
-				<td>규격</td>
-				<td><input type="text" readonly>
-				<td>완제품</td>
-				<td><input type="text" readonly>
+				<td>제품명 </td>
+				<td><input type="text" id="pdName" readonly>
+				<td> 규격</td>
+				<td><input type="text" id="pdSize" readonly>
+				<td>제품구분</td>
+				<td><input type="text" id="pdType" readonly>
 			</tr>
 		</table>
 		<!-- 상품 선택 완료 -->
 		<!-- 소요량 그리드 -->
 		<h2 class="mt-4" style="font-family: 'MaruBuri';">제품 소요량 관리</h2>
+		<div class="divBtn">
+			<button type="button" class="sixBtn2" id="addBtn">추가</button>
+			<button type="button" class="sixBtn2" id="addBtn">삭제</button>
+			<button type="button" class="sixBtn2" id="saveBtn">저장</button></div>
 		<div id="grid"></div>
+		<div class="divBtn"><button type="button" id="printBtn" class="sixBtn2">인쇄</button></div>
 		<!-- 소요량 그리드 완료 -->
-		
+
+		<!-- 제품 선택 Modal 시작 -->
+		<div class="modal fade" id="pdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="pdModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="pdModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 모달 바디 -->
+					<div class="modal-body">
+						<div class="sel sel1 sel3">완제품</div>
+						<div class="sel sel2">반제품</div>
+						<div id="pdGrid"></div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 제품 선택 Modal 끝 -->
+
+		<!-- 자재 선택 Modal 시작 -->
+		<div class="modal fade" id="matModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="matModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="matModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 모달 바디 -->
+					<div class="modal-body">
+						<div class="sel sel1 sel3">자재</div>
+						<div class="sel sel2">반제품</div>
+						<div id="matGrid"></div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 자재 선택 Modal 끝 -->
+
+		<!-- 공정 선택 Modal 시작 -->
+		<div class="modal fade" id="procModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="procModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 모달 바디 -->
+					<div class="modal-body">
+						<div id="procGrid"></div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 공정 선택 Modal 끝 -->
+
 		<script>
+			window.onload = function () {
+				const grid = new tui.Grid({
+					el: document.getElementById('grid'),
+					scrollX: false,
+					scrollY: true,
+					rowHeaders: ['checkbox'],
+					minBodyHeight: 400,
+					columns: [{
+						header: '제품코드',
+						name: 'pdId',
+						hidden: true
+					}, {
+						header: '구분',
+						name: 'pdType',
+						align: 'center'
+					}, {
+						header: '품목코드',
+						name: 'bomMat',
+						align: 'center',
+						relations:[
+							{targetNames:['bomNum','bomUnit'],
+								editable({value}){
+									return  value != null;
+							}}
+						]
+					}, {
+						header: '품목명',
+						name: 'matName',
+						align: 'center'
+					}, {
+						header: '소요량',
+						name: 'bomNum',
+						align: 'center',
+						editer: 'text'
+					}, {
+						header: '단위',
+						name: 'bomUnit',
+						align: 'center',
+						editer: 'text'
+					}, {
+						header: '소요공정명',
+						name: 'procName',
+						align: 'center'
+					}, {
+						header: '공정코드',
+						name: 'procId',
+						hidden: true
+					}, {
+						header: '수정일',
+						name: 'updateDate',
+						align: 'center'
+					}]
+				});
 
 
+				// 그리드 높이 & 색 변경 테마 적용
+				grid.setBodyHeight(400);
+				tui.Grid.applyTheme('default', {
+					cell: {
+						header: {
+							background: '#e5edf5'
+						},
+						normal: {
+							background: '#ffffff'
+						}
+					}
+				});
+
+
+				const pdGrid = new tui.Grid({
+					el: document.getElementById('pdGrid'),
+					scrollX: false,
+					scrollY: true,
+					minBodyHeight: 400,
+					columns: [{
+						header: '제품코드',
+						name: 'cpId',
+						align: 'center'
+					}, {
+						header: '제품명',
+						name: 'cpName',
+						align: 'center'
+					}, {
+						header: '규격',
+						name: 'cpSize',
+						align: 'center'
+					}]
+				});
+
+
+				$('#pdBtn').on('click', function (e) {
+					$.ajax({
+						url: "/basic/activeCpList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							pdGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+					setTimeout(() => pdGrid.refreshLayout(), 500);
+					$('#pdModal').modal('show');
+				})
+
+				let selType = '완제품'
+				// 제품 선택 모달창 탭 기능(완제품 클릭)
+				$('.sel1').on('click', function (e) {
+					$('.sel2').removeClass('sel3');
+					$(this).addClass('sel3');
+					selType = '완제품';
+					$.ajax({
+						url: "/basic/activeCpList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							pdGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+				})
+
+				// 제품 선택 모달창 탭 기능(반제품 클릭)
+				$('.sel2').on('click', function (e) {
+					$('.sel1').removeClass('sel3');
+					$(this).addClass('sel3');
+					selType = '반제품';
+					$.ajax({
+						url: "/basic/activeSpList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							pdGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+				})
+
+				// 모달창 제품 선택 이벤트
+				let selPd = ''; // 선택 제품이 무엇인지 담을 변수
+				pdGrid.on('click', function (e) {
+					rowData = pdGrid.getRow(e.rowKey);
+					selPd = rowData.cpId;
+					$('#pdId').val(selPd);
+					$('#pdName').val(rowData.cpName);
+					$('#pdSize').val(rowData.cpSize);
+					$('#pdType').val(selType);
+					$('#pdModal').modal('hide');
+					selType = '완제품';
+
+					$.ajax({
+						url: "/basic/bomList",
+						method: "GET",
+						data: {
+							"id": selPd
+						},
+						dataType: "JSON",
+						success: function (result) {
+							grid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+				})
+
+				// 추가 버튼 이벤트
+				$('#addBtn').on('click', function (e) {
+					if (selPd == '') {
+						alert('제품을 먼저 선택하세요!');
+					} else {
+						const newData = { // 빈 데이터 열 생성
+							pdId: selPd,
+							pdType: '',
+							bomMat: '',
+							matName: '',
+							bomNum: '',
+							bomUnit: '',
+							procName: '',
+							procId: '',
+							updateDate: ''
+						};
+						// 그리드에 빈 열 추가
+						grid.appendRow(newData);
+					}
+				})
+
+				const matGrid = new tui.Grid({
+					el: document.getElementById('matGrid'),
+					scrollX: false,
+					scrollY: true,
+					minBodyHeight: 400,
+					columns: [{
+						header: '품목코드',
+						name: 'cpId',
+						align: 'center'
+					}, {
+						header: '품목명',
+						name: 'cpName',
+						align: 'center'
+					}, {
+						header: '규격',
+						name: 'cpSize',
+						align: 'center'
+					}]
+				});
+
+				const procGrid = new tui.Grid({
+					el: document.getElementById('procGrid'),
+					scrollX: false,
+					scrollY: true,
+					minBodyHeight: 400,
+					columns: [{
+						header: '공정구분',
+						name: 'comName',
+						align: 'center'
+					}, {
+						header: '공정코드',
+						name: 'procId',
+						align: 'center'
+					}, {
+						header: '공정명',
+						name: 'procName',
+						align: 'center'
+					}]
+				});
+
+
+				// BOM입력 자재, 공정 모달
+				let selRow = ''; // 선택된 열이 어딘지 담아 둘 변수
+				grid.on('click', ev => { 
+					selRow=ev.rowKey;
+					if(ev.columnName == 'bomMat'){
+						console.log('클릭됨')
+						$.ajax({
+							url: "/basic/activeMatList",
+							method: "GET",
+							dataType: "JSON",
+							success: function (result) {
+								matGrid.resetData(result);
+							},
+							error: function (reject) {
+								console.log(reject)
+							}
+						});
+						setTimeout(() => matGrid.refreshLayout(), 500);
+						$('#matModal').modal('show');
+					}else if(ev.columnName == 'procName'){
+						$.ajax({
+							url: "/basic/activeProcList",
+							method: "GET",
+							dataType: "JSON",
+							success: function (result) {
+								procGrid.resetData(result);
+							},
+							error: function (reject) {
+								console.log(reject)
+							}
+						});
+						setTimeout(() => procGrid.refreshLayout(), 500);
+						$('#procModal').modal('show');
+					}
+				});
+
+				let matType = '자재'
+				// 자재 선택 모달창 탭 기능(자재 클릭)
+				$('.sel1').on('click', function (e) {
+					$('.sel2').removeClass('sel3');
+					$(this).addClass('sel3');
+					matType = '완제품';
+					$.ajax({
+						url: "/basic/activeMatList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							matGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+				})
+
+				// 자재 선택 모달창 탭 기능(반제품 클릭)
+				$('.sel2').on('click', function (e) {
+					$('.sel1').removeClass('sel3');
+					$(this).addClass('sel3');
+					matType = '반제품';
+					$.ajax({
+						url: "/basic/activeSpList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							matGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+				})
+
+
+
+				// 윈도우 온 로드 닫는 괄호
+			}
 		</script>
 
 	</div>
 </body>
+
 </html>

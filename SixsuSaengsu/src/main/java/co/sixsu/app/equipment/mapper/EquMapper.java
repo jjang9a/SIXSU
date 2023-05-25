@@ -21,7 +21,9 @@ public interface EquMapper {
 	public int equUpdate(EquConVO data); // 설비관리(수정)
 
 	public int equDel(EquConVO equCode); // 설비관리(삭제)
+
 	//public List<EquConVO> equCheckList(); // 설비 점검 리스트
+
 	
 	
 	

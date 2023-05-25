@@ -5,6 +5,11 @@
   
 <mapper namespace="co.sixsu.app.equipment.mapper.EquMapper">
 	
+	<!-- 설비관리 리스트 -->
+	<select id="equList" resultType="EquConVO">
+	
+	</select>
+  	
   	<!-- 설비조회 검색 -->
   	<select id="equFilterList" resultType="EquConVO" parameterType="EquConVO">
   	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, to_char(check_date, 'yyyy-mm-dd') as check_date, i.check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
@@ -23,12 +28,13 @@
 			ON c.equ_code = i.equ_code
 			LEFT OUTER JOIN equ_oper o
 			ON c.equ_code = o.equ_code
+            
   	</select>
 
 	<!-- 설비관리 등록 -->
 	<insert id="equAdd" parameterType="EquConVO">
 		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_img, emp_id, equ_check)
-		VALUES('EQU' || LPAD(EQU_SEQ.nextval, 3, '0'), #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{equImg}, #{empId}, #{equCheck})
+		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{equImg}, #{empId}, #{equCheck})
 	</insert>
 	
 	<!-- 설비관리 수정 -->
@@ -43,15 +49,8 @@
 		delete from equ_con where equ_code = #{equCode}
 	</delete>
 	
-	<!-- 설비 점검 리스트 
-	<select id="equConList" resultType="EquConVO">
-  		SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_model, c.equ_stat, c.equ_line, i.equ_suit, to_char(i.check_date, 'yyyy-mm-dd') as check_date, i.check_next, c.equ_check, i.check_info, o.oper_start, o.oper_fnish, c.equ_img, c.emp_id 
-			FROM equ_con c LEFT OUTER JOIN equ_insp i
-			ON c.equ_code = i.equ_code
-			LEFT OUTER JOIN equ_oper o
-			ON c.equ_code = o.equ_code
-  	</select>
-	-->
+	
+	
 	
 	
 </mapper>

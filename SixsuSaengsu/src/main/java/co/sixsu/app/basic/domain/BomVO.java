@@ -11,6 +11,7 @@ public class BomVO { // BOM 테이블
 	private int bomNum; // 소요량
 	private String bomUnit; // 단위
 	private String procId; // 소요 공정코드
+	private String updateDate; // 수정일자
 	
 	private String cpName; // 제품명
 	private String cpSize; // 제품 규격

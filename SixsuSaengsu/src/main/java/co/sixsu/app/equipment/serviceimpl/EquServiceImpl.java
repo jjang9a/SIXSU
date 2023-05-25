@@ -44,12 +44,12 @@ public class EquServiceImpl implements EquService{
 	public boolean equDel(EquConVO equCode) { // 설비관리(삭제)
 		return mapper.equDel(equCode) == 1;
 	}
-
 	
 //	@Override
 //	public List<EquConVO> equCheckList() { // 설비 점검 리스트
 //		return mapper.equCheckList();
 //	}
+
 
 	
 

@@ -13,6 +13,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<!-- 타임리프 -->
+<html xmlns:th="http://www.thymeleaf.org">
 <!-- 페이징 눼이쉔~ -->
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
@@ -58,16 +60,18 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		float: left;
 		display: none;
 	}
-	#bom_search1{
+	#left_search{
 		width: 48%;
 		height: 100%;
 		float: left;
+		text-align: right;
 	}
-	#bom_search2{
+	#right_search{
 		width: 50%;
 		height: 500px;
 		float: left;
 		margin-left: 20px;
+		text-align: right;
 	}
 	
 </style>
@@ -87,6 +91,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	<table>
 	<tr>
+		<td>
+			<div class="input-group mb-3">
+			  <input type="text" class="form-control" id="orderCodeInput" placeholder="지시코드" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
+			</div>
+		</td>
 		<td>
 			<div class="input-group mb-3">
 			  <input type="text" class="form-control" placeholder="담당자" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -132,12 +141,22 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		<div id="plan_search2"></div>
 	</div>
 	<div class="bom_monitor">
-		<div id="bom_search1"></div>
-		<div id="bom_search2"></div>
+		<div id="left_search">
+			<button class="plusBomBtn sixBtn1">+</button>
+			<button class="delBomBtn sixBtn1">-</button>
+			<div id="bom_search1"></div>
+		</div>
+		
+		<div id="right_search">
+			<button class="plusMatBtn sixBtn1">+</button>
+			<button class="delMatBtn sixBtn1">-</button>
+			<div id="bom_search2"></div>
+		</div>
 	</div>
 	
 	
 	<!-- <button class="modal_btn sixBtn4">모달버튼</button> -->
+	생산계획
 	<div id="grid1"></div>
 	
 	공정조회
@@ -231,34 +250,34 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 					</div>
 				   </div>
 				   
-				   
+	<script th:inline="javascript">
+    // Thymeleaf에서 값을 가져와서 JavaScript 변수에 할당
+    var orderCode = /*[[${orderCode}]]*/ '';
+
+    // JavaScript를 사용하여 placeholder 값을 설정
+    document.getElementById("orderCodeInput").placeholder = orderCode;
+    
+</script>	   
 	
 	<script>
 	
+	
 	{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 	
-	let test = {
-				planDetaId : 'sdss',
-				cpId : 'ㅁㄴㅇ',
-				cpName : 'ㅁㄴㅇㄴㅇ',
-				detaQt : 'ㅇㅁㄴㄴㅇ',
-				ordQt : 'ㅁㄴㅇㄴㅇ',
-				cmpLtSt : 'ㅁㄴㅇㅁㄴㅇ',
-				planUnique : 'ㅁㄴㅇㄴㅇㅁㄴㅁㅇ'
-			}
-	console.log(test)
-	
 	var grid1 = new tui.Grid({
-	    el: document.getElementById('grid2'),
+	    el: document.getElementById('grid1'),
 	    scrollX: false,
 	    scrollY: false,
 	    rowHeaders: ['rowNum','checkbox'],
-	    
 	    columns: [
-	      
+    	  {
+ 	        header: '세부코드',
+ 	        name: 'wkDetaId'
+ 	      },
  	      {
  	        header: '제품코드',
- 	        name: 'cpId'
+ 	        name: 'cpId',
+ 	        editor: 'text'
  	      },
  	      {
  	        header: '제품명',
@@ -271,11 +290,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	      },
  	      {
  	        header: '양품수량',
- 	        name: 'goodQt',
+ 	        name: 'ordQt',
  	        editor: 'text'
  	      },
  	      {
- 	        header: '생산일',// 아직VO에 없음 정의못했음
+ 	        header: '작업일',// 아직VO에 없음 정의못했음
  	        name: 'startDate',
  	        editor: 'datePicker'
  	      },
@@ -284,10 +303,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	        name: 'endDate',
  	        editor: 'datePicker'
  	 	  },
- 	 		{
- 	 	        header: '담당자',// 아직VO에 없음 정의못했음
- 	 	        name: 'endDate'
- 	 	 	  },
 	 	 	{
 		          header: '진행현황',
 		          name: 'cmpltSt',
@@ -359,7 +374,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	let data = []
 	
-	for(let i=0;i<1;i++){
+	for(let i=0;i<9;i++){
 		data.push({})
 	}
 	var plan_search1 = new tui.Grid({
@@ -409,11 +424,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 					console.log("첫 출력값 > ")
 					console.dir(result);
 					plan_search1.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
 				}
 			})
+			
+			
 		}
 		//생산계획 리스트 클릭시 세부생산계획이 표시됨
 		plan_search1.on('click', ev => {
@@ -432,7 +446,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				}
 				plan_search2.resetData(result);
 			},
-			errer : function(reject){
+			error : function(reject){
 				console.log(reject);
 			}
 		})
@@ -485,63 +499,67 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			procType : '',
 			procName : ''
 		})
-		var bom_search1 = new tui.Grid({
-		    el: document.getElementById('bom_search1'),
-		    data : bom_data,
-		    scrollX: false,
-		    scrollY: false,
-		    rowHeaders: ['rowNum','checkbox'],
-		    
-		    columns: [
-		      
-	 	      {
-	 	        header: '공정코드',
-	 	        name: 'procId'
-	 	      },
-	 	      {
-	 	        header: '공정구분',
-	 	        name: 'procType'
-	 	      },
-	 	      {
-	 	        header: '공정명',
-	 	        name: 'procName',
-	 	      }
-		 	 	
-		    ],
-		    pageOptions: {
-		        useClient: true,
-		        perPage: 8
-		      },
-		      draggable: true
-		  });
+	var bom_search1 = new tui.Grid({
+	    el: document.getElementById('bom_search1'),
+	    data : bom_data,
+	    scrollX: false,
+	    scrollY: false,
+	    rowHeaders: ['rowNum','checkbox'],
+	    
+	    columns: [
+	      
+ 	      {
+ 	        header: '공정코드',
+ 	        name: 'procId'
+ 	      },
+ 	      {
+ 	        header: '공정구분',
+ 	        name: 'procType'
+ 	      },
+ 	      {
+ 	        header: '공정명',
+ 	        name: 'procName',
+ 	      }
+	 	 	
+	    ],
+	    pageOptions: {
+	        useClient: true,
+	        perPage: 8
+	      },
+	      draggable: true
+	  });
 		
 		let mat_data = []     ///재수정 요망 !!!!!!
 		mat_data.push({})
 		var bom_search2 = new tui.Grid({
 		    el: document.getElementById('bom_search2'),
-		    data : mat_data,
+		    data : data,
 		    scrollX: false,
 		    scrollY: false,
-		    rowHeaders: ['checkbox'],
+		    rowHeaders: ['rowNum'],
 		    
 		    columns: [
 		      
 	 	      {
-	 	        header: '자재명',
-	 	        name: 'matName'
-	 	      },
-	 	      {
-	 	        header: '규격',
-	 	        name: 'matSize'
-	 	      },
-	 	      {
-	 	        header: '개수',
-	 	        name: 'matQt',
+	 	        header: '계획코드',
+	 	        name: 'planHeadId'
 	 	      },
 	 	      {
 	 	        header: '분류',
-	 	        name: 'type',
-	 	      }
+	 	        name: 'type'
+	 	      },
+	 	      {
+	 	        header: '예상시작일',
+	 	        name: 'planStart',
+	 	      },
+	 	      {
+	 	        header: '예상종료일',
+	 	        name: 'planEnd',
+	 	 	  },
+	 	 	  {
+	 	        header: '상태',// 아직VO에 없음 정의못했음
+	 	        name: 'cmpltSt',
+	 	 	  }
 		 	 	
 		    ],
 		    pageOptions: {
@@ -550,208 +568,91 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		      }
 		  });
 	
-		
-		var grid_product = new tui.Grid({
-		    el: document.getElementById('grid_product'),
-		    scrollX: false,
-		    scrollY: false,
-		    rowHeaders: ['rowNum'],
-		    columns : [ {
-				header : '제품코드',
-				name : 'cpId',
-			}, {
-				header : '제품명',
-				name : 'cpName'
-			}, {
-				header : '제품명',
-				name : 'cpSize'
-			}, {
-				header : '규격',
-				name : 'cpUnit'
-			}, {
-				header : '상태',
-				name : 'cpStat'
-			}
-			]
-		  });
-		
-			$.ajax({
-				url : "/ajax/getProductList",
-				method : "GET",
-				dataType : "JSON",
-				success : function(result){
-					console.log("첫 출력값 > ")
-					console.dir(result);
-					grid_product.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
-				}
-			})
-			
-			
-		var grid_process = new tui.Grid({
-		    el: document.getElementById('grid_process'),
-		    scrollX: false,
-		    scrollY: false,
-		    rowHeaders: ['rowNum'],
-		    columns : [ {
-				header : '공정코드',
-				name : 'procId',
-			}, {
-				header : '구분',
-				name : 'procType'
-			}, {
-				header : '공정명',
-				name : 'procName'
-			}, {
-				header : '활성',
-				name : 'procStat'
-			}
-			]
-		  });
-		
-			$.ajax({
-				url : "/ajax/getProcessList",
-				method : "GET",
-				dataType : "JSON",
-				success : function(result){
-					console.log("첫 출력값 > ")
-					console.dir(result);
-					grid_process.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
-				}
-			})
-			
-			
-		var grid_mat = new tui.Grid({
-		    el: document.getElementById('grid_mat'),
-		    scrollX: false,
-		    scrollY: false,
-		    rowHeaders: ['rowNum'],
-		    columns : [ {
-				header : '코드',
-				name : 'matId',
-			}, {
-				header : '자재명',
-				name : 'matName'
-			}, {
-				header : '단위',
-				name : 'matUnit'
-			}, {
-				header : '규격',
-				name : 'matSize'
-			},{
-				header : '활성',
-				name : 'matStat'
-			},{
-				header : '분류',
-				name : 'type'
-			}
-			]
-		  });
-		
-			$.ajax({
-				url : "/ajax/getMaterialList",
-				method : "GET",
-				dataType : "JSON",
-				success : function(result){
-					console.log("첫 출력값 > ")
-					console.dir(result);
-					grid_mat.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
-				}
-			})	
-			
 	{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-	//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련//버튼 관련
+	//버튼 관련
 	
-	/* $('.plusBtn').on('click', function(){
-		grid1.appendRow({})
-	}) */
+	let selectDetWorkCode = ''
+	let selectBomWorkCode = ''
+	
+	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	$('.plusBtn').on('click', function(){
+		let WorkCode = document.getElementById("orderCodeInput").placeholder 
+		$.ajax({
+				url : "/ajax/addDetaWork",
+				method : "GET",
+				dataType : "JSON",
+				contentType: "application/json",
+				data : { data: WorkCode },
+				success : function(result){
+					console.dir(result);
+					grid1.resetData(result);
+					},
+					errer : function(reject){
+						console.log(reject)
+					}
+				})
+	})
+	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	
+	
 	
 	let grid1_unique_code = 10;
-	let grid1_data = []
-	grid1_data.push({})
-	grid1.resetData(grid1_data)
 	
+	grid1_data = []
 	$('.moveBtn').on('click', function(){
-		let swith = false;
- 		for(let i of plan_search2.getCheckedRows()){
- 			let addswith = true;
- 			for(let j of grid1_data){
-					if(i.planDetaId == j.planDetaId && addswith == true){
-						console.log('일치 하였음')
-						swith = true;
-						addswith = false;
-					}
+ 		var appendedData = plan_search2.getCheckedRows()
+ 		let count = 0;
+ 		for(let i of appendedData){
+ 			console.log(i)
+ 			let swith = false;
+ 			if(grid1.getData().length > 0){
+ 				for(let j of grid1.getData()){
+ 					if(j.planDetaId == i.planDetaId && swith == false && j.planDetaId != null){
+ 						console.log('일치 하였음')
+ 						count += 1;
+ 						swith = true;
+ 					}
+ 				}	
+				if(swith == false){
+					grid1_data.push(i)
+	 	 			plan_search2.uncheck(i.rowKey, 'checkbox');
+	 	 			swith = false;
 				}
- 			if(addswith == true){
- 				let ob = {
- 					planDetaId : i.planDetaId,
- 					cpId : i.cpId,
- 					cpName : i.cpName,
- 					detaQt : i.detaQt,
- 					ordQt : i.ordQt,
- 					cmpLtSt : i.cmpLtSt,
- 					planUnique : grid1_unique_code
- 				}
-				console.log('ob')
-				console.log(ob);
- 				grid1_unique_code *= 2
-				grid1_data.splice(grid1_data.length-1, 0, ob)
- 				console.log('grid1_data')
-				console.log(grid1_data);
+ 			}else{
+				grid1_data.push(i)
+ 	 			plan_search2.uncheck(i.rowKey, 'checkbox');
  			}
  		}
- 		if(swith == true){
+ 		if(count >0){
  			alert('중복되는 세부계획이 존재합니다')
  		}
+ 		
  		grid1.resetData(grid1_data);
+ 		console.log(appendedData)
+	 	//grid4.removeCheckedRows(false);
  		plan_search2.blur();
  	})
- 	
- 	$('.removeBtn').on('click',function(){
- 		let removeReady = grid1.getCheckedRows();
- 		for(let i of removeReady){
- 			for(let j in grid1_data){
- 				if(i.planUnique == grid1_data[j].planUnique){
- 					grid1_data.splice(j, 1);
- 					console.log('삭제되는경우 입니다')
- 					console.log(i)
- 					console.log(j)
- 					console.log(grid1_data)
- 				}
- 			}
- 		}
- 		grid1.resetData(grid1_data);
- 		/* grid1.removeCheckedRows(false);
-		grid1_data = grid1.getData(); */
-	})
-
 	
 	$('.planBtn').on('click', function(){
 		$('.plan_monitor').css('display', 'block')	
 		$('.bom_monitor').css('display', 'none')
 	})
 	
-	$('.bomBtn').on('click', function(){
+	$('.bomBtn').on('click', showBom)
+	function showBom(){
 		$('.plan_monitor').css('display', 'none')
 		$('.bom_monitor').css('display', 'block')
 		setTimeout(() =>
 	    (bom_search1.refreshLayout(), 200),
-	    (bom_search2.refreshLayout(), 200));
-		
-	})
+	    (bom_search2.refreshLayout(), 200))
+    }
 	
+	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
 	grid1.on('click',ev => {
-		
 		let columnName = ev.columnName;
-		
 		if (columnName === 'cpId'){ //컬럼이름 변경하 시오!
 			console.log(ev.columnName);
 		    console.log(ev.columnIndex);
@@ -762,7 +663,158 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			setTimeout(() =>
 		    grid_product.refreshLayout(), 200);
 		}
+		//클릭한 세부지시에 대한 공정가져오기
+		selectDetWorkCode = grid1.getRow(ev.rowKey).wkDetaId;
+		$.ajax({
+			url : "/ajax/getWkBomList",
+			method : "GET",
+			dataType : "JSON",
+			contentType: "application/json",
+			data : { data: selectDetWorkCode },
+			success : function(result){
+				console.dir(result);
+				bom_search1.resetData(result);
+				},
+				errer : function(reject){
+					console.log(reject)
+				}
+			})
+		showBom()
+		selectBomWorkCode = '';
 	})
+	
+	// 공정조회 모달창
+	bom_search1.on('click',ev => {
+		let columnName = ev.columnName;
+		selectBomWorkCode = ev.rowKey;
+		if (columnName === 'procId'){ 
+			$('#process_modal').modal('show');
+			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
+			setTimeout(() =>
+			grid_process.refreshLayout(), 200);
+		}
+		$.ajax({
+			url : "/ajax/getWkMatList",
+			method : "GET",
+			dataType : "JSON",
+			contentType: "application/json",
+			data : { data: bom_search1.getRow(selectBomWorkCode).wkBomId},
+			success : function(result){
+				console.dir(result);
+				bom_search2.resetData(result);
+				},
+				errer : function(reject){
+					console.log(reject)
+				}
+			})
+	})
+	
+	$('.plusBomBtn').on('click', function(){
+		if(세부계획선택여부() == true){
+			$.ajax({
+				url : "/ajax/plusBomList",
+				method : "GET",
+				dataType : "JSON",
+				contentType: "application/json",
+				data : { data: selectDetWorkCode },
+				success : function(result){
+					console.dir(result);
+					bom_search1.resetData(result);
+					},
+					errer : function(reject){
+						console.log(reject)
+					}
+				})
+		}
+	})
+	
+	$('.delBomBtn').on('click', function(){
+		if(세부계획선택여부() == true){
+			let removeReady = bom_search1.getCheckedRows();
+			console.log(removeReady);
+			$.ajax({
+				url : "/ajax/delBomList",
+				method : "POST",
+				dataType : "JSON",
+				contentType: "application/json",
+				data :  JSON.stringify(removeReady),
+				success : function(result){
+					console.dir(result);
+					bom_search1.resetData(result);
+					selectBomWorkCode = '';
+					},
+					errer : function(reject){
+						console.log(reject)
+					}
+				})
+			
+		}
+	})
+	
+	$('.plusMatBtn').on('click', function(){
+		if(공정코드선택여부() == true){
+			$.ajax({
+				url : "/ajax/plusMatList",
+				method : "GET",
+				dataType : "JSON",
+				contentType: "application/json",
+				data : { data: bom_search1.getRow(selectBomWorkCode).wkBomId },
+				success : function(result){
+					console.dir(result);
+					bom_search2.resetData(result);
+					},
+					errer : function(reject){
+						console.log(reject)
+					}
+				})
+		}
+	})
+	$('.delMatBtn').on('click', function(){
+		if(공정코드선택여부() == true){
+			let removeReady = bom_search2.getCheckedRows();
+			console.log(removeReady);
+			$.ajax({
+				url : "/ajax/delMatList",
+				method : "POST",
+				dataType : "JSON",
+				contentType: "application/json",
+				data :  JSON.stringify(removeReady),
+				success : function(result){
+					console.dir(result);
+					bom_search2.resetData(result);
+					},
+					errer : function(reject){
+						console.log(reject)
+					}
+				})
+		}
+	})
+	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	
+	
+	$('.removeBtn').on('click', function(){
+		let removeReady = grid1.getCheckedRows();
+		console.log(removeReady);
+		$.ajax({
+			url : "/ajax/delDetWorkList",
+			method : "POST",
+			dataType : "JSON",
+			contentType: "application/json",
+			data :  JSON.stringify(removeReady),
+			success : function(result){
+				console.dir(result);
+				grid1.resetData(result);
+				bom_search1.resetData();
+				bom_search2.resetData();
+				selectDetWorkCode = '';
+				},
+				errer : function(reject){
+					console.log(reject)
+				}
+			})
+	})
+	
 	
 	//모달안에 그리드중 데이터클릭시 작동. 모달닫히는거까지
 	grid_product.on('click',ev => {
@@ -775,29 +827,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	})
 	
 	let target
-	// 공정조회 모달창
-	bom_search1.on('click',ev => {
-		let columnName = ev.columnName;
-		console.log(bom_search1.getRow(ev.rowKey))
-		if (columnName === 'procId'){ //컬럼이름 변경하 시오!
-			console.log(ev.columnName);
-		    console.log(ev.columnIndex);
-			$('#process_modal').modal('show');
-			//특정 Cell의 열,컬럼이름 데이터
-			cell = bom_search1.getFocusedCell(ev.rowKey, ev.columnName);
-			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
-			setTimeout(() =>
-			grid_process.refreshLayout(), 200);
-		}
-		let uniqueKey = bom_search1.getRow(ev.rowKey).uniqueCode
-		//클릭한 공정의 제품목록 보기~~~
-		for(let i of mat_ary){
-			if(i.uniqueCode == uniqueKey){
-				bom_search2.resetData(i.ary)
-			}
-		}
-		console.log(cell.rowKey)
-	})
+	
 	
 	//모달안에 그리드중 데이터클릭시 작동. 모달닫히는거까지
 	grid_process.on('click',ev => {
@@ -870,15 +900,25 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	})
 	
 	
+	///////////////////함수저장소//////////////////
 	
+	function 세부계획선택여부(){
+		if(selectDetWorkCode === ''){
+			alert('작업지시를 먼저 선택하세요')
+			return false
+		}else{
+			return true
+		}
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+	function 공정코드선택여부(){
+		if(selectBomWorkCode === ''){
+			alert('공정을 먼저 선택하세요')
+			return false
+		}else{
+			return true
+		}
+	}
 	
 	
 	

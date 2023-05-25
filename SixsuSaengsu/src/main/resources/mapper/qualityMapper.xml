@@ -58,7 +58,7 @@
 	<!-- 자재 입고 검사 등록 리스트 -->
 	<select id="proRecList" resultType="QuaVO">
 		select r.mat_req_id,
-		b.bus_name, r.mat_id, m.mat_name
+		b.bus_name, r.mat_id, m.mat_name, r.mat_req_qt
 		from mat_req r left join material m
 		on
 		r.mat_id = m.mat_id
@@ -88,7 +88,7 @@
 	<!-- 자재 입고 검사 리스트 -->
 	<select id="prInspList" resultType="QuaVO">
 		select q.insp_std_id,q.insp_num,
-		b.bus_name, r.mat_id, m.mat_name, q.insp_qt
+		b.bus_name, r.mat_id, m.mat_name, r.mat_req_qt, q.insp_qt
 		from qua_com q left join
 		mat_req r
 		on q.insp_std_id = r.mat_req_id
@@ -106,18 +106,18 @@
 	<select id="psInspNum" resultType="String">
 		select get_qps_num from dual
 	</select>
-
+ 
 	<!-- 입고 검사 등록 프로시저 -->
 	<select id="insertPro" statementType="CALLABLE"
 		parameterType="QuaVO">
 		{CALL insert_pro(
 		#{matReqId, mode=IN, jdbcType=VARCHAR},
 		#{inspQt, mode=IN, jdbcType=VARCHAR},
+		#{inspItemId, mode=IN, jdbcType=VARCHAR},
 		#{result, mode=INOUT, jdbcType=VARCHAR, javaType=String}
 		)
 		}
-	</select>
-
+	</select> 
 	<!-- 검사 담당자 등록 리스트 -->
 	<select id="empList" resultType="EmpVO">
 		select emp_id, emp_name, emp_dept from employee
@@ -132,8 +132,35 @@
 		and emp_name=#{result}
 	</select>
 	
+	<!-- 검사 항목 리스트 -->
+	<select id="inspItem" resultType="QuaVO">
+		select * from qua_insp_list
+		where insp_item_id=#{matId} 
+	</select>
 	
-
+	<!-- 입고 검사 상세 결과 등록 -->
+	<insert id="insertPri">
+		insert into qua_details(det_insp_num, insp_num, insp_id, res_val, res_stat)
+		values #{detInspNum}, #{inspNum}, #{inspId}, #{resVal}, #{res_stat} 
+	</insert>
+	
+	<!-- 입고 검사 결과 등록 시 검사 공통 업데이트 -->
+	<update id="qComUpdate">
+		update qua_com
+		set insp_type=#{inspType}, insp_date=sysdate,
+		emp_id=#{empId}, suit_qt=#{suitQt}, nsuit_qt=#{nsuitQt}
+		where insp_num=#{inspNum}
+		
+	</update>
+	
+	<!-- 입고 검사 결과 등록 시 자재 발주 업데이트 -->
+	<update id="mUpdate">
+		update mat_req set
+		mat_req_stat='검사완료'
+		where mat_req_id=#{matReqId}
+	</update>
+	
+	
 
 
 
