@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.quality.domain.QilVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.service.QualityService;
 
@@ -92,13 +91,35 @@ public class QualityController {
 	}
 	
 	
+	// 입고 검사 항목 불러오기
+	@ResponseBody
+	@RequestMapping("/quality/inspItem")
+	public List<QuaVO> inspItem(Model model, String matId){
+		List<QuaVO> list = quaService.inspItem(matId);
+		model.addAttribute("list", list);
+		return list;
+	}
+	
 	// 입고 검사 결과 등록
 	@ResponseBody
 	@PostMapping("/quality/priRegister")
-	public boolean prRegister(QuaVO qua) {
-		System.out.println(qua);
-		return quaService.insertPri(qua);
+	public List<QuaVO> priRegister(@RequestBody List<QuaVO> list) {
+		System.out.println(list);
+		return quaService.insertPri(list);
 	}
+	
+	// 입고 검사 결과 등록 시 업데이트
+	@ResponseBody
+	@PostMapping("/quality/priRegUpdate")
+	public boolean priRegUpdate(QuaVO qua, MatreqVO mat) {
+		boolean result = quaService.priRegUpdate(qua, mat);
+		return result;
+	}
+	
+	
+	
+	
 
+	 
 
 }

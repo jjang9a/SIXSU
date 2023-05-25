@@ -7,6 +7,7 @@ import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.material.domain.SpRecWaitVO;
 
 public interface MaterialsMapper {
 	
@@ -43,4 +44,6 @@ public interface MaterialsMapper {
 	
 	//자재 lot 리스트
 	int deleteMLot(String matLotId);
+	
+	List<SpRecWaitVO> getSpWaitList();
 }

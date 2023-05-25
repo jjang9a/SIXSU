@@ -200,6 +200,15 @@ public class WorkServiceImpl implements WorkService{
 		List<DetaWorkOrdrVO> list = mapper.getDetaWorkHeadList(data.get(0).getWkHeadId());
 		return list;
 	}
+
+	@Override
+	@Transactional
+	public List<bomMatVO> modifyMatList(bomMatVO data) {
+		mapper.modifyMatList(data);
+		String id = data.getWkBomId();
+		//List<bomMatVO> list = mapper.getWkMatList(id);
+		return null;
+	}
 	
 	
 }

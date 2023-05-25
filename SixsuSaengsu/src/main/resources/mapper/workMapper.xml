@@ -182,4 +182,9 @@
 		#{item.wkDetaId}
 	</foreach>
 </delete>
+
+<update id="modifyMatList" parameterType="bomMatVO">
+	UPDATE WORK_BOM_MAT SET MAT_ID = #{wkBomId} , MAT_QT = #{matQt}
+	WHERE BOM_MAT_ID = #{bomMatId}
+</update>
 </mapper>

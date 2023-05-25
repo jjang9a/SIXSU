@@ -47,28 +47,32 @@
 				<tr>
 					<td>공정 코드</td>
 					<td><input type="text" name="procId" id="procId" class="empty"></td>
+					<td>공정명</td>
+					<td><input type="text" name="procName" id="procName" class="empty"></td>
+				</tr>
+				<tr>
 					<td>공정 구분</td>
 					<td><select name="procType" id="procType">
 							<option value="">----- 선택 -----</option>
-							<option th:each="type : ${types}" th:value="${type.comId}" th:utext="${type.comName}"></option>
-						</select></td>
-				</tr>
-				<tr>
-					<td>공정명</td>
-					<td><input type="text" name="procName" id="procName" class="empty"></td>
+							<option th:each="type : ${types}" th:value="${type.comId}" th:text="${type.comName}">
+							</option>
+						</select>
+						<input type="hidden" id="comName" name="comName">
+					</td>
 					<td>활성여부</td>
 					<td>
 						<div id="divRadio">
 							<input type="radio" name="procStat" value="Y" checked>
 							<label for="procStat">사용</label>
-							<input type="radio"  name="procStat" value="N">
+							<input type="radio" name="procStat" value="N">
 							<label for="procStat">비사용</label>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>비고</td>
-					<td colspan="4"><input type="text" name="procNote" id="procNote" class="empty" style="width : 610px;">
+					<td colspan="4"><input type="text" name="procNote" id="procNote" class="empty"
+							style="width : 610px;">
 					</td>
 				</tr>
 			</table>
@@ -77,6 +81,7 @@
 			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
 			<button type="button" class="sixBtn2" id="addBtn">등록</button>
 			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+			<button type="button" class="sixBtn2" id="initBtn">초기화</button>
 		</div>
 		<!-- 상단 폼 끝 -->
 
@@ -84,6 +89,13 @@
 		<div id="grid"></div>
 
 		<script>
+			// 공정코드 선택시 네임 얻어오는 이벤트
+			$('#procType').on('change', function (e) {
+				let select = document.querySelector('#procType')
+				let name = select.options[select.selectedIndex].text
+				$('#comName').val(name);
+			})
+
 			window.onload = function () {
 				let initData = '';
 				let nowData = '';
@@ -107,12 +119,17 @@
 						perPage: 10
 					},
 					columns: [{
-						header: '공정코드',
-						name: 'procId',
-						align: 'center'
+						header: '분류코드',
+						name: 'procType',
+						align: 'center',
+						hidden: true
 					}, {
 						header: '분류',
-						name: 'procType',
+						name: 'comName',
+						align: 'center'
+					}, {
+						header: '공정코드',
+						name: 'procId',
 						align: 'center'
 					}, {
 						header: '공정명',
@@ -210,24 +227,13 @@
 				let searchType = '';
 				let searchKey = '';
 				$('#searchBtn').on('click', function (e) {
-					if ($('#matId').val() == '' && $('#matName').val() == '') {
-						if (initData == nowData) {
-							alert('공정코드, 공정명 또는 공정구분으로 검색이 가능합니다.')
-						} else {
-							$.ajax({
-								url: "/basic/matList",
-								method: "GET",
-								dataType: "JSON",
-								success: function (result) {
-									grid.resetData(result);
-								}
-							});
-						}
+					if ($('#procId').val() == '' && $('#procName').val() == '' && $('#procType').val() == '') {
+						alert('공정코드, 공정명 또는 공정구분으로 검색이 가능합니다.')
 					} else {
-						if ($('procId').val() != '') {
+						if ($('#procId').val() != '') {
 							searchType = 'id';
 							searchKey = $('#procId').val()
-						} else if($('procName').val() != ''){
+						} else if ($('#procName').val() != '') {
 							searchType = 'name';
 							searchKey = $('#procName').val()
 						} else {
@@ -254,8 +260,27 @@
 							}
 						})
 					}
-
 				})
+
+
+				// 초기화 버튼 이벤트
+				$('#initBtn').on('click', function (e) {
+					$.ajax({
+						url: "/basic/procList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							grid.resetData(result);
+							initData = result;
+							nowData = result;
+						}
+					});
+					$('.empty').val('');
+					$('#procType').val('').prop("selected", true);
+					$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
+				})
+
+
 
 				//윈도우 온 로드 종료
 			}
