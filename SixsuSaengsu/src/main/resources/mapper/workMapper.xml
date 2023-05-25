@@ -122,9 +122,11 @@
 
 <select id="getWkBomList" resultType="workBomVO">
 	SELECT *
-	FROM WORK_BOM
-	WHERE WK_DETA_ID = #{data}
+	FROM WORK_BOM a LEFT OUTER JOIN PROCESS b ON a.PROC_ID = b.PROC_ID
+	LEFT OUTER JOIN COMMON_CODE c ON b.PROC_TYPE = c.COM_id
+	WHERE a.WK_DETA_ID = #{data}
 	ORDER BY WK_BOM_ID
+	
 </select>
 
 <select id="getBomCode" resultType="String">
@@ -133,14 +135,19 @@
 	WHERE WK_DETA_ID = #{detaCode}
 </select>
 <insert id="addWorkMatBom">
-	INSERT INTO WORK_BOM_MAT (BOM_MAT_ID, WK_BOM_ID)values('workMat'||work_mat_seq.nextVal, #{bomCode})
+	INSERT INTO WORK_BOM_MAT (BOM_MAT_ID, WK_BOM_ID, TYPE)values('workMat'||work_mat_seq.nextVal, #{bomCode}, '작성중')
 </insert>
 
 <select id="getWkMatList" resultType="bomMatVO">
 	SELECT *
-	FROM WORK_BOM_MAT
-	WHERE WK_BOM_ID = #{data}
-	ORDER BY BOM_MAT_ID
+	FROM WORK_BOM_MAT a LEFT OUTER JOIN (SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
+	FROM MATERIAL
+	UNION ALL
+	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
+	FROM SEMI_PROD) b
+    ON a.MAT_ID = b.MAT_ID
+    WHERE a.WK_BOM_ID = #{data} 
+    ORDER BY a.BOM_MAT_ID
 </select>
 
 <delete id="delBomList" parameterType="List">
@@ -184,7 +191,13 @@
 </delete>
 
 <update id="modifyMatList" parameterType="bomMatVO">
-	UPDATE WORK_BOM_MAT SET MAT_ID = #{wkBomId} , MAT_QT = #{matQt}
+	UPDATE WORK_BOM_MAT SET MAT_ID = #{matId} , CP_QT = #{cpQt}
 	WHERE BOM_MAT_ID = #{bomMatId}
 </update>
+
+<update id="modifyBomList" parameterType="workBomVO">
+	UPDATE WORK_BOM SET PROC_ID = #{procId}
+	WHERE WK_BOM_ID = #{wkBomId}
+</update>
+
 </mapper>

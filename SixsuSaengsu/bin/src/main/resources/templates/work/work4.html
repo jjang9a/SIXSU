@@ -475,14 +475,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	    
 	    columns: [
 	      
- 	      
- 	      {
- 	        header: '공정구분',
- 	        name: 'comName'
- 	      },
  	      {
  	        header: '공정코드',
  	        name: 'procId'
+ 	      },
+ 	      {
+ 	        header: '공정구분',
+ 	        name: 'procType'
  	      },
  	      {
  	        header: '공정명',
@@ -507,7 +506,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		    columns: [
 	    	  {
 	 	        header: '코드',
-	 	        name: 'matId'
+	 	        name: 'matCode'
 	 	      },
 	 	      {
 	 	        header: '자재명',
@@ -758,6 +757,31 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		selectBomWorkCode = '';
 	})
 	
+	// 공정조회 모달창
+	bom_search1.on('click',ev => {
+		let columnName = ev.columnName;
+		selectBomWorkCode = ev.rowKey;
+		if (columnName === 'procId'){ 
+			$('#process_modal').modal('show');
+			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
+			setTimeout(() =>
+			grid_process.refreshLayout(), 200);
+		}
+		$.ajax({
+			url : "/ajax/getWkMatList",
+			method : "GET",
+			dataType : "JSON",
+			contentType: "application/json",
+			data : { data: bom_search1.getRow(selectBomWorkCode).wkBomId},
+			success : function(result){
+				console.dir(result);
+				bom_search2.resetData(result);
+				},
+				errer : function(reject){
+					console.log(reject)
+				}
+			})
+	})
 	
 	$('.plusBomBtn').on('click', function(){
 		if(세부계획선택여부() == true){
@@ -791,6 +815,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				success : function(result){
 					console.dir(result);
 					bom_search1.resetData(result);
+					selectBomWorkCode = '';
 					},
 					errer : function(reject){
 						console.log(reject)
@@ -838,86 +863,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				})
 		}
 	})
-	// 공정조회 모달창
-	bom_search1.on('click',ev => {
-		let columnName = ev.columnName;
-		selectBomWorkCode = ev.rowKey;
-		if (columnName === 'procId'){ 
-			$('#process_modal').modal('show');
-			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
-			setTimeout(() =>
-			grid_process.refreshLayout(), 200);
-		}
-		$.ajax({
-			url : "/ajax/getWkMatList",
-			method : "GET",
-			dataType : "JSON",
-			contentType: "application/json",
-			data : { data: bom_search1.getRow(selectBomWorkCode).wkBomId},
-			success : function(result){
-				console.dir(result);
-				bom_search2.resetData(result);
-				},
-				errer : function(reject){
-					console.log(reject)
-				}
-			})
-	})
-	bom_search1.on('afterChange', function (ev) {
-		  let getRow = bom_search1.getRow(selectBomWorkCode)
-		  console.log(getRow)
-		  $.ajax({
-				url : "/ajax/modifyBomList",
-				method : "POST",
-				dataType : "JSON",
-				contentType: "application/json",
-				data :  JSON.stringify(getRow),
-				success : function(result){
-					console.dir(result);
-					bom_search1.resetData(result);
-					},
-					errer : function(reject){
-						console.log(reject)
-					}
-				})
-		});
-	
-	// 자재 모달창
-	bom_search2.on('click',ev => {
-		
-		let columnName = ev.columnName;
-		selectMatWorkCode = ev;
-		
-		if (columnName === 'matId' || columnName === 'matName'){ //컬럼이름 변경하 시오!
-			console.log(ev.columnName);
-		    console.log(ev.columnIndex);
-			$('#mat_modal').modal('show');
-			//특정 Cell의 열,컬럼이름 데이터
-			cell = bom_search2.getFocusedCell(ev.rowKey, ev.columnName);
-			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
-			setTimeout(() =>
-			grid_mat.refreshLayout(), 200);
-		}
-	})
-	bom_search2.on('afterChange', function (ev) {
-		  let getRow = bom_search2.getRow(selectMatWorkCode.rowKey)
-		  console.log(getRow)
-		  $.ajax({
-				url : "/ajax/modifyMatList",
-				method : "POST",
-				dataType : "JSON",
-				contentType: "application/json",
-				data :  JSON.stringify(getRow),
-				success : function(result){
-					console.dir(result);
-					bom_search2.resetData(result);
-					selectBomWorkCode = '';
-					},
-					errer : function(reject){
-						console.log(reject)
-					}
-				})
-		});
 	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
 	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
 	
@@ -966,21 +911,60 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		let procName = grid_process.getRow(ev.rowKey).procName
 
 		bom_search1.setValue(selectBomWorkCode, 'procId', procId)
-			bom_search1.setValue(selectBomWorkCode, 'comName', comName)
+			bom_search1.setValue(selectBomWorkCode, 'procType', comName)
 			bom_search1.setValue(selectBomWorkCode, 'procName', procName)
 			$('#process_modal').modal('hide');
 	})
 	
+	let mat_ary = []
+	// 자재 모달창
+	bom_search2.on('click',ev => {
+		
+		let columnName = ev.columnName;
+		selectMatWorkCode = ev;
+		
+		if (columnName === 'matId' || columnName === 'matName'){ //컬럼이름 변경하 시오!
+			console.log(ev.columnName);
+		    console.log(ev.columnIndex);
+			$('#mat_modal').modal('show');
+			//특정 Cell의 열,컬럼이름 데이터
+			cell = bom_search2.getFocusedCell(ev.rowKey, ev.columnName);
+			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
+			setTimeout(() =>
+			grid_mat.refreshLayout(), 200);
+		}
+	})
+	
+	bom_search2.on('afterChange', function (ev) {
+		  let getRow = bom_search2.getRow(selectMatWorkCode.rowKey)
+		  console.log(getRow)
+		  $.ajax({
+				url : "/ajax/modifyMatList",
+				method : "POST",
+				dataType : "JSON",
+				contentType: "application/json",
+				data :  JSON.stringify(getRow),
+				success : function(result){
+					console.dir(result);
+					bom_search2.resetData(result);
+					selectBomWorkCode = '';
+					},
+					errer : function(reject){
+						console.log(reject)
+					}
+				})
+		});
 	
 	//모달안에 그리드중 데이터클릭시 작동. 모달닫히는거까지
 	grid_mat.on('click',ev => {
 		let cpId = grid_mat.getRow(ev.rowKey).cpId
 		let cpName = grid_mat.getRow(ev.rowKey).cpName
 		let cpSize = grid_mat.getRow(ev.rowKey).cpSize
-		bom_search2.setValue(cell.rowKey, 'matId', cpId)
+		bom_search2.setValue(cell.rowKey, 'matCode', cpId)
 		bom_search2.setValue(cell.rowKey, 'matName', cpName)
 		bom_search2.setValue(cell.rowKey, 'matSize', cpSize)
 		$('#mat_modal').modal('hide');
+		
 	})
 	
 	

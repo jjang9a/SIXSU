@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
     <script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
-    
+
 
     <!-- <meta name="_csrf" th:content="${_csrf.token}"/>
 	<meta name="_csrf_header" th:content="${_csrf.headerName}"/> -->
@@ -67,37 +67,51 @@
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            <div class="sb-nav-link-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="currentColor"
+                                    class="bi bi-arrow-through-heart-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M2.854 15.854A.5.5 0 0 1 2 15.5V14H.5a.5.5 0 0 1-.354-.854l1.5-1.5A.5.5 0 0 1 2 11.5h1.793l3.103-3.104a.5.5 0 1 1 .708.708L4.5 12.207V14a.5.5 0 0 1-.146.354l-1.5 1.5ZM16 3.5a.5.5 0 0 1-.854.354L14 2.707l-1.006 1.006c.236.248.44.531.6.845.562 1.096.585 2.517-.213 4.092-.793 1.563-2.395 3.288-5.105 5.08L8 13.912l-.276-.182A23.825 23.825 0 0 1 5.8 12.323L8.31 9.81a1.5 1.5 0 0 0-2.122-2.122L3.657 10.22a8.827 8.827 0 0 1-1.039-1.57c-.798-1.576-.775-2.997-.213-4.093C3.426 2.565 6.18 1.809 8 3.233c1.25-.98 2.944-.928 4.212-.152L13.292 2 12.147.854A.5.5 0 0 1 12.5 0h3a.5.5 0 0 1 .5.5v3Z" />
+                                </svg>
+                            </div>
                             관리부
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="layout-static.html">사원관리</a>
-                                <a class="nav-link-a" href="layout-sidenav-light.html">공통코드</a>
-                                <a class="nav-link-a" href="#">완제품관리</a>
-                                <a class="nav-link-a" href="#">반제품관리</a>
-                                <a class="nav-link-a" href="#">자재관리</a>
-                                <a class="nav-link-a" href="#">공정관리</a>
-                                <a class="nav-link-a" href="#">거래처관리</a>
-                                <a class="nav-link-a" href="#">제품BOM관리</a>
-                                <a class="nav-link-a" href="#">공정흐름도관리</a>
+                                <a class="nav-link-a" href="/basic/empManage">사원관리</a>
+                                <a class="nav-link-a" href="/basic/codeManage">공통코드</a>
+                                <a class="nav-link-a" href="/basic/cpManage">완제품관리</a>
+                                <a class="nav-link-a" href="/basic/spManage">반제품관리</a>
+                                <a class="nav-link-a" href="/basic/matManage">자재관리</a>
+                                <a class="nav-link-a" href="/basic/procManage">공정관리</a>
+                                <a class="nav-link-a" href="/basic/businessManage">거래처관리</a>
+                                <a class="nav-link-a" href="/basic/bomManage">제품BOM관리</a>
+                                <a class="nav-link-a" href="/basic/flowManage">공정흐름도관리</a>
                             </nav>
                         </div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
                             aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
+                                    class="bi bi-receipt" viewBox="0 0 16 16">
+                                    <path
+                                        d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zm.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51z" />
+                                    <path
+                                        d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
+                                </svg>
+                            </div>
                             영업부
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapsePages" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                 <a class="nav-link-a" href="layout-static.html">주문서관리</a>
+                                <a class="nav-link-a" href="/sales/invoice">주문서관리</a>
                                 <a class="nav-link-a" href="layout-sidenav-light.html">주문서조회</a>
-                                <a class="nav-link-a" href="#">입고관리</a>
+                                <a class="nav-link-a" href="/sales/receive">입고관리</a>
                                 <a class="nav-link-a" href="#">입고조회</a>
                                 <a class="nav-link-a" href="#">출고관리</a>
                                 <a class="nav-link-a" href="#">출고조회</a>
@@ -111,7 +125,13 @@
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#prodnav"
                             aria-expanded="false" aria-controls="prodnav">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
+                                    class="bi bi-gear-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                                </svg>
+                            </div>
                             생산부
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
@@ -128,15 +148,21 @@
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#matnav"
                             aria-expanded="false" aria-controls="matnav">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
+                                    class="bi bi-box-seam" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                                </svg>
+                            </div>
                             자재부
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="matnav" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="#">자재조회</a>
-                                <a class="nav-link-a" href="#">자재LOT조회</a>
+                                <a class="nav-link-a" href="/materials/materiallist">자재조회</a>
+                                <a class="nav-link-a" href="/materials/mlot">자재LOT조회</a>
                                 <a class="nav-link-a" href="/materials/matreq">자재발주관리</a>
                                 <a class="nav-link-a" href="#">자재발주조회</a>
                                 <a class="nav-link-a" href="/materials/matrec">자재입고관리</a>
@@ -146,19 +172,27 @@
                                 <a class="nav-link-a" href="#">반제품LOT조회</a>
                                 <a class="nav-link-a" href="#">반제품입고관리</a>
                                 <a class="nav-link-a" href="#">반제품입고조회</a>
-                                <a class="nav-link-a" href="#">반제품출고조회</a>    
+                                <a class="nav-link-a" href="#">반제품출고조회</a>
                                 <a class="nav-link-a" href="#">자재재고조정</a>
                                 <a class="nav-link-a" href="#">반제품재고조정</a>
                                 <a class="nav-link-a" href="#">불량자재관리</a>
                                 <a class="nav-link-a" href="#">불량자재조회</a>
-                                <a class="nav-link-a" href="#">불량반제품관리</a>  
-                                <a class="nav-link-a" href="#">불량반제품조회</a>     
+                                <a class="nav-link-a" href="#">불량반제품관리</a>
+                                <a class="nav-link-a" href="#">불량반제품조회</a>
                             </nav>
                         </div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#equinav"
                             aria-expanded="false" aria-controls="equinav">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
+                                    class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z" />
+                                    <path
+                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8Zm-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z" />
+                                </svg>
+                            </div>
                             설비부
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
@@ -172,14 +206,22 @@
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#qualnav"
                             aria-expanded="false" aria-controls="qualnav">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="sb-nav-link-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
+                                    class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z" />
+                                    <path
+                                        d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z" />
+                                </svg>
+                            </div>
                             품질부
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="qualnav" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="layout-sidenav-light.html">자재 입고 검사</a>
+                                <a class="nav-link-a" href="/quality/recInsp">자재 입고 검사</a>
                                 <a class="nav-link-a" href="#">자재 입고 검사 결과 조회</a>
                                 <a class="nav-link-a" href="#">제품 품질 관리</a>
                                 <a class="nav-link-a" href="#">제품 품질 조회</a>
