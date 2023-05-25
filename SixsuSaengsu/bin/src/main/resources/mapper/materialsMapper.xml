@@ -4,21 +4,21 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="co.sixsu.app.material.mapper.MaterialsMapper">
-
+	<!-- 발주리스트 -->
 	<select id="getMatReqList" resultType="MatreqVO">
-		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
+		select m.mat_req_id, m.bus_id, b.bus_name, m.mat_id, t.mat_name, t.mat_size, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
 		from mat_req m left join business b
 		on m.bus_id = b.bus_id
 		left join employee e
 		on m.emp_id = e.emp_id
 		left join material t
 		on m.mat_id = t.mat_id
-		order by TO_DATE(SUBSTR(mat_req_id, 4, 6), 'YYMMDD') ASC, TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1))
+		order by TO_DATE(SUBSTR(mat_req_id, 4, 6), 'YYMMDD') desc, TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1)) desc
 	</select>
 <!-- to_date(sysdate, 'YYYY-MM-dd') -->
 
 	<select id="selectMatReq" resultType="MatreqVO">
-		select m.mat_req_id, b.bus_id, b.bus_name, m.mat_id, t.mat_name, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
+		select m.mat_req_id, m.bus_id, b.bus_name, m.mat_id, t.mat_name, t.mat_size, m.mat_req_qt, to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, m.mat_req_stat, to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, m.emp_id, e.emp_name
 		from mat_req m left join business b
 		on m.bus_id = b.bus_id
 		left join employee e
@@ -26,27 +26,89 @@
 		left join material t
 		on m.mat_id = t.mat_id
 		where m.mat_req_id = #{reqId}
-		order by TO_DATE(SUBSTR(mat_req_id, 4, 6), 'YYMMDD') ASC, TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1))
+		order by TO_DATE(SUBSTR(mat_req_id, 4, 6), 'YYMMDD') desc, TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1)) desc
 		
 	</select>
 	
+	
+	<!-- 발주제거 -->
 	<delete id="deleteMatReq" parameterType="String">
 		delete from mat_req where mat_req_id = #{reqId}
 	</delete>
 	
+	<!-- 발주등록 -->
 	<insert id="insertMatReq" parameterType="MatreqVO">
 		insert into mat_req (mat_req_id, bus_id, mat_id, mat_req_qt, mat_end_date, emp_id)
 		values (get_mat_req_id, #{busId}, #{matId}, #{matReqQt}, #{matEndDate}, '12345')
 	</insert>
 	
+	<!-- 입고대기 목록 -->
 	<select id="selectMatRecWaitList" resultType="MatrecWaitVO">
-		select q.insp_std_id, q.insp_item_id, t.mat_name, q.suit_qt, q.insp_date 
+		select q.insp_std_id, q.insp_item_id, t.mat_name, q.suit_qt, to_char(q.insp_date, 'yyyy-mm-dd') as insp_date
 		from qua_com q left join mat_req m
 		on q.insp_std_id = m.mat_req_id
 		left join material t
 		on q.insp_item_id = t.mat_id
+		where m.mat_req_stat = '검사완료'
 		order by insp_date
 	</select>
+	
+	<!-- 입고 목록-->
+	<select id="selectMatRecList" resultType="MatrecVO">
+		select c.mat_req_id, c.insp_num, u.insp_date, c.mat_rec_qt, c.mat_rec_type, c.mat_rec_date, l.mat_name, b.bus_name, c.mat_rec_note, e.emp_name, c.mat_lot_id
+		from mat_rec c left join mat_req q
+		on c.mat_req_id = q.mat_req_id
+		left join qua_com u
+		on c.insp_num = u.insp_num
+		left join employee e
+		on c.emp_id = e.emp_id
+		left join business b
+		on q.bus_id = b.bus_id 
+		left join material l
+		on q.mat_id = l.mat_id
+		where q.mat_req_stat = '입고완료'
+	</select>
+	
+<!-- 	<select id="insertMatRec" statementType="CALLABLE">
+		{
+			CALL(
+				#{matReqId  , mode=IN, jdbcType=VARCHAR}
+			)	
+		}
+	</select> -->
+	
+	<!-- 입고등록 -->
+	<insert id="insertMatRec" parameterType="String">
+    <![CDATA[
+	    CALL IN_MAT_REC(
+	      #{matReqId, mode=IN, jdbcType=VARCHAR}
+	    )
+	    ]]>
+  	</insert>
+  	
+  	<!-- 자재목록 -->
+  	<select id="selectMatList" resultType="MatVO">
+  		select * from material
+  	</select>
+  	
+  	<!-- 입고삭제 -->
+  	<delete id="deleteMatRec" parameterType="String">
+  		delete from mat_rec where mat_lot_id = #{mlotnum}
+  	</delete>
+  	
+  	<!-- 자재 lot 삭제 -->
+  	<delete id="deleteMLot" parameterType="String">
+  		delete from mat_lot where mat_lot_id = #{mlotnum}
+  	</delete>
+  	
+  	<!-- 자재lot리스트 -->
+  	<select id="mLotList" resultType="MatLotVO">
+		select m.mat_lot_id, m.mat_id, l.mat_name, l.mat_size, m.mat_qt, m.mat_hold_stat, to_char(c.mat_rec_date,'yyyy-MM-dd') as mat_rec_date
+		from mat_lot m left join mat_rec c
+		on m.mat_rec_id = c.mat_rec_id
+		left join material l
+		on m.mat_id = l.mat_id
+  	</select>
 	
 	
 </mapper>

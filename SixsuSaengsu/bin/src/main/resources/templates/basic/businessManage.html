@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>거래처 관리</title>
+	<style>
+		h1 {
+			margin-bottom: 40px;
+		}
+
+		#manageTbl {
+			margin: auto;
+		}
+
+		#manageTbl input,
+		select {
+			padding-left: 10px;
+			width: 230px;
+		}
+
+		#divRadio input {
+			padding-left: 7px;
+			width: 20px;
+		}
+
+		#manageTbl td {
+			padding: 4px 20px;
+			text-align: center;
+		}
+
+		.divBtn {
+			text-align: center;
+			padding: 15px 0 30px 0;
+		}
+
+		.sixBtn {
+			border: none;
+			border-radius: 5px;
+			background: #99bad7;
+			color: rgba(255, 255, 255, 0.9);
+			font-size: 15px;
+			height: 27px;
+			width: 46px;
+		}
+	</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">거래처 관리</h1>
+
+		<!-- 정보입력 폼 -->
+		<form action="" method="post" id="manageForm">
+			<table id="manageTbl">
+				<tr>
+					<td>거래처 코드</td>
+					<td><input type="text" name="busId" id="busId" class="empty"></td>
+					<td>분류</td>
+					<td style="padding-right: 1px;"><select name="busType" id="busType">
+							<option value="">----- 선택 -----</option>
+							<option value="buy">매입 거래처</option>
+							<option value="sel">매출 거래처</option>
+						</select></td>
+				</tr>
+				<tr>
+					<td>회사명</td>
+					<td><input type="text" name="busName" id="busName" class="empty"></td>
+					<td>사업자번호</td>
+					<td style="padding-right: 0px;"><input type="text" name="busNum" id="busNum"
+							placeholder="000-00-00000"></td>
+					<td style="padding-left: 2px;"><button type="button" id="busBtn" class="sixBtn">확인</button>
+					</td>
+				</tr>
+				<tr>
+					<td>전화번호</td>
+					<td><input type="text" name="busTell" id="busTell" class="empty">
+					<td>활성여부</td>
+					<td>
+						<div id="divRadio">
+							<input type="radio" id="busStat1" name="busStat" value="Y" checked>
+							<label for="busStat1">사용</label>
+							<input type="radio" id="busStat2" name="busStat" value="N">
+							<label for="busStat2">비사용</label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>주소</td>
+					<td colspan="3" style="padding-left: 37px;"><input type="text" name="busAddr" id="busAddr"
+							class="empty" style="width : 665px;">
+					</td>
+				</tr>
+				<tr>
+					<td>비고</td>
+					<td colspan="3" style="padding-left: 37px;"><input type="text" name="spNote" id="spNote"
+							class="empty" style="width : 665px;">
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div class="divBtn">
+			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
+			<button type="button" class="sixBtn2" id="addBtn">등록</button>
+			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+			<button type="button" class="sixBtn2" id="initBtn">초기화</button>
+		</div>
+		<!-- 상단 폼 끝 -->
+
+		<!-- 완제품 목록 그리드 -->
+		<div id="grid"></div>
+
+		<script>
+			// 사업자 등록번호 중복체크
+			let check = false;
+			$('#busBtn').on('click', function (e) {
+				$.ajax({
+					url: "/basic/checkBusNum",
+					method: "GET",
+					data: {
+						"busNum": $('#busNum').val()
+					},
+					success: function (result) {
+						//console.log(typeof result)
+						if (result == true) {
+							alert('등록 가능한 사업자번호 입니다.')
+							check = true;
+						} else {
+							alert('이미 등록된 거래처의 사업자번호 입니다.')
+						}
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
+
+			$('#busNum').on('change', function () {
+				check = false;
+			})
+
+
+			window.onload = function () {
+				let initData = '';
+				let nowData = '';
+				$.ajax({
+					url: "/basic/busList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+						initData = result;
+						nowData = result;
+					}
+				});
+				const grid = new tui.Grid({
+					el: document.getElementById('grid'),
+					scrollX: false,
+					scrollY: false,
+					minBodyHeight: 400,
+					pageOptions: {
+						useClient: true,
+						perPage: 10
+					},
+					columns: [{
+						header: '거래처코드',
+						name: 'busId',
+						align: 'center'
+					}, {
+						header: '분류',
+						name: 'busType',
+						align: 'center'
+					}, {
+						header: '회사명',
+						name: 'busName',
+						align: 'center'
+					}, {
+						header: '사업자번호',
+						name: 'busNum',
+						align: 'center'
+					}, {
+						header: '전화번호',
+						name: 'busTell',
+						align: 'center'
+					}, {
+						header: '주소',
+						name: 'busAddr',
+						align: 'center'
+					}, {
+						header: '비고',
+						name: 'busNote',
+						align: 'center'
+					}, {
+						header: '활성여부',
+						name: 'busStat',
+						align: 'center'
+					}]
+				});
+
+				// 그리드 색 변경 테마 적용
+				tui.Grid.applyTheme('default', {
+					cell: {
+						header: {
+							background: '#e5edf5'
+						},
+						normal: {
+							background: '#ffffff'
+						}
+					}
+				});
+
+				// 등록 버튼 이벤트
+				$('#addBtn').on('click', function (e) {
+					if (check == false) {
+						alert('사업자번호 중복체크를 먼저 해 주세요')
+					} else {
+						$.ajax({
+							url: '/basic/addBus',
+							type: 'post',
+							data: $('#manageForm').serialize(),
+							dataType: 'json',
+							success: function (result) {
+								alert('거래처가 성공적으로 등록되었습니다');
+								//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+								const appendedData = result
+								grid.appendRow(appendedData);
+								check = false;
+							},
+							error: function (reject) {
+								console.log(reject);
+							}
+						});
+						$('.empty').val('');
+					}
+				});
+
+				// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
+				let selRow = '';
+				grid.on('dblclick', function (e) {
+					// 열을 더블클릭하면 열 정보를 변수에 저장
+					selRow = e.rowKey;
+					console.log(selRow)
+					let dataRow = grid.getRow(selRow);
+					$('#busId').val(dataRow.busId);
+					$('#busName').val(dataRow.busName);
+					$('#busTell').val(dataRow.busTell);
+					$('#busAddr').val(dataRow.busAddr);
+					$('#busNum').val(dataRow.busNum);
+					$('#busNote').val(dataRow.busNote);
+					if (dataRow.busStat == 'Y') {
+						$("input:radio[name='matStat']:radio[value='Y']").prop('checked', true);
+					} else {
+						$("input:radio[name='matStat']:radio[value='N']").prop('checked', true);
+					}
+					$('#busType').val(dataRow.busType).prop("selected", true);
+					check = true;
+				})
+
+				// 수정 버튼 이벤트
+				$('#modiBtn').on('click', function (e) {
+					if (selRow == '') {
+						alert('수정할 데이터가 없습니다.')
+					} else if (check == false) {
+						alert('사업자번호 중복체크를 먼저 해 주세요')
+					} else {
+						$.ajax({
+							url: '/basic/modifyBus',
+							type: 'post',
+							data: $('#manageForm').serialize(),
+							dataType: 'json',
+							success: function (result) {
+								alert('거래처정보가 성공적으로 수정되었습니다');
+								//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
+								const setData = result
+								grid.setRow(selRow, setData);
+								selRow = '';
+								$('.empty').val('');
+								$('#busType').val('').prop("selected", true);
+								$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
+							},
+							error: function () {
+								alert('거래처정보 수정 중 오류가 발생했습니다!');
+							}
+						});
+					}
+				})
+
+
+				// 초기화 버튼 이벤트
+				$('#initBtn').on('click', function (e) {
+					$.ajax({
+						url: "/basic/busList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							grid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject);
+						}
+					});
+					$('.empty').val('');
+					$('#busType').val('').prop("selected", true);
+					$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
+					check = false;
+				})
+
+				// 검색 버튼 이벤트
+				let searchType = '';
+				let searchKey = '';
+				$('#searchBtn').on('click', function (e) {
+					if ($('#busId').val() == '' && $('#busName').val() == '' && $('#busType').val() == '') {
+						alert('검색값을 입력 해 주세요')
+					} else if ($('#busType').val() == '') {
+						if ($('#busId').val() == '') {
+							searchType = 'nameOnly'
+							searchKey = $('#busName').val()
+						}
+						if ($('#busName').val() == '') {
+							searchType = 'idOnly'
+							searchKey = $('#busId').val()
+						}
+					} else if ($('#busType').val() == 'buy') {
+						if ($('#busId').val() == '' && $('#busName').val() == '') {
+							searchType = 'typeOnly'
+							searchKey = 'buy'
+						} else {
+							if ($('#busId').val() == '') {
+								searchType = 'buyName'
+								searchKey = $('#busName').val()
+							} else if ($('#busName').val()) {
+								searchType = 'buyId'
+								searchKey = $('#busId').val()
+							}
+						}
+					} else {
+						if ($('#busId').val() == '' && $('#busName').val() == '') {
+							searchType = 'typeOnly'
+							searchKey = 'sel'
+						} else {
+							if ($('#busId').val() == '') {
+								searchType = 'sellName'
+								searchKey = $('#busName').val()
+							} else if ($('#busName').val() == '') {
+								searchType = 'sellId'
+								searchKey = $('#busId').val()
+							}
+						}
+					}
+
+					$.ajax({
+						url: '/basic/searchBus',
+						type: 'get',
+						data: {
+							"searchType": searchType,
+							"searchKey": searchKey
+						},
+						dataType: 'json',
+						success: function (result) {
+							grid.resetData(result);
+							nowData = result;
+						},
+						error: function (reject) {
+							console.log(reject);
+						}
+					})
+				})
+
+				//윈도우 온 로드 종료
+			}
+		</script>
+	</div>
+</body>
+
+</html>
