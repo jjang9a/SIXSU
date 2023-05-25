@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+<meta charset="UTF-8">
+<title>입고관리</title>
+<style>
+h1{
+margin-bottom:25px;
+}
+
+#product{
+
+margin:auto;
+}
+#return{
+
+margin:auto;
+display:none;
+}
+.codeBack {
+			padding: 5px 0px 0px 0px ;
+		}
+button {
+			border: 1;
+			background-color: white;
+			font-size: 30px;
+			border-radius: 12px;
+			font-family: 'MaruBuri'
+		}
+.gSel {		color:white;
+			background-color: #00539c;
+		}
+
+
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+	
+	
+	
+	
+	
+	<!--  툴 시작 -->
+	
+	<!-- 탭 -->
+	<div id="group" class="codeBack">
+			<button type="button" id="gc">생산 입고</button>
+			<button type="button" id="gs" class="gSel">반품 입고</button>
+	<div id="product">
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">생산완료현황</h1>
+	 상품명 <input type="text" name="cpName" id="cpNameBox">
+	 <button type="button" data-bs-toggle="modal" id="searchProductBtn"
+						class="sixBtn1">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+                <path
+								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg></button> <br>
+	 상품코드 <input type="text" name="cpId" id="cpIdBox"> <br>
+	 입고일자 <input type="date" name="startPro" id="startPro"> <input type="date" name="endPro" id="endPro"> <br>
+	 <button class="sixBtn2" id="infoCollect">조회</button>
+	 <button class="sixBtn4" id="infoCollect">초기화</button><BR>
+	 <button class="sixBtn4" id="recRegister">입고등록</button>	
+	
+	<!-- 생산완료 grid테이블 -->
+
+	<div id="productGrid"></div>
+	
+	</div>
+	
+	
+	<div id="return">
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">반품완료현황</h1>
+	
+	 상품명 <input type="text" name="rpName" id="rpNameBox">
+	 <button type="button" data-bs-toggle="modal" id="searchProductBtn1"
+						class="sixBtn1">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+                <path
+								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg></button> <br>
+     상품코드 <input type="text" name="rpId" id="rpIdBox"> <br>
+	 재입고일자 <input type="date" name="startRet" id="startRet"> <input type="date" name="endRet" id="endRet"> <br>
+	 <button class="sixBtn2" id="infoCollect">조회</button>
+	 <button class="sixBtn4" id="infoCollect">초기화</button>
+	 
+	 <!--반품완료 grid테이블 -->
+	 <div id="returnGrid"></div>
+	 <button class="sixBtn2" id="retRegister">등록</button>
+	 
+	 </div>
+	 </div>
+	 
+	 
+	 
+	 
+	 <!-- 상품 목록 모달창 -->
+	 	<div class="modal fade" id="productModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="searchModalLabel">상품 목록 조회</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+
+
+						<div class="btns"></div>
+
+						<div class="modal-body">
+							<div id="gridp"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 입고전 생상완료 모달창 -->
+	 	<div class="modal fade" id="comProductModel" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="searchModalLabel">생산완료 조회</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+
+
+						<div class="btns"></div>
+
+						<div class="modal-body">
+							<div id="completProductGrid"></div>
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+	 
+	<script>
+	
+	// 그룹코드-검색 탭 토글
+	$('#gc').on('click', function (e) {
+		$(this).removeClass('gSel');
+		$('#gs').addClass('gSel');
+		$('#product').css('display', 'block');
+		$('#return').css('display', 'none');
+	})
+
+	$('#gs').on('click', function (e) {
+		$(this).removeClass('gSel');
+		$('#gc').addClass('gSel');
+		$('#product').css('display', 'none');
+		$('#return').css('display', 'block');
+	})
+
+	//상품조회
+	$("#searchProductBtn").on('click', function(e){
+	$('#productModal').modal('show');
+	 $.ajax({
+    		url : "/sales/products",
+    		method : "get",
+    		dataType : "JSON",
+    		success : function(result){
+    			gridp.resetData(result);
+    			console.log ('거래처 모달');
+    			setTimeout(()=>gridp.refreshLayout(),1000);
+    		}
+    	})
+	})
+	//상품조회 (반품)
+	$("#searchProductBtn1").on('click', function(e){
+	$('#productModal').modal('show');
+	 $.ajax({
+    		url : "/sales/products",
+    		method : "get",
+    		dataType : "JSON",
+    		success : function(result){
+    			gridp.resetData(result);
+    			console.log ('거래처 모달');
+    			setTimeout(()=>gridp.refreshLayout(),1000);
+    		}
+    	})
+	})
+	
+	const gridp = new tui.Grid({
+		el : document.getElementById('gridp'),
+		//data : gridData,
+		scrollX : false,
+		scrollY : false,
+		columns : [ {
+			header : '완제품 코드',
+			name : 'cpId',
+		}, {
+			header : '완제품 이름',
+			name : 'cpName'
+		}, {
+			header : '완제품 규격',
+			name : 'cpSize'
+		}
+		]
+	});		
+	
+	//모달 사원리스트 행 클릭시 자동으로 생산완료현황 페이지로 값이 이동
+	gridp.on('click', ev=>{
+		const focusCell = gridp.getFocusedCell()
+		let dataRow = gridp.getRow(ev.rowKey);
+		$('#cpNameBox').val(dataRow.cpName);
+		$('#cpIdBox').val(dataRow.cpId);
+		$('#productModal').modal('hide');
+	})
+	
+	//생산완료 grid테이블
+					 const productGrid = new tui.Grid({
+							el : document.getElementById('productGrid'),
+							//data : gridData,
+							scrollX : false,
+							scrollY : false,
+							pageOptions: {
+								useClient: true,
+								perPage: 10
+							},
+							 rowHeaders: ['checkbox','rowNum'],
+							columns : [ {
+								header : '지시세부코드',
+								name : '',
+							}, {
+								header : '완제품코드',
+								name : 'ordDate',
+							}, {
+								header : '제품명',
+								name : 'busName',
+							},{
+								header : '규격',
+								name : 'busId',
+							},{
+								header : '생산수량',
+								name : 'busNum'
+							},{
+								header : '재조일자',
+								name : 'ordStat'
+							},{
+								header : '유통기한',
+								name : 'ordStat'
+							},
+							]
+						});
+	 
+		//바품완료 grid테이블
+						 const returnGrid = new tui.Grid({
+							el : document.getElementById('returnGrid'),
+							//data : gridData,
+							scrollX : false,
+							scrollY : false,
+							pageOptions: {
+								useClient: true,
+								perPage: 10
+							},
+							 rowHeaders: ['checkbox','rowNum'],
+							columns : [{
+								header : '반품코드',
+								name : '',
+							}, {
+								header : '완제품코드',
+								name : 'ordDate',
+							}, {
+								header : '제품명',
+								name : 'busName',
+							},{
+								header : '규격',
+								name : 'busId',
+							},{
+								header : '반품수량',
+								name : 'busNum'
+							},{
+								header : '검사완료일자',
+								name : 'ordStat'
+							},{
+								header : '유통기한',
+								name : 'ordStat'
+							},
+							]
+						});
+		//입고전 생산완료품목 모달			 
+		 $("#recRegister").on('click', function(e){
+				$('#comProductModel').modal('show');
+				 $.ajax({
+			    		url : "/sales/completeList",
+			    		method : "get",
+			    		dataType : "JSON",
+			    		success : function(result){
+			    			completProductGrid.resetData(result);
+			    			console.log ('생산완료현황');
+			    			setTimeout(()=>completProductGrid.refreshLayout(),200);
+			    		}
+			    	})
+				})
+				 const completProductGrid = new tui.Grid({
+							el : document.getElementById('completProductGrid'),
+							//data : gridData,
+							scrollX : false,
+							scrollY : false,
+							pageOptions: {
+								useClient: true,
+								perPage: 10
+							},
+							 rowHeaders: ['checkbox','rowNum'],
+							columns : [{
+								header : '지시세부코드',
+								name : 'wkDetaId',
+							}, {
+								header : '제품코드',
+								name : 'matId',
+							}, {
+								header : '제품명',
+								name : 'matName',
+								filter: 'select'
+							},{
+								header : '생산수량',
+								name : 'goodQt',
+							},{
+								header : '생산완료날짜',
+								name : 'cmpltDate'
+							}
+							]
+						});
+		 
+		 
+		 
+	 
+	</script>
+	</div>
+</body>
+</html>

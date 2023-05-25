@@ -4,7 +4,9 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.sixsu.app.sales.mapper.SalesMapper">
-
+<select id="getDate" resultType="java.util.Date">
+	select sysdate from dual
+</select>
 	<!-- 모달창 사원 전체조회 -->
 	<select id="empList"
 		resultType='EmpVO'>
@@ -23,9 +25,101 @@
 		Select* from business	
 	</select>
 	
+	<!-- 모달창 거래이름별 거래처별조회 -->
 	<select id="bus1List"
 		resultType='BusVO'>
 		select* from business	
 		where bus_name = #{keyword}
 	</select>
+	
+	<!-- 자동으로 주문번호 등록 -->
+	<select id='makeCode' 
+		resultType = 'string'>
+		select get_order_num() from dual
+	</select>
+	
+	<!-- 일반페이지 상세 주문 등록 페이지 -->
+	<select id="ordList"
+	resultType='ordVO'>
+	select d.ORD_DET_ID, d.ORD_QT, d.ORD_STAT_DET, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, d.ORD_END_DATE, c.CP_SIZE
+	from SORDER s , DET_ORD d, COMPLETE_PROD c
+	where s.ORD_ID = d.ORD_ID
+	and c.CP_ID = d.CP_ID
+	</select>
+	
+	<!-- 모달창 주문목록 페이지 -->
+	<select id="prodList"
+		resultType='ProductVO'>
+		select* from complete_prod
+	</select>
+	
+	<!-- 주문등록 (주문서만) -->
+	<insert id="orderAdd" parameterType="InvVO">
+	insert into SORDER values(
+	#{ordId}, TO_DATE(#{ordDate}, 'yyyy-MM-dd hh24:mi:ss'),#{ordStat}, #{empId} , #{busId})
+	</insert>
+	
+	<!-- 상세주문등록 -->
+	<insert id="ordDetAdd" parameterType="OrdVO">
+	insert into det_ord values(
+	#{ordDetId}, #{ordQt}, #{ordStatDet}, #{cpId}, #{ordId}, #{ordDetPrice} , TO_DATE(#{ordEndDate}, 'yyyy-MM-dd hh24:mi:ss'), #{ordSalePrice} 
+	)
+	</insert>
+	
+	<!-- 진행중인 주문서 조회 페이지 가장 하단 부분 -->
+	<select id="orderingList" resultType='InvVO'>
+	
+	select s.ord_id, s.ord_date, b.bus_name, b.bus_id, b.bus_num, s.ord_stat
+	from SORDER s, BUSINESS b
+	where s.bus_id = b.bus_id
+	and s.ord_stat = '진행중'
+	ORDER BY TO_DATE(SUBSTR(s.ord_id, 4, 6), 'YYMMDD') DESC, TO_NUMBER(SUBSTR(s.ord_id, INSTR(s.ord_id, '-') + 1))DESC
+	
+	</select>
+
+	<!-- 진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 -->
+	<select id="firstOrderingList" resultType='InvVO'>
+	select s.ord_id, s.ord_date, e.emp_name, e.emp_id, b.bus_num,b.bus_id,b.bus_name,b.bus_addr,b.bus_tell
+	from SORDER s, BUSINESS b, EMPLOYEE e
+	where s.BUS_ID = b.BUS_ID
+	and s.emp_ID = e.emp_ID
+	and s.ord_id = #{keyword}
+	</select>
+	
+	<!--  진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 상세 주문서가 화면에 나오도록 -->
+	<select id="secondOrderingList" resultType='OrdVO'>
+	select d.ORD_DET_ID, d.ORD_QT, d.ORD_STAT_DET, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, d.ORD_END_DATE, c.CP_SIZE
+	from SORDER s , DET_ORD d, COMPLETE_PROD c
+	where s.ORD_ID = d.ORD_ID
+	and c.CP_ID = d.CP_ID
+	and s.ord_id = #{keyword}
+	</select>
+	
+	<update id="orderMod" parameterType="InvVO">
+	update SORDER
+	set emp_id=#{empId}, bus_id=#{busId}
+	where ord_id=#{ordId}
+	</update>
+
+	<update id="ordDetMod" parameterType="OrdVO">
+		update det_ord
+		set ord_qt=#{ordQt}, cp_id=#{cpId}, ord_id=#{ordId}, ord_det_price=#{ordDetPrice}, ord_end_date=TO_DATE(#{ordEndDate}, 'yyyy-MM-dd hh24:mi:ss'), ord_sale_price=#{ordSalePrice}
+		where ord_det_id=#{ordDetId}
+	</update>
+	
+	
+	<!-- 상세상품제거 -->
+	<delete id="productDel" parameterType="OrdVO">
+	delete from det_ord where ord_det_id= #{ordDetId}
+	</delete>
+	
+	<!-- 주문서삭제 -->
+	<delete id="orderModDel" parameterType="InvVO">
+	delete from SORDER where ord_id=#{ordId}
+	</delete>
+	<delete id="ordDetModDel" parameterType="InvVO">
+	delete from det_ord where ord_id=#{ordId}
+	</delete>
+	
+	
 </mapper>

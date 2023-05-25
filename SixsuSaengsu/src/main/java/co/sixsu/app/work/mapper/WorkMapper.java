@@ -47,6 +47,7 @@ public interface WorkMapper {
 	public void delBeideMat(List<workBomVO> data);
 	public void delDetWorkList(List<DetaWorkOrdrVO> data);
 	public void delBeideBom(List<DetaWorkOrdrVO> data);
-	public List<bomMatVO> modifyMatList(bomMatVO data);
+	public void modifyMatList(bomMatVO data);
+	public void modifyBomList(workBomVO wkDetaId);
 
 }

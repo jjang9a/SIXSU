@@ -9,5 +9,7 @@ public class bomMatVO {
 	String wkBomId;
 	String matId;
 	int cpQt;
+	String matName;
+	String matSize;
 	String type;
 }
