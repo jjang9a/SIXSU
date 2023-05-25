@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.material.domain.MatreqVO;
-import co.sixsu.app.quality.domain.QilVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.service.QualityService;
 
@@ -87,6 +86,7 @@ public class QualityController {
 	public List<QuaVO> prInspList(Model model){
 		List<QuaVO> priList = quaService.prInspList();
 		model.addAttribute("priList", priList);
+		System.out.println("리스트 출력 확인:"+ priList);
 		return priList;
 	}
 	
@@ -115,6 +115,19 @@ public class QualityController {
 		boolean result = quaService.priRegUpdate(qua, mat);
 		return result;
 	}
+	
+	// 자재 입고 검사 페이지
+	@GetMapping("/quality/prInsp")
+	public void prInsp() {
+		
+	}
+	
+	// 제품 품질 관리 리스트 불러오기
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping("/quality/proInspList")
+	 */
 	
 	
 	

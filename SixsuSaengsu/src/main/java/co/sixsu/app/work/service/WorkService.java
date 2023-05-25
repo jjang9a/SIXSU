@@ -56,4 +56,6 @@ public interface WorkService {
 	public List<bomMatVO> delMatList(List<bomMatVO> data);
 
 	public List<DetaWorkOrdrVO> delDetWorkList(List<DetaWorkOrdrVO> data);
+
+	public List<bomMatVO> modifyMatList(bomMatVO data);
 }

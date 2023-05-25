@@ -2,7 +2,6 @@ package co.sixsu.app.equipment.service;
 
 import java.util.List;
 
-import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.equipment.domain.EquConVO;
 
 public interface EquService {

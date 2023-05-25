@@ -23,6 +23,7 @@ import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.material.domain.SpRecWaitVO;
 import co.sixsu.app.material.service.MaterialsService;
 
 
@@ -56,6 +57,11 @@ public class MaterialController {
 	//자재조회 페이지 열어주기
 	@GetMapping("/materials/materiallist")
 	public void matList() {
+	}
+	
+	//입고관리 페이지 열어주기
+	@GetMapping("/materials/sprec")
+	public void spRecList() {
 	}
 	
 	
@@ -113,12 +119,7 @@ public class MaterialController {
 		ObjectMapper objectMapper = new ObjectMapper();
 	    String[] dataArray = objectMapper.readValue(jsonData, String[].class);
 	    System.out.println(dataArray.length);
-	    for(String i : dataArray) {
-	    	System.out.println(i);
-	    	service.deleteMatReq(i);
-	    }
-	    
-	    
+	    service.deleteMatReq(dataArray);
 		return "/materials/matreq";
 	}
 	
@@ -203,6 +204,14 @@ public class MaterialController {
 	@RequestMapping("/materials/matlotlist")
 	public List<MatLotVO> mLotList(){
 		List<MatLotVO> list = service.mLotList();
+		return list;
+	}
+	
+	//반제품 입고대기 리스트 모달
+	@ResponseBody
+	@RequestMapping("/materials/sprecwait")
+	public List<SpRecWaitVO> getSpWaitList(){
+		List<SpRecWaitVO> list = service.getSpWaitList();
 		return list;
 	}
 }
