@@ -50,6 +50,7 @@ public class EquController {
 	public EquConVO equUpdate(EquConVO data) {
 		equService.equUpdate(data);
 		return data;
+	}
 
 	// [설비 관리 페이지] - 삭제
 
@@ -71,8 +72,8 @@ public class EquController {
 	public List<EquConVO> equInfo(@ModelAttribute EquConVO info) { //담고 담아서
 		String equCode = info.getEquCode(); // info 안에 필드값 EquCode를
 		System.out.println(equCode); // 콘솔창에 뿌려줌
-		List<EquConVO> list = equService.equInfo(equCode); // 리스트 형식 list에 담아서 
-		System.out.println(list);
+		//List<EquConVO> list = equService.equInfo(equCode); // 리스트 형식 list에 담아서 
+		//System.out.println(list);
 		return null; // 모달 창으로 리턴해야함.
 	
 	}
