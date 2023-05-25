@@ -278,7 +278,7 @@ public class BasicController {
 	
 	@ResponseBody
 	@GetMapping("/basic/bomList")
-	public List<BomVO> bomList(@RequestParam String id) { // 거래처 목록
+	public List<BomVO> bomList(@RequestParam String id) { // BOM 목록
 		return service.bomList(id);
 	}
 
@@ -316,6 +316,19 @@ public class BasicController {
 	@PostMapping("/basic/modifyBom") // BOM 수정
 	public boolean modifyBom(@RequestBody List<BomVO> list) {
 		return service.updateBom(list);
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/deleteBom") // BOM 수정
+	public boolean deleteBom(@RequestBody List<BomVO> list) {
+		return service.deleteBom(list);
+	}
+	
+	
+	// 제품 공정흐름도
+	
+	@GetMapping("/basic/flowManage")
+	public void flowManage() {
 	}
 	
 	

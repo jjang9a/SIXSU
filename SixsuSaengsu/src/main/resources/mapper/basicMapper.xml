@@ -276,4 +276,27 @@
 	WHERE proc_stat = 'Y'
 </select>
 
+<select id="bomList" parameterType="String" resultType="BomVO">
+	SELECT bom_id, pd_id, get_pd_type(bom_mat) pdType, bom_mat, sp_name, mat_name, bom_num, bom_unit, b.proc_id, proc_name, TO_CHAR(update_date, 'yyyy/MM/dd') update_date
+	FROM bom b LEFT OUTER JOIN semi_prod s ON b.bom_mat = s.sp_id
+	LEFT OUTER JOIN material m ON b.bom_mat = m.mat_id
+	LEFT OUTER JOIN process p ON b.proc_id = p.proc_id
+	WHERE pd_id = 'CP001'
+	ORDER BY bom_id
+</select>
+
+<insert id="addBom" parameterType="BomVO">
+	INSERT INTO bom VALUES (bom_seq.nextval, #{pdId}, #{bomMat}, #{bomNum}, #{bomUnit}, #{procId}, sysdate)
+</insert>
+
+<update id="updateBom" parameterType="BomVO">
+	UPDATE bom SET bom_num=#{bomNum}, bom_unit=#{bomUnit}, proc_id=#{procId}, update_date=sysdate
+	WHERE bom_id = #{bomId}
+</update>
+
+<delete id="deleteBom" parameterType="BomVO">
+	DELETE FROM bom
+	WHERE bom_id = #{bomId}
+</delete>
+
 </mapper>
