@@ -287,20 +287,30 @@
 			});
 
 
-
+			// 적합 수량 부적합 수량 자동 구하기
+	 		function calSuitQt() {
+				let totalNsuitQt = 0;
+				const rows = detailGrid.getData();
+				rows.forEach(function (row) {
+					totalNsuitQt += row.nsuitQt;
+					console.log("Total Nsuit: " + totalNsuitQt);
+				});
+				const inspQt = parseInt($('#inspQt').val());
+				const suitQt = inspQt - totalNsuitQt;
+				$('#suitQt').val(suitQt);
+			} 
 
 			// 검사 결과 등록 버튼 클릭 이벤트
 			$('#rrBtn').on('click', function (e) {
-				console.log('rrBtn클릭');
-
+				console.log('rrBtn 클릭');
 
 				$('#prInspForm').toggle(); // prInspForm의 표시 상태를 토글
 				$(".detail").css('display', 'block');
 
-				console.log("selMatId:" + selMatId)
+				console.log("selMatId: " + selMatId);
 				let matId = selMatId;
 
-				//선택된 결과 주입
+				// 선택된 결과 주입
 				$('#inspStdId').val(selStdId);
 				$('#inspNum').val(selInspNum);
 				$('#busName').val(selBusName);
@@ -308,7 +318,7 @@
 				$('#matName').val(selMatName);
 				$('#inspQt').val(selInspQt);
 
-				console.log("ajax호출 전 matId : " + matId);
+				console.log("ajax 호출 전 matId: " + matId);
 
 				// 검사 항목 ajax 호출
 				$.ajax({
@@ -322,13 +332,37 @@
 						console.log(result);
 						detailGrid.resetData(result);
 						setTimeout(() => detailGrid.refreshLayout(), 700);
+
+						// 적합 수량과 부적합 수량 자동 계산 함수
+						function calSuitQt() {
+						  const rows = detailGrid.getData();
+						  let totalNsuitQt = 0;
+						  rows.forEach(function(row) {
+						    const nsuitQt = parseInt(row.nsuitQt);
+						    if (!isNaN(nsuitQt)) {
+						      totalNsuitQt += nsuitQt;
+						    }
+						  });
+						  const inspQt = parseInt($('#inspQt').val());
+						  const suitQt = inspQt - totalNsuitQt;
+
+						  // 적합 수량과 부적합 수량 필드에 값 설정
+						  $('#nsuitQt').val(totalNsuitQt);
+						  $('#suitQt').val(suitQt);
+						}
+
+						// Toast Grid의 값이 변경될 때마다 호출되는 이벤트 핸들러 등록
+						detailGrid.on('editingFinish', function(e) {
+						  if (e.columnName === 'nsuitQt') {
+						    calSuitQt(); // 값 계산
+						  }
+						});
 					},
 					error: function (reject) {
 						console.log(reject);
 					}
 				});
-
-			})
+			});
 
 
 			// 검사 세부 항목 그리드
@@ -385,39 +419,7 @@
 			// 세부 검사 항목 그리드에 스크롤 부여
 			detailGrid.setBodyHeight(400);
 			
-			
-			// 적합 수량 계산
-			let inspQt = parseInt($('#inspQt').val());
-			
-			let suitQt = inspQt;
-			$('#suitQt').val(suitQt);
-			
-			$(document).ready(function(){
-				function calQt(){
-			
-			console.log(inspQt);
-			
-			// 부적합 수량 계산
-			let nsuitQtSum = 0;
-			let rows = detailGrid.getRows();
-			console.log(rows);
-			rows.forEach(row => {
-				console.log(row);
-				  let nsuitQt = row.nsuitQt; // 결과값
-					console.log(nsuitQt);
-				  // 결과값이 숫자인 경우에 더함
-				  if (!isNaN(nsuitQt)) {
-					  nsuitQtSum += parseFloat(nsuitQt);
-					  console.log("parseFloat:"+parseFloat(nsuitQt));
-					  console.log(nsuitQtSum);
-				  }
-				});
 
-				suitQt = inspQt - nsuitQtSum;
-				}
-			}
-			)
-			
 
 			// 모달 그리드 ajax
 			let gridData2 = [];
@@ -554,12 +556,18 @@
 
 
 			// inspBtn 등록 버튼 클릭 이벤트
-			$('#inspBtn').on('click', function (e) {
-					new Promise((succ, fail) => {
+			$('#inspBtn').on('click', function () {
+					
 						$.ajax({
 							url: '/quality/priRegister',
 							type: 'post',
 							dataType: 'JSON',
+							data:data: {
+							    inspNum: $('#inspNum').val(),
+							    inspId: detailGrid.getModifiedRows().updatedRows.inspId,
+							    resVal: detailGrid.getModifiedRows().updatedRows.resVal,
+							    res_stat: detailGrid.getModifiedRows().updatedRows.res_stat
+							},
 							contentType: 'application/json',
 							success: function (result) {
 								console.log(result);
@@ -569,31 +577,10 @@
 								console.log(reject);
 							}
 						});
-					}).then((arg) => { //두번째 ajax 실행
-						$.ajax({
-							url: '/quality/priRegUpdate',
-							type: 'post',
-							dataType: 'JSON',
-							contentType: 'application/json',
-							success: function (result2) {
-								console.log(result2);
-
-								alert('검사 결과 등록이 완료되었습니다.');
-
-							},
-							error: function () {
-								alert('검사 결과 등록 중 오류가 발생했습니다!');
-							}
-						});
-
-					})
+					
 					$('#prInspForm input').val('');
 				} // on click event 끝
-
-
 			)
-
-
 		</script>
 	</div>
 </body>
