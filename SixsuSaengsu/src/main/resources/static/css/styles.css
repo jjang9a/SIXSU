@@ -11261,6 +11261,7 @@ body {
 
 /*추가 한 부분*/
 .sixBtn4,
+.sixBtn3,
 .sixBtn2,
 .sixBtn1,
 .sixBtn8,
@@ -11279,6 +11280,10 @@ body {
 
 .sixBtn2 {
   width: 57px;
+}
+
+.sixBtn3 {
+  width: 67px;
 }
 
 .sixBtn1 {

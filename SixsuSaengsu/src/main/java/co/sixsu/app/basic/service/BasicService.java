@@ -57,5 +57,6 @@ public interface BasicService {
 	List<ProcessVO> activeProcList(); // 활성화된 공정 조회
 	boolean addBom(List<BomVO> list); // BOM 등록
 	boolean updateBom(List<BomVO> list); // BOM 수정
+	boolean deleteBom(List<BomVO> list); // BOM 삭제
 	
 }

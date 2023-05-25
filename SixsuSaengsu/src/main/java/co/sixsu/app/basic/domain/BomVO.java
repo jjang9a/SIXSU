@@ -13,12 +13,11 @@ public class BomVO { // BOM 테이블
 	private String procId; // 소요 공정코드
 	private String updateDate; // 수정일자
 	
-	private String cpName; // 제품명
-	private String cpSize; // 제품 규격
-	private String cpType; // 제품 유형 (완제품/반제품)
+	private String spName; // 반제품명
 	private String matName; // 투입자재명
 	private String matSize; // 투입자재 규격
-	private String matType; // 투입자재 유형 (자재/반제품)
+	private String matType;
+	private String pdType; // 투입자재 유형 (자재/반제품)
 	private String procName; // 공정명
 	
 }
