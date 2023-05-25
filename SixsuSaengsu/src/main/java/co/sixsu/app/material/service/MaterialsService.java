@@ -9,6 +9,7 @@ import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.material.domain.SpRecWaitVO;
 
 @Service
 public interface MaterialsService {
@@ -20,7 +21,7 @@ public interface MaterialsService {
 	List<MatreqVO> selectMatReq(int numId);
 	
 	//발주 행 삭제
-	int deleteMatReq(String num);
+	void deleteMatReq(String[] num);
 	
 	//발주 행 등록
 	int insertMatReq(MatreqVO vo);
@@ -42,4 +43,7 @@ public interface MaterialsService {
 	
 	//자재 lot 리스트
 	List<MatLotVO> mLotList();
+	
+	//반제품 입고대기 리스트
+	List<SpRecWaitVO> getSpWaitList();
 }

@@ -110,6 +110,12 @@
 		on m.mat_id = l.mat_id
   	</select>
 	
+	<!-- 반제품 입고대기 리스트 -->
+	<select id="getSpWaitList" resultType="SpRecWaitVO">
+		select d.wk_deta_id, s.sp_id, s.sp_size, s.sp_name, s.sp_lot, d.good_qt, to_char(d.cmplt_date, 'yyyy-mm-dd') as cmplt_date, emp_id 
+		from semi_prod s join DETA_WORK_ORDR d
+		on s.sp_id = d.mat_id
+	</select>
 	
 </mapper>
 
