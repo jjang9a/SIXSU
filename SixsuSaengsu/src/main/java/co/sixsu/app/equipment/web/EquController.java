@@ -56,6 +56,7 @@ public class EquController {
 		equService.equUpdate(data);
 		return data;
 	}
+	
 	// [설비 관리 페이지] - 삭제
 	@ResponseBody // 설비관리(삭제) 
 	@PostMapping("/equipment/equDel") 
