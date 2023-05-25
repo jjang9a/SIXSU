@@ -10,6 +10,7 @@ import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.material.domain.SpRecWaitVO;
 import co.sixsu.app.material.mapper.MaterialsMapper;
 import co.sixsu.app.material.service.MaterialsService;
 
@@ -33,8 +34,10 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//발주 삭제
 		@Override
-		public int deleteMatReq(String num) {
-			return mapper.deleteMatReq(num);
+		public void deleteMatReq(String[] num) {
+			for(String i : num) {
+				mapper.deleteMatReq(i);
+			}
 		}
 		
 		//발주 등록
@@ -74,10 +77,17 @@ public class MaterialsServiceImpl implements MaterialsService{
 			result += mapper.deleteMLot(matLotId);
 			return result;
 		}
-
+		
+		//자재 LOT 리스트
 		@Override
 		public List<MatLotVO> mLotList() {
 			return mapper.mLotList();
+		}
+		
+		//반제품 입고대기 리스트
+		@Override
+		public List<SpRecWaitVO> getSpWaitList() {
+			return mapper.getSpWaitList();
 		}
 		
 		

@@ -46,21 +46,11 @@ import co.sixsu.app.work.service.WorkService;
 		return "/work/work4";
 		}
 		
-		
-		@RequestMapping("toastList")
-		public List toastList() {
-			System.out.println("ajax 들어오긴 했음");
-			List list = new ArrayList();
-			Map map = new HashMap();
-			map.put("name",  "a");
-			map.put("artist",  "b");
-			map.put("type",  "c");
-			map.put("release",  "1.1.1.0");
-			map.put("genre",  "M");
-			list.add(map);
-			return list;
+		@GetMapping("work5")
+		public String work5(Model model) {
+			System.out.println("work5 들어옴");
+		return "/work/work4";
 		}
-		
 }
 
 

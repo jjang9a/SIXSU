@@ -30,24 +30,7 @@ public class EquController {
 	@GetMapping("/equipment/equSearch") // 설비 조회 페이지
 	public void equSearch() {
 	}
-    
-	
-	///////////////////
-	
-//	@GetMapping("/equipment/equSearchL") //설비 조회 페이지 리스트
-//	public String equSearchL(Model model){
-//		model.addAttribute("equSearchL", equService.equList());
-//		return "/equipment/equSearch";
-//	}
-//	
-//	@ResponseBody // 설비 조회 리스트 ajax
-//	@RequestMapping("/equipment/equSearchAjax") 
-//	public List<EquConVO> equSearchA() {
-//		 List<EquConVO> list = equService.equList();
-//		 System.out.println(list);
-//		 return list;
-//	}
-	/////////////////////
+   
 	@ResponseBody
 	@GetMapping("/equipment/equCon") //설비 리스트 ajax
 	public List<EquConVO> equList(){
@@ -67,7 +50,10 @@ public class EquController {
 	public EquConVO equUpdate(EquConVO data) {
 		equService.equUpdate(data);
 		return data;
-	} 
+	}
+
+	// [설비 관리 페이지] - 삭제
+
 	@ResponseBody // 설비관리(삭제) 
 	@PostMapping("/equipment/equDel") 
 	public String equdel(@RequestBody EquConVO equCode) {
@@ -86,8 +72,8 @@ public class EquController {
 	public List<EquConVO> equInfo(@ModelAttribute EquConVO info) { //담고 담아서
 		String equCode = info.getEquCode(); // info 안에 필드값 EquCode를
 		System.out.println(equCode); // 콘솔창에 뿌려줌
-		List<EquConVO> list = equService.equInfo(equCode); // 리스트 형식 list에 담아서 
-		System.out.println(list);
+		//List<EquConVO> list = equService.equInfo(equCode); // 리스트 형식 list에 담아서 
+		//System.out.println(list);
 		return null; // 모달 창으로 리턴해야함.
 	
 	}
