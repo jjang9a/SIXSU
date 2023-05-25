@@ -19,9 +19,7 @@ public interface EquService {
 
 	boolean equDel(EquConVO equCode); // 설비관리(삭제)
 
-	List<EquConVO> equInfo(String equCode); // 검색시 필요
-
-	
+	//List<EquConVO> equCheckList(); // 설비 점검 리스트
 
 	
 	
