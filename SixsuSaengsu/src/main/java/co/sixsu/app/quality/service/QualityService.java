@@ -3,7 +3,6 @@ package co.sixsu.app.quality.service;
 import java.util.List;
 
 import co.sixsu.app.material.domain.MatreqVO;
-import co.sixsu.app.quality.domain.QilVO;
 import co.sixsu.app.quality.domain.QuaVO;
 
 public interface QualityService {
