@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.QuaVO;
@@ -156,7 +160,11 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 
-
+	@Override
+	public boolean priRegisterAndUpdate(List<QuaVO> list) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 
 
