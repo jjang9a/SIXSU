@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.equipment.domain.EquConVO;
 
 @Mapper

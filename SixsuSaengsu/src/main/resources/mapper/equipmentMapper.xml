@@ -5,42 +5,38 @@
   
 <mapper namespace="co.sixsu.app.equipment.mapper.EquMapper">
 	
-	<!-- 설비관리 리스트 -->
-	<select id="equList" resultType="EquConVO">
-	
-	</select>
   	
   	<!-- 설비조회 검색 -->
   	<select id="equFilterList" resultType="EquConVO" parameterType="EquConVO">
-  	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, to_char(check_date, 'yyyy-mm-dd') as check_date, i.check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
+  	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, to_char(check_date, 'yyyy-mm-dd') as check_date, to_char(i.check_next, 'yyyy-mm-dd') as check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
 		FROM EQU_CON c LEFT OUTER JOIN EQU_INSP i
 		ON c.equ_code = i.equ_code
 		LEFT OUTER JOIN EQU_OPER o
 		ON c.equ_code = o.equ_code
-		WHERE ( c.equ_code = #{equCode} OR #{equCode} IS NULL)
-		AND (c.equ_name = #{equName} OR #{equName} IS NULL)
+		WHERE (c.equ_name = #{equName} OR #{equName} IS NULL)
+		
   	</select>
 
-	<!-- 설비관리 리스트 -->
+	<!-- 설비 조회,관리 리스트 -->
 	<select id="equConList" resultType="EquConVO">
-  		SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_model, c.equ_stat, c.equ_line, i.equ_suit, to_char(i.check_date, 'yyyy-mm-dd') as check_date, i.check_next, c.equ_check, i.check_info, o.oper_start, o.oper_fnish, c.equ_img, c.emp_id 
-			FROM equ_con c LEFT OUTER JOIN equ_insp i
-			ON c.equ_code = i.equ_code
-			LEFT OUTER JOIN equ_oper o
-			ON c.equ_code = o.equ_code
+  	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_model, c.equ_stat, c.equ_line, c.equ_check, c.equ_img, i.equ_suit, to_char(i.check_date, 'yyyy-mm-dd') as check_date, to_char(i.check_next, 'yyyy-mm-dd') as check_next , i.check_type, i.check_info, c.c_temp, o.oper_start, o.oper_fnish, o.oper_type, o.oper_note, c.emp_id  
+		FROM equ_con c LEFT OUTER JOIN equ_insp i
+		ON c.equ_code = i.equ_code
+		LEFT OUTER JOIN equ_oper o
+		ON c.equ_code = o.equ_code
             
   	</select>
 
 	<!-- 설비관리 등록 -->
 	<insert id="equAdd" parameterType="EquConVO">
-		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_img, emp_id, equ_check)
-		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{equImg}, #{empId}, #{equCheck})
+		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_check, equ_img, c_temp, emp_id )
+		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{equCheck}, #{equImg}, #{ctemp}, #{empId})
 	</insert>
 	
 	<!-- 설비관리 수정 -->
 	<update id="equUpdate" parameterType="EquConVO">
 		UPDATE equ_con
-		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, equ_img=#{equImg}, emp_id=#{empId}, equ_check=#{equCheck}
+		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, equ_img=#{equImg}, emp_id=#{empId}, equ_check=#{equCheck}, c_temp{cTemp}
 		WHERE equ_code=#{equCode}
 	</update>
 	
