@@ -1,98 +1,115 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/template}">
-<head>
-<meta charset="UTF-8">
-<style>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
 
-	.sixBtn2{
-	margin-right : 7px;
-	}
-	
-</style>
-<title>설비 관리</title>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<script type="text/javascript"
-	src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
-<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>	
+<head>
+	<meta charset="UTF-8">
+	<style>
+		.sixBtn2 {
+			margin-right: 7px;
+		}
+
+		input {
+			margin: 5px;
+		}
+	</style>
+	<title>설비 관리</title>
 </head>
+
 <body>
 	<div layout:fragment="content">
-		<br><br> 
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">설비관리</h1>
-	<!-- 등록 수정 삭제 전환 -->
-		
-	<div>
-		<button type="button" class="sixBtn2" style="float: right;" id="delBtn">삭제</button>
-		<button type="button" class="sixBtn2" style="float: right;" id="modBtn">수정</button>
-		<button type="button" class="sixBtn2" style="float: right;" id="addBtn">등록</button>
-	</div>	
 		<br><br>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비관리</h1>
+		<!-- 등록 수정 삭제 전환 -->
 		<hr>
-		<br>
+
+		<!-- 인풋창 -->
+		<form action="" method="post" id="addForm">
+			<table>
+				<tr>
+					<td>설비코드<span class="needStar"> * </span></td>
+					<td><input type="text" name="equCode" id="equCode" style="background: #ccdceb;" class="empty"></td>
+				</tr>
+				<tr>
+					<td>설비명<span class="needStar"> * </span></td>
+					<td><input type="text" name="equName" id="equName" class="empty"></td>
+				</tr>
+				<tr>
+					<td>모델<span class="needStar"> * </span></td>
+					<td><input type="text" name="equModel" id="equModel" class="empty"></td>
+				</tr>
+				<tr>
+					<td>설비상태<span class="needStar"> *</span></td>
+					<td>
+						<div id="divRadio">
+							<input type="radio" id="equStat1" name="equStat" value="Y" checked>
+							<label for="equStat1">가동</label>
+							<input type="radio" id="equStat2" name="equStat" value="N">
+							<label for="equStat2">비가동</label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>설비라인<span class="needStar"> *</span></td>
+					<td><input type="text" name="equLine" id="equLine" class="empty"></td>
+				</tr>
+				<tr>
+					<td>표준온도<span class="needStar"> *</span></td>
+					<td><input type="text" name="ctemp" id="ctemp" class="empty"></td>
+				</tr>
+				<tr>
+					<td>공정코드<span class="needStar"> * </span></td>
+					<td colspan="2"><input type="text" name="procId" id="procId" class="empty" readonly>
+						<button type="button" id="pdBtn" class="sixBtn2" style="margin-right: 10px;"
+							data-bs-toggle="modal">조회</button></td>
+				</tr>
+				<tr>
+					<td>점검주기<span class="needStar"> *</span></td>
+					<td><input type="text" name="equCheck" id="equCheck" class="empty"></td>
+				</tr>
+				<tr>
+					<td>담당자<span class="needStar"> *</span></td>
+					<td><input type="text" name="empId" id="empId"></td>
+				</tr>
+			</table>
+
+			<div>
+				<button type="button" class="sixBtn2" style="float: right;" id="delBtn">삭제</button>
+				<button type="button" class="sixBtn2" style="float: right;" id="modBtn">수정</button>
+				<button type="button" class="sixBtn2" style="float: right;" id="addBtn">등록</button>
+			</div>
+			<br><br>
+
+			<!-- 공정코드 선택 Modal 시작 -->
+			<div class="modal fade" id="pdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="pdModal" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!-- 모달 헤더 -->
+						<div class="modal-header">
+							<h5 class="modal-title" id="pdModalLabel" style="font-family: 'MaruBuri';">공정코드 선택</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<!-- 모달 바디 -->
+						<div class="modal-body">
+							<div class="sel sel1 sel3">공정코드</div>
+							<div id="pdGrid"></div>
+						</div>
+						<!-- 모달 푸터(버튼부분) -->
+						<div class="modal-footer">
+						</div>
+					</div>
+				</div>
+			</div>
 
 
-               
-	   <!-- 인풋창 --> 
-	   <form action="" method="post" id="addForm">
-	   	<table>
-	   	 <div id="input">
-			<tr>
-						<td>설비코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="equCode" id="equCode" ></td>
-				<td>설비명<span class="needStar"> * </span></td>
-				<td><input type="text" name="equName" id="equName" ></td>
-		   	</tr>
-		   	<tr>
-				<td>모델<span class="needStar"> * </span></td>
-				<td><input type="text" name="equModel" id="equModel"></td>
-				
-				
-				
-			<tr>	
-				<td>설비상태<span class="needStar"> *</span></td>
-				<td>
-					<div id="divRadio">
-						<input type="radio" id="equSuit" name="equStat" value="Y" checked>
-						<label for="equStat1">가동</label>
-						<input type="radio" id="equSuit" name="equStat" value="N">
-						<label for="equStat2">비가동</label>
-				</td>
-			</tr>
-				<td>설비상태<span class="needStar"> *</span></td>
-				<td><input type="text" name="equStat" id="equStat"></td>
-			</td>
-				
-		   	<tr>
-				<td>설비라인<span class="needStar"> *</span></td>
-				<td><input type="text" name="equLine" id="equLine"></td>
-				<td>설비이미지<span class="needStar"> *</span></td>
-				<td><input type="text" name="equImg" id="equImg"></td>
-			</tr>
-			<tr>
-			
-				<td>공정코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="procId" id="procId" ></td>
-				<td>점검주기<span class="needStar"> *</span></td>
-				<td><input type="text" name="equCheck" id="equCheck"></td>
-			</tr>
-			<tr>
-				<td>담당자<span class="needStar"> *</span></td>
-				<td><input type="text" name="empId" id="empId"></td>
-			</tr>
-		 </div>
-		</table> 
-		<div>
-			<!-- <img src="../equipment/equImg/병입기2.jpg" loading="lazy" weight="100" height="200"> -->
-		</div>
-	  </form>
-	  
-	  
-	  <!-- 이미지 첨부파일 
+			<div>
+				<!-- <img src="../equipment/equImg/병입기2.jpg" loading="lazy" weight="100" height="200"> -->
+			</div>
+		</form>
+
+
+		<!-- 이미지 첨부파일 
 	  <form th:action="@{/item/insert>" method="post" enctype="multipart/form-data">
 		 설비 이미지 : <input type="text" name="Img"><br />
 		 설비 이미지입니다 : <input type="file" name="image"><br />
@@ -101,221 +118,278 @@
 		<button type="button" class="sixBtn2" style="float: right;" id="addBtn">첨부파일</button>
 		  <img src="equipment/equImg/병입기2.jpg" alt="" loading="lazy">
 	 </form> -->
-		
-	  	
-	   
-	   
-<div id="grid"></div>
 
-	    <script>
 
-	    	 
-	     
-	    const grid = new tui.Grid({
-        el: document.getElementById('grid'),
-        pageOptions: {
-			useClient : true,
-			perPage: 10
-		},
-        scrollX: false,
-        scrollY: false,
-        
-        rowHeaders: ['rowNum'],
-        columns: [
-          {
-            header: '설비코드',
-            name: 'equCode'
-          },
-          {
-            header: '공정코드',
-            name: 'procId'
-          },
-          {
-            header: '설비명',
-            name: 'equName'
-          },
-          {
-            header: '모델',
-            name: 'equModel'
-          },
-          {
-            header: '설비상태',
-            name: 'equStat',
-            filter: 'select'
-          },
-          {
-             header: '설비라인',
-             name: 'equLine'
-          },
-          {
-             header: '점검주기',
-             name: 'equCheck'
-          },
-          {
-             header: '설비 이미지',
-             name: 'equImg'
-          },
-          {
-        	  header: '기준온도',
-              name: 'ctemp',
-              hidden : true
-          },
-          {
-             header: '담당자',
-             name: 'empId'
-           }
-        ]
-	    
-     });
-	    
-	     // 페이지가 열리면 기능작동 - 리스트 띄워주기.  
-	    window.onload = function(){
-	    	
-	    	$.ajax({
-	    		url : "/equipment/equCon",
-	    		method : "GET",
-	    		dataType : "JSON",
-	    		success : function(result){
-	    			grid.resetData(result);
-	    		}
-	    	});
-	    };
-	    
 
-    // 색 테마 적용
-    tui.Grid.applyTheme('default', {
-        cell: {
-            header: {
-                background: '#e5edf5'
-            },
-            selectedRowHeader: {
-                background: '#e5edf5'
-            },
-            normal: {
-                background: '#ffffff'
-            }
-        }
-    });
 
-    // 클릭시 데이터 받아서 인풋창에 값 불러오기.
-    let selRow = '';
- 	 grid.on('click', ev => {
-		selRow = ev.rowKey;
- 		// focus된 셀이 있는 열 전체 select 처리
-			grid.setSelectionRange({
-				start: [ev.rowKey, 0],
-				end: [ev.rowKey, grid.getColumns().length - 1]
+		<div id="grid"></div>
+
+		<script>
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				scrollX: false,
+				scrollY: false,
+
+				rowHeaders: ['rowNum'],
+				columns: [{
+						header: '설비코드',
+						name: 'equCode'
+					},
+					{
+						header: '공정코드',
+						name: 'procId'
+					},
+					{
+						header: '설비명',
+						name: 'equName'
+					},
+					{
+						header: '모델',
+						name: 'equModel'
+					},
+					{
+						header: '설비상태',
+						name: 'equStat',
+						filter: 'select'
+					},
+					{
+						header: '설비라인',
+						name: 'equLine'
+					},
+					{
+						header: '점검주기',
+						name: 'equCheck'
+					},
+					{
+						header: '기준온도',
+						name: 'ctemp',
+					},
+					{
+						header: '담당자',
+						name: 'empId'
+					}
+				]
+
 			});
- 	 
-    	// 클릭한 Row의 정보를 dataRow에 저장
-        var dataRow = grid.getRow(ev.rowKey);
-    	console.log(dataRow.equCode);
-    	console.log(dataRow);
 
-    	<!--클릭시 인풋창에 데이터 불러오기 -->
-    	
-		  $('#equCode').val(dataRow.equCode);
-	      $('#procId').val(dataRow.procId);
-	      $('#equName').val(dataRow.equName);
-	      $('#equModel').val(dataRow.equModel);
-	      $('#equStat').val(dataRow.equStat);
-	      $('#equLine').val(dataRow.equLine);
-	      $('#equCheck').val(dataRow.equCheck);
-	      $('#equImg').val(dataRow.equImg);
-	      $('#empId').val(dataRow.empId);
-	      $('#ctemp').val(dataRow.ctemp);
-	      
-      });
- 	 
-	   $('#addBtn').on('click', function (e) {
-		   console.log($('#addForm').serialize())
- 		$.ajax({
-			url: '/equipment/equAdd',
-			type: 'post',
-			data: $('#addForm').serialize(),
-			dataType: 'json',
-			success: function (result) {
-				alert('설비정보가 등록되었습니다');
-				console.log(result);
-				//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
-				const appendedData = result
-				grid.appendRow(appendedData);
-			},
-			error: function (reject) {
-				alert('설비 등록 중 오류가 발생했습니다!');
-				console.log(reject);
-			}
-		});
-		$('#addForm input').val('');
-		
-	})
-	
-	// 설비정보 수정 
-		$('#modBtn').on('click', function (e) {
-		   console.log($('#addForm').serialize())
- 		$.ajax({
-			url: '/equipment/equUpdate',
-			type: 'post',
-			data: $('#addForm').serialize(),
-			dataType: 'json',
-			success: function (result) {
-				console.log(result);
-				alert('설비정보가 수정되었습니다');
-				const setData = result
-				grid.setRow(selRow, setData);
-				selRow = '';
-			},
-			error: function (reject) {
-				alert('설비 수정 중 오류가 발생했습니다!');
-				console.log(reject);
-			}
-		});
-		$('#addForm input').val('');
-	})	
-	
-	// 설비정보 삭제
-		$('#delBtn').on('click', function (e) {
- 			e.preventDefault(); // 기본 동작 방지 (폼 제출 등)
-  
-  	// 선택한 설비의 ID를 추출
-  			var equCode = $('#equCode').val();
-  	// 서버로 삭제 요청을 전송
-		  		$.ajax({
-		   			 url: '/equipment/equDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
-		   			 type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
-		   			 dataType : "JSON",
-		  			 contentType : "application/json",
-				     data: JSON.stringify( { equCode : $('#equCode').val()}), // 삭제할 설비의 ID를 전송
-				     success: function (result) {
-				    	 
-				     // 삭제 성공 시의 처리
-				     console.log('설비가 성공적으로 삭제되었습니다.');
-				     alert('설비정보가 성공적으로 삭제되었습니다.');
-				     
-				     // 추가적인 업데이트나 리다이렉션 등의 동작 수행
-				     },
-				     error: function (reject) {
-				     console.log('설비 삭제 중 오류가 발생했습니다.');
-				     console.log('오류 메시지:', reject);
-				     alert('설비 삭제 중 오류가 발생했습니다..');
-				     // 오류 메시지를 사용자에게 표시하거나 추가적인 오류 처리 수행
-				    }
-				 });
- 			// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주는?
-  			$('#addForm input').val('');
-  				grid.removeRow(selRow)
-				selRow = ''; 
-		});
-	
+			// 페이지가 열리면 기능작동 - 리스트 띄워주기.  
+			window.onload = function () {
 
-	
-	
-     
- 
-    </script>
-    
+				$.ajax({
+					url: "/equipment/equCon",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+					}
+				});
+			};
 
-    
-    </div>
+
+			// 색 테마 적용
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					selectedRowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			// 공정코드 리스트
+			const pdGrid = new tui.Grid({
+				el: document.getElementById('pdGrid'),
+				scrollX: false,
+				scrollY: true,
+				minBodyHeight: 400,
+				columns: [{
+					header: '공정분류',
+					name: 'comName',
+					align: 'center'
+
+				}, {
+					header: '공정코드',
+					name: 'procId',
+					align: 'center'
+
+				}, {
+					header: '공정명',
+					name: 'procName',
+					align: 'center'
+
+				}]
+			});
+			// 그리드 높이 & 색 변경 테마 적용
+			grid.setBodyHeight(400);
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			// 공정코드 조회 버튼을 클릭 했을떄 공정코드 리스트를 불러옴.
+			$('#pdBtn').on('click', function (e) {
+
+				$.ajax({
+					url: "/basic/procList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				})
+				setTimeout(() => pdGrid.refreshLayout(), 500);
+				$('#pdModal').modal('show');
+			});
+
+			// 공정코드 클릭시 자동으로 등록인풋창에 값이 입력됨
+			pdGrid.on('click', ev => {
+				const focusCell = pdGrid.getFocusedCell()
+				let dataRow = pdGrid.getRow(ev.rowKey);
+				$('#procId').val(dataRow.procId);
+				$('#pdModal').modal('hide');
+			})
+
+
+
+			// 클릭시 설비 정보데이터 인풋창에 값 불러오기.
+			let selRow = '';
+			grid.on('click', ev => {
+				// focus된 셀이 있는 열 전체 select 처리
+				if(selRow != ev.rowKey){
+					grid.removeRowClassName(selRow, 'cell-pink');
+				}
+				grid.addRowClassName(ev.rowKey, 'cell-pink');
+				selRow = ev.rowKey;
+				// 클릭한 Row의 정보를 dataRow에 저장
+				var dataRow = grid.getRow(ev.rowKey);
+				console.log(dataRow.equCode);
+				console.log(dataRow);
+
+				// 클릭시 인풋창에 데이터 불러오기
+
+				$('#equCode').val(dataRow.equCode);
+				$('#procId').val(dataRow.procId);
+				$('#equName').val(dataRow.equName);
+				$('#equModel').val(dataRow.equModel);
+				$('#equStat').val(dataRow.equStat);
+				$('#equLine').val(dataRow.equLine);
+				$('#equCheck').val(dataRow.equCheck);
+				$('#empId').val(dataRow.empId);
+				$('#ctemp').val(dataRow.ctemp);
+				// 라디오 버튼이 Y 나 N 일떄 가동 비가동으로 전환 
+				if (dataRow.equStat == 'Y') {
+					$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
+				} else {
+					$("input:radio[name='equStat']:radio[value='N']").prop('checked', true);
+				}
+			});
+
+			$('#addBtn').on('click', function (e) {
+				console.log($('#addForm').serialize())
+				$.ajax({
+					url: '/equipment/equAdd',
+					type: 'post',
+					data: $('#addForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						alert('설비정보가 등록되었습니다');
+						console.log(result);
+						//등록 버튼을 누르면 리스트에 삽입된다.     
+						const appendedData = result
+						grid.appendRow(appendedData);
+						// 리스트를 리셋. 등록데이터가 바로 뜸.
+						grid.resetData(result);
+						setTimeout(() => orderingGrid.refreshLayout(), 1000);
+
+					},
+					error: function (reject) {
+						alert('설비 등록 중 오류가 발생했습니다!');
+						console.log(reject);
+					}
+				});
+				// 인풋창을 비워줌
+				$('#addForm input').val('');
+
+			});
+
+			// 설비정보 수정 
+			$('#modBtn').on('click', function (e) {
+				console.log($('#addForm').serialize())
+				$.ajax({
+					url: '/equipment/equUpdate',
+					type: 'post',
+					data: $('#addForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						console.log(result);
+						alert('설비정보가 수정되었습니다');
+						const setData = result
+						grid.setRow(selRow, setData);
+						selRow = '';
+					},
+					error: function (reject) {
+						alert('설비 수정 중 오류가 발생했습니다!');
+						console.log(reject);
+					}
+				});
+				$('.empty').val('');
+				$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
+			})
+
+			// 설비정보 삭제
+			$('#delBtn').on('click', function (e) {
+				e.preventDefault();
+				console.log(selRow);
+
+				var equCode = $('#equCode').val();
+				$.ajax({
+					url: '/equipment/equDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
+					type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
+					contentType: "application/json",
+					data: JSON.stringify({
+						equCode: $('#equCode').val()
+					}), // 삭제할 설비의 ID를 전송
+					success: function (result) {
+						// 삭제 성공 시의 처리
+						console.log('설비가 성공적으로 삭제되었습니다.');
+						alert('설비정보가 성공적으로 삭제되었습니다.');
+
+						grid.removeRow(selRow)
+						selRow = '';
+						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주는?
+						$('.empty').val('');
+						$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
+					},
+					error: function (reject) {
+						console.log('설비 삭제 중 오류가 발생했습니다.');
+						console.log('오류 메시지:', reject);
+						alert('설비 삭제 중 오류가 발생했습니다..');
+					}
+				});
+			});
+		</script>
+
+
+
+	</div>
 </body>
+
 </html>
