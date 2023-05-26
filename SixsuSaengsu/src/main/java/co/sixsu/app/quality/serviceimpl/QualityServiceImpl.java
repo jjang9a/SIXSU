@@ -127,17 +127,24 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public List<QuaVO> insertPri(List<QuaVO> list) {
 		
-		
+		System.out.println("서비스");
 		int count = 0; //insert 발생 횟수
 		
 		for(int i=0; i<list.size(); i++) {
 				QuaVO qua = list.get(i);
 				String detNum = qua.getInspNum(); //세부 지시 검사번호
-				
+				String un = "-";
+
 				detNum += -i;
 				qua.setDetInspNum(detNum);
 				System.out.println(detNum);
-				count += quaMapper.insertPr(list.get(i));
+				
+				if(qua.getResVal()==null) {
+					qua.setResVal(un);
+				};
+				
+				
+				count += quaMapper.insertPri(list.get(i));
 				System.out.println(count);
 			
 		}
