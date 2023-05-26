@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatLotVO;
+import co.sixsu.app.material.domain.MatShipVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
-import co.sixsu.app.material.domain.SpRecWaitVO;
 
 @Service
 public interface MaterialsService {
@@ -44,6 +45,13 @@ public interface MaterialsService {
 	//자재 lot 리스트
 	List<MatLotVO> mLotList();
 	
-	//반제품 입고대기 리스트
-	List<SpRecWaitVO> getSpWaitList();
+	//자재 출고 리스트
+	List<MatShipVO> getMatShipList();
+	
+	//자재 재고조정 리스트
+	List<MatAdjVO> getMatAdjList();
+	
+	//자재 조정입고
+	void matRecAdj(List<MatAdjVO> vo);
+	
 }
