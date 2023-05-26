@@ -104,9 +104,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 관리</h1>
 	<hr>
 	<div class="btn_container">
-		<button class="plusBtn sixBtn4">+</button>
+		
 		<button class="moveBtn sixBtn4">이동</button>
-		<button class="removeBtn sixBtn4">삭제</button>
+		
 		<button class="planBtn sixBtn4">생산계획</button>
 		<button class="bomBtn sixBtn4">공정등록</button>
 	</div>
@@ -179,7 +179,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	
 	<!-- <button class="modal_btn sixBtn4">모달버튼</button> -->
-	생산계획
+	세부지시<br>
+	<button class="plusBtn sixBtn4">+</button>
+	<button class="removeBtn sixBtn4">삭제</button>
 	<div id="grid1"></div>
 	
 	<!-- 제품 선택 Modal 시작 -->
@@ -287,7 +289,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	      },
  	      {
  	        header: '지시수량',
- 	        name: 'ordQt',
+ 	        name: 'detaQt',
  	        editor: 'text'
  	      },
  	      {
@@ -307,7 +309,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	 	  },
  	 		{
  	 	        header: '담당자',// 아직VO에 없음 정의못했음
- 	 	        name: 'endDate'
+ 	 	        name: 'empName'
  	 	 	  },
 	 	 	{
 		          header: '진행현황',
@@ -470,7 +472,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	    el: document.getElementById('bom_search1'),
 	    data : bom_data,
 	    scrollX: false,
-	    scrollY: false,
+	    scrollY: true,
 	    rowHeaders: ['rowNum','checkbox'],
 	    
 	    columns: [
@@ -490,18 +492,14 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	      }
 	 	 	
 	    ],
-	    pageOptions: {
-	        useClient: true,
-	        perPage: 8
-	      },
 	      draggable: true
 	  });
-		
+		bom_search1.setBodyHeight(320);
 		
 		var bom_search2 = new tui.Grid({
 		    el: document.getElementById('bom_search2'),
 		    scrollX: false,
-		    scrollY: false,
+		    scrollY: true,
 		    rowHeaders: ['checkbox'],
 		    
 		    columns: [
@@ -525,12 +523,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	 	        	type: 'number'
 	 	        }
 	 	      }
-		    ],
-		    pageOptions: {
-		        useClient: true,
-		        perPage: 8
-		      }
+		    ]
 		  });
+		bom_search2.setBodyHeight(320);
 		
 		var grid_product = new tui.Grid({
 			el: document.getElementById('grid_product'),
@@ -668,6 +663,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	
 	
+	
+	
+	
+	
 	let grid1_unique_code = 10;
 	
 	$('.moveBtn').on('click', function(){
@@ -725,6 +724,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
 	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	let grid1Ev
 	grid1.on('click',ev => {
 		let columnName = ev.columnName;
 		if (columnName === 'cpId'){ //컬럼이름 변경하 시오!
@@ -738,13 +738,14 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		    grid_product.refreshLayout(), 200);
 		}
 		//클릭한 세부지시에 대한 공정가져오기
-		selectDetWorkCode = grid1.getRow(ev.rowKey).wkDetaId;
+		selectDetWorkCode = grid1.getRow(ev.rowKey);
+		grid1Ev = ev
 		$.ajax({
 			url : "/ajax/getWkBomList",
 			method : "GET",
 			dataType : "JSON",
 			contentType: "application/json",
-			data : { data: selectDetWorkCode },
+			data : { data: selectDetWorkCode.wkDetaId },
 			success : function(result){
 				console.dir(result);
 				bom_search1.resetData(result);
@@ -758,6 +759,30 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		selectBomWorkCode = '';
 	})
 	
+	grid1.on('afterChange', function (ev) {
+		  let getRow = grid1.getRow(grid1Ev.rowKey)
+		  console.log(getRow)
+		  console.log(ev)
+		  console.log(ev.changes[0].columnName)
+		  if(ev.changes[0].columnName != 'cpId'){
+			  getRow.single = 'Y';
+		  }
+		  $.ajax({
+				url : "/ajax/modifyDetaWorkList",
+				method : "POST",
+				dataType : "JSON",
+				contentType: "application/json",
+				data :  JSON.stringify(getRow),
+				success : function(result){
+					console.dir(result);
+					grid1.resetData(result);
+					},
+					errer : function(reject){
+						console.log(reject)
+					}
+				})
+		});
+	
 	
 	$('.plusBomBtn').on('click', function(){
 		if(세부계획선택여부() == true){
@@ -766,7 +791,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				method : "GET",
 				dataType : "JSON",
 				contentType: "application/json",
-				data : { data: selectDetWorkCode },
+				data : { data: selectDetWorkCode.wkDetaId },
 				success : function(result){
 					console.dir(result);
 					bom_search1.resetData(result);
@@ -954,9 +979,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		grid1.setValue(cell.rowKey, 'cpName', cpName)
 		$('#product_modal').modal('hide');
 	})
-	
-	let target
-	
 	
 	//모달안에 그리드중 데이터클릭시 작동. 모달닫히는거까지
 	grid_process.on('click',ev => {

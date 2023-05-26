@@ -216,6 +216,14 @@ public class WorkServiceImpl implements WorkService{
 		List<workBomVO> list = mapper.getWkBomList(data.getWkDetaId());
 		return list;
 	}
+
+	@Override
+	public List<DetaWorkOrdrVO> modifyDetaWorkList(DetaWorkOrdrVO data) {
+		mapper.modifyDetaWorkList(data);
+		List<DetaWorkOrdrVO> list = mapper.getDetaWorkHeadList(data.getWkHeadId());
+		System.out.println(data);
+		return list;
+	}
 	
 	
 }

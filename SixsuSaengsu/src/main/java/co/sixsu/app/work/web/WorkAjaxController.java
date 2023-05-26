@@ -203,4 +203,10 @@ public class WorkAjaxController {
 		List<workBomVO> list = service.modifyBomList(data);
 		return list;
 	}
+	@RequestMapping("modifyDetaWorkList")
+	public List<DetaWorkOrdrVO> modifyDetaWorkList(@RequestBody DetaWorkOrdrVO data) {
+		System.out.println(data);
+		List<DetaWorkOrdrVO> list = service.modifyDetaWorkList(data);
+		return list;
+	}
 } 
