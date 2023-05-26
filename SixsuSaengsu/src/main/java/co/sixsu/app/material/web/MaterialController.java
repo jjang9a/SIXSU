@@ -18,12 +18,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatLotVO;
+import co.sixsu.app.material.domain.MatShipVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
-import co.sixsu.app.material.domain.SpRecWaitVO;
 import co.sixsu.app.material.service.MaterialsService;
 
 
@@ -59,11 +60,20 @@ public class MaterialController {
 	public void matList() {
 	}
 	
-	//입고관리 페이지 열어주기
+	//반제품 입고관리 페이지 열어주기
 	@GetMapping("/materials/sprec")
 	public void spRecList() {
 	}
 	
+	//자재 출고조회 페이지 열어주기
+	@GetMapping("/materials/matship")
+	public void matShipList() {
+	}
+	
+	//자재 재고조정 페이지 열어주기
+	@GetMapping("/materials/matadj")
+	public void matAdj() {
+	}
 	
 	//발주내역 DB에서 불러오기
 	@ResponseBody
@@ -207,13 +217,30 @@ public class MaterialController {
 		return list;
 	}
 	
-	//반제품 입고대기 리스트 모달
+	//자재 출고 리스트
 	@ResponseBody
-	@RequestMapping("/materials/sprecwait")
-	public List<SpRecWaitVO> getSpWaitList(){
-		List<SpRecWaitVO> list = service.getSpWaitList();
+	@RequestMapping("/materials/matshiplist")
+	public List<MatShipVO> getMatShipList(){
+		List<MatShipVO> list = service.getMatShipList();
 		return list;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/materials/matadjlist")
+	public List<MatAdjVO> getMatAdjList(){
+		List<MatAdjVO> list = service.getMatAdjList();
+		return list;
+	}
+	
+	
+	@PostMapping("/materials/matrecadj")
+    @ResponseBody
+    public void matRecAdj(@RequestBody List<MatAdjVO> vo) {
+		System.out.println(vo);
+		service.matRecAdj(vo);
+		
+	}
+	
 }
 
 

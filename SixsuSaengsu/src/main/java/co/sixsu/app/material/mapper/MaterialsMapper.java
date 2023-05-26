@@ -2,12 +2,14 @@ package co.sixsu.app.material.mapper;
 
 import java.util.List;
 
+import co.sixsu.app.material.domain.MatAdjVO;
+import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatLotVO;
+import co.sixsu.app.material.domain.MatShipVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
-import co.sixsu.app.material.domain.SpRecWaitVO;
 
 public interface MaterialsMapper {
 	
@@ -45,5 +47,12 @@ public interface MaterialsMapper {
 	//자재 lot 리스트
 	int deleteMLot(String matLotId);
 	
-	List<SpRecWaitVO> getSpWaitList();
+	//자재 출고 리스트
+	List<MatShipVO> getMatShipList();
+	
+	//자재 재고조정 리스트
+	List<MatAdjVO> getMatAdjList();
+	
+	//자재 조정입고
+	int matRecAdj(MatAdjVO vo);
 }
