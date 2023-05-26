@@ -1,16 +1,157 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/template}">
-<head>
-<meta charset="UTF-8">
-<title>공정흐름도</title>
-</head>
-<body>
-<div layout:fragment="content">
-<h1 class="mt-4" style="font-family: 'MaruBuri';">제품 공정흐름도 관리</h1>
-<script>
 
-</script>
-</div>
+<head>
+	<meta charset="UTF-8">
+	<title>공정흐름도</title>
+	<style>
+		h1 {
+			margin-bottom: 100px;
+		}
+
+		h5 {
+			padding-left: 10px;
+			margin-bottom: 11px;
+			font-family: 'MaruBuri';
+			float: left;
+		}
+
+		.rightBtn {
+			float: right;
+		}
+
+		.background {
+			background-color: #ccdceb;
+			padding: 35px 30px 40px 30px;
+		}
+
+		#pdDiv {
+			width: 420px;
+			float: left;
+			margin-left: 70px;
+		}
+
+		#flowDiv {
+			float: left;
+			width: 1000px;
+			margin-left: 70px;
+		}
+
+		select {
+			height: 29px;
+		}
+
+		#searchKey {
+			width: 160px;
+		}
+
+		.sel {
+			width: 90px;
+			text-align: center;
+			padding: 10px;
+			font-size: 15px;
+			font-weight: bold;
+		}
+
+		.sel1 {
+			float: left;
+		}
+
+		.sel2 {
+			float: left;
+		}
+
+		.sel3 {
+			background-color: white;
+		}
+	</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">제품 공정흐름도 관리</h1>
+
+		<!-- 왼쪽 틀 시작 -->
+		<div id="pdDiv" class="background">
+			<!-- 탭 -->
+			<div class="sel sel1 sel3">완제품</div>
+			<div class="sel sel2">반제품</div>
+			<div id="pdGrid"></div>
+		</div>
+		<!-- 왼쪽 틀 끝 -->
+
+		<!-- 오른쪽 틀 -->
+		<div id="flowDiv" class="background">
+			<h5>공정흐름도</h5>
+			<div class="rightBtn">
+				<button type="button" class="sixBtn3" id="initBtn">초기화</button>
+				<button type="button" class="sixBtn2" id="addBtn">추가</button>
+				<button type="button" class="sixBtn2" id="delBtn">삭제</button>
+				<button type="button" class="sixBtn2" id="saveBtn">저장</button>
+			</div>
+			<div id="grid"></div>
+		</div>
+		<!-- 오른쪽 틀 끝 -->
+
+		<script>
+			// 그룹코드-검색 탭 토글
+			$('.sel1').on('click', function (e) {
+				$('.sel2').removeClass('sel3');
+				$(this).addClass('sel3');
+			})
+
+			$('.sel2').on('click', function (e) {
+				$('.sel1').removeClass('sel3');
+				$(this).addClass('sel3');
+
+			})
+
+			const pdGrid = new tui.Grid({
+				el: document.getElementById('pdGrid'),
+				scrollX: false,
+				scrollY: true,
+				minBodyHeight: 400,
+				columns: [{
+					header: '그룹코드',
+					name: 'gid',
+					align: 'center'
+				}, {
+					header: '그룹명',
+					name: 'gname',
+					align: 'center'
+				}]
+			});
+
+			// 그리드 색 변경 테마 적용
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				scrollX: false,
+				scrollY: true,
+				minBodyHeight: 400,
+				columns: [{
+					header: '그룹코드',
+					name: 'gid',
+					align: 'center'
+				}, {
+					header: '그룹명',
+					name: 'gname',
+					align: 'center'
+				}]
+			});
+		</script>
+	</div>
 </body>
+
 </html>
