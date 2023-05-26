@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.equipment.domain.EquConVO;
 import co.sixsu.app.equipment.service.EquService;
 
@@ -30,6 +31,10 @@ public class EquController {
 	@GetMapping("/equipment/equSearch") // 설비 조회 페이지
 	public void equSearch() {
 	}
+	
+	@GetMapping("equipment/equcheck") // 점검관리 페이지
+	public void equcheck() {
+	}
    
 	@ResponseBody
 	@GetMapping("/equipment/equCon") //설비 리스트 ajax
@@ -45,9 +50,16 @@ public class EquController {
 		return data;
 	}
 	
+	@ResponseBody
+	@GetMapping("/equipment/activePdList")
+	public List<ProductVO> activePdList() { // 등록 공정코드(조회) ajax
+		return equService.activePdList();
+	}
+	
 	@ResponseBody // 설비관리(수정) 
 	@PostMapping("/equipment/equUpdate") 
 	public EquConVO equUpdate(EquConVO data) {
+		System.out.println("컨트롤러 : "+ data);
 		equService.equUpdate(data);
 		return data;
 	}
@@ -56,13 +68,13 @@ public class EquController {
 
 	@ResponseBody // 설비관리(삭제) 
 	@PostMapping("/equipment/equDel") 
-	public String equdel(@RequestBody EquConVO equCode) {
+	public boolean equdel(@RequestBody EquConVO equCode) {
 	    System.err.println(equCode);
 		  if(equService.equDel(equCode)) {
-			  return "success" ;
+			  return true ;
 
 		  }else {
-			  return "fail";
+			  return false;
 		  }
 		  
 	} 
@@ -92,9 +104,7 @@ public class EquController {
 	
 	
 	
-//	@GetMapping("equ/equcheck") // 점검관리 페이지
-//	public void equcheck() {
-//	}
+
 	
 	// 점검 조회
 	
