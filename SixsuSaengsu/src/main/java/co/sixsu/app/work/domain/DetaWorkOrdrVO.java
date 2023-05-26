@@ -7,8 +7,8 @@ public class DetaWorkOrdrVO {
 	
 	String wkDetaId;
 	String wkHeadId;
-	String matId;
-	String matName;
+	String cpId;
+	String cpName;
 	String startDate;
 	String endDate;
 	int detaQt;
@@ -18,4 +18,6 @@ public class DetaWorkOrdrVO {
 	String cmpltSt;
 	String memo;
 	String empId;
+	String empName;
+	String single;
 }

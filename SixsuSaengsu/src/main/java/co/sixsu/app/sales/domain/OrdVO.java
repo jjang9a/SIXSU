@@ -15,6 +15,7 @@ public class OrdVO {
 	private int ordSalePrice;
 	private String ordEndDate;
 	private String cpSize;
+	private String ordDate;
 	
 	
 }

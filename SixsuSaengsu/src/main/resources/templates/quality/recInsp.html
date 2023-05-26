@@ -331,6 +331,7 @@
 					success: function (result) {
 						console.log(result);
 						detailGrid.resetData(result);
+						detailGrid.setColumnValues('inspNum', selInspNum, false);
 						setTimeout(() => detailGrid.refreshLayout(), 700);
 
 						// 적합 수량과 부적합 수량 자동 계산 함수
@@ -374,6 +375,11 @@
 				scrollY: true,
 
 				columns: [{
+						header: '검사번호',
+						name: 'inspNum',
+						hidden : true
+					},
+					{
 						header: '검사 항목 코드',
 						//width: 120,
 						name: 'inspId',
@@ -412,13 +418,10 @@
 						align: 'center'
 					}
 				]
-
-
 			});
 
 			// 세부 검사 항목 그리드에 스크롤 부여
 			detailGrid.setBodyHeight(400);
-			
 
 
 			// 모달 그리드 ajax
@@ -556,29 +559,41 @@
 
 
 			// inspBtn 등록 버튼 클릭 이벤트
+			let arr=[];
+			let sendData={
+					inspStdId: $('#inspStdId').val(),
+					matId: $('#matId').val(),
+					empName: $('#empName').val(),
+				    inspNum: $('#inspNum').val(),
+				    inspId: detailGrid.getModifiedRows().updatedRows.inspId,
+				    resVal: detailGrid.getModifiedRows().updatedRows.resVal,
+				    resStat: detailGrid.getModifiedRows().updatedRows.resStat
+				    
+				};
+			
 			$('#inspBtn').on('click', function () {
-					
+				
+				console.log(detailGrid.getData())
+						console.log('확인')
+						let inspStdId=$('#inspStdId').val();
+						console.log(inspStdId);
 						$.ajax({
 							url: '/quality/priRegister',
 							type: 'post',
-							dataType: 'JSON',
-							data:data: {
-							    inspNum: $('#inspNum').val(),
-							    inspId: detailGrid.getModifiedRows().updatedRows.inspId,
-							    resVal: detailGrid.getModifiedRows().updatedRows.resVal,
-							    res_stat: detailGrid.getModifiedRows().updatedRows.res_stat
-							},
+							data: JSON.stringify(detailGrid.getData()),
 							contentType: 'application/json',
 							success: function (result) {
 								console.log(result);
+								alert('검사 결과값 등록이 완료되었습니다.')
 
 							},
 							error: function (reject) {
 								console.log(reject);
+								alert('검사 결과값 등록에 실패했습니다.')
 							}
-						});
+						}); 
 					
-					$('#prInspForm input').val('');
+					// $('#prInspForm input').val('');
 				} // on click event 끝
 			)
 		</script>

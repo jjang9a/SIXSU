@@ -7,16 +7,16 @@ public class EquInspVO {
 
 	String checkCode; // 점검코드
 	String equCode; // 설비코드
+	String operCode; // 비가동코드
 	String empId; // 사원코드
 	String equName; // 설비명
-	String operCode; // 비가동코드
+	String equCheck; // 점검주기
 	String checkDate; // 점검일자 Date
 	String checkNext; // 차기점검일 Date
-	String checkType; // 점검구분
-	String checkInfo; // 점검내역
+	String checkType; // 점검구분(수시,정기)
+	String checkInfo; // 점검사유
 	String checkCom; // 조치내역
-	String equCheck; // 점검주기
-	String equStat; // 설비상태
-	String equSuit; // 적합여부
-	String checkNote; // 비고란
+	String equSuit; // 판정(점검) 적합/부적합 
+	String equStat; // 설비상태(가동/비가동)
+	String checkNote; // 점검비고
 }
