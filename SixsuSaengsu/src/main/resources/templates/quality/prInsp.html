@@ -46,11 +46,71 @@
 			<button class="sixBtn2" id="search">조회</button>
 			<button class="sixBtn3" id="search">초기화</button>
 		</div>
+		
+		<!-- 검사 대기 항목 리스트 그리드 부분 -->
+		<div id="grid"></div>
 
 
 
 
 			<script>
+			
+			// 검사 세부 항목 그리드
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				//data: [], //빈 배열로 초기화
+
+				scrollX: false,
+				scrollY: false,
+
+				columns: [{
+						header: '생산지시번호',
+						name: 'wkDataId'
+					},
+					{
+						header: '제품코드',
+						name: 'matId',
+						align: 'center'
+
+					},
+					{
+						header: '제품명',
+						name: 'matName',
+						align: 'center'
+					},
+					{
+						header: '공정',
+						name: 'proc',
+						align: 'center'
+					},
+					{
+						header: '검사수량',
+						name: 'inspQt',
+						align: 'center'
+					}, {
+						header: '적합수량',
+						name: 'suitQt',
+						editor: 'text',
+						align: 'center'
+					},
+					{
+						header: '부적합 수량',
+						name: 'nsuitQt',
+						editor: 'text',
+						align: 'center'
+					},
+					{
+						header: '검사자',
+						name: 'empName',
+						align: 'center'
+					},
+					{
+						header: '검사일자',
+						name: 'inspDate',
+						align: 'center'
+					},
+				]
+			});
 
 			</script>
 		</div>

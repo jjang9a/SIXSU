@@ -5,10 +5,6 @@
   
 <mapper namespace="co.sixsu.app.work.mapper.WorkMapper">
 
-<select id="getDate" resultType="java.util.Date">
-	select sysdate from dual
-</select>
-
 <select id="getPlan" resultType="DetaProdPlanVO">
 	SELECT *
 	FROM PLAN_VIEW
@@ -33,10 +29,162 @@
 </select>
 
 <select id="getSorder" resultType="SorderVO">
-	SELECT a.ORD_ID, a.BUS_ID, c.BUS_NAME, a.ORD_DUE_DATE, a.ORD_DATE,a.ORD_STAT
+	SELECT a.ORD_ID, a.BUS_ID, c.BUS_NAME, TO_char(b.ORD_END_DATE, 'yyyy-MM-dd') AS ORD_END_DATE, TO_char(a.ORD_DATE, 'yyyy-MM-dd') AS ORD_DATE ,a.ORD_STAT
 	FROM SORDER a LEFT JOIN DET_ORD b ON a.ORD_ID = b.ORD_ID
     LEFT JOIN BUSINESS C ON a.BUS_ID = c.BUS_ID
 </select>
 
+<select id="getdetOrd" resultType="detOrdVO">
+	SELECT a.ORD_DET_ID, a.CP_ID, b.CP_NAME, a.ord_QT, TO_char(a.ORD_END_DATE, 'yyyy-MM-dd') AS ORD_END_DATE, a.ORD_STAT_DET
+	FROM DET_ORD a LEFT JOIN COMPLETE_PROD b ON a.CP_ID = b.CP_ID
+	WHERE ORD_ID = #{ordId}
+</select>
 
+<select id="getIdDateAndData" resultType="string">
+	SELECT (#{data} || TO_NUMBER(NVL(MAX(SUBSTR(PLAN_HEAD_ID, 10)), 0) + 1))
+	FROM PROD_PLAN
+	WHERE PLAN_HEAD_ID LIKE '${data}%'
+</select>
+
+<insert id="addProdPlan" parameterType="addPlanVO">
+	INSERT INTO PROD_PLAN (PLAN_HEAD_ID, TYPE, PLAN_REG_DATE, EMP_ID,PLAN_START,PLAN_END)
+	values ( #{planHeadId}, #{type}, #{regDate}, #{empName}, TO_DATE(#{startDate},'yyyy-MM-dd'), TO_DATE(#{endDate},'yyyy-MM-dd'))
+</insert>
+
+<insert id="addDetProdPlan" parameterType="addPlanVO">
+	INSERT INTO DETA_PROD_PLAN (PLAN_DETA_ID, ORD_DET_ID, PLAN_HEAD_ID, MAT_ID, DETA_QT, CMPLT_ST, MEMO)
+	values ( #{planDetaId}, #{ordDetId}, #{planHeadId}, #{cpId}, #{ordQt}, #{cmpltSt}, #{memo})
+</insert>
+
+<select id="getProductList" resultType="ProductVO">
+	SELECT *
+	FROM COMPLETE_PROD
+</select>
+
+<select id="getPlanList" resultType="addPlanVO">
+	SELECT PLAN_HEAD_ID, TYPE, TO_char(PLAN_START, 'yyyy-MM-dd') AS PLAN_START,  TO_char(PLAN_END, 'yyyy-MM-dd') AS PLAN_END, PLAN_COMPLETION_STATUS AS cmplt_st
+	FROM PROD_PLAN
+</select>
+
+<select id="getDetaPlanList" resultType="addPlanVO">
+	SELECT a.PLAN_DETA_ID, a.MAT_ID AS CP_ID, c.CP_NAME, a.DETA_QT, b.SUM_QT, a.CMPLT_ST
+	FROM DETA_PROD_PLAN a  LEFT OUTER JOIN (SELECT DISTINCT a.PLAN_DETA_ID, SUM(b.DETA_QT) AS SUM_QT
+	FROM plan_and_worklink a LEFT OUTER JOIN DETA_WORK_ORDR b ON a.WK_DETA_ID = b.WK_DETA_ID
+	GROUP BY a.PLAN_DETA_ID
+	) b ON a.PLAN_DETA_ID = b.PLAN_DETA_ID
+	    LEFT OUTER JOIN COMPLETE_PROD c ON a.MAT_ID = c.CP_ID 
+    WHERE a.PLAN_HEAD_ID = #{planHeadId}
+	ORDER BY a.PLAN_DETA_ID
+</select>
+
+<select id="getProcessList" resultType="ProcessVO">
+	SELECT *
+	FROM PROCESS
+</select>
+
+<select id="getMaterialList" resultType="MatVO">
+	SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
+	FROM MATERIAL
+	UNION ALL
+	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
+	FROM SEMI_PROD
+</select>
+
+<select id="getOrderCode" resultType="String">
+	SELECT (to_CHAR(sysdate, 'yyyyMMdd')||'-'|| (NVL(MAX(TO_NUMBER(SUBSTR(WK_HEAD_ID, 10))), 0) + 1))
+	FROM WORK_ORDR
+	WHERE WK_HEAD_ID LIKE to_CHAR(sysdate, 'yyyyMMdd')||'-%'
+</select>
+
+<insert id="addWork">
+	INSERT INTO WORK_ORDR (WK_HEAD_ID, WK_CMPLT_ST) values(#{orderCode},'작성중')
+</insert>
+
+<select id="getDetaCode" resultType="String">
+	SELECT #{subData} || '-' ||(NVL(MAX(TO_NUMBER(SUBSTR(WK_DETA_ID, LENGTH(#{subData})+2))), 0) + 1)
+	FROM DETA_WORK_ORDR
+	WHERE WK_DETA_ID like '${subData}%'
+</select>
+
+<insert id="addDetaWork" parameterType="DetaWorkOrdrVO">
+	INSERT INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST) values(#{wkHeadId},#{wkDetaId},'작성중')
+</insert>
+<insert id="addWkBom">
+	INSERT INTO WORK_BOM (WK_BOM_ID, WK_DETA_ID) values('WKB'||wk_BOM_SEQ.nextVal, #{detaCode})
+</insert>
+	
+<select id="getDetaWorkHeadList" resultType="DetaWorkOrdrVO">
+	SELECT *
+	FROM DETA_WORK_ORDR
+	WHERE WK_HEAD_ID = #{data}
+	ORDER BY WK_DETA_ID
+</select>	
+
+<select id="getWkBomList" resultType="workBomVO">
+	SELECT *
+	FROM WORK_BOM
+	WHERE WK_DETA_ID = #{data}
+	ORDER BY WK_BOM_ID
+</select>
+
+<select id="getBomCode" resultType="String">
+	SELECT MAX(WK_BOM_ID)
+	FROM WORK_BOM
+	WHERE WK_DETA_ID = #{detaCode}
+</select>
+<insert id="addWorkMatBom">
+	INSERT INTO WORK_BOM_MAT (BOM_MAT_ID, WK_BOM_ID)values('workMat'||work_mat_seq.nextVal, #{bomCode})
+</insert>
+
+<select id="getWkMatList" resultType="bomMatVO">
+	SELECT *
+	FROM WORK_BOM_MAT
+	WHERE WK_BOM_ID = #{data}
+	ORDER BY BOM_MAT_ID
+</select>
+
+<delete id="delBomList" parameterType="List">
+	DELETE WORK_BOM
+	WHERE WK_BOM_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.wkBomId}
+	</foreach>
+</delete>
+
+<delete id="delMatList" parameterType="List">
+	DELETE WORK_BOM_MAT
+	WHERE BOM_MAT_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.bomMatId}
+	</foreach>
+</delete>
+
+<delete id="delBeideMat" parameterType="List">
+	DELETE WORK_BOM_MAT
+	WHERE WK_BOM_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.wkBomId}
+	</foreach>
+</delete>
+
+<delete id="delDetWorkList" parameterType="List">
+	DELETE DETA_WORK_ORDR
+	WHERE WK_DETA_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.wkDetaId}
+	</foreach>
+</delete>
+
+<delete id="delBeideBom" parameterType="List">
+	DELETE WORK_BOM
+	WHERE WK_DETA_ID IN
+	<foreach collection="data" item="item" open="(" separator="," close=")">
+		#{item.wkDetaId}
+	</foreach>
+</delete>
+
+<update id="modifyMatList" parameterType="bomMatVO">
+	UPDATE WORK_BOM_MAT SET MAT_ID = #{wkBomId} , MAT_QT = #{matQt}
+	WHERE BOM_MAT_ID = #{bomMatId}
+</update>
 </mapper>

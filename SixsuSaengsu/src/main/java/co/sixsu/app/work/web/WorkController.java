@@ -20,36 +20,36 @@ import co.sixsu.app.work.service.WorkService;
 	
 		@Autowired WorkService service;
 	
-		@GetMapping("work1")
+		@GetMapping("/work/viewPlanPage")
 		public String work1() {
-			System.out.println("test1 들어옴");
-		return "/work/work1";
+			System.out.println("viewPlanPage 들어옴");
+		return "/work/viewPlanPage";
 		}
 		
-		@GetMapping("work2")
+		@GetMapping("/work/work2")
 		public String work2() {
 			System.out.println("test2 들어옴");
 		return "/work/work2";
 		}
 		
-		@GetMapping("work3")
+		@GetMapping("/work/createPlanPage")
 		public String work3() {
-			System.out.println("test3 들어옴");
-		return "/work/work3";
+			System.out.println("createPlanPage 들어옴");
+		return "/work/createPlanPage";
 		}
 		
-		@GetMapping("work4")
+		@GetMapping("/work/createWorkPage")
 		public String work4(Model model) {
-			System.out.println("work4 들어옴");
+			System.out.println("createWorkPage 들어옴");
 			String orderCode = service.addWork();
 			model.addAttribute("orderCode", orderCode);
-		return "/work/work4";
+		return "/work/createWorkPage";
 		}
 		
-		@GetMapping("work5")
+		@GetMapping("/work/xPage")
 		public String work5(Model model) {
-			System.out.println("work5 들어옴");
-		return "/work/work4";
+			System.out.println("xPage 들어옴");
+		return "/work/xPage";
 		}
 }
 

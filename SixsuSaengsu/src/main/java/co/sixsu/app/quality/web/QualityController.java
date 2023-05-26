@@ -122,6 +122,12 @@ public class QualityController {
 		
 	}
 	
+	@ResponseBody
+	@PostMapping("/quality/priRegisterAndUpdate")
+	public boolean priRegisterAndUpdate(@RequestBody List<QuaVO> list) {
+	    return quaService.priRegisterAndUpdate(list);
+	}
+	
 	// 제품 품질 관리 리스트 불러오기
 	/*
 	 * @ResponseBody

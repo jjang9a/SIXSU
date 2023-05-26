@@ -11,6 +11,7 @@
     <title>(주)SIXSU</title>
     <link href="/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script> <!-- 엑셀기능 -->
     <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -138,11 +139,11 @@
                         <div class="collapse" id="prodnav" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="layout-static.html">생산계획 조회</a>
-                                <a class="nav-link-a" href="layout-sidenav-light.html">생산계획 관리</a>
-                                <a class="nav-link-a" href="#">작업지시 조회</a>
-                                <a class="nav-link-a" href="#">작업지시 관리</a>
-                                <a class="nav-link-a" href="#">공정실적 관리</a>
+                                <a class="nav-link-a" href="/work/viewPlanPage">생산계획 조회</a>
+                                <a class="nav-link-a" href="/work/createPlanPage">생산계획 관리</a>
+                                <a class="nav-link-a" href="/work/xPage">작업지시 조회</a>
+                                <a class="nav-link-a" href="/work/createWorkPage">작업지시 관리</a>
+                                <a class="nav-link-a" href="/work/xPage">공정실적 관리</a>
                             </nav>
                         </div>
 

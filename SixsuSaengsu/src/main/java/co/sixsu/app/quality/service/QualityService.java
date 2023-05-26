@@ -21,6 +21,7 @@ public interface QualityService {
 		List<QuaVO> inspItem(String matId); // 입고 검사 항목 불러오기
 		List<QuaVO> insertPri(List<QuaVO> list); // 자재 입고 검사 결과 등록
 		boolean priRegUpdate(QuaVO qua, MatreqVO mat); // 자재 입고 검사 결과 등록 시 업데이트
+		boolean priRegisterAndUpdate(List<QuaVO> list); // 자재 입고 검사 결과 등록 + 업데이트
 		
 		
 		//List<QuaVO> quaInspList(); // 검사 항목 리스트
