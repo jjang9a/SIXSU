@@ -17,26 +17,28 @@ import co.sixsu.app.basic.mapper.BasicMapper;
 import co.sixsu.app.basic.service.BasicService;
 
 @Service("BasicService")
-public class BasicServiceImpl implements BasicService{
-	
-	@Autowired BasicMapper mapper;
-	
+public class BasicServiceImpl implements BasicService {
+
+	@Autowired
+	BasicMapper mapper;
+
 	// 사원 관리
 	@Override // 전체 사원목록 조회
 	public List<EmpVO> getEmpList() {
 		return mapper.empList();
 	}
-	
+
 	@Override // 비밀번호 업데이트
 	public boolean updatePw(EmpVO emp) {
 		System.out.println("service : " + emp);
-		return 	mapper.updatePw(emp) == 1;
+		return mapper.updatePw(emp) == 1;
 	}
+
 	@Override // 사원 등록
 	public EmpVO addEmp(EmpVO emp) {
 		emp.setEmpStat("재직");
 		String bir = emp.getEmpBirth();
-		String pw = bir.substring(2, 4) + bir.substring(5,7) + bir.substring(8);
+		String pw = bir.substring(2, 4) + bir.substring(5, 7) + bir.substring(8);
 		emp.setEmpPw(pw);
 		mapper.addEmp(emp);
 		return emp;
@@ -47,8 +49,6 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.updateEmp(emp) == 1;
 	}
 
-	
-	
 	// 공통코드 관리
 	@Override // 그룹코드 전체목록
 	public List<CodeVO> groupList() {
@@ -63,12 +63,12 @@ public class BasicServiceImpl implements BasicService{
 	@Override // 공통코드 추가
 	public boolean addCode(List<CodeVO> list) {
 		int count = 0; // insert가 발생한 횟수
-		for(int i=0; i<list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			// 공통코드가 빈칸으로 들어 가 있는 열은 extra로 취급해 등록하지 않음
-			if(list.get(i).getComId() == null || list.get(i).getComId().equals("")){
+			if (list.get(i).getComId() == null || list.get(i).getComId().equals("")) {
 				continue;
-			}else {
-				count += mapper.addCode(list.get(i));				
+			} else {
+				count += mapper.addCode(list.get(i));
 			}
 		}
 		return count >= 1;
@@ -77,19 +77,19 @@ public class BasicServiceImpl implements BasicService{
 	@Override // 공통코드 수정
 	public boolean updateCode(List<CodeVO> list) {
 		int count = 0; // update가 발생한 횟수
-		for(int i=0; i<list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			// 공통코드가 빈칸으로 들어 가 있는 열은 실수라고 생각하고 수정하지 않음
-			if(list.get(i).getComId() == null || list.get(i).getComId().equals("")){
+			if (list.get(i).getComId() == null || list.get(i).getComId().equals("")) {
 				continue;
-			}else {
-				count += mapper.updateCode(list.get(i));				
+			} else {
+				count += mapper.updateCode(list.get(i));
 			}
 		}
 		return count >= 1;
 	}
 
 	// 완제품 관리
-	
+
 	@Override // 완제품 목록
 	public List<ProductVO> cpList() {
 		return mapper.cpList();
@@ -110,9 +110,8 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.searchCp(dto);
 	}
 
-	
 	// 반제품 관리
-	
+
 	@Override // 반제품 목록
 	public List<ProductVO> spList() {
 		return mapper.spList();
@@ -133,9 +132,8 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.searchSp(dto);
 	}
 
-	
 	// 자재 관리
-	
+
 	@Override // 자재 목록
 	public List<MaterialVO> matList() {
 		return mapper.matList();
@@ -156,15 +154,14 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.searchMat(dto);
 	}
 
-	
 	// 거래처 관리
-	
+
 	@Override // 사업자번호 중복 조회
 	public boolean checkBusNum(String num) {
 		boolean result = false;
-		if(mapper.checkBusNum(num) == 0) {
+		if (mapper.checkBusNum(num) == 0) {
 			result = true;
-		}else {
+		} else {
 			result = false;
 		}
 		return result;
@@ -190,14 +187,13 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.searchBus(dto);
 	}
 
-	
 	// 공정관리
-	
+
 	@Override // 공정 목록
 	public List<ProcessVO> procList() {
 		return mapper.procList();
 	}
-	
+
 	@Override
 	public List<CodeVO> getComList(String key) {
 		return mapper.getComList(key);
@@ -218,12 +214,19 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.searchProc(dto);
 	}
 
-	
 	// BOM 관리
-	
+
 	@Override
 	public List<BomVO> bomList(String id) {
-		return mapper.bomList(id);
+		List<BomVO> list = mapper.bomList(id);
+		// 제품구분이 반제품이라면 sp_name을 mat_name에 담아줌
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getPdType().equals("반제품")) {
+				list.get(i).setMatName(list.get(i).getSpName());
+			}
+		}
+		System.out.println(list);
+		return list;
 	}
 
 	@Override
@@ -239,27 +242,17 @@ public class BasicServiceImpl implements BasicService{
 	@Override
 	public boolean addBom(List<BomVO> list) {
 		int count = 0; // insert가 발생한 횟수
-		for(int i=0; i<list.size(); i++) {
-			// 소요 자재코드가 빈칸으로 들어 가 있는 열은 extra로 취급해 등록하지 않음
-			if(list.get(i).getBomMat() == null || list.get(i).getBomMat().equals("")){
-				continue;
-			}else {
-				count += mapper.addBom(list.get(i));				
-			}
+		for (int i = 0; i < list.size(); i++) {
+			count += mapper.addBom(list.get(i));
 		}
 		return count >= 1;
 	}
 
 	@Override
 	public boolean updateBom(List<BomVO> list) {
-		int count = 0; // insert가 발생한 횟수
-		for(int i=0; i<list.size(); i++) {
-			// 소요 자재코드가 빈칸으로 들어 가 있는 열은 extra로 취급해 등록하지 않음
-			if(list.get(i).getBomMat() == null || list.get(i).getBomMat().equals("")){
-				continue;
-			}else {
-				count += mapper.addBom(list.get(i));				
-			}
+		int count = 0; // update가 발생한 횟수
+		for (int i = 0; i < list.size(); i++) {
+			count += mapper.updateBom(list.get(i));
 		}
 		return count >= 1;
 	}
@@ -274,7 +267,13 @@ public class BasicServiceImpl implements BasicService{
 		return mapper.activeProcList();
 	}
 
-	
-	
-	
+	@Override
+	public boolean deleteBom(List<BomVO> list) {
+		int count = 0; // delete가 발생한 횟수
+		for (int i = 0; i < list.size(); i++) {
+			count += mapper.deleteBom(list.get(i));
+		}
+		return count >= 1;
+	}
+
 }

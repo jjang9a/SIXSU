@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import co.sixsu.app.material.domain.MatreqVO;
-import co.sixsu.app.quality.domain.QilVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
 import co.sixsu.app.quality.service.QualityService;
@@ -124,17 +127,24 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public List<QuaVO> insertPri(List<QuaVO> list) {
 		
-		
+		System.out.println("서비스");
 		int count = 0; //insert 발생 횟수
 		
 		for(int i=0; i<list.size(); i++) {
 				QuaVO qua = list.get(i);
 				String detNum = qua.getInspNum(); //세부 지시 검사번호
-				
+				String un = "-";
+
 				detNum += -i;
 				qua.setDetInspNum(detNum);
 				System.out.println(detNum);
-				count += quaMapper.insertPr(list.get(i));
+				
+				if(qua.getResVal()==null) {
+					qua.setResVal(un);
+				};
+				
+				
+				count += quaMapper.insertPri(list.get(i));
 				System.out.println(count);
 			
 		}
@@ -157,7 +167,11 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 
-
+	@Override
+	public boolean priRegisterAndUpdate(List<QuaVO> list) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 
 

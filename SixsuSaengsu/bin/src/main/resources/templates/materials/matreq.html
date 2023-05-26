@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>자재발주관리</title>
 
 </head>
 
@@ -13,11 +13,9 @@
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재발주관리</h1>
 
 		<div id="left">
-			발주번호 <input type="number" id="reqNum" name="reqNum">
-		</div>
-		<div id="left">
-			자재코드 <input type="text" id="mname">
-			<button class="sixBtn1">
+			자재명 <input type="text" id="mname">
+			<button type="button" data-bs-toggle="modal" id="msearch"
+						class="sixBtn2" data-bs-target="#msearchModal">
 				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
 					viewBox="0 2 16 16">
 					<path
@@ -26,8 +24,9 @@
 			</button>
 		</div>
 		<div id="left">
-			거래처코드 <input type="text" id="bname">
-			<button class="sixBtn1">
+			거래처명 <input type="text" id="bname">
+			<button type="button" data-bs-toggle="modal" id="search1Btn"
+						class="sixBtn2" data-bs-target="#search1Modal">
 				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
 					viewBox="0 2 16 16">
 					<path
@@ -50,10 +49,60 @@
 			</div>
 		</div>
 
-
+		
 
 		<div id="grid"></div>
+		
+		<!-- 모달창 자재조회  -->
+		<div class="modal fade" id="msearchModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="msearchModalLabel">자재명 조회</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="btns">
+							자재명 <input id="msearch-text" />
+							<button class="sixBtn2" id="msearch-btn">조회</button>
+							<button class="sixBtn2" id="mreset-btn">초기화</button>
+						</div>
+						<div class="modal-body">
+							<div id="gridm"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 모달창 거래조회  -->
+		<div class="modal fade" id="search1Modal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="searchModalLabel">거래처 조회</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="btns">
+							거래처명: <input id="search1-text" />
+							<button class="sixBtn2" id="search1-btn">조회</button>
+							<button class="sixBtn2" id="reset1-btn">초기화</button>
+						</div>
+						<div class="modal-body">
+							<div id="gridt"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script>
+		let transPro='';
+		
 			const gridData = [
 
 			];
@@ -62,19 +111,69 @@
 			window.onload = function () {
 				
 				$.ajax({
-					url: "/materials/mms",
+					url: "/materials/matreqlist",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
 				
 				});
+				
+				//모달창 전체 거래처 리스트
+				$.ajax({
+					url : "/sales/busList",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
+						gridt.resetData(result);
+					},
+ 					error: function(reject) {
+						console.log(reject);
+					}
+				});
+				$('#search1Modal').on('show.bs.modal',function(e){
+					console.log ('거래처 모달');
+					setTimeout(()=>gridt.refreshLayout(),200);
+					// 모달거래처행 클릭시 자동으로 조회 거래처명에 값이 입력이됨
+					gridt.on('click', ev=> {
+					      const focusCell = gridt.getFocusedCell()
+					      let dataRow = gridt.getRow(ev.rowKey);
+					      $('#bname').val(dataRow.busName);
+					      $('#search1Modal').modal('hide');
+					});
+				})	
+				
+				//모달창 전체 자재명 리스트
+				$.ajax({
+					url : "/materials/matlist",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
+						gridm.resetData(result);
+					},
+ 					error: function(reject) {
+						console.log(reject);
+					}
+				});
+				$('#msearchModal').on('show.bs.modal', function(e){
+					console.log ('자재 모달');
+					setTimeout(()=>gridm.refreshLayout(),200);
+					// 모달자재행 클릭시 자동으로 조회 자재명에 값이 입력이됨
+					gridm.on('click', ev=> {
+				      const focusCell = gridm.getFocusedCell()
+				      let dataRow = gridm.getRow(ev.rowKey);
+				      $('#mname').val(dataRow.matName);
+				      $('#msearchModal').modal('hide');
+				    });
+					
+				})
 			};
 			
-
-
 			//테이블에 들어갈 데이터 설정(조회)
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
@@ -93,27 +192,27 @@
 
 				columns: [{
 						header: '발주번호',
-						name: 'matReqId',
-						editor: 'text'
+						name: 'matReqId'
 					},
 					{
 						header: '자재코드',
-						name: 'matId',
-						editor: 'text'
+						name: 'matId'
 					},
 					{
 						header: '자재명',
 						name: 'matName'
 					},
 					{
+						header: '규격',
+						name: 'matSize'
+					},
+					{
 						header: '발주량',
-						name: 'matReqQt',
-						editor: 'text'
+						name: 'matReqQt'
 					},
 					{
 						header: '거래처코드',
-						name: 'busId',
-						editor: 'text'
+						name: 'busId'
 					},
 					{
 						header: '거래처명',
@@ -147,11 +246,53 @@
 				
 			});
 
-			
+		    // 모달거래처조회 기능
+			const gridt = new tui.Grid({
+				el : document.getElementById('gridt'),
+				//data : gridData,
+				scrollX : false,
+				scrollY : false,
+				columns : [ 
+					{
+					header : '거래처번호',
+					name : 'busId',
+				}, {
+					header : '거래처명',
+					name : 'busName'
+				}, {
+					header : '사업자번호',
+					name : 'busNum'
+				}, {
+					header : '전화번호',
+					name : 'busTell'
+				}, {
+					header : '주소',
+					name : 'busAddr'
+				}]
+			});
+		    
+			// 모달자재조회 기능
+			const gridm = new tui.Grid({
+				el : document.getElementById('gridm'),
+				//data : gridData,
+				scrollX : false,
+				scrollY : false,
+				columns : [ 
+					{
+					header : '자재코드',
+					name : 'matId',
+				}, {
+					header : '자재명',
+					name : 'matName'
+				}, {
+					header : '자재규격',
+					name : 'matSize'
+				}]
+			});
 	
 
 
-			tui.Grid.applyTheme('default', {
+ 			tui.Grid.applyTheme('default', {
 				cell: {
 					header: {
 						background: '#e5edf5'
@@ -184,7 +325,22 @@
 			}); */
 			
 			//등록버튼을 누르면 추가
- 			$('#appendBtn').on("click", function () {
+					
+			$('#appendBtn').on("click", function () {
+				
+				$.ajax({
+					url: "/materials/matreqlist",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
+					}
+				
+				});
 /*  				const appendedData = {
  						matReqId: grid.getRow(0).matReqId,
  						matId: grid.getRow(0).matId,
@@ -206,27 +362,40 @@
 					contentType: 'application/json',
 					//data : {list : JSON.stringify(matReqIds)},
 					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
-					success: function (result) {}
+					success: function (result) {
+						console.log(result);
+					},
+ 					error: function(reject){
+						console.log(reject);
+					}
 
 				})
- 				
-/*  				grid.appendRow(appendedData); */
+				
 				$.ajax({
-					url: "/materials/mms",
+					url: "/materials/matreqlist",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+						grid.setValue(0, 'busId', grid.getRow(1).busId , false);
+						grid.setValue(0, 'busName', grid.getRow(1).busName , false);
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
+				
 				});
+/*  				grid.appendRow(appendedData); */
+				
 				//var lastRow = gridData[gridData.length - 1];
  				//console.log(lastRow);
  				console.log("abc");
  				console.log(gridData.length);
+ 				
  			});
  			
-
+			
 			//그리드 안의 내용 콘솔 찍어보기
 /* 			grid.on('click', ev=> {
 				grid.on('click', ev=> {
@@ -273,8 +442,12 @@
 					},
 					//data : {list : JSON.stringify(matReqIds)},
 					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
-					success: function (result) {}
-
+					success: function (result) {
+						console.log(result);
+					},
+ 					error: function(reject){
+						console.log(reject);
+					}
 				})
 
 
@@ -311,6 +484,9 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
 					}
 				});
 				
@@ -326,6 +502,43 @@
 				
 				grid.resetData(prevData);
 			}
+
+			
+			//첫행 입력시 자재모달, 거래처모달로 입력시키기
+		    grid.on('click', ev=> {
+		    	const focusCell = grid.getFocusedCell();
+		    	if(focusCell.rowKey == 0 && focusCell.columnName == 'matId'){
+		    	   	$('#msearchModal').modal('show');
+		    	   	gridm.on('click', evm=> {
+		    	   		{
+			    	   		let dataRow = gridm.getRow(evm.rowKey);
+			    	   		console.log(dataRow);
+			    	   		grid.setValue(ev.rowKey, 'matId', dataRow.matId, false);
+			    	   		grid.setValue(ev.rowKey, 'matName', dataRow.matName, false);
+			    	   		grid.setValue(ev.rowKey, 'matSize', dataRow.matSize, false);
+			    	   		$('#msearchModal').modal('hide');
+		    	   		}
+		    	   		/* getRow.matId = dataRow.matId;
+		    	   		getRow.matName = dataRow.matName;
+		    	   		getRow.matSize = dataRow.matSize; */
+		    	   		
+		    	   		
+					});
+		    	   	
+		    	}else if (focusCell.rowKey == 0 && focusCell.columnName == 'busId'){
+		    		$('#search1Modal').modal('show');
+		    		gridt.on('click', evt=> {
+		    			{
+		    				let dataRow = gridt.getRow(evt.rowKey);
+		    				grid.setValue(ev.rowKey, 'busId', dataRow.busId, false)
+		    				grid.setValue(ev.rowKey, 'busName', dataRow.busName, false)
+		    				$('#search1Modal').modal('hide');
+		    			}
+		    		});
+		    	}				
+		    	
+		    });
+		    
 		</script>
 	</div>
 </body>

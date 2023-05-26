@@ -9,9 +9,11 @@
 	select sysdate from dual
 </select>
 
+<!-- 사원 관리 -->
 <select id="empList" resultType="EmpVO">
 	select emp_id, emp_name, emp_tell, TO_CHAR(emp_birth, 'yyyy/MM/dd') emp_birth, TO_CHAR(emp_hire, 'yyyy/MM/dd') emp_hire, emp_dept, emp_rk, emp_stat, emp_note  
 	from employee
+	order by emp_stat, emp_id
 </select>
 
 <update id="updatePw" parameterType="EmpVO">
@@ -31,5 +33,247 @@
 	set emp_name=#{empName}, emp_tell=#{empTell}, emp_dept=#{empDept}, emp_rk=#{empRk}, emp_note=#{empNote}
 	where emp_id=#{empId}
 </update>
+<!-- 사원 관리 종료 -->
+
+<!-- 공통코드 관리 -->
+<select id="groupList" resultType="CodeVO">
+	select * from group_code
+</select>
+
+<select id="commList" parameterType="SearchDTO" resultType="CodeVO">
+	SELECT *
+	FROM common_code
+	WHERE 
+	<if test='searchType.equals("group")'>
+		g_id = #{searchKey}
+	</if>
+	<if test='searchType.equals("code")'>
+		com_id like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		com_name like '%'||#{searchKey}||'%'
+	</if>
+	ORDER BY com_stat desc, com_id
+</select>
+
+<insert id="addCode" parameterType="CodeVO">
+	INSERT INTO common_code VALUES(#{comId}, #{gId}, #{comName}, #{comNote}, #{comStat})
+</insert>
+
+<update id="updateCode" parameterType="CodeVO">
+	UPDATE common_code
+	SET com_name = #{comName}, com_note = #{comNote}, com_stat = #{comStat}
+	WHERE com_id = #{comId}	
+</update>
+<!-- 공통코드 관리 종료 -->
+
+<!-- 완제품 관리 -->
+<select id="cpList" resultType="ProductVO">
+	select * from complete_prod
+	order by cp_stat desc, cp_id
+</select>
+
+<insert id="addCp" parameterType="ProductVO">
+	INSERT INTO complete_prod VALUES (#{cpId}, #{cpName}, #{cpSize}, #{cpLot}, #{cpUnit}, #{cpStat}, #{cpNote})
+</insert>
+
+<update id="updateCp" parameterType="ProductVO">
+	UPDATE complete_prod
+	SET cp_name=#{cpName}, cp_size=#{cpSize}, cp_lot=#{cpLot}, cp_unit=#{cpUnit}, cp_stat=#{cpStat}, cp_note=#{cpNote}
+	WHERE cp_id = #{cpId}
+</update>
+
+<select id="searchCp" parameterType="SearchDTO" resultType="ProductVO">
+	SELECT *
+	FROM complete_prod
+	WHERE 
+	<if test='searchType.equals("id")'>
+		cp_id like '%'||#{searchKey}||'%' OR lower(cp_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		cp_name like '%'||#{searchKey}||'%'
+	</if>
+	ORDER BY cp_stat desc, cp_id
+</select>
+<!-- 완제품 관리 종료 -->
+
+<!-- 반제품 관리 -->
+<select id="spList" resultType="ProductVO">
+	select * from semi_prod
+	order by sp_stat desc, sp_id
+</select>
+
+<insert id="addSp" parameterType="ProductVO">
+	INSERT INTO semi_prod VALUES (#{spId}, #{spName}, #{spSize}, #{spLot}, #{spUnit}, #{spStat}, #{spNote})
+</insert>
+
+<update id="updateSp" parameterType="ProductVO">
+	UPDATE semi_prod
+	SET sp_name=#{spName}, sp_size=#{spSize}, sp_lot=#{spLot}, sp_unit=#{spUnit}, sp_stat=#{spStat}, sp_note=#{spNote}
+	WHERE sp_id = #{spId}
+</update>
+
+<select id="searchSp" parameterType="SearchDTO" resultType="ProductVO">
+	SELECT *
+	FROM semi_prod
+	WHERE 
+	<if test='searchType.equals("id")'>
+		sp_id like '%'||#{searchKey}||'%' OR lower(sp_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		sp_name like '%'||#{searchKey}||'%'
+	</if>
+	ORDER BY sp_stat desc, sp_id
+</select>
+<!-- 반제품 관리 종료 -->
+
+<!-- 자재 관리 -->
+<select id="matList" resultType="MaterialVO">
+	select * from material
+	order by mat_stat desc, mat_id
+</select>
+
+<insert id="addMat" parameterType="MaterialVO">
+	INSERT INTO material VALUES (#{matId}, #{matName}, #{matSize}, #{matSafe}, #{matUnit}, #{matStat}, #{matNote})
+</insert>
+
+<update id="updateMat" parameterType="MaterialVO">
+	UPDATE material
+	SET mat_name=#{matName}, mat_size=#{matSize}, mat_safe=#{matSafe}, mat_unit=#{matUnit}, mat_stat=#{matStat}, mat_note=#{matNote}
+	WHERE mat_id = #{matId}
+</update>
+
+<select id="searchMat" parameterType="SearchDTO" resultType="MaterialVO">
+	SELECT *
+	FROM material
+	WHERE 
+	<if test='searchType.equals("id")'>
+		mat_id like '%'||#{searchKey}||'%' OR lower(mat_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		mat_name like '%'||#{searchKey}||'%'
+	</if>
+	ORDER BY mat_stat desc, mat_id
+</select>
+<!-- 자재 관리 종료 -->
+
+<!-- 거래처 관리 -->
+<select id="checkBusNum" parameterType="String" resultType="int">
+	select count(bus_num)
+	from business
+	where bus_num = #{num}
+</select>
+
+<select id="busList" resultType="BusVO">
+	select * from business
+	order by bus_stat desc, bus_id
+</select>
+
+<insert id="addBus" parameterType="BusVO">
+	INSERT INTO business VALUES(#{busId}, #{busType} ,#{busName}, #{busNum}, #{busTell}, #{busAddr}, #{busStat}, #{busNote})
+</insert>
+
+<update id="updateBus" parameterType="BusVO">
+	UPDATE business
+	SET bus_type=#{busType} ,bus_name=#{busName}, bus_tell=#{busTell}, bus_num=#{busNum}, bus_addr=#{busAddr}, bus_note=#{busNote}, bus_stat=#{busStat}
+	WHERE bus_id=#{busId}
+</update>
+
+<select id="searchBus" parameterType="SearchDTO" resultType="BusVO">
+	SELECT *
+	FROM business
+	WHERE 
+	<if test='searchType.equals("idOnly")'>
+		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("nameOnly")'>
+		bus_name like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("typeOnly")'>
+		bus_type = #{searchKey}
+	</if>
+	<if test='searchType.equals("buyName")'>
+		bus_type = 'buy' and bus_name like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("buyId")'>
+		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type = 'buy'
+	</if>
+	<if test='searchType.equals("sellName")'>
+		bus_name like '%'||#{searchKey}||'%' and bus_type = 'sel'
+	</if>
+	<if test='searchType.equals("sellId")'>
+		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type= 'sel'
+	</if>
+	ORDER BY bus_stat desc, bus_id
+</select>
+<!-- 거래처 관리 종료 -->
+
+<!-- 공정 관리 -->
+<select id="procList" resultType="ProcessVO">
+	select *
+	from process p left outer join common_code c
+	on p.proc_type = c.com_id
+	order by proc_stat desc, proc_id
+</select>
+
+<select id="getComList" parameterType="String" resultType="CodeVO">
+	select com_id, com_name
+	from common_code
+	where g_id = #{key}
+</select>
+
+<insert id="addProc" parameterType="ProcessVO">
+	INSERT INTO process VALUES (#{procId}, #{procType}, #{procName}, #{procStat}, #{procNote})
+</insert>
+
+<update id="updateProc" parameterType="ProcessVO">
+	UPDATE process
+	SET proc_type=#{procType}, proc_name=#{procName}, proc_stat=#{procStat}, proc_note=#{procNote}
+	WHERE proc_id=#{procId}
+</update>
+
+<select id="searchProc" parameterType="SearchDTO" resultType="ProcessVO">
+	SELECT *
+	FROM process p left outer join common_code c
+	ON p.proc_type = c.com_id
+	WHERE 
+	<if test='searchType.equals("id")'>
+		proc_id like '%'||#{searchKey}||'%' OR lower(proc_id) like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("name")'>
+		proc_name like '%'||#{searchKey}||'%'
+	</if>
+	<if test='searchType.equals("type")'>
+		proc_type = #{searchKey}
+	</if>
+	ORDER BY proc_stat desc, proc_id
+</select>
+<!-- 공정 관리 종료 -->
+
+<!-- BOM 관리 -->
+<select id="activeCpList" resultType="ProductVO">
+	SELECT *
+	FROM complete_prod
+	WHERE cp_stat = 'Y'
+</select>
+
+<select id="activeSpList" resultType="ProductVO">
+	SELECT sp_id as cp_id, sp_name as cp_name, sp_size as cp_size
+	FROM semi_prod
+	WHERE sp_stat = 'Y'
+</select>
+
+<select id="activeMatList" resultType="ProductVO">
+	SELECT mat_id as cp_id, mat_name as cp_name, mat_size as cp_size
+	FROM material
+	WHERE mat_stat = 'Y'
+</select>
+
+<select id="activeProcList" resultType="ProcessVO">
+	SELECT com_name, proc_id, proc_name
+	FROM process p left outer join common_code c
+	ON p.proc_type = c.com_id
+	WHERE proc_stat = 'Y'
+</select>
 
 </mapper>

@@ -197,4 +197,16 @@ public class WorkAjaxController {
 		List<bomMatVO> list = service.modifyMatList(data);
 		return list;
 	}
+	@RequestMapping("modifyBomList")
+	public List<workBomVO> modifyBomList(@RequestBody workBomVO data) {
+		System.out.println(data);
+		List<workBomVO> list = service.modifyBomList(data);
+		return list;
+	}
+	@RequestMapping("modifyDetaWorkList")
+	public List<DetaWorkOrdrVO> modifyDetaWorkList(@RequestBody DetaWorkOrdrVO data) {
+		System.out.println(data);
+		List<DetaWorkOrdrVO> list = service.modifyDetaWorkList(data);
+		return list;
+	}
 } 

@@ -29,6 +29,11 @@ public class QuaVO {
 	private String inspStdId; // 검사 단위 코드(발주번호, 지시세부코드, 완제품출고코드)
 	private String wkDetaId;// 지시 세부 코드
 	
+	// 품질 검사 항목
+	private String inspSep; // 검사 구분
+	private String inspExp; //검사 항목 설명
+	
+	
 	// 검사자 사원 관련
 	private String empName; // 사원 이름
 	private String empId; // 사번
@@ -36,12 +41,14 @@ public class QuaVO {
 	
 	// 자재 입고전 검사 관련
 	private String matReqId; // 발주 번호
-	int matReqQt; //발주 수량
-	private String matId;// 자재 코드
+	private int matReqQt; //발주 수량
+	private String matId;// 자재 코드, 제품코드
 	private String busName;// 거래처
 	private String matName; // 자재 명
+	private String matReqStat; // 자재 발주 상태
 	
-	//기타
-	private String result; // 함수 사용 시 결과 
+	// 공정 검사 관련
+	private String wkDataId;// 지시 세부 코드
+	private String prId;
 	
 }

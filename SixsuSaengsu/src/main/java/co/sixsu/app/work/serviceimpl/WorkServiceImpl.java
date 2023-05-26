@@ -204,10 +204,25 @@ public class WorkServiceImpl implements WorkService{
 	@Override
 	@Transactional
 	public List<bomMatVO> modifyMatList(bomMatVO data) {
-		mapper.modifyMatList(data);
 		String id = data.getWkBomId();
-		//List<bomMatVO> list = mapper.getWkMatList(id);
-		return null;
+		mapper.modifyMatList(data);
+		List<bomMatVO> list = mapper.getWkMatList(id);
+		return list;
+	}
+
+	@Override
+	public List<workBomVO> modifyBomList(workBomVO data) {
+		mapper.modifyBomList(data);
+		List<workBomVO> list = mapper.getWkBomList(data.getWkDetaId());
+		return list;
+	}
+
+	@Override
+	public List<DetaWorkOrdrVO> modifyDetaWorkList(DetaWorkOrdrVO data) {
+		mapper.modifyDetaWorkList(data);
+		List<DetaWorkOrdrVO> list = mapper.getDetaWorkHeadList(data.getWkHeadId());
+		System.out.println(data);
+		return list;
 	}
 	
 	

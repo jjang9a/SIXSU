@@ -61,6 +61,6 @@ public interface BasicMapper {
 	public List<ProcessVO> activeProcList(); // 사용중인 공정 조회
 	public int addBom(BomVO bom); // BOM 등록
 	public int updateBom(BomVO bom); // BOM 수정
-	
+	public int deleteBom(BomVO bom); // BOM 삭제	
 	
 }
