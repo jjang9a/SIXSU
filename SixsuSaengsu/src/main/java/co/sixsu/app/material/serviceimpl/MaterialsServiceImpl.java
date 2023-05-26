@@ -5,12 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatLotVO;
+import co.sixsu.app.material.domain.MatShipVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
-import co.sixsu.app.material.domain.SpRecWaitVO;
 import co.sixsu.app.material.mapper.MaterialsMapper;
 import co.sixsu.app.material.service.MaterialsService;
 
@@ -84,10 +85,23 @@ public class MaterialsServiceImpl implements MaterialsService{
 			return mapper.mLotList();
 		}
 		
-		//반제품 입고대기 리스트
+		//자재 출고내역 리스트
 		@Override
-		public List<SpRecWaitVO> getSpWaitList() {
-			return mapper.getSpWaitList();
+		public List<MatShipVO> getMatShipList() {
+			return mapper.getMatShipList();
+		}
+		
+		//자재 재고조정 리스트
+		@Override
+		public List<MatAdjVO> getMatAdjList() {
+			return mapper.getMatAdjList();
+		}
+
+		@Override
+		public void matRecAdj(List<MatAdjVO> vo) {
+			for(MatAdjVO i : vo) {
+				mapper.matRecAdj(i);
+			}
 		}
 		
 		

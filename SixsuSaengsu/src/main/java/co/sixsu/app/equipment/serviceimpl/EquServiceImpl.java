@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.equipment.domain.EquConVO;
 import co.sixsu.app.equipment.mapper.EquMapper;
 import co.sixsu.app.equipment.service.EquService;
@@ -36,7 +37,13 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
+	public List<ProductVO> activePdList() { // 등록 공정코드(조회) ajax
+		return mapper.activePdList();
+	}
+	
+	@Override
 	public boolean equUpdate(EquConVO data) { // 설비관리(수정)
+		System.out.println("서비스 도착 " + data);
 		return mapper.equUpdate(data) == 1;
 	}
 
@@ -44,6 +51,8 @@ public class EquServiceImpl implements EquService{
 	public boolean equDel(EquConVO equCode) { // 설비관리(삭제)
 		return mapper.equDel(equCode) == 1;
 	}
+
+	
 	
 //	@Override
 //	public List<EquConVO> equCheckList() { // 설비 점검 리스트

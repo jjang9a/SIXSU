@@ -13,7 +13,6 @@ public class EquConVO {
 		String equName; // 설비명
 		String equLine; // 설비라인
 		String equModel; // 설비모델
-		String equImg; // 설비 이미지
 		String equSuit; // 판정
 		String checkDate; // 점검일자 Date
 		String equCheck; // 점검주기 개월
@@ -26,20 +25,7 @@ public class EquConVO {
 		String empId; // 사원코드
 		int ctemp; // 기준온도
 		
-		/*
-		 * public EquConVO() {
-		 * 
-		 * }
-		 * 
-		 * public EquConVO (String equCode, String procId, String equName, String
-		 * equModel, String equStat, String equLine, String equCheck, String equImg,
-		 * String empId) { this.equCode = equCode; this.procId = procId; this.equName =
-		 * equName; this.equModel = equModel; this.equStat = equStat; this.equLine =
-		 * equLine; this.equCheck = equCheck; this.equImg = equImg; this.empId = empId;
-		 * 
-		 * 
-		 * }
-		 */
+	
 		
 		
 }

@@ -26,17 +26,25 @@
 		ON c.equ_code = o.equ_code
             
   	</select>
+  	
+  	<!-- 등록 공정코드(조회) ajax -->
+	<select id="activePdList" resultType="EquConVO">
+  		SELECT proc_id
+		FROM equ_con
+		WHERE proc_id = #{procId}
+            
+  	</select>
 
 	<!-- 설비관리 등록 -->
 	<insert id="equAdd" parameterType="EquConVO">
-		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, equ_check, equ_img, c_temp, emp_id )
-		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{equCheck}, #{equImg}, #{ctemp}, #{empId})
+		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, emp_id, equ_check, c_temp)
+		VALUES(('EQU' || LPAD(EQU_SEQ.nextval, 3, '0')), #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, #{ctemp})
 	</insert>
 	
 	<!-- 설비관리 수정 -->
 	<update id="equUpdate" parameterType="EquConVO">
 		UPDATE equ_con
-		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, equ_img=#{equImg}, emp_id=#{empId}, equ_check=#{equCheck}, c_temp{cTemp}
+		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, c_temp=#{ctemp}
 		WHERE equ_code=#{equCode}
 	</update>
 	
