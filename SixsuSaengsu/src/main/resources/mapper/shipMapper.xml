@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.sixsu.app.sales.mapper.ShipMapper">
+<select id="orderingList" resultType= "OrdVO">
+	select*
+	from det_ord d join sorder s
+	on d.ord_id = s.ord_id
+	join complete_prod p
+	on p.cp_id = d.cp_id
+</select>
+
+ </mapper>
