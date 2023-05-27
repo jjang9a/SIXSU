@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/template}">
 
 <head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-	<meta charset="UTF-8">
-	<title>자재 입고 검사</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<meta charset="UTF-8">
+<title>자재 입고 검사</title>
 
-	<style>
-		.detail {
-			display: none;
-		}
+<style>
+.detail {
+	display: none;
+}
 
-		#prInspForm {
-			display: none;
-		}
-	</style>
+#prInspForm {
+	display: none;
+}
+</style>
 
 
 </head>
@@ -34,24 +38,25 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-lg-7">
+				
 					<!-- 토스트 그리드 코드 -->
 					<!-- 발주 번호 검색 버튼 -->
 					<label>발주 번호 검색</label>
-					<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#regModal">
-						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
-							class="bi bi-search" viewBox="0 2 16 16">
+					<button class="sixBtn1" data-bs-toggle="modal"
+						data-bs-target="#regModal">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
 							<path
 								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
 						</svg>
 					</button>
 
-					<!-- <button type="button" class="btn btn-primary m-5"
-			data-bs-toggle="modal" data-bs-target="#staticBackdrop">찾기</button> -->
 
 					<!-- 검사 등록 모달창 -->
 					<!-- Modal -->
-					<div class="modal fade" id="regModal" data-bs-backdrop="static" data-bs-keyboard="false"
-						tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal fade" id="regModal" data-bs-backdrop="static"
+						data-bs-keyboard="false" tabindex="-1"
+						aria-labelledby="staticBackdropLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -63,8 +68,8 @@
 									<div id="grid2"></div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-									<button type="button" class="btn btn-primary" id="regBtn"
+									<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
+									<button type="button" class="sixBtn2" id="regBtn"
 										data-bs-dismiss="modal">등록</button>
 								</div>
 							</div>
@@ -72,10 +77,14 @@
 					</div>
 
 					<!-- 본문 그리드 부분 -->
+					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 결과 등록 전</h6>
 					<div id="grid"></div>
 
 					<button class="sixBtn6" id="rrBtn">검사결과등록</button>
 				</div>
+				
+				<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 등록 완료</h6>
+					<div id="aiGrid"></div>
 
 
 				<!-- 자재 검사 결과 등록 폼 -->
@@ -86,26 +95,26 @@
 
 						<div class="row">
 							<div class="col">
-								<label for="inspStdId" class="form-label">발주번호 </label> <input type="text"
-									class="form-control" id="inspStdId">
+								<label for="inspStdId" class="form-label">발주번호 </label> <input
+									type="text" class="form-control" id="inspStdId">
 							</div>
 
 							<div class="col">
-								<label for="inspStdId" class="form-label">검사번호</label> <input type="text"
-									class="form-control" id="inspNum">
+								<label for="inspStdId" class="form-label">검사번호</label> <input
+									type="text" class="form-control" id="inspNum">
 							</div>
 
 							<div class="col">
-								<label for="inspStdId" class="form-label">거래처</label> <input type="text"
-									class="form-control" id="busName">
+								<label for="inspStdId" class="form-label">거래처</label> <input
+									type="text" class="form-control" id="busName">
 							</div>
 
 						</div>
 
 						<div class="row">
 							<div class="col">
-								<label for="matId" class="form-label">자재코드 </label> <input type="text"
-									class="form-control" id="matId">
+								<label for="matId" class="form-label">자재코드 </label> <input
+									type="text" class="form-control" id="matId">
 							</div>
 
 							<div class="col">
@@ -126,16 +135,16 @@
 
 						<div class="row">
 							<div class="col-3">
-								<label for="inspQt" class="form-label">검사 대기 수량 </label> <input type="text"
-									class="form-control" id="inspQt">
+								<label for="inspQt" class="form-label">검사 대기 수량 </label> <input
+									type="text" class="form-control" id="inspQt">
 							</div>
 							<div class="col-3">
-								<label for="suitQt" class="form-label">입고 가능 수량 </label> <input type="text"
-									class="form-control" id="suitQt">
+								<label for="suitQt" class="form-label">입고 가능 수량 </label> <input
+									type="text" class="form-control" id="suitQt">
 							</div>
 							<div class="col-3">
-								<label for="nsuitQt" class="form-label">입고 불가 수량 </label> <input type="text"
-									class="form-control" id="nsuitQt">
+								<label for="nsuitQt" class="form-label">입고 불가 수량 </label> <input
+									type="text" class="form-control" id="nsuitQt">
 							</div>
 						</div>
 
@@ -151,11 +160,12 @@
 
 						<div id="detailGrid"></div>
 						<!-- 세부 검사 항목 끝나는 부분 -->
-
+						
+						<!-- 검사 등록 버튼 -->
+					<button type="button" class="sixBtn2" id="inspBtn">등록</button>
 
 					</div>
-					<!-- 검사 등록 버튼 -->
-					<button type="button" class="sixBtn2" id="inspBtn">등록</button>
+					
 
 				</div>
 				<!-- 세부 검사 항목 border box 끝 -->
@@ -212,7 +222,7 @@
 
 				pageOptions: {
 					useClient: true,
-					perPage: 15
+					perPage: 5
 				},
 
 				//data: gridData,
@@ -304,9 +314,10 @@
 			$('#rrBtn').on('click', function (e) {
 				console.log('rrBtn 클릭');
 
-				$('#prInspForm').toggle(); // prInspForm의 표시 상태를 토글
+				//$('#prInspForm').toggle(); // prInspForm의 표시 상태를 토글
+				$('#prInspForm').css('display', 'block');
 				$(".detail").css('display', 'block');
-
+				
 				console.log("selMatId: " + selMatId);
 				let matId = selMatId;
 
@@ -501,7 +512,7 @@
 				let data = grid2.getModifiedRows().updatedRows;
 
 				if (data.length === 0) {
-					alert('검사 결과를 등록해주세요.');
+					alert('검사를 등록해주세요.');
 				} else {
 					// Ajax를 통해 데이터를 서버로 전송하고 등록 성공 후 처리
 					$.ajax({
@@ -559,7 +570,7 @@
 
 
 			// inspBtn 등록 버튼 클릭 이벤트
-			let arr=[];
+		/* 	let arr=[];
 			let sendData={
 					inspStdId: $('#inspStdId').val(),
 					matId: $('#matId').val(),
@@ -569,22 +580,216 @@
 				    resVal: detailGrid.getModifiedRows().updatedRows.resVal,
 				    resStat: detailGrid.getModifiedRows().updatedRows.resStat
 				    
-				};
+				}; */
+				
+				/* $('#inspBtn').on('click', function () {
+				    console.log('확인');
+				    let inspStdId = $('#inspStdId').val();
+				    let inspNum = $('#inspNum').val();
+				    let busName = $('#busName').val();
+				    let matId = $('#matId').val();
+				    let matName = $('#matName').val();
+				    let empName = $('#empName').val();
+				    let inspQt = $('#inspQt').val();
+				    let suitQt = $('#suitQt').val();
+				    let nsuitQt = $('#nsuitQt').val();
+
+				    let gridData = detailGrid.getData();
+				    let requestData = []; // requestData 배열 초기화
+
+				    // detailGrid.getData()의 수만큼 반복하여 배열에 요소 추가
+				    detailGrid.getData().forEach(function (item) {
+    let formValues = {
+        inspStdId: inspStdId,
+        inspNum: inspNum,
+        busName: busName,
+        matId: matId,
+        matName: matName,
+        empName: empName,
+        inspQt: inspQt,
+        suitQt: suitQt,
+        nsuitQt: nsuitQt
+    };
+
+    requestData.push({
+        formValues: formValues,
+        gridData: item
+    });
+});
+
+				    $.ajax({
+				        url: '/quality/priRegister',
+				        type: 'post',
+				        data: JSON.stringify(requestData),
+				        contentType: 'application/json',
+				        success: function (result) {
+				            console.log(result);
+				            alert('검사 결과값 등록이 완료되었습니다.');
+				        },
+				        error: function (reject) {
+				            console.log(reject);
+				            alert('검사 결과값 등록에 실패했습니다.');
+				        }
+				    });
+				}); */
+				
+				
+				// 22:38 수정 전
+				/* $('#inspBtn').on('click', function () {
+				    console.log('확인');
+				    let inspStdId = $('#inspStdId').val();
+				    let inspNum = $('#inspNum').val();
+				    let busName = $('#busName').val();
+				    let matId = $('#matId').val();
+				    let matName = $('#matName').val();
+				    let empName = $('#empName').val();
+				    let inspQt = $('#inspQt').val();
+				    let suitQt = $('#suitQt').val();
+				    let nsuitQt = $('#nsuitQt').val();
+
+				    let formValues = {
+				        inspStdId: inspStdId,
+				        inspNum: inspNum,
+				        busName: busName,
+				        matId: matId,
+				        matName: matName,
+				        empName: empName,
+				        inspQt: inspQt,
+				        suitQt: suitQt,
+				        nsuitQt: nsuitQt
+				    };
+
+				    let gridData = detailGrid.getData();
+
+/* 				    let requestData = {
+				        formValues: formValues,
+				        gridData: gridData
+				    };
+ */
+					/*  let requestData = []; // requestData 배열 초기화
+					
+					//detailGrid.getData()의 수만큼 반복하여 배열에 요소 추가
+					detailGrid.getData().forEach(function() {
+					  requestData.push({
+					      formValues: formValues,
+					      gridData: gridData
+					  });
+					});					
+ 
+				    $.ajax({
+				        url: '/quality/priRegister',
+				        type: 'post',
+				        data: JSON.stringify(requestData),
+				        contentType: 'application/json',
+				        success: function (result) {
+				            console.log(result);
+				            alert('검사 결과값 등록이 완료되었습니다.');
+				        },
+				        error: function (reject) {
+				            console.log(reject);
+				            alert('검사 결과값 등록에 실패했습니다.');
+				        }
+				    });
+				}); */
+				
+			//20:02 수정 전
+			/* $('#inspBtn').on('click', function () {
+			    console.log('확인');
+			    let inspStdId = $('#inspStdId').val();
+			    let inspNum = $('#inspNum').val();
+			    let busName = $('#busName').val();
+			    let matId = $('#matId').val();
+			    let matName = $('#matName').val();
+			    let empName = $('#empName').val();
+			    let inspQt = $('#inspQt').val();
+			    let suitQt = $('#suitQt').val();
+			    let nsuitQt = $('#nsuitQt').val();
+
+			    let formValues = {
+			        inspStdId: inspStdId,
+			        inspNum: inspNum,
+			        busName: busName,
+			        matId: matId,
+			        matName: matName,
+			        empName: empName,
+			        inspQt: inspQt,
+			        suitQt: suitQt,
+			        nsuitQt: nsuitQt
+			    };
+
+			    let gridData = detailGrid.getData();
+
+			    let requestData = {
+			        formValues: formValues,
+			        count: gridData.length, // 배열의 길이를 반복 횟수로 사용
+			        gridData: gridData
+			    };
+
+			    $.ajax({
+			        url: '/quality/priRegister',
+			        type: 'post',
+			        data: JSON.stringify(requestData),
+			        contentType: 'application/json',
+			        success: function (result) {
+			            console.log(result);
+			            alert('검사 결과값 등록이 완료되었습니다.');
+			        },
+			        error: function (reject) {
+			            console.log(reject);
+			            alert('검사 결과값 등록에 실패했습니다.');
+			        }
+			    });
+			}); */
 			
-			$('#inspBtn').on('click', function () {
+			//검사 등록 부분 수정
+ 			/* $('#inspBtn').on('click', function () {
+			    console.log(detailGrid.getData());
+			    console.log('확인');
+			    let inspStdId = $('#inspStdId').val();
+			    console.log(inspStdId);
+			    let dataArray = detailGrid.getData();
+			    let count = dataArray.length; // 배열의 길이를 반복 횟수로 사용
+			    let requestData = {
+			        data: dataArray,
+			        count: count
+			    };
+			    $.ajax({
+			        url: '/quality/priRegister',
+			        type: 'post',
+			        data: JSON.stringify(requestData),
+			        contentType: 'application/json',
+			        success: function (result) {
+			            console.log(result);
+			            alert('검사 결과값 등록이 완료되었습니다.');
+			        },
+			        error: function (reject) {
+			            console.log(reject);
+			            alert('검사 결과값 등록에 실패했습니다.');
+			        }
+			    }); 
+			});  */
+			
+ 			$('#inspBtn').on('click', function () {
 				
 				console.log(detailGrid.getData())
 						console.log('확인')
-						let inspStdId=$('#inspStdId').val();
-						console.log(inspStdId);
+						let formData = $('#prInspForm').serialize();
+    formData += '&detailData=' + JSON.stringify(detailGrid.getData());
+    
 						$.ajax({
 							url: '/quality/priRegister',
 							type: 'post',
 							data: JSON.stringify(detailGrid.getData()),
 							contentType: 'application/json',
 							success: function (result) {
+								console.log(inspStdId);
 								console.log(result);
-								alert('검사 결과값 등록이 완료되었습니다.')
+								alert('검사 결과값 등록이 완료되었습니다.');
+					            // 등록 완료 후 폼과 그리드 숨기고 초기화
+					            $('#prInspForm').css('display', 'none');
+					            $('.detail').css('display', 'none');
+					            $('#prInspForm input').val('');
+					            
 
 							},
 							error: function (reject) {
@@ -593,9 +798,60 @@
 							}
 						}); 
 					
-					// $('#prInspForm input').val('');
 				} // on click event 끝
-			)
+			) 
+		
+		
+			//after insp grid
+			/* const aiGrid = new tui.Grid({
+				el : document.getElementById('aiGrid'),
+				
+
+				scrollX : false,
+				scrollY : false,
+				
+				pageOptions : {
+					useClient : true,
+					perPage : 10
+				},
+
+				columns : [ {
+					header : '발주번호',
+					name : 'inspStdId'
+				}, {
+					header : '자재코드',
+					name : 'matId',
+					align : 'center'
+
+				}, {
+					header : '자재 명',
+					name : 'matName',
+					align : 'center'
+				}, , {
+					header : '검사수량',
+					name : 'inspQt',
+					align : 'center'
+				}, {
+					header : '적합수량',
+					name : 'suitQt',
+					editor : 'text',
+					align : 'center'
+				}, {
+					header : '부적합 수량',
+					name : 'nsuitQt',
+					editor : 'text',
+					align : 'center'
+				}, {
+					header : '검사자',
+					name : 'empName',
+					align : 'center'
+				}, {
+					header : '검사일자',
+					name : 'inspDate',
+					align : 'center'
+				}, ]
+			}); */
+			
 		</script>
 	</div>
 </body>
