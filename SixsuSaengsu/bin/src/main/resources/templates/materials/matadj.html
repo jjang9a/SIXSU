@@ -4,12 +4,14 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>자재출고조회</title>
+	<title>자재재고조정</title>
+<!-- 	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
 </head>
 
 <body>
 	<div layout:fragment="content">
-			<h1 class="mt-4" style="font-family: 'MaruBuri';">자재출고조회</h1>
+			<h1 class="mt-4" style="font-family: 'MaruBuri';">자재재고조정</h1>
 	
 			<div id="left">
 				자재명 <input type="number" id="matId" name="matId">
@@ -25,6 +27,10 @@
 				<button class="sixBtn2" id="check">조회</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
+			<div id="left">
+				<button class="sixBtn4" id="adjinsert">조정입고</button>
+				<button class="sixBtn4" id="adjdelete">조정출고</button>
+			</div>
 			
 			<div id="gridm"></div>
 			
@@ -35,7 +41,7 @@
 			window.onload = function () {
 				
 				$.ajax({
-					url : "/materials/matshiplist",
+					url : "/materials/matadjlist",
 					method : "GET",
 					dataType : "JSON",
 					success : function(result) {
@@ -56,32 +62,33 @@
 					useClient: true,
 					perPage: 10
 				},
-				rowHeaders: ['rowNum'],
+				rowHeaders: ['checkbox', 'rowNum'],
 				columns : [ 
 					{
-					header : '공정실적코드',
-					name : 'prcsPfmcId',
-				}, {
 					header : '자재LOT번호',
-					name : 'matLotId'
+					name : 'matLotId',
+				},	{
+					header : '자재코드',
+					name : 'matId',
 				}, {
 					header : '자재명',
 					name : 'matName'
 				}, {
-					header : '출고량',
+					header : '자재규격',
+					name : 'matSize'
+				}, {
+					header : '현재재고량',
+					name : 'matQt'
+				}, {
+					header : '입고수량',
+					name : 'matRecQt'
+				}, {
+					header : '출고수량',
 					name : 'matShipQt'
 				}, {
-					header : '출고일자',
-					name : 'matShipDate'
-				}, {
-					header : '출고유형',
-					name : 'matShipType'
-				}, {
-					header : '담당자',
-					name : 'empName'
-				}, {
-					header : '비고',
-					name : 'matShipNote'
+					header : '조정수량',
+					name : 'matAdjQt',
+					editor : 'text'
 				}]
 			});
 			
@@ -98,6 +105,27 @@
 					}
 				}
 			});
+ 			
+ 			$('#adjinsert').on('click', function() {
+ 				console.log(gridm.getCheckedRows());
+ 				console.log(gridm.getData());
+ 				console.log(JSON.stringify(gridm.getCheckedRows()));
+ 				$.ajax({
+					url: "/materials/matrecadj",
+					method: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(gridm.getCheckedRows()),
+/* /* 					beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token);
+					}, */
+					success: function (result) {
+						console.log(result);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+ 				})
+ 			});
 		</script>
 	</div>
 </body>

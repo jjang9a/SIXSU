@@ -5,6 +5,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>자재출고조회</title>
+<!-- 	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
 </head>
 
 <body>
@@ -65,23 +67,20 @@
 					header : '자재LOT번호',
 					name : 'matLotId'
 				}, {
-					header : '자재명',
-					name : 'matName'
-				}, {
-					header : '출고량',
-					name : 'matShipQt'
+					header : '출고유형',
+					name : 'matShipType'
 				}, {
 					header : '출고일자',
 					name : 'matShipDate'
 				}, {
-					header : '출고유형',
-					name : 'matShipType'
-				}, {
-					header : '담당자',
-					name : 'empName'
+					header : '출고량',
+					name : 'matShipQt'
 				}, {
 					header : '비고',
 					name : 'matShipNote'
+				}, {
+					header : '담당자',
+					name : 'empId'
 				}]
 			});
 			
