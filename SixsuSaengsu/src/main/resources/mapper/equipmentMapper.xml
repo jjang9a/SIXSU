@@ -53,7 +53,23 @@
 		delete from equ_con where equ_code = #{equCode}
 	</delete>
 	
-	
+	<!-- 점검 리스트 -->
+	<select id="equCheckList" resultType="EquInspVO">
+  		SELECT  i.check_code, o.oper_code, c.equ_code, c.equ_name, c.equ_check, i.equ_suit, i.check_type, to_char(i.check_date, 'yyyy-mm-dd') as check_date, to_char(i.check_next, 'yyyy-mm-dd') as check_next , i.check_info, i.check_com, i.check_note, o.oper_start, c.emp_id  
+			FROM equ_con c LEFT OUTER JOIN equ_insp i
+			ON c.equ_code = i.equ_code
+			LEFT OUTER JOIN equ_oper o
+			ON c.equ_code = o.equ_code
+  	</select>
+  	
+  	<!-- 점검 리스트 -->
+	<select id="equOperList" resultType="EquOperVO">
+  	SELECT  i.check_code, o.oper_code, c.equ_code, c.equ_name, o.oper_type, to_char(o.oper_start, 'yyyy-mm-dd') as oper_start , to_char(o.oper_fnish, 'yyyy-mm-dd') as oper_fnish, c.emp_id, o.oper_note 
+			FROM equ_con c LEFT OUTER JOIN equ_insp i
+			ON c.equ_code = i.equ_code
+			LEFT OUTER JOIN equ_oper o
+			ON c.equ_code = o.equ_code
+  	</select>
 	
 	
 	

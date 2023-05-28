@@ -32,8 +32,20 @@ public class EquController {
 	public void equSearch() {
 	}
 	
-	@GetMapping("equipment/equcheck") // 점검관리 페이지
-	public void equcheck() {
+	@GetMapping("equipment/equCheckSP") // 점검 조회 페이지
+	public void equCheckSP() {
+	}
+	
+	@GetMapping("equipment/equCheckCP") // 점검관리 페이지
+	public void equCheckCP() {
+	}
+	
+	@GetMapping("equipment/equOperSP") // 비가동 조회 페이지
+	public void equOperSP() {
+	}
+	
+	@GetMapping("equipment/equOperCP") // 비가동 관리 페이지
+	public void equOperCP() {
 	}
    
 	@ResponseBody
@@ -43,21 +55,21 @@ public class EquController {
 		return list;
 	}
 	
-	@ResponseBody // 설비관리(등록) 
-	@PostMapping("/equipment/equAdd")
+	@ResponseBody 
+	@PostMapping("/equipment/equAdd") // 설비관리(등록) 
 	public EquConVO equAdd(EquConVO data) { 
 		equService.equAdd(data);
 		return data;
 	}
 	
 	@ResponseBody
-	@GetMapping("/equipment/activePdList")
-	public List<ProductVO> activePdList() { // 등록 공정코드(조회) ajax
+	@GetMapping("/equipment/activePdList") // 등록 공정코드(조회) ajax
+	public List<ProductVO> activePdList() {
 		return equService.activePdList();
 	}
 	
-	@ResponseBody // 설비관리(수정) 
-	@PostMapping("/equipment/equUpdate") 
+	@ResponseBody 
+	@PostMapping("/equipment/equUpdate") // 설비관리(수정) 
 	public EquConVO equUpdate(EquConVO data) {
 		System.out.println("컨트롤러 : "+ data);
 		equService.equUpdate(data);
@@ -65,9 +77,8 @@ public class EquController {
 	}
 
 	// [설비 관리 페이지] - 삭제
-
-	@ResponseBody // 설비관리(삭제) 
-	@PostMapping("/equipment/equDel") 
+	@ResponseBody 
+	@PostMapping("/equipment/equDel")  // 설비관리(삭제)
 	public boolean equdel(@RequestBody EquConVO equCode) {
 	    System.err.println(equCode);
 		  if(equService.equDel(equCode)) {
@@ -76,7 +87,6 @@ public class EquController {
 		  }else {
 			  return false;
 		  }
-		  
 	} 
 	 
 	@ResponseBody // 설비조회 상세정보(모달에 데이터를 보내줌)
@@ -101,12 +111,24 @@ public class EquController {
 	}
 	
 	
+	@ResponseBody
+	@GetMapping("/equipment/equCheckList") //// 점검 조회 리스트 ajax
+	public List<EquConVO> equCheckList(){
+		List<EquConVO> list = equService.equCheckList();
+		return list;
+	}
 	
+	@ResponseBody
+	@GetMapping("/equipment/equOperList") //// 비가동 조회 리스트 ajax
+	public List<EquConVO> equOperList(){
+		List<EquConVO> list = equService.equOperList();
+		return list;
+	}
 	
 	
 
 	
-	// 점검 조회
+	
 	
 	// 점검 조회
 	

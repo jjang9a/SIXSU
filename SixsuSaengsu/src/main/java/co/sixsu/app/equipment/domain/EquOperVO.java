@@ -14,8 +14,8 @@ public class EquOperVO { // 비가동 관리
 	String equStat; // 설비상태
 	String equName; // 설비명
 	String operType; // 비가동구분(대기,중지,점검)
-	Date operStart; // 비가동 시작(일시분) 
-	Date operFnish; // 비가동 종료(일시분)
+	String operStart; // 비가동 시작(일시분) 
+	String operFnish; // 비가동 종료(일시분)
 	String operNote; // 비가동 비고
 	
 }
