@@ -4,12 +4,13 @@ import lombok.Data;
 
 @Data
 public class MatShipVO {
-	String matShipId;
+	
 	String prcsPfmcId;
 	String matLotId;
+	String matName;
 	String matShipType;
 	String matShipDate;
 	int matShipQt;
 	String matShipNote;
-	String empId;
+	String empName;
 }

@@ -55,7 +55,7 @@
 	
 	<!-- 입고 목록-->
 	<select id="selectMatRecList" resultType="MatrecVO">
-		select c.mat_req_id, c.insp_num, to_char(u.insp_date, 'yyyy-mm-dd') as insp_date, c.mat_rec_qt, c.mat_rec_type, to_char(c.mat_rec_date, 'yyyy-mm-dd') as mat_rec_date, l.mat_name, b.bus_name, c.mat_rec_note, e.emp_name, c.mat_lot_id
+		select c.mat_rec_id, c.mat_req_id, c.insp_num, to_char(u.insp_date, 'yyyy-mm-dd') as insp_date, c.mat_rec_qt, c.mat_rec_type, to_char(c.mat_rec_date, 'yyyy-mm-dd') as mat_rec_date, l.mat_name, b.bus_name, c.mat_rec_note, e.emp_name, c.mat_lot_id
 		from mat_rec c left join mat_req q
 		on c.mat_req_id = q.mat_req_id
 		left join qua_com u
@@ -67,14 +67,6 @@
 		left join material l
 		on q.mat_id = l.mat_id
 	</select>
-	
-<!-- 	<select id="insertMatRec" statementType="CALLABLE">
-		{
-			CALL(
-				#{matReqId  , mode=IN, jdbcType=VARCHAR}
-			)	
-		}
-	</select> -->
 	
 	<!-- 입고등록 -->
 	<insert id="insertMatRec" parameterType="String">
@@ -90,15 +82,16 @@
   		select * from material
   	</select>
   	
-  	<!-- 입고삭제 -->
-  	<delete id="deleteMatRec" parameterType="String">
-  		delete from mat_rec where mat_lot_id = #{mlotnum}
-  	</delete>
-  	
-  	<!-- 자재 lot 삭제 -->
-  	<delete id="deleteMLot" parameterType="String">
-  		delete from mat_lot where mat_lot_id = #{mlotnum}
-  	</delete>
+	<!-- 입고삭제 프로시저 -->
+	<insert id="delMatRec" parameterType="MatrecVO">
+    <![CDATA[
+	    call  mat_rec_del(
+	      #{matRecId, mode=IN, jdbcType=VARCHAR},
+	      #{matLotId, mode=IN, jdbcType=VARCHAR}
+	    )
+	    
+	    ]]>
+  	</insert>
   	
   	<!-- 자재lot리스트 -->
   	<select id="mLotList" resultType="MatLotVO">
@@ -111,19 +104,20 @@
 	
 	<!-- 자재 출고 리스트-->
 	<select id="getMatShipList" resultType="MatShipVO">
-		select * from mat_ship
+		select s.prcs_pfmc_id, s.mat_lot_id, m.mat_name, s.mat_ship_type, s.mat_ship_date, s.mat_ship_qt, s.mat_ship_note, e.emp_name
+		from mat_ship s left join mat_lot l
+		on s.mat_lot_id = l.mat_lot_id
+		left join material m
+		on l.mat_id = m.mat_id
+		left join employee e
+		on s.emp_id = e.emp_id
 	</select>
 	
 	<!-- 자재 재고조정 리스트 -->
 	<select id="getMatAdjList" resultType="MatAdjVO">
-		select l.mat_lot_id, l.mat_id, m.mat_name, m.mat_size, l.mat_qt, c.mat_rec_qt, s.mat_ship_qt
-		from mat_lot l left join mat_ship s
-		on l.mat_lot_id = s.mat_lot_id
-		left join mat_rec c
-		on l.mat_lot_id = c.mat_lot_id
-		left join material m
+		select l.mat_lot_id, l.mat_id, m.mat_name, m.mat_size, l.mat_qt
+		from mat_lot l left join material m
 		on l.mat_id = m.mat_id
-		where c.mat_rec_type = '정상입고'
 		order by l.mat_lot_id desc
 	</select>
 	
@@ -148,6 +142,47 @@
 	    
 	    ]]>
   	</insert>
+  	
+  	<!-- 반제품 재고조정 리스트 -->
+  	<select id="getSpAdjList" resultType="SpAdjVO">
+  		select l.sp_lot_id, l.sp_id, s.sp_name, s.sp_size, l.sp_qt
+		from sp_lot l left join semi_prod s
+		on l.sp_id = s.sp_id
+  	</select>
+  	
+  	<!-- 반제품 출고 리스트 -->
+  	<select id="getSpShipList" resultType="SpShipVO">
+  		select s.prcs_pfmc_id, s.sp_lot_id, p.sp_name, s.sp_ship_type, to_char(s.sp_ship_date, 'yyyy-mm-dd') as sp_ship_date, s.sp_ship_qt, s.sp_ship_note, e.emp_name
+		from sp_ship s left join sp_lot l
+		on s.sp_lot_id = l.sp_lot_id
+		left join semi_prod p
+		on l.sp_id = p.sp_id
+		left join employee e
+		on s.emp_id = e.emp_id
+  	</select>
+  	
+  	<!-- 반제품 조정입고 프로시저 -->
+  	<insert id="spRecAdj" parameterType="SpAdjVO">
+    <![CDATA[
+	    call  sp_adj_insert(
+	      #{spLotId, mode=IN, jdbcType=VARCHAR},
+	      #{spAdjQt, mode=IN, jdbcType=INTEGER}
+	    )
+	    
+	    ]]>
+  	</insert>
+  	
+  	<!-- 반제품 조정출고 프로시저-->
+	<insert id="spShipAdj" parameterType="SpAdjVO">
+    <![CDATA[
+	    call  sp_adj_del(
+	      #{spLotId, mode=IN, jdbcType=VARCHAR},
+	      #{spAdjQt, mode=IN, jdbcType=INTEGER}
+	    )
+	    
+	    ]]>
+  	</insert>
+  	
 </mapper>
 
 

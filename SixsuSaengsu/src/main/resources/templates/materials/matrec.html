@@ -188,6 +188,11 @@
 
 
 				columns: [{
+						header: '자재입고번호',
+						name: 'matRecId',
+						hidden: true
+					},
+					{
 						header: '자재LOT번호',
 						name: 'matLotId'
 					},
@@ -216,6 +221,10 @@
 						name: 'matRecDate'
 					},
 					{
+						header: '입고유형',
+						name: 'matRecType'
+					},
+					{
 						header: '담당자',
 						name: 'empName'
 					},
@@ -223,8 +232,7 @@
 						header: '비고',
 						name: 'matRecNote'
 					}
-
-
+					
 				]
 
 			}); 
@@ -295,24 +303,11 @@
 			
 			//체크된 항목 삭제	    
 			$('#delete').on("click", function () {
-				console.log(grids.getCheckedRows());
-				console.log(grids.getCheckedRows().length);
-				var matLotIds = [];
-				console.log("abcd");
-				for (var i = 0; i < grids.getCheckedRows().length; i++) {
-					console.log(grids.getCheckedRows()[i].matLotId);
-					matLotIds.push(grids.getCheckedRows()[i].matLotId);
-
-				}
-				
-
 				$.ajax({
 					url: "/materials/delmatrec",
-					type: "GET",
+					method: "POST",
 					contentType: 'application/json',
-					data: {
-						list: JSON.stringify(matLotIds)
-					},
+					data: JSON.stringify(grids.getCheckedRows()),
 					//data : {list : JSON.stringify(matReqIds)},
 					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
 					success: function (result) {

@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class MatrecVO {
 	
+	String matRecId;
 	String matReqId;
 	String inspNum;
 	String inspDate;
