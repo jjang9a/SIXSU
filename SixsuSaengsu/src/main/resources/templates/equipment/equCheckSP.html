@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
+<head>
+    <meta charset="utf-8">
+    <title>설비 점검 조회</title>
+</head>
+<body>
+    
+    
+    <div layout:fragment="content">
+    
+    <h1 class="mt-4" style="font-family: 'MaruBuri';">설비 점검 조회</h1>
+    <br>
+    <hr>
+    	
+		<td>점검코드<span class="needStar"> * </span></td>
+		<td><input type="text" name="ecode" id="equCode" class="empty"></td>
+		
+		<td>설비명<span class="needStar"> * </span></td>
+		<td><input type="text" name="ename" id="ename" class="empty"></td>
+		
+		<button class="sixBtn1" id="searchBtn">
+			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+                <path
+					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+		</button>
+		<button class="sixBtn2" id="reset">초기화</button>
+		
+		<hr>
+		<br>
+
+		<!-- 점검조회 모달창 -->
+
+		<!-- Modal 시작 -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel"
+							style="font-family: 'MaruBuri';">점검 상세 정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<!--설비정보(상세) 모달 바디 -->
+					<div class="modal-body">
+						<form action="" method="post" id="addForm">
+							<table class="">
+								<div id="equInfo">
+
+									<tr>
+										<br>
+										<td>점검코드<span class="needStar"> * </span></td>
+										<td><input type="text" name="checkCode" id="checkCode"></td>
+									</tr>
+									
+									<tr>
+										<br>
+										<td>설비명<span class="needStar"> * </span></td>
+										<td><input type="text" name="equName" id="equName"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>점검일자<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkDate" id="checkDate"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>차기 점검일<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkNext" id="checkNext"></td>
+									</tr>
+									
+									<tr>
+										<br>
+										<td>점검사유<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkInfo" id="checkInfo"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비고<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkNote" id="checkNote"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비가동시작<span class="needStar"> *</span></td>
+										<td><input type="text" name="operStart" id="operStart"></td>
+									</tr>
+								</div>
+							</table>
+						</form>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal 끝 -->
+
+
+		<!-- 그리드 시작 -->
+		<div id="grid"></div>
+
+		<script>
+	    
+	    const grid = new tui.Grid({
+        el: document.getElementById('grid'),
+        pageOptions: {
+			useClient : true,
+			perPage: 10
+		},
+        scrollX: false,
+        scrollY: false,
+        
+        rowHeaders: ['rowNum'],
+        columns: [
+          {
+            header: '점검코드',
+            name: 'checkCode'
+          },
+          {
+            header: '비가동코드',
+            name: 'operCode'
+          },
+          {
+            header: '설비코드',
+            name: 'equCode'
+          },
+          {
+            header: '설비명',
+            name: 'equName'
+          },
+		  {
+             header: '점검주기',
+             name: 'equCheck'
+          },
+          {
+            header: '판정',
+            name: 'equSuit',
+            filter: 'select'
+          },
+          {
+             header: '점검구분',
+             name: 'checkType'
+          },
+          {
+             header: '담당자',
+             name: 'empId'
+          },
+          {
+              header: '점검일자',
+              name: 'checkDate',
+              hidden : true
+          },
+          {
+              header: '차기점검일',
+              name: 'checkNext',
+              hidden : true
+          },
+          {
+              header: '점검사유',
+              name: 'checkInfo',
+              hidden : true
+          },
+          {
+              header: '조치내역',
+              name: 'checkCom',
+              hidden : true
+          },
+          {
+              header: '비고',
+              name: 'checkNote',
+              hidden : true
+          },
+          {
+              header: '비가동 시작',
+              name: 'operType',
+              hidden : true
+          },
+         
+        ]
+     });
+
+	 
+	 window.onload = function(){
+	    	
+	    	$.ajax({
+	    		url : "/equipment/equCheckList",
+	    		method : "GET",
+	    		dataType : "JSON",
+	    		success : function(result){
+	    			grid.resetData(result);
+	    		}
+	    	});
+	  
+	    };
+      
+     tui.Grid.applyTheme('default', {
+        cell: {
+            header: {
+                background: '#e5edf5'
+            },
+            rowHeader: {
+                background: '#e5edf5'
+            },
+            normal: {
+                background: '#ffffff'
+            } 
+        } 
+    });
+
+	// 클릭 이벤트 발생
+	grid.on('click', ev => {
+    	
+    	// focus된 셀이 있는 열 전체 select 처리
+		grid.setSelectionRange({
+			start: [ev.rowKey, 0],
+			end: [ev.rowKey, grid.getColumns().length - 1]
+		});
+    	
+    	// 클릭한 Row의 정보를 dataRow에 저장
+        let dataRow = grid.getRow(ev.rowKey);
+    	console.log(dataRow.checkCode);
+    	console.log(dataRow);
+    
+    	// 한 열을 클릭시 모달창 띄우기.
+    	$('#staticBackdrop').modal('show');
+    	
+    	$('#checkCode').val(dataRow.checkCode); // 점검코드
+	      $('#equName').val(dataRow.equName); // 설비명
+		  $('#checkDate').val(dataRow.checkDate); // 점검일자
+		  $('#checkNext').val(dataRow.checkNext); // 차기점검일
+	      $('#equSuit').val(dataRow.equSuit); // 판정
+	      $('#checkInfo').val(dataRow.checkInfo); // 점검사유
+	      $('#checkCom').val(dataRow.checkCom); // 조치내역
+	      $('#checkNote').val(dataRow.checkNote); // 조치내역
+	      $('#operStart').val(dataRow.operStart); // 비가동시작
+	      
+      });
+
+
+	   //초기화 버튼 기능
+	   $('#reset').on("click", function (e) {
+				$('#ename').val('');
+				
+				$.ajax({
+					url: "/equipment/equCon",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+						gridInsertRow();
+					},
+ 					error: function(reject){
+						console.log(reject);
+					}
+				});
+				
+			});
+
+
+
+	</script> 
+    </div>
+  </body>
+</html>

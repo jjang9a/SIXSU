@@ -4,16 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
 import co.sixsu.app.quality.service.QualityService;
+import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
 @Service("QualityService")
 public class QualityServiceImpl implements QualityService {
@@ -156,22 +154,176 @@ public class QualityServiceImpl implements QualityService {
 	// 자재 입고 검사 결과 등록 시 업데이트
 	@Override
 	@Transactional
-	public boolean priRegUpdate(QuaVO qua, MatreqVO mat) {
+	public boolean priRegUpdate(QuaVO qua) {
 		int count = 0; // update 발생 횟수
 		
 		count += quaMapper.qComUpdate(qua);
-		count += quaMapper.mUpdate(mat);
+		count += quaMapper.mUpdate(qua);
 			
 		
 		return count >= 1;
 	}
-
-
+	
+	// insert+update 합침
 	@Override
-	public boolean priRegisterAndUpdate(List<QuaVO> list) {
-		// TODO Auto-generated method stub
-		return false;
+	@Transactional
+	public List<QuaVO> insertPriAndUpdate(List<QuaVO> list) {
+	    System.out.println("서비스");
+	    int count = 0; // insert 발생 횟수
+
+	    for (int i = 0; i < list.size(); i++) {
+	        QuaVO qua = list.get(i);
+	        String inspNum = qua.getInspNum(); // 세부 지시 검사번호
+	        String detNum = inspNum + "-" + String.format("%03d", i + 1); // inspNum-001 형식으로 설정
+	        String un = "-";
+
+	        qua.setDetInspNum(detNum);
+	        System.out.println(detNum);
+
+	        if (qua.getResVal() == null) {
+	            qua.setResVal(un);
+	        }
+
+	        count += quaMapper.insertPri(list.get(i));
+	        System.out.println(count);
+
+	        if (i == list.size() - 1) {
+	            count += quaMapper.qComUpdate(qua);
+	            
+	            System.out.println("insertPri"+qua);
+	            count += quaMapper.mUpdate(qua);
+	            System.out.println("insertPri mUpdate"+qua);
+	        }
+	    }
+
+	    return list;
 	}
+	
+//	@Override
+//	@Transactional
+//	public List<QuaVO> insertPriAndUpdate(List<QuaVO> list) {
+//	    System.out.println("서비스");
+//	    int count = 0; // insert 발생 횟수
+//
+//	    for (int i = 0; i < list.size(); i++) {
+//	        QuaVO qua = list.get(i);
+//	        String detNum = qua.getInspNum() + "-" + i; // 세부 지시 검사번호 생성
+//	        String un = "-";
+//
+//	        qua.setDetInspNum(detNum);
+//	        System.out.println(detNum);
+//
+//	        if (qua.getResVal() == null) {
+//	            qua.setResVal(un);
+//	        }
+//
+//	        count += quaMapper.insertPri(list.get(i));
+//	        System.out.println(count);
+//
+//	        if (i == list.size() - 1) {
+//	            count += quaMapper.qComUpdate(qua);
+//	            count += quaMapper.mUpdate(qua);
+//	        }
+//	    }
+//
+//	    return list;
+//	}
+
+	// 자재 입고 검사 결과 등록 프로시저 사용
+//	@Override
+//	public List<QuaVO> reqInspProc(List<QuaVO> list) {
+//		int count = 0; // insert 발생 횟수
+//
+//	    for (QuaVO qua : list) {
+//	        String detNum = qua.getInspNum(); // 세부 지시 검사번호
+//	        String un = "-";
+//
+//	        detNum += "-" + list.indexOf(qua);
+//	        qua.setDetInspNum(detNum);
+//	        System.out.println(detNum);
+//
+//	        if (qua.getResVal() == null) {
+//	            qua.setResVal(un);
+//	        }
+//
+//	        // 프로시저 호출을 위한 필드 설정
+//	        qua.setCount(count + 1); // 프로시저 매개변수 v_count 설정
+//
+//	        // 프로시저 실행
+//	        quaMapper.reqInspProc(qua);
+//
+//	        count++;
+//	    }
+//
+//	    System.out.println(count);
+//	    return list;
+//	}
+	
+	//입고 검사 완료 리스트
+	@Override
+	public List<QuaVO> afterReqList() {
+		return quaMapper.afterReqList();
+	}
+	
+	// 입고 검사 완료건 단건 삭제
+	@Override
+	public boolean delReqInsp(String inspNum) {
+		return quaMapper.delReqInsp(inspNum) >= 1;
+	}
+	
+	// 수정시 검사 항목 리스트
+	@Override
+	public List<QuaVO> modInspItem(String inspNum) {
+		return quaMapper.modInspItem(inspNum);
+	}
+
+	
+	// 공정 검사 전 리스트 출력
+	@Override
+	public List<DetaWorkOrdrVO> bpAddList() {
+		return quaMapper.bpAddList();
+	}
+
+	// 공정 검사 등록
+	@Transactional
+	@Override
+	public List<PrdInspVO> bpdAdd(List<PrdInspVO> list) {
+		
+		System.out.println("서비스");
+		int count = 0; //insert 발생 횟수
+		String inspNum =""; // 검사번호 부여 변수
+//		for(int i=0; i<list.size(); i++) {
+//			PrdInspVO vo = list.get(i);
+//			inspNum = quaMapper.pdInspNum();
+//			vo.setInspNum(inspNum);
+//	        
+//			quaMapper.bpdAdd(list);
+//			System.out.println("bpdAdd:"+vo);
+//			if(vo.getInspNum() != null ) count++;
+//		}
+		for(int i=0; i<list.size(); i++) {
+		    PrdInspVO prd = list.get(i);
+		    inspNum = quaMapper.pdInspNum();
+		    prd.setInspNum(inspNum);
+
+		    System.out.println("bpdAdd: " + prd); // 디버깅용 출력
+
+		    quaMapper.bpdAdd(prd);
+
+		    if(prd.getInspNum() != null) count++;
+		}
+		
+		return list;
+	}
+
+	// 제품 품질 관리 검사 대기 리스트
+	@Override
+	public List<PrdInspVO> prwList() {
+		return quaMapper.prwList();
+	}
+
+
+
 
 
 
