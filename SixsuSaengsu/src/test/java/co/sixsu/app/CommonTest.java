@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.mapper.BasicMapper;
+import co.sixsu.app.basic.mapper.ProductMapper;
 import co.sixsu.app.basic.service.BasicService;
 import lombok.extern.log4j.Log4j2;
 
@@ -21,6 +22,7 @@ public class CommonTest {
 
 	@Autowired BasicMapper mapper;
 	@Autowired BasicService service;
+	@Autowired ProductMapper pdMapper;
 	
 	public void getDateTest() {
 		Date date = mapper.getDate();
@@ -28,7 +30,7 @@ public class CommonTest {
 		System.out.println(date);
 	}
 	
-	//@Test
+	@Test
 	public void groupTest() {
 		List<CodeVO> list1 = mapper.groupList();
 		System.out.println(list1);
