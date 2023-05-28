@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +24,8 @@ import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.material.domain.SpAdjVO;
+import co.sixsu.app.material.domain.SpShipVO;
 import co.sixsu.app.material.service.MaterialsService;
 
 
@@ -75,12 +76,21 @@ public class MaterialController {
 	public void matAdj() {
 	}
 	
-	//발주내역 DB에서 불러오기
+	//반제품 재고조정 페이지 열어주기
+	@GetMapping("/materials/spadj")
+	public void spAdj() {
+	}
+	
+	//반제품 리스트 페이지 열어주기
+	@GetMapping("/materials/spship")
+	public void spShipList() {
+	}
+	
+	//발주내역 리스트
 	@ResponseBody
 	@RequestMapping("/materials/matreqlist")
-	public List<MatreqVO> matreqList(Model modal){
+	public List<MatreqVO> getmatreqList(){
 		List<MatreqVO> list = service.getMatReqList();
-		modal.addAttribute("list", list);
 		return list;
 	}
 	
@@ -193,20 +203,28 @@ public class MaterialController {
 		return list;
 	}
 	
-	//입고삭제 컨트롤
-	@ResponseBody
-	@RequestMapping("/materials/delmatrec")
-	public String delMatRec(@RequestParam Map<String, Object> paramMap) throws Exception {
-		String jsonData = paramMap.get("list").toString();
-		System.out.println(jsonData);
-		ObjectMapper objectMapper = new ObjectMapper();
-	    String[] dataArray = objectMapper.readValue(jsonData, String[].class);
-	    System.out.println(dataArray.length);
-	    for(String i : dataArray) {
-	    	System.out.println(i);
-	    	service.deleteMatRec(i);
-	    }
-		return "/materials/matrec";
+	/*
+	 * //입고삭제 컨트롤
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping("/materials/delmatrec") public String delMatRec(@RequestParam
+	 * Map<String, Object> paramMap) throws Exception { String jsonData =
+	 * paramMap.get("list").toString(); System.out.println(jsonData); ObjectMapper
+	 * objectMapper = new ObjectMapper(); String[] dataArray =
+	 * objectMapper.readValue(jsonData, String[].class);
+	 * System.out.println(dataArray.length); for(String i : dataArray) {
+	 * System.out.println(i); service.deleteMatRec(i); } return "/materials/matrec";
+	 * }
+	 */
+	
+	//입고 삭제 컨트롤
+	@PostMapping("/materials/delmatrec")
+    @ResponseBody
+    public void delMatRec(@RequestBody List<MatrecVO> vo) {
+		System.out.println(vo);
+		service.delMatRec(vo);
+		
 	}
 	
 	//lot 리스트
@@ -225,6 +243,7 @@ public class MaterialController {
 		return list;
 	}
 	
+	//자재 조정 리스트
 	@ResponseBody
 	@RequestMapping("/materials/matadjlist")
 	public List<MatAdjVO> getMatAdjList(){
@@ -232,7 +251,7 @@ public class MaterialController {
 		return list;
 	}
 	
-	
+	//자재 조정 입고 컨트롤
 	@PostMapping("/materials/matrecadj")
     @ResponseBody
     public void matRecAdj(@RequestBody List<MatAdjVO> vo) {
@@ -241,6 +260,47 @@ public class MaterialController {
 		
 	}
 	
+	//자재 조정 출고 컨트롤
+	@PostMapping("/materials/matshipadj")
+    @ResponseBody
+    public void matShipAdj(@RequestBody List<MatAdjVO> vo) {
+		System.out.println(vo);
+		service.matShipAdj(vo);
+	}
+	
+	//반제품 재고조정 리스트
+	@ResponseBody
+	@RequestMapping("/materials/spadjlist")
+	public List<SpAdjVO> getSpAdjList(){
+		List<SpAdjVO> list = service.getSpAdjList();
+		return list;
+	}
+	
+
+	//반제품 출고 리스트
+	@ResponseBody
+	@RequestMapping("/materials/spshiplist")
+	public List<SpShipVO> getSpShipList(){
+		List<SpShipVO> list = service.getSpShipList();
+		return list;
+	}
+	
+	//반제품 조정 입고 컨트롤
+	@PostMapping("/materials/sprecadj")
+    @ResponseBody
+    public void spRecAdj(@RequestBody List<SpAdjVO> vo) {
+		System.out.println(vo);
+		service.spRecAdj(vo);
+		
+	}
+	
+	//반제품 조정 출고 컨트롤
+	@PostMapping("/materials/spshipadj")
+    @ResponseBody
+    public void spShipAdj(@RequestBody List<SpAdjVO> vo) {
+		System.out.println(vo);
+		service.spShipAdj(vo);
+	}
 }
 
 

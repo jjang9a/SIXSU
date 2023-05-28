@@ -80,12 +80,6 @@
 					header : '현재재고량',
 					name : 'matQt'
 				}, {
-					header : '입고수량',
-					name : 'matRecQt'
-				}, {
-					header : '출고수량',
-					name : 'matShipQt'
-				}, {
 					header : '조정수량',
 					name : 'matAdjQt',
 					editor : 'text'
@@ -106,6 +100,7 @@
 				}
 			});
  			
+ 			//자재조정입고버튼
  			$('#adjinsert').on('click', function() {
  				console.log(gridm.getCheckedRows());
  				console.log(gridm.getData());
@@ -115,17 +110,52 @@
 					method: "POST",
 					contentType: 'application/json',
 					data: JSON.stringify(gridm.getCheckedRows()),
-/* /* 					beforeSend : function(xhr){
-						xhr.setRequestHeader(header, token);
-					}, */
 					success: function (result) {
 						console.log(result);
+						$.ajax({
+							url : "/materials/matadjlist",
+							method : "GET",
+							dataType : "JSON",
+							success : function(result) {
+								gridm.resetData(result);
+							},
+		 					error: function(reject) {
+								console.log(reject);
+							}
+						});
 					},
 					error : function(reject){
 						console.log(reject);
 					}
  				})
  			});
+ 			
+ 			//자재조정출고버튼
+ 			$('#adjdelete').on('click', function(){
+ 				$.ajax({
+					url: "/materials/matshipadj",
+					method: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(gridm.getCheckedRows()),
+					success: function (result) {
+						console.log(result);
+						$.ajax({
+							url : "/materials/matadjlist",
+							method : "GET",
+							dataType : "JSON",
+							success : function(result) {
+								gridm.resetData(result);
+							},
+		 					error: function(reject) {
+								console.log(reject);
+							}
+						});
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+ 				})
+ 			})
 		</script>
 	</div>
 </body>

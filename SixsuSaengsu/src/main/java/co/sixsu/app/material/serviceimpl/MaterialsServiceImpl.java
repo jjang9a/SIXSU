@@ -12,6 +12,8 @@ import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
+import co.sixsu.app.material.domain.SpAdjVO;
+import co.sixsu.app.material.domain.SpShipVO;
 import co.sixsu.app.material.mapper.MaterialsMapper;
 import co.sixsu.app.material.service.MaterialsService;
 
@@ -73,10 +75,10 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//입고 리스트 삭제
 		@Override
-		public int deleteMatRec(String matLotId) {
-			int result = mapper.deleteMatRec(matLotId);
-			result += mapper.deleteMLot(matLotId);
-			return result;
+		public void delMatRec(List<MatrecVO> vo) {
+			for(MatrecVO i : vo) {
+				mapper.delMatRec(i);
+			}
 		}
 		
 		//자재 LOT 리스트
@@ -96,13 +98,50 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public List<MatAdjVO> getMatAdjList() {
 			return mapper.getMatAdjList();
 		}
-
+		
+		//자재 조정입고
 		@Override
 		public void matRecAdj(List<MatAdjVO> vo) {
 			for(MatAdjVO i : vo) {
 				mapper.matRecAdj(i);
 			}
 		}
+
+		//자재 조정출고
+		@Override
+		public void matShipAdj(List<MatAdjVO> vo) {
+			for(MatAdjVO i : vo) {
+				mapper.matShipAdj(i);
+			}
+			
+		}
 		
+		//반제품 재고조정 리스트
+		@Override
+		public List<SpAdjVO> getSpAdjList() {
+			return mapper.getSpAdjList();
+		}
 		
+		//반제품 출고 리스트
+		@Override
+		public List<SpShipVO> getSpShipList() {
+			return mapper.getSpShipList();
+		}
+		
+		//자재 조정입고
+		@Override
+		public void spRecAdj(List<SpAdjVO> vo) {
+			for(SpAdjVO i : vo) {
+				mapper.spRecAdj(i);
+			}
+		}
+		
+		//자재 조정출고
+		@Override
+		public void spShipAdj(List<SpAdjVO> vo) {
+			for(SpAdjVO i : vo) {
+				mapper.spShipAdj(i);
+			}
+			
+		}
 }
