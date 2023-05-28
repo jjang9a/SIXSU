@@ -10,7 +10,5 @@ public class MatAdjVO {
 	String matName;
 	String matSize;
 	int matQt;
-	int matRecQt;
-	int matShipQt;
 	int matAdjQt;
 }

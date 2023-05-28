@@ -54,6 +54,11 @@
 				//data : gridData,
 				scrollX : false,
 				scrollY : false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				rowHeaders: ['rowNum'],
 				columns : [ 
 					{
 					header : '자재코드',
@@ -65,6 +70,20 @@
 					header : '자재규격',
 					name : 'matSize'
 				}]
+			});
+			
+ 			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
 			});
 		</script>
 	</div>
