@@ -1,7 +1,10 @@
 package co.sixsu.app.work.serviceimpl;
 
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -223,6 +226,20 @@ public class WorkServiceImpl implements WorkService{
 		List<DetaWorkOrdrVO> list = mapper.getDetaWorkHeadList(data.getWkHeadId());
 		System.out.println(data);
 		return list;
+	}
+
+	@Override
+	public String workInsertSubmit(String data) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("data", data);
+		paramMap.put("outParam", null);
+		
+		mapper.workInsertSubmit(paramMap);
+		
+		String outParam = (String) paramMap.get("outParam");
+		System.out.println("작동여부");
+		System.out.println(outParam);
+		return outParam;
 	}
 	
 	

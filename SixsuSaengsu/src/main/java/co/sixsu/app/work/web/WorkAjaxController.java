@@ -209,4 +209,17 @@ public class WorkAjaxController {
 		List<DetaWorkOrdrVO> list = service.modifyDetaWorkList(data);
 		return list;
 	}
+	
+	@RequestMapping("addSubmit")
+	public String workInsertSubmit(@RequestParam String data) {
+		System.out.println("data : " + data);
+		String message = service.workInsertSubmit(data);
+		return message;
+	}
+	
+	
+	
+	
+	
+	
 } 
