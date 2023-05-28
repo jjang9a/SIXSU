@@ -210,4 +210,26 @@
     END_DATE = #{endDate}, DETA_QT = #{detaQt}, EMP_ID = #{empId}
 	WHERE WK_DETA_ID = #{wkDetaId}
 </update>
+
+
+<resultMap id="outResultMap" type="java.util.HashMap">
+  <result property="outParam" jdbcType="VARCHAR" column="outParam" />
+</resultMap>
+
+<select id="workInsertSubmit" statementType="CALLABLE" resultMap="outResultMap">
+  { CALL WORK_DETA_INSERT(
+    #{data, mode=IN, jdbcType=VARCHAR},
+    #{outParam, mode=OUT, jdbcType=VARCHAR}
+  ) }
+</select>
+ 
+	
+<insert id="teset" parameterType="String">
+	<![CDATA[
+	call WORK_DETA_INSERT(
+		#{data, mode=IN, jdbcType=VARCHAR},
+		#{out, mode=OUT, jdbcType=VARCHAR}
+	)
+	]]>
+</insert>
 </mapper>

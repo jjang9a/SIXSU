@@ -156,7 +156,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	  </select>
 	</div>
 	
-	
+	<button class="submitBtn sixBtn4">등록</button>
 	</div>
 	
 	<div class="plan_monitor">
@@ -1085,6 +1085,26 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 						}
 					});
 				})
+				
+				
+	$('.submitBtn').on('click',function(){
+		console.log('WorkCode : ')
+		let workCode = document.getElementById("orderCodeInput").placeholder
+		console.log(workCode)
+		$.ajax({
+			url: "/ajax/addSubmit",
+			method: "GET",
+			data : { data: workCode},
+			success: function (result){
+				console.log('RESULT : ');
+				console.log(result);
+				alert(result);
+			},
+			error: function(reject){
+				console.err(reject)
+			}
+		})
+	})		
 	///////////////////함수저장소//////////////////
 	
 	function 세부계획선택여부(){

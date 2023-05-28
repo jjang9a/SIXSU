@@ -1,7 +1,9 @@
 package co.sixsu.app.work.mapper;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
@@ -50,5 +52,6 @@ public interface WorkMapper {
 	public void modifyMatList(bomMatVO data);
 	public void modifyBomList(workBomVO wkDetaId);
 	public void modifyDetaWorkList(DetaWorkOrdrVO data);
+	public void workInsertSubmit(Map<String, Object> paramMap);
 
 }
