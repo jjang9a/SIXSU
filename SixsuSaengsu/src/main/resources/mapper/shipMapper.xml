@@ -11,5 +11,15 @@
 	join complete_prod p
 	on p.cp_id = d.cp_id
 </select>
-
+<select id="lotProducts" resultType="LotVO">
+select* 
+from prod_lot l, complete_prod p
+where l.cp_id = p.cp_id
+and l.cp_id= #{keyword}
+</select>
+<!-- 모달창에 자동으로 총수량이 뜨도록 하는기능 -->
+	<select id='totalQt' 
+		parameterType = 'string' resultType="int">
+		select get_total_product_num(#{keyword}) from dual
+	</select>
  </mapper>
