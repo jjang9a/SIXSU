@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>반제품재고조정</title>
+<!-- 	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
+</head>
+
+<body>
+	<div layout:fragment="content">
+			<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품재고조정</h1>
+	
+			<div id="left">
+				자재명 <input type="number" id="matId" name="matId">
+				<button class="sixBtn1">
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+						viewBox="0 2 16 16">
+						<path
+							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+					</svg>
+				</button>
+			</div>
+			<div id="left">
+				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn4" id="reset">초기화</button>
+			</div>
+			<div id="left">
+				<button class="sixBtn4" id="adjinsert">조정입고</button>
+				<button class="sixBtn4" id="adjdelete">조정출고</button>
+			</div>
+			
+			<div id="gridm"></div>
+			
+		<script>
+		const gridData = [
+
+			];
+			window.onload = function () {
+				
+				$.ajax({
+					url : "/materials/spadjlist",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
+						gridm.resetData(result);
+					},
+ 					error: function(reject) {
+						console.log(reject);
+					}
+				});
+			}
+			
+			const gridm = new tui.Grid({
+				el : document.getElementById('gridm'),
+				//data : gridData,
+				scrollX : false,
+				scrollY : false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				rowHeaders: ['checkbox', 'rowNum'],
+				columns : [ 
+					{
+					header : '반제품LOT번호',
+					name : 'spLotId',
+				},	{
+					header : '반제품코드',
+					name : 'spId',
+				}, {
+					header : '반제품명',
+					name : 'spName'
+				}, {
+					header : '반제품규격',
+					name : 'spSize'
+				}, {
+					header : '현재재고량',
+					name : 'spQt'
+				}, {
+					header : '조정수량',
+					name : 'spAdjQt',
+					editor : 'text'
+				}]
+			});
+			
+ 			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+ 			
+ 			//반제품조정입고버튼
+ 			$('#adjinsert').on('click', function() {
+ 				console.log(gridm.getCheckedRows());
+ 				console.log(gridm.getData());
+ 				console.log(JSON.stringify(gridm.getCheckedRows()));
+ 				$.ajax({
+					url: "/materials/sprecadj",
+					method: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(gridm.getCheckedRows()),
+					success: function (result) {
+						console.log(result);
+						$.ajax({
+							url : "/materials/spadjlist",
+							method : "GET",
+							dataType : "JSON",
+							success : function(result) {
+								gridm.resetData(result);
+							},
+		 					error: function(reject) {
+								console.log(reject);
+							}
+						});
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+ 				})
+ 			});
+ 			
+ 			//반제품조정출고버튼
+ 			$('#adjdelete').on('click', function(){
+ 				$.ajax({
+					url: "/materials/spshipadj",
+					method: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(gridm.getCheckedRows()),
+					success: function (result) {
+						console.log(result);
+						$.ajax({
+							url : "/materials/spadjlist",
+							method : "GET",
+							dataType : "JSON",
+							success : function(result) {
+								gridm.resetData(result);
+							},
+		 					error: function(reject) {
+								console.log(reject);
+							}
+						});
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+ 				})
+ 			})
+		</script>
+	</div>
+</body>
+
+</html>

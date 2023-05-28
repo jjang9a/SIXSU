@@ -21,33 +21,21 @@
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품입고관리</h1>
+
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 대기 목록</h3>
 		<div id="readyGrid"></div>
+		<button type="button" class="sixBtn2" id="recBtn">입고</button>
+
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 목록</h3>
 		<div id="grid"></div>
 
 		<script>
 			window.onload = function () {
 				$.ajax({
-					url: "",
+					url: "/prod/readySpList",
 					method: "GET",
-					dataType: "JSON",
 					success: function (result) {
-						grids.resetData(result);
-						//console.log(result);
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-				});
-
-				$.ajax({
-					url: "",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-						grid.resetData(result);
-						//console.log(result);
+						readyGrid.resetData(result);
 					},
 					error: function (reject) {
 						console.log(reject);
@@ -62,12 +50,13 @@
 				scrollY: true,
 				rowHeaders: ['checkbox'],
 				columns: [{
-						header: '작업지시코드',
-						name: 'wkDetaId'
+						header: '공정실적코드',
+						name: 'prcsPfmcId'
 					},
 					{
 						header: '반제품코드',
-						name: 'spId'
+						name: 'spId',
+						filter: 'select'
 					},
 					{
 						header: '반제품명',
@@ -83,13 +72,30 @@
 					},
 					{
 						header: '생산종료일',
-						name: 'cmpltDate'
+						name: 'wkEnd'
 					},
 					{
-						header: '담당자',
-						name: 'empId'
+						header: 'LOT단위',
+						name: 'spLot',
+						hidden: true
 					}
-				]
+				],
+				summary: {
+        height: 30,
+        position: 'bottom', // or 'top'
+        columnContent: {
+			prcsPfmcId: {
+            template: function(valueMap) {
+              return `COUNT : ${valueMap.cnt}`;
+            }
+          },
+			goodQt: {
+            template: function(valueMap) {
+              return `TOTAL : ${valueMap.sum}`;
+            }
+          }
+		}
+	}
 			});
 
 			// 입고 목록
@@ -103,34 +109,28 @@
 				},
 				rowHeaders: ['rowNum'],
 				columns: [{
-						header: '반제품LOT번호',
-						name: 'matLotId'
-					},
-					{
-						header: '공정실적번호',
-						name: 'matReqId'
-					},
-					{
+						header: '입고번호',
+						name: 'spRecId'
+					},{
 						header: '반제품코드',
-						name: 'matName'
-					},
-					{
-						header: '반제품명',
-						name: 'matRecQt'
-					},
-					{
-						header: '반제품규격',
-						name: 'busName'
-					},
-					{
+						name: 'spId',
+						filter: 'select'
+					},{
+						header: '제품명',
+						name: 'spName'
+					},{
 						header: '입고량',
-						name: 'inspDate'
-					},
-					{
+						name: 'spRecQt'
+					},{
+						header: 'LOT번호',
+						name: 'spLotId'
+					},{
+						header: '공정실적번호',
+						name: 'prcsPfmcId'
+					},{
 						header: '입고일자',
-						name: 'matRecDate'
-					},
-					{
+						name: 'spRecDate'
+					},{
 						header: '담당자',
 						name: 'empName'
 					}
@@ -150,6 +150,29 @@
 					}
 				}
 			});
+
+			// 입고버튼 클릭 이벤트
+			$('#recBtn').on('click', (e) =>{
+				if (readyGrid.getCheckedRows().length == 0) {
+					alert('입고할 제품을 선택해주세요.')
+				} else {
+					$.ajax({
+						url: "/prod/spRec",
+						method: "POST",
+						dataType: "JSON",
+						contentType: "application/json",
+						data: JSON.stringify(readyGrid.getCheckedRows()),
+						success: function(result){
+							grid.resetData(result);
+							readyGrid.removeCheckedRows(false);
+						},
+						error: function (reject) {
+							console.log(reject)
+							alert('입고 과정에서 에러가 발생하였습니다.')
+						}
+					})
+				}
+			})
 		</script>
 	</div>
 </body>
