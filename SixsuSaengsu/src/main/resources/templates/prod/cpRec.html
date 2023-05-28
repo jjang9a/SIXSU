@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>완제품입고관리</title>
+	<!-- 	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
+	<style>
+		h1 {
+			margin-bottom: 10px;
+		}
+
+		h3 {
+			padding: 20px 20px 0px 20px;
+		}
+
+		button{
+			margin: 8px;
+		}
+	</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">완제품입고관리</h1>
+
+		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 대기 목록</h3>
+		<div id="readyGrid"></div>
+		<button type="button" class="sixBtn2" id="recBtn">입고</button>
+
+		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 목록</h3>
+		<div id="grid"></div>
+
+		<script>
+			window.onload = function () {
+				$.ajax({
+					url: "/prod/readyCpList",
+					method: "GET",
+					success: function (result) {
+						readyGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+
+				$.ajax({
+						url: "/prod/cpRecList",
+						method: "GET",
+						success: function(result){
+							grid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					})
+			};
+
+			//입고대기 리스트
+			const readyGrid = new tui.Grid({
+				el: document.getElementById('readyGrid'),
+				scrollX: false,
+				scrollY: true,
+				rowHeaders: ['checkbox'],
+				columns: [{
+						header: '공정실적코드',
+						name: 'prcsPfmcId'
+					},
+					{
+						header: '완제품코드',
+						name: 'cpId',
+						filter: 'select'
+					},
+					{
+						header: '완제품명',
+						name: 'cpName'
+					},
+					{
+						header: '완제품규격',
+						name: 'cpSize'
+					},
+					{
+						header: '양품수량',
+						name: 'goodQt'
+					},
+					{
+						header: '생산종료일',
+						name: 'wkEnd'
+					},
+					{
+						header: 'LOT단위',
+						name: 'cpLot',
+						hidden: true
+					}
+				],
+				summary: {
+					height: 30,
+					position: 'bottom', // or 'top'
+					columnContent: {
+						prcsPfmcId: {
+						template: function(valueMap) {
+						return `COUNT : ${valueMap.cnt}`;
+						}
+					},
+						goodQt: {
+						template: function(valueMap) {
+						return `TOTAL : ${valueMap.sum}`;
+						}
+					}
+					}
+				}
+			});
+
+			readyGrid.setBodyHeight(190)
+
+			// 입고 목록
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				scrollX: false,
+				scrollY: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 9
+				},
+				minBodyHeight: 360,
+				rowHeaders: ['rowNum'],
+				columns: [{
+						header: '입고번호',
+						name: 'cpRecId',
+						align: 'center'
+					},{
+						header: '완제품코드',
+						name: 'cpId',
+						filter: 'select',
+						align: 'center'
+					},{
+						header: '제품명',
+						name: 'cpName',
+						align: 'center'
+					},{
+						header: '입고량',
+						name: 'cpRecQt',
+						align: 'center'
+					},{
+						header: '입고유형',
+						name: 'cpRecTp',
+						filter: 'select',
+						align: 'center'
+					},{
+						header: 'LOT번호',
+						name: 'cpLotId',
+						align: 'center'
+					},{
+						header: '입고일자',
+						name: 'cpRecDate',
+						align: 'center'
+					},{
+						header: '담당자',
+						name: 'empName',
+						align: 'center'
+					},{
+						header: '공정실적코드',
+						name: 'prcsPfmcId',
+						align: 'center'
+					}
+				]
+			});
+
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			// 입고버튼 클릭 이벤트
+			$('#recBtn').on('click', (e) =>{
+				if (readyGrid.getCheckedRows().length == 0) {
+					alert('입고할 제품을 선택해주세요.')
+				} else {
+					$.ajax({
+						url: "/prod/spRec",
+						method: "POST",
+						dataType: "JSON",
+						contentType: "application/json",
+						data: JSON.stringify(readyGrid.getCheckedRows()),
+						success: function(result){
+							let appData = result;
+							grid.appendRows(appData);
+							readyGrid.removeCheckedRows(false);
+						},
+						error: function (reject) {
+							console.log(reject)
+							alert('입고 과정에서 에러가 발생하였습니다.')
+						}
+					})
+				}
+			})
+		</script>
+	</div>
+</body>
+
+</html>

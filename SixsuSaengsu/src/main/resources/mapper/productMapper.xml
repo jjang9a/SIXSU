@@ -5,6 +5,7 @@
   
 <mapper namespace="co.sixsu.app.basic.mapper.ProductMapper">
 
+<!-- 반제품 입고관리 시작 -->
 <select id="readySpList" resultType="ReceiveVO">
 	SELECT P. PRCS_PFMC_ID, P.PD_ID SP_ID, P.PD_NAME SP_NAME, S.SP_SIZE, P.WK_END, P.GOOD_QT, S.SP_LOT
 	FROM PROCESS_PERFORMANCE P
@@ -41,7 +42,7 @@
 	<selectKey resultType="ReceiveVO" keyProperty="spRecId,spRecDate"  order="BEFORE" >
 		select get_sp_rec_id sp_rec_id, to_char(sysdate, 'yyyy/MM/dd') sp_rec_date
 		from dual
-	</selectKey> -->
+	</selectKey>
 	
 	INSERT INTO sp_rec VALUES (#{spRecId}, #{prcsPfmcId}, #{spId}, '정상입고', #{spRecDate}, #{spRecQt}, null, #{empId}, #{spLotId})
 </insert>
@@ -52,5 +53,37 @@
 	WHERE sp_lot_id=#{spLotId}
 </update>
 
+<select id="spRecList" resultType="ReceiveVO">
+	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, r.sp_rec_date, e.emp_name as "empName", r.sp_lot_id, s.sp_name
+	from sp_rec r join semi_prod s 
+	on r.sp_id = s.sp_id
+	LEFT OUTER join employee e
+	on r.emp_id = e.emp_id
+</select>
+<!-- 반제품 입고관리 끝 -->
+
+<!-- 완제품 입고관리 시작 -->
+<select id="readyCpList" resultType="ReceiveVO">
+	SELECT P. PRCS_PFMC_ID, P.PD_ID CP_ID, P.PD_NAME CP_NAME, S.CP_SIZE sp_size, P.WK_END, P.GOOD_QT, S.CP_LOT
+	FROM PROCESS_PERFORMANCE P
+	JOIN WORK_BOM B ON B.WK_BOM_ID = P.WK_BOM_ID
+	JOIN COMPLETE_PROD S ON P.PD_ID = S.CP_ID
+	WHERE SUBSTR(P.PD_ID, 1, 2) = 'CP'
+	AND SET_PFMC(P.PRCS_PFMC_ID) > ( SELECT NVL(MAX(SET_PFMC(PRCS_PFMC_ID)),0)
+	                                                        FROM PROD_REV)
+	AND B.FLOW_NUM IN( SELECT MAX(FLOW_NUM)
+	                    FROM WORK_BOM
+	                    GROUP BY WK_DETA_ID)
+	ORDER BY P.PD_ID,P.WK_END
+</select>
+
+<select id="cpRecList" resultType="ReceiveVO">
+	select r.cp_rec_id, r.prcs_pfmc_id, l.cp_id, r.cp_rec_tp, r.cp_rec_date, e.emp_name, r.cp_lot_id, s.cp_name
+	from prod_rev r join prod_lot l on r.cp_lot_id = l.cp_lot_id
+	join complete_prod s 
+	on l.cp_id = s.cp_id
+	LEFT OUTER join employee e
+	on r.emp_id = e.emp_id
+</select>
 
 </mapper>

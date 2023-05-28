@@ -16,12 +16,17 @@ public class ProductServiceImpl implements ProductService{
 
 	@Autowired ProductMapper mapper;
 	
+	// 반제품 입고 관리
+	
 	@Override // 반제품 입고대기 리스트
 	public List<ReceiveVO> readySpList() {
-		System.out.println("서비스 진입");
 		List<ReceiveVO> list = mapper.readySpList();
-		System.out.println("서비스 : "+list);
 		return list;
+	}
+	
+	@Override // 반제품 입고 목록
+	public List<ReceiveVO> spRecList() {
+		return mapper.spRecList();
 	}
 
 	@Override
@@ -124,5 +129,19 @@ public class ProductServiceImpl implements ProductService{
 		}
 	}
 
+	
+	// 완제품 입고 관리
+	
+	@Override
+	public List<ReceiveVO> readyCpList() {
+		return mapper.readyCpList();
+	}
+
+	@Override
+	public List<ReceiveVO> cpRecList() {
+		return mapper.cpRecList();
+	}
+
+	
 	
 }

@@ -23,7 +23,7 @@
 
 		.background {
 			background-color: #ccdceb;
-			padding: 35px 30px 40px 30px;
+			padding: 20px;
 		}
 
 		#pdDiv {
@@ -47,7 +47,7 @@
 		}
 
 		.sel {
-			width: 90px;
+			width: 100px;
 			text-align: center;
 			padding: 10px;
 			font-size: 15px;
@@ -95,33 +95,70 @@
 		<!-- 오른쪽 틀 끝 -->
 
 		<script>
-			// 그룹코드-검색 탭 토글
+			window.onload = function () {
+				$.ajax({
+					url: "/basic/activeCpList",
+					method: "GET",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			};
+
+			// 완제품-반제품 탭 토글
 			$('.sel1').on('click', function (e) {
 				$('.sel2').removeClass('sel3');
 				$(this).addClass('sel3');
+				$.ajax({
+					url: "/basic/activeCpList",
+					method: "GET",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
 			})
 
 			$('.sel2').on('click', function (e) {
 				$('.sel1').removeClass('sel3');
 				$(this).addClass('sel3');
+				$.ajax({
+					url: "/basic/activeSpList",
+					method: "GET",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
 
 			})
 
 			const pdGrid = new tui.Grid({
-				el: document.getElementById('pdGrid'),
-				scrollX: false,
-				scrollY: true,
-				minBodyHeight: 400,
-				columns: [{
-					header: '그룹코드',
-					name: 'gid',
-					align: 'center'
-				}, {
-					header: '그룹명',
-					name: 'gname',
-					align: 'center'
-				}]
-			});
+					el: document.getElementById('pdGrid'),
+					scrollX: false,
+					scrollY: true,
+					minBodyHeight: 480,
+					columns: [{
+						header: '제품코드',
+						name: 'cpId',
+						align: 'center'
+					}, {
+						header: '제품명',
+						name: 'cpName',
+						align: 'center'
+					}, {
+						header: '규격',
+						name: 'cpSize',
+						align: 'center'
+					}]
+				});
 
 			// 그리드 색 변경 테마 적용
 			tui.Grid.applyTheme('default', {
@@ -139,17 +176,25 @@
 				el: document.getElementById('grid'),
 				scrollX: false,
 				scrollY: true,
-				minBodyHeight: 400,
+				rowHeaders: ['rowNum'],
+				minBodyHeight: 480,
+				draggable: true,
 				columns: [{
-					header: '그룹코드',
+					header: '공정구분',
+					name: 'gname',
+					align: 'center'
+				},{
+					header: '공정코드',
 					name: 'gid',
 					align: 'center'
-				}, {
-					header: '그룹명',
-					name: 'gname',
+				},{
+					header: '공정명',
+					name: 'gid',
 					align: 'center'
 				}]
 			});
+			grid.setLanguage('ko');
+
 		</script>
 	</div>
 </body>

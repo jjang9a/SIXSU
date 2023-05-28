@@ -6,7 +6,9 @@ import co.sixsu.app.basic.domain.ReceiveVO;
 
 public interface ProductMapper {
 
+	// 반제품 입고관리
 	public List<ReceiveVO> readySpList(); // 반제품 입고대기목록
+	public List<ReceiveVO> spRecList(); // 반제품 입고목록
 
 	public ReceiveVO procSpLotInfo(ReceiveVO vo); // 반제품 LOT정보 프로시저 호출
 	public int insertSpRec(ReceiveVO vo); // 반제품 입고내역 등록
@@ -14,5 +16,7 @@ public interface ProductMapper {
 	public int updateSpLot(ReceiveVO vo); // 반제품 LOT 업데이트
 	public String getSpLotId(String spId); // 반제품 LOT번호 생성
 
-	
+	//완제품 입고관리
+	public List<ReceiveVO> readyCpList(); // 완제품 입고대기목록
+	public List<ReceiveVO> cpRecList(); // 완제품 입고목록
 }
