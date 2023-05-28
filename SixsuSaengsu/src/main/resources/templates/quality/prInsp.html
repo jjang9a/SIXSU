@@ -21,6 +21,10 @@
 #prInspForm {
 	display: none;
 }
+
+#topS {
+	margin: 10px;
+}
 </style>
 
 
@@ -32,165 +36,174 @@
 
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">제품 품질 관리</h1>
-		<div class="col-lg-7">
 
-		<!-- 발주 번호 검색 버튼 -->
-		<label>지시 세부 코드 조회</label>
-		<button class="sixBtn1" data-bs-toggle="modal"
-			data-bs-target="#detWorkModal">
-			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-7">
+
+					<!-- 발주 번호 검색 버튼 -->
+					<label>지시 세부 코드 조회</label>
+					<button class="sixBtn1" data-bs-toggle="modal"
+						data-bs-target="#detWorkModal">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
 							<path
-					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
 						</svg>
-		</button>
+					</button>
 
-		<!-- 모달창 세부 지시 코드 조회  -->
-		<div class="modal fade" id="detWorkModal" tabindex="-1"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="searchModalLabel">지시 세부 코드
-								조회</h1>
-<!-- 							<button type="button" class="btn-close" data-bs-dismiss="modal"
+					<!-- 모달창 세부 지시 코드 조회  -->
+					<div class="modal fade" id="detWorkModal" tabindex="-1"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="searchModalLabel">지시 세부
+											코드 조회</h1>
+										<!-- 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
- -->						</div>
+ -->
+									</div>
 
 
-					<!-- 	<div class="btns"></div> -->
+									<!-- 	<div class="btns"></div> -->
 
-						<div class="modal-body">
-							<div id="dwGrid"></div>
-						</div>
-						
-						<div class="modal-footer">
-							<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
-							<button type="button" class="sixBtn2" id="addBtn"
-								data-bs-dismiss="modal">등록</button>
+									<div class="modal-body">
+										<div id="dwGrid"></div>
+									</div>
+
+									<div class="modal-footer">
+										<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
+										<button type="button" class="sixBtn2" id="addBtn"
+											data-bs-dismiss="modal">등록</button>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
+
+					<!-- 검사 대기 리스트 그리드 부분 -->
+					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 결과 등록 전</h6>
+					<div id="beforeGrid"></div>
+					<button class="sixBtn6" id="rpBtn">검사결과등록</button>
+
+					<!-- 검색 항목 -->
+					<div id="topS">
+						생산지시번호 <input type="text"> 제품명 <input type="text">
+						검사일자 <input type="date">
+					</div>
+
+					<div id="topS">
+						<button class="sixBtn2" id="search">조회</button>
+						<button class="sixBtn3" id="search">초기화</button>
+					</div>
+
+					<!-- 검사 완료 그리드 -->
+					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 등록 완료</h6>
+					<div id="afterGrid"></div>
+
+				</div>
+				
+				
+
+				<!-- 검사 결과 등록 폼 -->
+				<div class="col-lg-5" id="formDiv">
+					<form action="" method="post" id="prInspForm">
+						<!-- display: none;  -->
+
+
+						<div class="row">
+							<div class="col">
+								<label for="inspStdId" class="form-label">세부지시번호 </label> <input
+									type="text" class="form-control" id="wkDetaId">
+							</div>
+
+							<div class="col">
+								<label for="inspStdId" class="form-label">검사번호</label> <input
+									type="text" class="form-control" id="inspNum">
+							</div>
+
+							<div class="col">
+								<label for="inspStdId" class="form-label">공정</label> <input
+									type="text" class="form-control" id="procName">
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col">
+								<label for="matId" class="form-label">제품코드 </label> <input
+									type="text" class="form-control" id="cpId">
+							</div>
+
+
+							<div class="col">
+
+								<label for="exampleFormControlInput1" class="form-label">검사자
+								</label> <input type="text" class="form-control" id="empName">
+
+							</div>
+						</div>
+
+
+
+
+						<div class="row">
+							<div class="col">
+								<label for="inspQt" class="form-label">검사 수량 </label> <input
+									type="text" class="form-control" id="inspQt">
+							</div>
+							<div class="col">
+								<label for="suitQt" class="form-label">적합 수량 </label> <input
+									type="text" class="form-control" id="suitQt">
+							</div>
+							<div class="col">
+								<label for="nsuitQt" class="form-label">부적합 수량 </label> <input
+									type="text" class="form-control" id="nsuitQt">
+							</div>
+						</div>
+
+					</form>
+					<!-- 검사 폼 끝나는 부분 -->
+
+
+					<!-- 세부 검사 항목 boderBox 시작 -->
+					<div id="borderBox" class="detail">
+						<h5 class="mt-4" style="font-family: 'MaruBuri';">세부 검사 항목</h5>
+
+						<!-- 세부 검사 항목 그리드 -->
+
+						<div id="detailGrid"></div>
+						<!-- 세부 검사 항목 끝나는 부분 -->
+
+						<!-- 검사 등록 버튼 -->
+						<button type="button" class="sixBtn2" id="inspBtn">등록</button>
+
+					</div>
+
 				</div>
 			</div>
 		</div>
-
-		<!-- 검사 대기 리스트 그리드 부분 -->
-		<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 결과 등록 전</h6>
-		<div id="beforeGrid"></div>
-
-		<!-- 검색 항목 -->
-		<div id="topS">
-			생산지시번호 <input type="text"> 제품명 <input type="text">
-			검사일자 <input type="date">
-		</div>
-
-		<div id="topS">
-			<button class="sixBtn2" id="search">조회</button>
-			<button class="sixBtn3" id="search">초기화</button>
-		</div>
-
-		<!-- 검사 완료 그리드 -->
-		<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 등록 완료</h6>
-		<div id="afterGrid"></div>
-		</div>
-		
-		<!-- 검사 결과 등록 폼 -->
-		<div class="col-lg-5" id="formDiv">
-			<form action="" method="post" id="prInspForm">
-				<!-- display: none;  -->
-
-
-				<div class="row">
-					<div class="col">
-						<label for="inspStdId" class="form-label">발주번호 </label> <input
-							type="text" class="form-control" id="inspStdId">
-					</div>
-
-					<div class="col">
-						<label for="inspStdId" class="form-label">검사번호</label> <input
-							type="text" class="form-control" id="inspNum">
-					</div>
-
-					<div class="col">
-						<label for="inspStdId" class="form-label">거래처</label> <input
-							type="text" class="form-control" id="busName">
-					</div>
-
-				</div>
-
-				<div class="row">
-					<div class="col">
-						<label for="matId" class="form-label">자재코드 </label> <input
-							type="text" class="form-control" id="matId">
-					</div>
-
-					<div class="col">
-						<label for="exampleFormControlInput1" class="form-label">자재명
-						</label> <input type="text" class="form-control" id="matName">
-					</div>
-
-					<div class="col">
-
-						<label for="exampleFormControlInput1" class="form-label">검사자
-						</label> <input type="text" class="form-control" id="empName">
-
-					</div>
-				</div>
-
-
-
-
-				<div class="row">
-					<div class="col-3">
-						<label for="inspQt" class="form-label">검사 수량 </label> <input
-							type="text" class="form-control" id="inspQt">
-					</div>
-					<div class="col-3">
-						<label for="suitQt" class="form-label">적합 수량 </label> <input
-							type="text" class="form-control" id="suitQt">
-					</div>
-					<div class="col-3">
-						<label for="nsuitQt" class="form-label">부적합 수량 </label> <input
-							type="text" class="form-control" id="nsuitQt">
-					</div>
-				</div>
-
-			</form>
-			<!-- 검사 폼 끝나는 부분 -->
-
-
-			<!-- 세부 검사 항목 boderBox 시작 -->
-			<div id="borderBox" class="detail">
-				<h5 class="mt-4" style="font-family: 'MaruBuri';">세부 검사 항목</h5>
-
-				<!-- 세부 검사 항목 그리드 -->
-
-				<div id="detailGrid"></div>
-				<!-- 세부 검사 항목 끝나는 부분 -->
-
-
-			</div>
-			<!-- 검사 등록 버튼 -->
-			<button type="button" class="sixBtn2" id="inspBtn">등록</button>
-
-		</div>
-
 
 
 
 		<script>
-			//window.onload = function() {
-			/* $.ajax({
-				url : "/quality/bpList",
+			window.onload = function() {
+				//검사 결과 등록 전 리스트
+			 $.ajax({
+				url : "/quality/prwList",
 				method : "GET",
 				success : function(result) {
 					beforeGrid.resetData(result);
+					
 				},
 				error : function(reject) {
 					console.log(reject);
 				}
-			}) */
+			}) 
+			
+			
 			
 			// 지시 세부 코드 조회 클릭 시 모달창 오픈
 			$('#detWorkModal').on('shown.bs.modal', function (e) {
@@ -211,26 +224,26 @@
 			// 모달 등록
 			$('#addBtn').on('click', function (e) {
 				// 등록할 데이터
-				let data = dwGrid.getModifiedRows().updatedRows;
+				let checkedRows = dwGrid.getCheckedRows();
 
-				if (data.length === 0) {
+				if (checkedRows.length === 0) {
 					alert('검사를 선택 후 등록해주세요.');
 				} else {
 					// Ajax를 통해 데이터를 서버로 전송하고 등록 성공 후 처리
 					$.ajax({
-						url: "/quality/prRegister",
+						url: "/quality/bpdAdd",
 						method: "POST",
 						contentType: 'application/json',
-						data: JSON.stringify(grid2.getModifiedRows().updatedRows),
+						data: JSON.stringify(dwGrid.getCheckedRows()),
 						success: function (result) {
-							alert('입고 검사가 등록되었습니다.');
+							alert('공정 검사가 등록되었습니다.');
 							console.log(result);
 							const appendedData = result;
-							grid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
+							beforeGrid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
 							console.log('숨김 전')
-							$('#regModal').modal('hide');
+							$('#detWorkModal').modal('hide');
 							console.log('숨김 후')
-							grid2.removeCheckedRows(false);
+							dwGrid.removeCheckedRows(false);
 
 							// 업데이트 된 데이터 출력
 							$.ajax({
@@ -238,7 +251,7 @@
 								method: "GET",
 								dataType: "JSON",
 								success: function (result) {
-									grid.resetData(result);
+									beforeGrid.resetData(result);
 								},
 								error: function (reject) {
 									console.log(reject);
@@ -246,11 +259,111 @@
 							});
 						},
 						error: function (reject) {
-							alert('입고 검사 등록 중 에러가 발생하였습니다.');
+							alert('공정 검사 등록 중 에러가 발생하였습니다.');
 						}
 					});
 				}
 			});
+			
+			// 검사 결과 등록을 위한 beforeGrid 한 줄 선택해서 정보 가져오기
+			let selInspNum;
+			let selWkDetaId;
+			let selCpId;
+			let selProcName;
+			let selDetaQt;
+			
+			beforeGrid.on('focusChange', (ev) => {
+				// focus된 셀이 있는 열 전체 select 처리
+				beforeGrid.setSelectionRange({
+					start: [ev.rowKey, 0],
+					end: [ev.rowKey, beforeGrid.getColumns().length - 1]
+				});
+				console.log(ev.rowKey)
+
+				// rowKey 얻는법
+				// focus된 cell 내의 정보
+				const focusCell = beforeGrid.getFocusedCell()
+				console.log(focusCell)
+
+				selKey = ev.rowKey;
+				
+				// 행 전체 정보 얻기
+				let dataRow = beforeGrid.getRow(ev.rowKey);
+				console.log(dataRow);
+				
+				//selReq = dataRow;
+				console.log('검사번호 : ' + dataRow.inspNum);
+				selInspNum = dataRow.inspNum;
+				selWkDetaId = dataRow.wkDetaId;
+				selCpId = dataRow.cpId;
+				selProcName = dataRow.procName;
+				selDetaQt = dataRow.detaQt;
+			}); // focusChange 끝
+			
+			
+			
+			// 검사 결과 등록 버튼 클릭 이벤트
+			$('#rpBtn').on('click', function(e){
+				console.log('rpBtn 클릭');
+				$('#prInspForm').css('display', 'block');
+				$(".detail").css('display', 'block');
+				
+				console.log("선택한검사번호:"+selInspNum);
+				
+				// 선택한 결과 주입
+				$('#wkDetaId').val(selWkDetaId);
+				$('#inspNum').val(selInspNum);
+				$('#procName').val(selProcName);
+				$('#cpId').val(selCpId);
+				$('#inspQt').val(selDetaQt);
+				
+				// 검사 항목 ajax 호출
+				$.ajax({
+					url: "/quality/inspItem",
+					method: "GET",
+					data: {
+						'cpId': cpId
+					},
+					dataType: "JSON",
+					success: function (result) {
+						console.log(result);
+						detailGrid.resetData(result);
+						detailGrid.setColumnValues('inspNum', selInspNum, false);
+						setTimeout(() => detailGrid.refreshLayout(), 700);
+
+						// 적합 수량과 부적합 수량 자동 계산 함수
+						function calSuitQt() {
+						  const rows = detailGrid.getData();
+						  let totalNsuitQt = 0;
+						  rows.forEach(function(row) {
+						    const nsuitQt = parseInt(row.nsuitQt);
+						    if (!isNaN(nsuitQt)) {
+						      totalNsuitQt += nsuitQt;
+						    }
+						  });
+						  const inspQt = parseInt($('#inspQt').val());
+						  const suitQt = inspQt - totalNsuitQt;
+
+						  // 적합 수량과 부적합 수량 필드에 값 설정
+						  $('#nsuitQt').val(totalNsuitQt);
+						  $('#suitQt').val(suitQt);
+						}
+
+						// Toast Grid의 값이 변경될 때마다 호출되는 이벤트 핸들러 등록
+						detailGrid.on('editingFinish', function(e) {
+						  if (e.columnName === 'nsuitQt') {
+						    calSuitQt(); // 값 계산
+						  }
+						});
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+				
+			})
+			
+			} //window.onload 함수 종료
 			
 			
 
@@ -301,7 +414,11 @@
 				},
 
 				columns : [ {
-					header : '생산지시번호',
+					header: '검사번호',
+					name: 'inspNum',
+					hidden : true
+				},{
+					header : '세부지시번호',
 					name : 'wkDetaId',
 					align : 'center'
 				}, {
@@ -309,10 +426,6 @@
 					name : 'cpId',
 					align : 'center'
 
-				}, {
-					header : '제품명',
-					name : 'cpName',
-					align : 'center'
 				}, {
 					header : '공정',
 					name : 'proc',
@@ -324,10 +437,6 @@
 				}, {
 					header : '생산날짜',
 					name : 'endDate',
-					align : 'center'
-				}, {
-					header : '담당자',
-					name : 'empId',
 					align : 'center'
 				} ]
 			});
@@ -346,7 +455,7 @@
 				},
 
 				columns : [ {
-					header : '생산지시번호',
+					header : '세부지시번호',
 					name : 'wkDataId'
 				}, {
 					header : '제품코드',
@@ -373,7 +482,6 @@
 				}, {
 					header : '부적합 수량',
 					name : 'nsuitQt',
-					editor : 'text',
 					align : 'center'
 				}, {
 					header : '검사자',
@@ -383,11 +491,67 @@
 					header : '검사일자',
 					name : 'inspDate',
 					align : 'center'
-				}, ]
+				} ]
+			});
+			
+			// 검사 세부 항목 그리드
+			const detailGrid = new tui.Grid({
+				el: document.getElementById('detailGrid'),
+				//data: [], //빈 배열로 초기화
+
+				scrollX: false,
+				scrollY: true,
+
+				columns: [{
+						header: '검사번호',
+						name: 'inspNum',
+						hidden : true
+					},
+					{
+						header: '검사 항목 코드',
+						//width: 120,
+						name: 'inspId',
+						align: 'center'
+
+					},
+					{
+						header: '항목명',
+						name: 'inspName',
+						align: 'center'
+					},
+					{
+						header: '설명',
+						name: 'inspExp',
+						align: 'center'
+					},
+					{
+						header: '기준값',
+						name: 'stdVal',
+						align: 'center'
+					}, {
+						header: '결과값',
+						name: 'resVal',
+						editor: 'text',
+						align: 'center'
+					},
+					{
+						header: '부적합 수량',
+						name: 'nsuitQt',
+						editor: 'text',
+						align: 'center'
+					},
+					{
+						header: '적합여부',
+						name: 'resStat',
+						align: 'center'
+					}
+				]
 			});
 
-			//window.onload 함수 종료
-			//}
+			// 세부 검사 항목 그리드에 스크롤 부여
+			detailGrid.setBodyHeight(400);
+
+
 		</script>
 	</div>
 </body>

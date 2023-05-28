@@ -4,11 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
@@ -263,18 +259,71 @@ public class QualityServiceImpl implements QualityService {
 //	    return list;
 //	}
 	
+	//입고 검사 완료 리스트
+	@Override
+	public List<QuaVO> afterReqList() {
+		return quaMapper.afterReqList();
+	}
+	
+	// 입고 검사 완료건 단건 삭제
+	@Override
+	public boolean delReqInsp(String inspNum) {
+		return quaMapper.delReqInsp(inspNum) >= 1;
+	}
+	
+	// 수정시 검사 항목 리스트
+	@Override
+	public List<QuaVO> modInspItem(String inspNum) {
+		return quaMapper.modInspItem(inspNum);
+	}
+
+	
 	// 공정 검사 전 리스트 출력
 	@Override
 	public List<DetaWorkOrdrVO> bpAddList() {
 		return quaMapper.bpAddList();
 	}
 
-
+	// 공정 검사 등록
+	@Transactional
 	@Override
-	public boolean bpdAdd(List<PrdInspVO> list) {
-		// TODO Auto-generated method stub
-		return false;
+	public List<PrdInspVO> bpdAdd(List<PrdInspVO> list) {
+		
+		System.out.println("서비스");
+		int count = 0; //insert 발생 횟수
+		String inspNum =""; // 검사번호 부여 변수
+//		for(int i=0; i<list.size(); i++) {
+//			PrdInspVO vo = list.get(i);
+//			inspNum = quaMapper.pdInspNum();
+//			vo.setInspNum(inspNum);
+//	        
+//			quaMapper.bpdAdd(list);
+//			System.out.println("bpdAdd:"+vo);
+//			if(vo.getInspNum() != null ) count++;
+//		}
+		for(int i=0; i<list.size(); i++) {
+		    PrdInspVO prd = list.get(i);
+		    inspNum = quaMapper.pdInspNum();
+		    prd.setInspNum(inspNum);
+
+		    System.out.println("bpdAdd: " + prd); // 디버깅용 출력
+
+		    quaMapper.bpdAdd(prd);
+
+		    if(prd.getInspNum() != null) count++;
+		}
+		
+		return list;
 	}
+
+	// 제품 품질 관리 검사 대기 리스트
+	@Override
+	public List<PrdInspVO> prwList() {
+		return quaMapper.prwList();
+	}
+
+
+
 
 
 
