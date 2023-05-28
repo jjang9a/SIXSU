@@ -1,5 +1,8 @@
 package co.sixsu.app.quality.domain;
 
+import lombok.Data;
+
+@Data
 public class QilVO {
 	//품질 검사 항목 VO
 	String inspId; // 검사 항목 코드
