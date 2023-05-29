@@ -3,7 +3,6 @@ package co.sixsu.app.work.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +15,7 @@ import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
+import co.sixsu.app.work.domain.WorkFilterDataVO;
 import co.sixsu.app.work.domain.addPlanVO;
 import co.sixsu.app.work.domain.bomMatVO;
 import co.sixsu.app.work.domain.detOrdVO;
@@ -33,19 +33,19 @@ public class WorkAjaxController {
 	//data : JSON.stringfy()
 	
 	@RequestMapping("planAjax")
-	public List palnListData() {
+	public List<DetaProdPlanVO> palnListData() {
 		List<DetaProdPlanVO> list = service.getPlan();
 
 		return list;
 	}
 	
 	@RequestMapping("planFilterAjax")
-	public List palnFilterListData(@ModelAttribute  PlanDataVO data) {
+	public List<DetaProdPlanVO> palnFilterListData(@RequestBody  PlanDataVO data) {
 		System.out.println("받아들인 데이터 >");
 		System.out.println(data);
 		String checkFilter = "";
 		
-		if(data.getStatusCheckbox() != null) {
+		if(data.getStatusCheckbox().length != 0) {
 			checkFilter += "AND (status IN (";
 			for(int i=0;i<data.getStatusCheckbox().length;i++) {
 				String j = "\'" + data.getStatusCheckbox()[i] + "\'";
@@ -60,6 +60,18 @@ public class WorkAjaxController {
 		}
 		List<DetaProdPlanVO> list = service.getPlanFilter(data);
 		
+		return list;
+	}
+	
+	@RequestMapping("getWorkList")
+	public List<DetaWorkOrdrVO> getWorkList() {
+		List<DetaWorkOrdrVO> list = service.getWorkList();
+		return list;
+	};
+	@RequestMapping("workFilterAjax")
+	public List<DetaWorkOrdrVO> workFilterAjax(@RequestBody WorkFilterDataVO data){
+		System.out.println(data);
+		List<DetaWorkOrdrVO> list = service.workFilterAjax(data);
 		return list;
 	}
 	
@@ -81,14 +93,14 @@ public class WorkAjaxController {
 	}
 		
 	@RequestMapping("sorderListAjax")
-	public List sorderList() {
+	public List<SorderVO> sorderList() {
 		List<SorderVO> list = service.getSorder();
 		System.out.println(list);
 		return list;
 	}
 	
 	@RequestMapping("detOrdListAjax")
-	public List detOrdList(@RequestParam String ordId ) {
+	public List<detOrdVO> detOrdList(@RequestParam String ordId ) {
 		List<detOrdVO> list = service.getdetOrd(ordId);
 		System.out.println("클릭된 GRID2의 상세주문 내역 >");
 		System.out.println(list);
@@ -96,7 +108,7 @@ public class WorkAjaxController {
 	}
 	
 	@RequestMapping("getProductList")
-	public List getProductList() {
+	public List<ProductVO> getProductList() {
 		List<ProductVO> list = service.getProductList();
 		System.out.println("제품조회 리스트");
 		System.out.println(list);
@@ -104,7 +116,7 @@ public class WorkAjaxController {
 	}
 	
 	@RequestMapping("getPlanList")
-	public List getPlanList() {
+	public List<addPlanVO> getPlanList() {
 		List<addPlanVO> list = service.getPlanList();
 		System.out.println("PROD_PLAN 의 데이터 >");
 		System.out.println(list);
@@ -112,7 +124,7 @@ public class WorkAjaxController {
 	}
 	
 	@RequestMapping("getDetaPlanList")
-	public List getDetaPlanList(@RequestParam String planHeadId ) {
+	public List<addPlanVO> getDetaPlanList(@RequestParam String planHeadId ) {
 		List<addPlanVO> list = service.getDetaPlanList(planHeadId);
 		System.out.println("클릭된 GRID2의 상세주문 내역 >");
 		System.out.println(list);
@@ -120,7 +132,7 @@ public class WorkAjaxController {
 	}
 	
 	@RequestMapping("getProcessList")
-	public List getDetaPlanList() {
+	public List<ProcessVO> getDetaPlanList() {
 		List<ProcessVO> list = service.getProcessList();
 		System.out.println("공정리스트 출력 >");
 		System.out.println(list);
@@ -128,7 +140,7 @@ public class WorkAjaxController {
 	}
 	
 	@RequestMapping("getMaterialList")
-	public List getMaterialList() {
+	public List<MatVO> getMaterialList() {
 		List<MatVO> list = service.getMaterialList();
 		System.out.println("자재 및 반제품 출력 >");
 		System.out.println(list);

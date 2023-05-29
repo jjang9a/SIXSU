@@ -347,11 +347,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	    el: document.getElementById('plan_search1'),
 	    data : data,
 	    scrollX: false,
-	    scrollY: false,
+	    scrollY: true,
 	    rowHeaders: ['rowNum'],
-	    
 	    columns: [
-	      
  	      {
  	        header: '계획코드',
  	        name: 'planHeadId'
@@ -372,13 +370,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	        header: '상태',// 아직VO에 없음 정의못했음
  	        name: 'cmpltSt',
  	 	  }
-	 	 	
-	    ],
-	    pageOptions: {
-	        useClient: true,
-	        perPage: 8
-	      }
+	    ]
 	  });
+	plan_search1.setBodyHeight(340);
+	
 		//첫 페이지에서 뜨는 데이터
 		window.onload = function(){
 			
@@ -425,11 +420,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	    el: document.getElementById('plan_search2'),
 	    data : data,
 	    scrollX: false,
-	    scrollY: false,
+	    scrollY: true,
 	    rowHeaders: ['rowNum','checkbox'],
-	    
 	    columns: [
-	      
  	      {
  	        header: '세부코드',
  	        name: 'planDetaId'
@@ -454,13 +447,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	        header: '종결',// 아직VO에 없음 정의못했음
  	        name: 'cmpltSt',
  	 	  }
-	 	 	
-	    ],
-	    pageOptions: {
-	        useClient: true,
-	        perPage: 8
-	      }
+	    ]
 	  });
+		plan_search2.setBodyHeight(340);
+		
 		
 		let bom_data = []
 		bom_data.push({
@@ -750,7 +740,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				console.dir(result);
 				bom_search1.resetData(result);
 				},
-				errer : function(reject){
+				error : function(reject){
 					console.log(reject)
 				}
 			})

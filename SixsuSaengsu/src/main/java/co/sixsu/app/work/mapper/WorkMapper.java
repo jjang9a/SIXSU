@@ -12,6 +12,7 @@ import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
+import co.sixsu.app.work.domain.WorkFilterDataVO;
 import co.sixsu.app.work.domain.addPlanVO;
 import co.sixsu.app.work.domain.bomMatVO;
 import co.sixsu.app.work.domain.detOrdVO;
@@ -53,5 +54,7 @@ public interface WorkMapper {
 	public void modifyBomList(workBomVO wkDetaId);
 	public void modifyDetaWorkList(DetaWorkOrdrVO data);
 	public void workInsertSubmit(Map<String, Object> paramMap);
+	public List<DetaWorkOrdrVO> getWorkList();
+	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data);
 
 }

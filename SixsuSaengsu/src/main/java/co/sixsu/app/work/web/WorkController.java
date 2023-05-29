@@ -26,16 +26,15 @@ import co.sixsu.app.work.service.WorkService;
 		return "/work/viewPlanPage";
 		}
 		
-		@GetMapping("/work/work2")
-		public String work2() {
-			System.out.println("test2 들어옴");
-		return "/work/work2";
-		}
-		
 		@GetMapping("/work/createPlanPage")
 		public String work3() {
 			System.out.println("createPlanPage 들어옴");
 		return "/work/createPlanPage";
+		}
+		@GetMapping("/work/viewWorkPage")
+		public String work2() {
+			System.out.println("viewWorkPage 들어옴");
+			return "/work/viewWorkPage";
 		}
 		
 		@GetMapping("/work/createWorkPage")
