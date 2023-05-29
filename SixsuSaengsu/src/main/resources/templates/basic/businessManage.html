@@ -57,15 +57,15 @@
 				<tr>
 					<td>거래처 코드</td>
 					<td><input type="text" name="busId" id="busId" class="empty"></td>
-					<td>분류</td>
+					<td>분류<span class="needStar"> *</span></td>
 					<td style="padding-right: 1px;"><select name="busType" id="busType">
 							<option value="">----- 선택 -----</option>
-							<option value="buy">매입 거래처</option>
-							<option value="sel">매출 거래처</option>
+							<option th:each="type : ${types}" th:value="${type.comId}" th:text="${type.comName}">
+							</option>
 						</select></td>
 				</tr>
 				<tr>
-					<td>회사명</td>
+					<td>회사명<span class="needStar"> *</span></td>
 					<td><input type="text" name="busName" id="busName" class="empty"></td>
 					<td>사업자번호</td>
 					<td style="padding-right: 0px;"><input type="text" name="busNum" id="busNum"
@@ -74,9 +74,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td>전화번호</td>
+					<td>전화번호<span class="needStar"> *</span></td>
 					<td><input type="text" name="busTell" id="busTell" class="empty">
-					<td>활성여부</td>
+					<td>활성여부<span class="needStar"> *</span></td>
 					<td>
 						<div id="divRadio">
 							<input type="radio" id="busStat1" name="busStat" value="Y" checked>
@@ -169,7 +169,7 @@
 						align: 'center'
 					}, {
 						header: '분류',
-						name: 'busType',
+						name: 'comName',
 						align: 'center'
 					}, {
 						header: '회사명',

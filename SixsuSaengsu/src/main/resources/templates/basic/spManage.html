@@ -46,14 +46,14 @@
 			<table id="spTable">
 				<tr>
 					<td>반제품 코드</td>
-					<td><input type="text" name="spId" id="spId" class="empty"></td>
+					<td><input type="text" name="spId" id="spId" class="empty" placeholder="검색"></td>
 					<td>규격</td>
 					<td><input type="text" name="spSize" id="spSize" class="empty"></td>
 				</tr>
 				<tr>
-					<td>제품명</td>
-					<td><input type="text" name="spName" id="spName" class="empty"></td>
-					<td>활성여부</td>
+					<td>제품명<span class="needStar"> *</span></td>
+					<td><input type="text" name="spName" id="spName" class="empty" placeholder="검색"></td>
+					<td>활성여부<span class="needStar"> *</span></td>
 					<td>
 						<div id="divRadio">
 							<input type="radio" id="spStat1" name="spStat" value="Y" checked>
@@ -66,7 +66,7 @@
 				<tr>
 					<td>관리LOT수량</td>
 					<td><input type="text" name="spLot" id="spLot" class="empty">
-					<td>단위</td>
+					<td>단위<span class="needStar"> *</span></td>
 					<td><input type="text" name="spUnit" id="spUnit" value="EA"></td>
 				</tr>
 				<tr>
@@ -80,6 +80,7 @@
 			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
 			<button type="button" class="sixBtn2" id="addBtn">등록</button>
 			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+			<button type="button" class="sixBtn3" id="initBtn">초기화</button>
 		</div>
 		<!-- 상단 폼 끝 -->
 
@@ -100,169 +101,179 @@
 						nowData = result;
 					}
 				});
-				const grid = new tui.Grid({
-					el: document.getElementById('grid'),
-					scrollX: false,
-					scrollY: false,
-					minBodyHeight: 400,
-					pageOptions: {
-						useClient: true,
-						perPage: 10
-					},
-					columns: [{
-						header: '반제품코드',
-						name: 'spId',
-						align: 'center'
-					}, {
-						header: '제품명',
-						name: 'spName',
-						align: 'center'
-					}, {
-						header: '규격',
-						name: 'spSize',
-						align: 'center'
-					}, {
-						header: '단위',
-						name: 'spUnit',
-						align: 'center'
-					}, {
-						header: '관리LOT수량',
-						name: 'spLot',
-						align: 'center'
-					}, {
-						header: '비고',
-						name: 'spNote',
-						align: 'center'
-					}, {
-						header: '활성여부',
-						name: 'spStat',
-						align: 'center'
-					}]
-				});
+			}
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 400,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				columns: [{
+					header: '반제품코드',
+					name: 'spId',
+					align: 'center'
+				}, {
+					header: '제품명',
+					name: 'spName',
+					align: 'center'
+				}, {
+					header: '규격',
+					name: 'spSize',
+					align: 'center'
+				}, {
+					header: '단위',
+					name: 'spUnit',
+					align: 'center'
+				}, {
+					header: '관리LOT수량',
+					name: 'spLot',
+					align: 'center'
+				}, {
+					header: '비고',
+					name: 'spNote',
+					align: 'center'
+				}, {
+					header: '활성여부',
+					name: 'spStat',
+					align: 'center'
+				}]
+			});
 
-				// 그리드 색 변경 테마 적용
-				tui.Grid.applyTheme('default', {
-					cell: {
-						header: {
-							background: '#e5edf5'
-						},
-						normal: {
-							background: '#ffffff'
-						}
+			// 그리드 색 변경 테마 적용
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			// 등록 버튼 이벤트
+			$('#addBtn').on('click', function (e) {
+				$.ajax({
+					url: '/basic/addSp',
+					type: 'post',
+					data: $('#spForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						alert('완제품이 성공적으로 등록되었습니다');
+						//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+						const appendedData = result
+						grid.appendRow(appendedData);
+					},
+					error: function () {
+						alert('완제품 등록 중 오류가 발생했습니다!');
 					}
 				});
+				$('.empty').val('');
+			});
 
-				// 등록 버튼 이벤트
-				$('#addBtn').on('click', function (e) {
+			// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
+			let selRow = 999;
+			grid.on('dblclick', function (e) {
+				// 열을 더블클릭하면 열 정보를 변수에 저장
+				selRow = e.rowKey;
+				let dataRow = grid.getRow(selRow);
+				$('#spId').val(dataRow.spId);
+				$('#spName').val(dataRow.spName);
+				$('#spLot').val(dataRow.spLot);
+				$('#spNote').val(dataRow.spNote);
+				if (dataRow.spStat == 'Y') {
+					$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
+				} else {
+					$("input:radio[name='spStat']:radio[value='N']").prop('checked', true);
+				}
+			})
+
+			// 수정 버튼 이벤트
+			$('#modiBtn').on('click', function (e) {
+				if (selRow == 999) {
+					alert('수정할 데이터가 없습니다.')
+				} else {
 					$.ajax({
-						url: '/basic/addSp',
+						url: '/basic/modifySp',
 						type: 'post',
 						data: $('#spForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
-							alert('완제품이 성공적으로 등록되었습니다');
-							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
-							const appendedData = result
-							grid.appendRow(appendedData);
+							alert('완제품이 성공적으로 수정되었습니다');
+							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
+							const setData = result
+							grid.setRow(selRow, setData);
+							selRow = 999;
+							$('.empty').val('');
+							$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
 						},
 						error: function () {
-							alert('완제품 등록 중 오류가 발생했습니다!');
+							alert('반제품 수정 중 오류가 발생했습니다!');
 						}
 					});
-					$('.empty').val('');
-				});
+				}
+			})
 
-				// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
-				let selRow = 999;
-				grid.on('dblclick', function (e) {
-					// 열을 더블클릭하면 열 정보를 변수에 저장
-					selRow = e.rowKey;
-					let dataRow = grid.getRow(selRow);
-					$('#spId').val(dataRow.spId);
-					$('#spName').val(dataRow.spName);
-					$('#spLot').val(dataRow.spLot);
-					$('#spNote').val(dataRow.spNote);
-					if (dataRow.spStat == 'Y') {
-						$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
-					} else {
-						$("input:radio[name='spStat']:radio[value='N']").prop('checked', true);
-					}
-				})
-
-				// 수정 버튼 이벤트
-				$('#modiBtn').on('click', function (e) {
-					if (selRow == 999) {
-						alert('수정할 데이터가 없습니다.')
+			// 검색 버튼 이벤트
+			let searchType = '';
+			let searchKey = '';
+			$('#searchBtn').on('click', function (e) {
+				if ($('#spId').val() == '' && $('#spName').val() == '') {
+					if (initData == nowData) {
+						alert('반제품 코드 또는 제품명으로 검색이 가능합니다.')
 					} else {
 						$.ajax({
-							url: '/basic/modifySp',
-							type: 'post',
-							data: $('#spForm').serialize(),
-							dataType: 'json',
+							url: "/basic/spList",
+							method: "GET",
+							dataType: "JSON",
 							success: function (result) {
-								alert('완제품이 성공적으로 수정되었습니다');
-								//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
-								const setData = result
-								grid.setRow(selRow, setData);
-								selRow = 999;
-								$('.empty').val('');
-								$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
-							},
-							error: function () {
-								alert('반제품 수정 중 오류가 발생했습니다!');
+								grid.resetData(result);
 							}
 						});
 					}
-				})
-
-				// 검색 버튼 이벤트
-				let searchType = '';
-				let searchKey = '';
-				$('#searchBtn').on('click', function (e) {
-					if ($('#spId').val() == '' && $('#spName').val() == '') {
-						if (initData == nowData) {
-							alert('반제품 코드 또는 제품명으로 검색이 가능합니다.')
-						} else {
-							$.ajax({
-								url: "/basic/spList",
-								method: "GET",
-								dataType: "JSON",
-								success: function (result) {
-									grid.resetData(result);
-								}
-							});
-						}
+				} else {
+					if ($('#spId').val() != '') {
+						searchType = 'id';
+						searchKey = $('#spId').val()
 					} else {
-						if ($('#spId').val() != '') {
-							searchType = 'id';
-							searchKey = $('#spId').val()
-						} else {
-							searchType = 'name';
-							searchKey = $('#spName').val()
-						}
-
-						$.ajax({
-							url: '/basic/searchSp',
-							type: 'get',
-							data: {
-								"searchType": searchType,
-								"searchKey": searchKey
-							},
-							dataType: 'json',
-							success: function (result) {
-								grid.resetData(result);
-								nowData = result;
-							},
-							error: function () {
-								alert('반제품 검색 중 오류 발생!');
-							}
-						})
+						searchType = 'name';
+						searchKey = $('#spName').val()
 					}
 
-				})
+					$.ajax({
+						url: '/basic/searchSp',
+						type: 'get',
+						data: {
+							"searchType": searchType,
+							"searchKey": searchKey
+						},
+						dataType: 'json',
+						success: function (result) {
+							grid.resetData(result);
+							nowData = result;
+						},
+						error: function () {
+							alert('반제품 검색 중 오류 발생!');
+						}
+					})
+				}
 
-				//윈도우 온 로드 종료
-			}
+			})
+
+			// 초기화 버튼 이벤트
+			$('#initBtn').on('click', (e) => {
+				$.ajax({
+					url: "/basic/spList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+					}
+				});
+			})
 		</script>
 	</div>
 </body>

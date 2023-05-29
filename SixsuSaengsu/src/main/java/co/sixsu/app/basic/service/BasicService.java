@@ -18,11 +18,13 @@ public interface BasicService {
 	boolean updatePw(EmpVO emp); // 비밀번호 변경
 	EmpVO addEmp(EmpVO emp); // 사원 등록
 	boolean updateEmp(EmpVO emp); // 사원 정보 수정
+	List<EmpVO> searchEmp(SearchDTO dto); // 사원 검색
 	
 	List<CodeVO> groupList(); // 그룹 코드 조회
 	List<CodeVO> commList(SearchDTO dto); // 특정 공통 코드 조회
 	boolean addCode(List<CodeVO> list); // 공통코드 등록(추가)
 	boolean updateCode(List<CodeVO> list); // 공통코드 수정
+	boolean addGroup(CodeVO code); // 그룹코드 추가
 	
 	List<ProductVO> cpList(); // 완제품 목록 조회
 	boolean addCp(ProductVO prod); // 완제품 등록

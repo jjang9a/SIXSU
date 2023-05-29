@@ -50,6 +50,12 @@ public class BasicServiceImpl implements BasicService {
 		return mapper.updateEmp(emp) == 1;
 	}
 
+	@Override // 사원 검색
+	public List<EmpVO> searchEmp(SearchDTO dto) {
+		return mapper.searchEmp(dto);
+	}
+
+
 	// 공통코드 관리
 	@Override // 그룹코드 전체목록
 	public List<CodeVO> groupList() {
@@ -87,6 +93,11 @@ public class BasicServiceImpl implements BasicService {
 			}
 		}
 		return count >= 1;
+	}
+	
+	@Override
+	public boolean addGroup(CodeVO code) {
+		return mapper.addGroup(code) == 1;
 	}
 
 	// 완제품 관리
@@ -303,6 +314,7 @@ public class BasicServiceImpl implements BasicService {
 	public boolean deleteFlow(List<FlowVO> list) {
 		return mapper.deleteFlow(list) > 0 ;
 	}
+
 
 	
 }
