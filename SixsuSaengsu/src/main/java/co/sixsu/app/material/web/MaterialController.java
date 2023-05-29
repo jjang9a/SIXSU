@@ -288,9 +288,8 @@ public class MaterialController {
 	@PostMapping("/materials/insertspdmg")
     @ResponseBody
     public void insertSpDmg(@RequestBody List<SpDmgVO> vo) {
-		System.out.println("abc");
 		System.out.println(vo);
-		//service.insertSpDmg(vo);
+		service.insertSpDmg(vo);
     }
 }
 

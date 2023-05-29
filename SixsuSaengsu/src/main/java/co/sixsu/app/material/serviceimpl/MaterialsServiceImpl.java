@@ -165,6 +165,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public void insertSpDmg(List<SpDmgVO> vo) {
 			for(SpDmgVO i : vo) {
 				mapper.insertSpDmg(i);
+				System.out.println("abcd");
+				System.out.println(i);
 			}
 			
 		}

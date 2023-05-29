@@ -11,7 +11,7 @@ public class SpDmgVO {
 	String spName;
 	String spSize;
 	int dmatQt;
-	String spShipId;
+	int spShipId;
 	String spLotId;
 	String wkEnd;
 	String empName;
