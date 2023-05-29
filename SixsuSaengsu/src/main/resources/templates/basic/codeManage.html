@@ -126,7 +126,7 @@
 				<button type="button" id="gs" class="gSel">검색</button>
 			</div>
 			<div id="groupAdd">
-				<img src="/assets/img/folder-plus.svg" style="height:27px">
+				<img src="/assets/img/folder-plus.svg" style="height:25px">
 			</div>
 			<!-- 그룹코드 선택시 : 그리드 (디폴트) -->
 			<div id="grid"></div>
@@ -181,7 +181,7 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="sixBtn2" id="pwUpdateBtn">등록</button>
+						<button type="button" class="sixBtn2" id="gAddBtn">등록</button>
 						<button type="button" class="sixBtn2" data-bs-dismiss="modal">취소</button>
 					</div>
 				</div>
@@ -418,6 +418,24 @@
 			// 그룹 추가버튼 이벤트
 			$('#groupAdd').on('click', (e) => {
 				$('#groupAddModal').modal('show');
+			})
+			$('#gAddBtn').on('click', (e) => {
+				$.ajax({
+					url: '/basic/addGroup',
+					type: 'post',
+					data: $('#groupAddForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						alert('그룹이 성공적으로 등록되었습니다');
+						const appendedData = result
+						grid.appendRow(appendedData);
+						$('#groupAddModal input').val('');
+						$('#groupAddModal').modal('hide');
+					},
+					error: function (err) {
+						console.log(err)
+					}
+				});
 			})
 		</script>
 	</div>

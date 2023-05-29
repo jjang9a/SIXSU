@@ -47,11 +47,11 @@
 				<tr>
 					<td>공정 코드</td>
 					<td><input type="text" name="procId" id="procId" class="empty"></td>
-					<td>공정명</td>
+					<td>공정명<span class="needStar"> *</span></td>
 					<td><input type="text" name="procName" id="procName" class="empty"></td>
 				</tr>
 				<tr>
-					<td>공정 구분</td>
+					<td>공정 구분<span class="needStar"> *</span></td>
 					<td><select name="procType" id="procType">
 							<option value="">----- 선택 -----</option>
 							<option th:each="type : ${types}" th:value="${type.comId}" th:text="${type.comName}">
@@ -59,7 +59,7 @@
 						</select>
 						<input type="hidden" id="comName" name="comName">
 					</td>
-					<td>활성여부</td>
+					<td>활성여부<span class="needStar"> *</span></td>
 					<td>
 						<div id="divRadio">
 							<input type="radio" name="procStat" value="Y" checked>
@@ -126,6 +126,7 @@
 					}, {
 						header: '분류',
 						name: 'comName',
+						filter: 'select',
 						align: 'center'
 					}, {
 						header: '공정코드',

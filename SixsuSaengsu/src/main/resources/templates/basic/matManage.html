@@ -47,16 +47,13 @@
 				<tr>
 					<td>자재 코드</td>
 					<td><input type="text" name="matId" id="matId" class="empty"></td>
-					<td>규격</td>
-					<td><select name="matSize" id="matSize">
-							<option value="">----- 선택 -----</option>
-							<option value="">필요한 규격 말해주세요</option>
-						</select></td>
+					<td>규격<span class="needStar"> *</span></td>
+					<td><input type="text" name="matSize" id="matSize" class="empty"></td>
 				</tr>
 				<tr>
-					<td>자재명</td>
+					<td>자재명<span class="needStar"> *</span></td>
 					<td><input type="text" name="matName" id="matName" class="empty"></td>
-					<td>활성여부</td>
+					<td>활성여부<span class="needStar"> *</span></td>
 					<td>
 						<div id="divRadio">
 							<input type="radio" id="matStat1" name="matStat" value="Y" checked>
@@ -67,9 +64,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td>안전재고량</td>
+					<td>안전재고량<span class="needStar"> *</span></td>
 					<td><input type="text" name="spLot" id="spLot" class="empty">
-					<td>단위</td>
+					<td>단위<span class="needStar"> *</span></td>
 					<td><input type="text" name="spUnit" id="spUnit"></td>
 				</tr>
 				<tr>

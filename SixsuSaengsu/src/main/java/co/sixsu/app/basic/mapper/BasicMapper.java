@@ -17,15 +17,19 @@ public interface BasicMapper {
 
 	public Date getDate();
 	
+	public List<CodeVO> getComList(String key); // 공통코드 분류 목록(그룹명으로 조회)
+	
 	public List<EmpVO> empList(); // 사원 전체목록 조회
 	public int addEmp(EmpVO emp); // 사원 등록
 	public int updatePw(EmpVO emp); // 사원 비밀번호 변경
 	public int updateEmp(EmpVO emp); // 사원 정보 수정
+	public List<EmpVO> searchEmp(SearchDTO dto); // 사원 검색
 
 	public List<CodeVO> groupList(); // 그룹코드 조회
 	public List<CodeVO> commList(SearchDTO dto); // 특정 공통코드 조회
 	public int addCode(CodeVO code); // 공통코드 등록(추가)
 	public int updateCode(CodeVO code); // 공통코드 수정
+	public int addGroup(CodeVO code); // 그룹코드 등록
 	
 	public List<ProductVO> cpList(); // 완제품 목록 조회
 	public int addCp(ProductVO prod); // 완제품 등록
@@ -47,9 +51,7 @@ public interface BasicMapper {
 	public int addBus(BusVO bus); // 완제품 등록
 	public int updateBus(BusVO bus); // 완제품 수정
 	public List<BusVO> searchBus(SearchDTO dto); // 완제품 검색
-	
-	public List<CodeVO> getComList(String key); // 공통코드 분류 목록
-	
+		
 	public List<ProcessVO> procList(); // 공정 목록 조회
 	public int addProc(ProcessVO proc); // 공정 등록
 	public int updateProc(ProcessVO proc); // 공정 수정

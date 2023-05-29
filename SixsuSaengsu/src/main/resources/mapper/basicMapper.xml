@@ -23,6 +23,10 @@
 </update>
 
 <insert id="addEmp" parameterType="EmpVO">
+	<selectKey keyProperty="empId" resultType="String" order="BEFORE">
+		SELECT emp_seq.nextval
+		FROM dual
+	</selectKey>
 	insert into employee values (
 	#{empId}, #{empName}, #{empTell}, TO_DATE(#{empBirth}, 'yyyy-MM-dd'), TO_DATE(#{empHire}, 'yyyy-MM-dd'), #{empDept}, #{empRk}, #{empStat}, #{empNote}, #{empPw} 
 	)
@@ -33,6 +37,18 @@
 	set emp_name=#{empName}, emp_tell=#{empTell}, emp_dept=#{empDept}, emp_rk=#{empRk}, emp_note=#{empNote}
 	where emp_id=#{empId}
 </update>
+
+<select id="searchEmp" parameterType="SearchDTO" resultType="EmpVO">
+	SELECT *
+	FROM employee
+	WHERE 
+	<if test='searchType.equals("id")'>
+		emp_id = #{searchKey}
+	</if>
+	<if test='searchType.equals("name")'>
+		emp_name like '%'||#{searchKey}||'%'
+	</if>
+</select>
 <!-- 사원 관리 종료 -->
 
 <!-- 공통코드 관리 -->
@@ -57,7 +73,7 @@
 </select>
 
 <insert id="addCode" parameterType="CodeVO">
-	INSERT INTO common_code VALUES(#{comId}, #{gId}, #{comName}, #{comNote}, #{comStat})
+	INSERT INTO common_code VALUES(upper(#{comId}), #{gId}, #{comName}, #{comNote}, #{comStat})
 </insert>
 
 <update id="updateCode" parameterType="CodeVO">
@@ -65,6 +81,10 @@
 	SET com_name = #{comName}, com_note = #{comNote}, com_stat = #{comStat}
 	WHERE com_id = #{comId}	
 </update>
+
+<insert id="addGroup" parameterType="CodeVO">
+	INSERT INTO group_code VALUES(upper(#{gId}), #{gName})
+</insert>
 <!-- 공통코드 관리 종료 -->
 
 <!-- 완제품 관리 -->
@@ -177,7 +197,9 @@
 </select>
 
 <select id="busList" resultType="BusVO">
-	select * from business
+	select *
+	from business b left outer join common_code c
+	on b.bus_type = c.com_id
 	order by bus_stat desc, bus_id
 </select>
 
@@ -235,7 +257,7 @@
 <select id="getComList" parameterType="String" resultType="CodeVO">
 	select com_id, com_name
 	from common_code
-	where g_id = #{key}
+	where g_id = upper(#{key})
 </select>
 
 <insert id="addProc" parameterType="ProcessVO">
