@@ -5,6 +5,7 @@ import java.util.List;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
+import co.sixsu.app.quality.domain.QudVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
 public interface QualityMapper {
@@ -26,6 +27,7 @@ public interface QualityMapper {
 	List<QuaVO> afterReqList();//입고 검사 완료 리스트
 	int delReqInsp(String inspNum);// 검사 완료 단건 삭제
 	List<QuaVO> modInspItem(String inspNum);//수정시 검사 항목 불러오기
+	int updateQd(QuaVO qua);//수정 시 qua_details 업데이트
 	
 	List<DetaWorkOrdrVO> bpAddList(); // 공정 검사전 리스트
 	int bpdAdd(PrdInspVO prd);// 공정 검사 등록
