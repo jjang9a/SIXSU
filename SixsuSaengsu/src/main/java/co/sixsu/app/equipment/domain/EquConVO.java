@@ -20,6 +20,7 @@ public class EquConVO {
 		String checkType; // 점검구분 
 		String checkInfo; // 점검사유
 		String operStart;  // 비가동시작 Date
+		String operFnish; // 비가동 종료
 		String operType; // 비가동구분
 		String operNote; // 비가동사유
 		String empId; // 사원코드

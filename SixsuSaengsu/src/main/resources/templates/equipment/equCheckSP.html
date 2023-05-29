@@ -9,14 +9,33 @@
 			padding: 4px 10px;
 			text-align: left;
 		}
+		#Btn { /* 버튼 */
+			float: right;
+		}
+		.modalTbl {
+			margin: auto;
+			text-align: center;
+			height: 330px;
+		}
+		.modal-body {
+			background: #e5edf5;
+		}
+		.modalTbl td {
+			padding-right: 20px;
+		}
+		.modal-footer {
+			text-align: center;
+		}
     </style>
-    
 </head>
 <body>
     <div layout:fragment="content">
     
+    <br>
     <h1 class="mt-4" style="font-family: 'MaruBuri';">설비 점검 조회</h1>
-    
+    <br>
+	<hr>
+	<br>
     <!-- 검색 버튼 -->
     <div id="Btn">
 		<button class="sixBtn1" id="searchBtn">
@@ -29,10 +48,9 @@
 		<button class="sixBtn2" id="reset">초기화</button>
 	</div>
     
-    <br>
-    <hr>
+    
     <!-- 검색 인풋 창 -->
-    <table id="sTable">
+    <table id="eTable">
 	<tr>	
 		<td>설비코드<span class="needStar"> * </span></td>
 		<td><input type="text" name="ccode" id="ccode" class="empty"></td>
@@ -64,9 +82,9 @@
 					<!--설비정보(상세) 모달 바디 -->
 					<div class="modal-body">
 						<form action="" method="post" id="addForm">
-							<table class="">
+							<div id="modalTbl">
+								<table class="table">
 							
-								<div id="equInfo">
 									<tr>
 										<td>점검코드<span class="needStar"> * </span></td>
 										<td><input type="text" name="checkCode" id="checkCode"></td>
@@ -92,8 +110,8 @@
 										<td>비가동시작<span class="needStar"> *</span></td>
 										<td><input type="text" name="operStart" id="operStart"></td>
 									</tr>
-								</div>
-							</table>
+								</table>
+							</div>
 						</form>
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
@@ -157,11 +175,21 @@
              align: 'center'
           },
           {
-            header: '판정',
-            name: 'equSuit',
-            filter: 'select',
-            align: 'center'
-          },
+        	 header: '판정',
+    		 name: 'equSuit',
+    		 filter: 'select',
+    		 align: 'center',
+    		 formatter: 'listItemText',
+    		 editor: {
+    		 type: 'select',
+    		 options: {
+    			listItems: [
+    			{text: '적합', value: 'Y'},
+    			{text: '부적합', value: 'N'},	
+    		   ]
+    	      }
+    	    }
+    	  },
           {
              header: '점검구분',
              name: 'checkType',

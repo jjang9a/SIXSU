@@ -7,11 +7,11 @@
 <meta charset="UTF-8">
 <title>설비 조회</title>
 	<style>
-		#eTable td {
+		#eTable td {  /* 인풋 창 */
 			padding: 4px 10px;
 			text-align: left;
 		}
-		#Btn {
+		#Btn { /* 버튼 */
 			float: right;
 		}
 		.modalTbl {
@@ -22,30 +22,26 @@
 		.modal-body {
 			background: #e5edf5;
 		}
-
 		.modalTbl td {
 			padding-right: 20px;
 		}
-
 		.modal-footer {
 			text-align: center;
-		}
-		.addForm {
-			
 		}
 		
 	</style>
 </head>
 <body>
 	<div layout:fragment="content">
-		<br>
+		
 		<br>
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비조회</h1>
 		
-		<!-- 검색 버튼 -->
 			
 		<br>
 		<hr>
+		<br>
+		<!-- 검색 버튼 -->
 		<div id="Btn">
 				<button class="sixBtn1" id="searchBtn">
 					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
@@ -89,14 +85,13 @@
 							aria-label="Close"></button>
 					</div>
 					<!--설비정보(상세) 모달 바디 -->
+					
 					<div class="modal-body">
 						<form action="" method="post" id="addForm">
-						
-								<div id="modalTbl">
-							<table class="table">
+							<div id="modalTbl">
+								<table class="table">
 							
 									<tr>
-										
 										<td>설비코드<span class="needStar"> * </span></td>
 										<td><input type="text" name="equCode" id="equCode"></td>
 									</tr>
@@ -106,12 +101,10 @@
 										<td><input type="text" name="procId" id="procId"></td>
 									</tr>
 									<tr>
-										
 										<td>설비상태<span class="needStar"> * </span></td>
 										<td><input type="text" name="equStat" id="equStat"></td>
 									</tr>
 									<tr>
-										
 										<td>설비명<span class="needStar"> * </span></td>
 										<td><input type="text" name="equName" id="equName"></td>
 									</tr>
@@ -126,7 +119,6 @@
 										<td><input type="text" name="ctemp" id="ctemp"></td>
 									</tr>
 									<tr>
-										
 										<td>판정<span class="needStar"> *</span></td>
 										<td><input type="text" name="equSuit" id="equSuit"></td>
 									</tr>
@@ -170,8 +162,8 @@
 										<td>비가동구분<span class="needStar"> *</span></td>
 										<td><input type="text" name="operType" id="operType"></td>
 									</tr>
-							</table>
-								</div>
+								</table>
+							</div>
 						</form>
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
@@ -183,7 +175,8 @@
 			</div>
 		</div>
 		<!-- Modal 끝 -->
-
+	
+		<!-- 그리드 시작 -->
 		<div id="grid"></div>
 
 		<script>
@@ -221,11 +214,21 @@
             align: 'center'
           },
           {
-            header: '설비상태',
-            name: 'equStat',
-            filter: 'select',
-            align: 'center'
-          },
+	  		header: '설비상태',
+			name: 'equStat',
+			filter: 'select',
+			align: 'center',
+			formatter: 'listItemText',
+			editor: {
+			type: 'select',
+			options: {
+				listItems: [
+					{text: '가동', value: 'Y'},
+					{text: '비가동', value: 'N'},	
+					]
+			      }
+		        }
+	      },
           {
              header: '설비라인',
              name: 'equLine',
@@ -247,15 +250,27 @@
              align: 'center'
           },
           {
-              header: '차기점검일',
-              name: 'checkNext',
-              hidden : true
+             header: '차기점검일',
+             name: 'checkNext',
+             hidden : true
           },
           {
-              header: '판정',
-              name: 'equSuit',
-              hidden : true
-          },
+         	header: '판정',
+     		name: 'equSuit',
+     		filter: 'select',
+     		align: 'center',
+     		hidden : true,
+     		formatter: 'listItemText',
+     		editor: {
+     		type: 'select',
+     		options: {
+     			listItems: [
+     			{text: '적합', value: 'Y'},
+     			{text: '부적합', value: 'N'},	
+     		   ]
+     	      }
+     	    }
+     	  },
           {
               header: '점검일자',
               name: 'checkDate',
@@ -323,14 +338,15 @@
     });
     
 
-    
+    let selRow = '';
     grid.on('click', ev => {
     	
     	// focus된 셀이 있는 열 전체 select 처리
-		grid.setSelectionRange({
-			start: [ev.rowKey, 0],
-			end: [ev.rowKey, grid.getColumns().length - 1]
-		});
+    	if(selRow != ev.rowKey){
+			grid.removeRowClassName(selRow, 'cell-pink');
+		}
+		grid.addRowClassName(ev.rowKey, 'cell-pink');
+		selRow = ev.rowKey;
     	
     	// 클릭한 Row의 정보를 dataRow에 저장
         let dataRow = grid.getRow(ev.rowKey);
@@ -355,6 +371,7 @@
 	      $('#operNote').val(dataRow.operNote); // 비가동 사유
 	      $('#operType').val(dataRow.operType); // 비가동 구분
 	      $('#ctemp').val(dataRow.ctemp); // 비가동 구분
+	  	
       });
 
 
