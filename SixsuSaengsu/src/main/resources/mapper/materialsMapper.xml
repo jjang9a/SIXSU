@@ -32,8 +32,8 @@
 	
 	
 	<!-- 발주제거 -->
-	<delete id="deleteMatReq" parameterType="String">
-		delete from mat_req where mat_req_id = #{reqId}
+	<delete id="deleteMatReq" parameterType="MatreqVO">
+		delete from mat_req where mat_req_id = #{matReqId}
 	</delete>
 	
 	<!-- 발주등록 -->
@@ -44,7 +44,7 @@
 	
 	<!-- 입고대기 목록 -->
 	<select id="selectMatRecWaitList" resultType="MatrecWaitVO">
-		select q.insp_std_id, q.insp_item_id, t.mat_name, q.suit_qt, to_char(q.insp_date, 'yyyy-mm-dd') as insp_date
+		select m.mat_req_id, q.insp_item_id, t.mat_name, q.suit_qt, to_char(q.insp_date, 'yyyy-mm-dd') as insp_date
 		from qua_com q left join mat_req m
 		on q.insp_std_id = m.mat_req_id
 		left join material t
@@ -69,7 +69,7 @@
 	</select>
 	
 	<!-- 입고등록 -->
-	<insert id="insertMatRec" parameterType="String">
+	<insert id="insertMatRec" parameterType="MatrecVO">
     <![CDATA[
 	    CALL IN_MAT_REC(
 	      #{matReqId, mode=IN, jdbcType=VARCHAR}
@@ -183,6 +183,41 @@
 	    ]]>
   	</insert>
   	
+  	<!-- 반제품 불량처리 대기 리스트 -->
+  	<select id="getSpDmgWaitList" resultType="SpDmgVO">
+		select p.prcs_pfmc_id, p.wk_deta_id, p.pd_id, s.sp_name, s.sp_size, p.dmat_qt, i.sp_ship_id, i.sp_lot_id, to_char(p.wk_end, 'yyyy-mm-dd') as wk_end, e.emp_name,d.dsp_res
+		from process_performance p left join semi_prod s
+		on p.pd_id = s.sp_id
+		join sp_ship i
+		on p.prcs_pfmc_id = i.prcs_pfmc_id
+		join employee e
+		on p.emp_id = e.emp_id
+		left join damaged_sp d
+		on d.sp_ship_id = i.sp_ship_id
+		where p.pd_id like 'SP%'
+		and d.dsp_res is null
+  	</select>
+  	
+  	<!-- 반제품 불량처리 리스트 -->
+  	<select id="getSpDmgList" resultType="SpDmgVO">
+		select d.dsp_id, c.prcs_pfmc_id, c.dmat_qt, d.sp_ship_id, c.pd_id, p.sp_name, p.sp_size, to_char(d.dsp_date, 'yyyy-mm-dd') as dsp_date, d.dsp_res, d.dsp_stat, e.emp_name, d.dsp_note
+		from damaged_sp d left join employee e
+		on d.emp_id = e.emp_id
+		join sp_ship s
+		on d.sp_ship_id = s.sp_ship_id
+		join sp_lot l
+		on s.sp_lot_id = l.sp_lot_id
+		join process_performance c
+		on c.prcs_pfmc_id = s.prcs_pfmc_id
+		join semi_prod p
+		on l.sp_id = p.sp_id
+  	</select>
+  	
+  	<!-- 반제품 불량처리 -->
+  	<insert id="insertSpDmg" parameterType="SpDmgVO">
+  		insert into damaged_sp (dsp_id, dsp_res, dsp_stat, sp_ship_id)
+		values (seq_dsp_id.nextval, #{dmgNote}, #{dmgNote}, #{spShipId});
+  	</insert>
 </mapper>
 
 

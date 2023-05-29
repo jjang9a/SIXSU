@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>자재입고관리</title>
+<!-- 	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재입고관리</h1>
+
+		<div id="left">
+			자재명 <input type="number" id="matId" name="matId">
+			<button class="sixBtn1">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+					viewBox="0 2 16 16">
+					<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+				</svg>
+			</button>
+		</div>
+		<div id="left">
+			거래처명 <input type="text" id="bname">
+			<button class="sixBtn1">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+					viewBox="0 2 16 16">
+					<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+				</svg>
+			</button>
+		</div>
+
+		<div id="left">
+			입고일자 <input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
+		</div>
+
+		<div>
+			<div id="left">
+				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn4" id="reset">초기화</button>
+			</div>
+			<div id="left">
+				<button class="sixBtn4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">입고등록</button>
+				<button class="sixBtn2" id="delete">삭제</button>
+			</div>
+		</div>
+
+		<div id="grids"></div>
+
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!-- 입고등록 모달 헤더 -->
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel" style="font-family: 'MaruBuri';">입고대기 목록
+							</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<!-- 입고등록 모달 바디 -->
+						<div class="modal-body">
+							<div id="grid"></div>
+
+
+						</div>
+						<!-- 입고등록 모달 푸터(버튼부분) -->
+						<div class="modal-footer">
+							<button type="button" class="sixBtn2" id="addBtn">등록</button>
+							<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+/* 		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content"); */
+			const gridData = [
+
+			];
+			window.onload = function () {
+			
+				$.ajax({
+					url: "/materials/matreclist",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grids.resetData(result);
+						//console.log(result);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+					
+				});
+				
+				
+				$.ajax({
+					url: "/materials/matrecwait",
+					method: "GET",
+					dataType: "JSON",
+					
+					success: function (result) {
+						grid.resetData(result);
+						//console.log(result);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+
+				});
+
+				$('#staticBackdrop').on('show.bs.modal', function (e) {
+					setTimeout(() => grid.refreshLayout(), 200);
+				})
+				
+				
+			};
+
+
+
+			//입고대기 리스트
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+
+				scrollX: false,
+				scrollY: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+
+
+
+				rowHeaders: ['checkbox', 'rowNum'],
+
+
+				columns: [{
+						header: '발주번호',
+						name: 'matReqId'
+					},
+					{
+						header: '자재코드',
+						name: 'inspItemId'
+					},
+					{
+						header: '자재명',
+						name: 'matName'
+					},
+					{
+						header: '적합수량',
+						name: 'suitQt'
+					},
+					{
+						header: '검사일자',
+						name: 'inspDate'
+					}
+
+
+				]
+
+			});
+			
+			
+			// 입고목록 리스트
+ 			const gridDataa = [
+				
+			];
+			
+			const grids = new tui.Grid({
+				el: document.getElementById('grids'),
+
+				scrollX: false,
+				scrollY: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+
+
+
+				rowHeaders: ['checkbox', 'rowNum'],
+
+
+				columns: [{
+						header: '자재입고번호',
+						name: 'matRecId',
+						hidden: true
+					},
+					{
+						header: '자재LOT번호',
+						name: 'matLotId'
+					},
+					{
+						header: '발주번호',
+						name: 'matReqId'
+					},
+					{
+						header: '자재명',
+						name: 'matName'
+					},
+					{
+						header: '입고수량',
+						name: 'matRecQt'
+					},
+					{
+						header: '거래처명',
+						name: 'busName'
+					},
+					{
+						header: '검사일자',
+						name: 'inspDate'
+					},
+					{
+						header: '입고일자',
+						name: 'matRecDate'
+					},
+					{
+						header: '입고유형',
+						name: 'matRecType'
+					},
+					{
+						header: '담당자',
+						name: 'empName'
+					},
+					{
+						header: '비고',
+						name: 'matRecNote'
+					}
+					
+				]
+
+			}); 
+			
+
+
+
+
+
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+			
+			
+			//입고등록 모달에서 등록 버튼
+ 			$('#addBtn').on('click', function () {
+/* 				
+				var inspStdId = [];
+				console.log(grid.getCheckedRows());
+				for(var i=0; i<grid.getCheckedRows().length; i++){
+					inspStdId.push(grid.getCheckedRows()[i].inspStdId);
+				}
+				console.log(inspStdId); */
+				console.log(JSON.stringify(grid.getCheckedRows()))
+				$.ajax({
+					url: "/materials/insertmatrec",
+					method: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(grid.getCheckedRows()),
+					success: function (result) {
+						console.log(result);
+						$('#staticBackdrop').modal('hide');
+						$.ajax({
+							url: "/materials/matreclist",
+							method: "GET",
+							dataType: "JSON",
+							success: function (result) {
+								grids.resetData(result);
+								grids.refreshLayout();
+							},
+							error : function(reject){
+								console.log(reject);
+							}
+							
+						});
+						
+						
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+					
+				});
+			})
+			
+			
+			//체크된 항목 삭제	    
+			$('#delete').on("click", function () {
+				$.ajax({
+					url: "/materials/delmatrec",
+					method: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(grids.getCheckedRows()),
+					//data : {list : JSON.stringify(matReqIds)},
+					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
+					success: function (result) {
+						console.log(result);
+					},
+ 					error: function(reject){
+						console.log(reject);
+					}
+				})
+
+				grids.removeCheckedRows(false);
+				
+				grids.blur();
+				
+				
+			});
+			
+		</script>
+
+
+
+	</div>
+</body>
+
+</html>
