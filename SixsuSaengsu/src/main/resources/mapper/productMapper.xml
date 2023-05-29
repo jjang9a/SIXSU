@@ -43,7 +43,7 @@
 		select get_sp_rec_id sp_rec_id, to_char(sysdate, 'yyyy/MM/dd') sp_rec_date
 		from dual
 	</selectKey>
-	
+	 
 	INSERT INTO sp_rec VALUES (#{spRecId}, #{prcsPfmcId}, #{spId}, '정상입고', #{spRecDate}, #{spRecQt}, null, #{empId}, #{spLotId})
 </insert>
 

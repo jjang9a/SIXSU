@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.sales.domain.LotVO;
 import co.sixsu.app.sales.domain.OrdVO;
+import co.sixsu.app.sales.domain.ShipVO;
 import co.sixsu.app.sales.service.ShipService;
 
 @Controller		
@@ -50,6 +53,20 @@ public class ShipController {
 		service.totalQt(result);
 		
 		return service.totalQt(result) ;
+	}
+	
+	@ResponseBody
+	@PostMapping("sales/shipPro")
+	public List<ShipVO> shipPro(@RequestBody OrdVO ord ){
+		return service.shipPro(ord);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/sales/readyShipList")
+	public List<ShipVO> readyShipList(){
+		List<ShipVO> list = service.readyShipList();
+		
+		return list;
 	}
 	
 }
