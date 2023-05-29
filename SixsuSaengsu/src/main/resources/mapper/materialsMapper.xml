@@ -66,6 +66,7 @@
 		on q.bus_id = b.bus_id 
 		left join material l
 		on q.mat_id = l.mat_id
+		order by c.mat_rec_date desc
 	</select>
 	
 	<!-- 입고등록 -->
@@ -215,8 +216,8 @@
   	
   	<!-- 반제품 불량처리 -->
   	<insert id="insertSpDmg" parameterType="SpDmgVO">
-  		insert into damaged_sp (dsp_id, dsp_res, dsp_stat, sp_ship_id)
-		values (seq_dsp_id.nextval, #{dmgNote}, #{dmgNote}, #{spShipId});
+		insert into damaged_sp (dsp_id, dsp_res, dsp_stat, sp_ship_id)
+		values (seq_dsp_id.nextval, #{dmgNote}, #{dspStat}, #{spShipId})
   	</insert>
 </mapper>
 
