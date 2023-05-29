@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.equipment.domain.EquConVO;
+import co.sixsu.app.equipment.domain.EquInspVO;
+import co.sixsu.app.equipment.domain.EquOperVO;
+import co.sixsu.app.equipment.domain.EquSearchDTO;
 import co.sixsu.app.equipment.mapper.EquMapper;
 import co.sixsu.app.equipment.service.EquService;
 
@@ -22,8 +24,8 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public List<EquConVO> equFilterList(EquConVO data) { // 검색기능
-		return mapper.equFilterList(data);
+	public List<EquConVO> equFilterList(EquSearchDTO dto) { // 검색기능
+		return mapper.equFilterList(dto);
 	}
 	
 	@Override
@@ -53,15 +55,24 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public List<EquConVO> equCheckList() { // 설비 점검 리스트
+	public List<EquInspVO> equCheckList() { // 점검 리스트
 		return mapper.equCheckList();
 	}
 
 	@Override
-	public List<EquConVO> equOperList() { // 비가동 리스트
+	public List<EquInspVO> equCheckSearch(EquSearchDTO dto) { //점검 검색기능
+		return mapper.equCheckSearch(dto);
+	}
+
+	@Override
+	public List<EquOperVO> equOperList() { // 비가동 리스트
 		return mapper.equOperList();
 	}
 
+	@Override
+	public List<EquOperVO> equOperSearch(EquSearchDTO dto) { // 비가동 조회 검색기능
+		return mapper.equOperSearch(dto);
+	}
 	
 
 

@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.equipment.domain.EquConVO;
+import co.sixsu.app.equipment.domain.EquInspVO;
+import co.sixsu.app.equipment.domain.EquOperVO;
+import co.sixsu.app.equipment.domain.EquSearchDTO;
 
 @Mapper
 public interface EquMapper {
@@ -14,7 +17,7 @@ public interface EquMapper {
 
 	public List<EquConVO> equList(); // 설비조회 전체리스트
 
-	public List<EquConVO> equFilterList(EquConVO data); // 조회 페이지 검색기능
+	public List<EquConVO> equFilterList(EquSearchDTO dto); // 설비 조회 페이지 검색기능
 
 	public int equAdd(EquConVO data); // 설비관리(등록)
 	
@@ -24,11 +27,13 @@ public interface EquMapper {
 
 	public int equDel(EquConVO equCode); // 설비관리(삭제)
 
-	public List<EquConVO> equCheckList(); // 설비 점검 리스트
+	public List<EquInspVO> equCheckList(); // 설비 점검 리스트
 	
-	public List<EquConVO> equOperList(); // 비가동 리스트
+	public List<EquInspVO> equCheckSearch(EquSearchDTO dto); // 설비 조회 페이지 검색기능
+	
+	public List<EquOperVO> equOperList(); // 비가동 리스트
 
-	
+	public List<EquOperVO> equOperSearch(EquSearchDTO dto); // 비가동 조회 페이지 검색기능
 	
 	
 
