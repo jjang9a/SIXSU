@@ -1,6 +1,5 @@
 package co.sixsu.app.work.serviceimpl;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +16,7 @@ import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
+import co.sixsu.app.work.domain.WorkFilterDataVO;
 import co.sixsu.app.work.domain.addPlanVO;
 import co.sixsu.app.work.domain.bomMatVO;
 import co.sixsu.app.work.domain.detOrdVO;
@@ -240,6 +240,33 @@ public class WorkServiceImpl implements WorkService{
 		System.out.println("작동여부");
 		System.out.println(outParam);
 		return outParam;
+	}
+
+	@Override
+	public List<DetaWorkOrdrVO> getWorkList() {
+		return mapper.getWorkList();
+	}
+
+	@Override
+	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data) {
+		String checkFilter = "";
+		if(data.getStatusCheckbox().length != 0) {
+			checkFilter += "AND (CMPLT_ST IN (";
+			for(int i=0;i<data.getStatusCheckbox().length;i++) {
+				String j = "\'" + data.getStatusCheckbox()[i] + "\'";
+				if(i < data.getStatusCheckbox().length-1) {
+					j += ",";
+				}
+				checkFilter += j;
+			}
+			checkFilter += "))";
+			data.setStatusFilter(checkFilter);
+			System.out.println("정돈된 checkFilter : " + checkFilter);
+		}
+		System.out.println(data.getWorkFrom());
+		System.out.println(data.getWorkTo());
+		List<DetaWorkOrdrVO> list = mapper.workFilterAjax(data);
+		return list;
 	}
 	
 	

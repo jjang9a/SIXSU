@@ -10,6 +10,7 @@ import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 import co.sixsu.app.work.domain.PlanDataVO;
 import co.sixsu.app.work.domain.SorderVO;
+import co.sixsu.app.work.domain.WorkFilterDataVO;
 import co.sixsu.app.work.domain.addPlanVO;
 import co.sixsu.app.work.domain.bomMatVO;
 import co.sixsu.app.work.domain.detOrdVO;
@@ -64,4 +65,9 @@ public interface WorkService {
 	public List<DetaWorkOrdrVO> modifyDetaWorkList(DetaWorkOrdrVO data);
 
 	public String workInsertSubmit(String data);
+
+	public List<DetaWorkOrdrVO> getWorkList();
+
+	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data);
+
 }

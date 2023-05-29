@@ -232,4 +232,54 @@
 	)
 	]]>
 </insert>
+
+
+
+
+
+
+
+<!-- ======================================================== -->
+<select id="getWorkList" resultType="DetaWorkOrdrVO">
+	SELECT *              
+	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
+	FROM MATERIAL
+	UNION ALL
+	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
+	FROM SEMI_PROD) b ON a.CP_ID = b.MAT_ID
+        LEFT OUTER JOIN employee c ON a.EMP_ID = c.EMP_ID
+    WHERE CMPLT_ST != '작성중'
+    ORDER BY WK_HEAD_ID
+</select>
+
+<select id="workFilterAjax" parameterType="WorkFilterDataVO" resultType="DetaWorkOrdrVO">
+	SELECT *              
+	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
+	FROM MATERIAL
+	UNION ALL
+	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
+	FROM SEMI_PROD) b ON a.CP_ID = b.MAT_ID
+        LEFT OUTER JOIN employee c ON a.EMP_ID = c.EMP_ID
+        
+    WHERE (b.MAT_NAME = #{productName} OR #{productName} IS NULL)
+  	AND (a.WK_HEAD_ID = #{workNo} OR #{workNo} IS NULL)
+  	AND (c.emp_name = #{writer} OR #{writer} IS NULL)
+  	${statusFilter}
+  	<if test="workFrom != ''">
+  		AND a.START_DATE BETWEEN TO_DATE(#{workFrom}, 'yyyy-MM-dd') AND TO_DATE(#{workTo}, 'yyyy-MM-dd')
+  	</if>
+  	<if test="makeFrom != ''">
+  		AND a.START_DATE BETWEEN TO_DATE(#{makeFrom}, 'yyyy-MM-dd') AND TO_DATE(#{makeTo}, 'yyyy-MM-dd')
+  	</if>
+    ORDER BY WK_HEAD_ID
+    
+</select>
+
+
+
+
+
+
+
+
 </mapper>
