@@ -116,7 +116,10 @@ public InvVO orderAdd(InvVO inv){
 @ResponseBody
 @PostMapping("/sales/ordDetAdd") //상세 주문서 등록
 public boolean ordDetAdd(@RequestBody List<OrdVO> list) {
+	System.out.println("------------------------------");
+	System.out.println(list);
 	return service.ordDetAdd(list);
+	
 }
 
 

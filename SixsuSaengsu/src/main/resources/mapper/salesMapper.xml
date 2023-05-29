@@ -62,7 +62,7 @@
 	<!-- 상세주문등록 -->
 	<insert id="ordDetAdd" parameterType="OrdVO">
 	insert into det_ord values(
-	#{ordDetId}, #{ordQt}, #{ordStatDet}, #{cpId}, #{ordId}, #{ordDetPrice} , TO_DATE(#{ordEndDate}, 'yyyy-MM-dd hh24:mi:ss'), #{ordSalePrice} 
+	#{ordDetId}, #{ordQt}, #{ordStatDet}, #{cpId}, #{ordId}, #{ordDetPrice} , TO_DATE(#{ordEndDate}, 'yyyy-MM-dd'), #{ordSalePrice} 
 	)
 	</insert>
 	
