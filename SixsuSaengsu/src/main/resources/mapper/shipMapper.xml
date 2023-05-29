@@ -6,20 +6,67 @@
 <mapper namespace="co.sixsu.app.sales.mapper.ShipMapper">
 <select id="orderingList" resultType= "OrdVO">
 	select*
-	from det_ord d join sorder s
+	from det_ord d join sorder s 
 	on d.ord_id = s.ord_id
-	join complete_prod p
+	left outer join pro_ship t
+	on t.ord_det_id = d.ord_det_id
+    left outer join complete_prod p
 	on p.cp_id = d.cp_id
+	where t.cp_ship_id is null
+	
 </select>
 <select id="lotProducts" resultType="LotVO">
-select* 
-from prod_lot l, complete_prod p
+<!--  select* 
+from prod_lot l, complete_prod p, prod_rev R
 where l.cp_id = p.cp_id
+and r.cp_lot_id = l.cp_lot_id
+and l.cp_lot_qt_ck = 'Y'
+and l.cp_lot_qt != 0
 and l.cp_id= #{keyword}
+order by r.cp_rec_date-->
+
+
+select *
+from prod_lot l JOIN complete_prod p
+ON l.cp_id = p.cp_id
+LEFT OUTER JOIN prod_rev r
+ON r.cp_lot_id = l.cp_lot_id
+WHERE l.cp_lot_qt_ck = 'Y'
+and l.cp_lot_qt != 0
+and l.cp_id= #{keyword}
+order by r.cp_rec_date
+
 </select>
 <!-- 모달창에 자동으로 총수량이 뜨도록 하는기능 -->
 	<select id='totalQt' 
 		parameterType = 'string' resultType="int">
 		select get_total_product_num(#{keyword}) from dual
 	</select>
+	
+	<!-- 자동으로 출고번호등록 -->
+	<select id="shipCode" resultType='String'>
+	select get_pro_ship_num() from dual
+	</select>
+	
+	<insert id="insertProShip" parameterType='ShipVO'>
+	<selectKey resultType="ShipVO" keyProperty="cpShipId,cpShipReqDate" order="BEFORE">
+	select get_pro_ship_num cp_ship_id, to_char(sysdate, 'yyyy/MM/dd') cp_ship_req_date
+	from dual
+	</selectKey>
+	insert into pro_ship values(#{cpShipId},#{ordDetId},#{cpLotId},#{cpShipQt},#{empId},To_DATE(#{cpShipReqDate}, 'yyyy/MM/dd'), #{cpShipStat},null)
+	</insert>	
+	<update id="updateCpLot" parameterType="LotVO">
+		UPDATE prod_lot
+		SET cp_lot_qt=#{cpLotQt}, cp_hold=#{cpHold}
+		WHERE cp_lot_id=#{cpLotId}
+	</update>
+	<!--출고대기 열에 나오는 품목 -->
+	<select id="readyShipList" resultType="ShipVO" >
+	Select *
+	from pro_ship
+	where cp_ship_stat ='검사요청'
+	or cp_ship_stat = '검사완료'
+	</select>	
+	
+	
  </mapper>
