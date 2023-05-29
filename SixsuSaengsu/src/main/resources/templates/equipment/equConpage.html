@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
 <head>
-	<meta charset="UTF-8">
-	<style>
-		.sixBtn2 {
-			margin-right: 7px;
-		}
+<meta charset="UTF-8">
+<style>
+.sixBtn2 {
+	margin-right: 7px;
+}
 
-		input {
-			margin: 5px;
-		}
-	</style>
-	<title>설비 관리</title>
+input {
+	margin: 5px;
+}
+</style>
+<title>설비 관리</title>
 </head>
 
 <body>
 	<div layout:fragment="content">
-		<br><br>
+		<br> <br>
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비관리</h1>
-		<!-- 등록 수정 삭제 전환 -->
+		
 		<hr>
 
 		<!-- 인풋창 -->
@@ -27,30 +29,34 @@
 			<table>
 				<tr>
 					<td>설비코드<span class="needStar"> * </span></td>
-					<td><input type="text" name="equCode" id="equCode" style="background: #ccdceb;" class="empty"></td>
+					<td><input type="text" name="equCode" id="equCode"
+						style="background: #ccdceb;" class="empty"></td>
 				</tr>
 				<tr>
 					<td>설비명<span class="needStar"> * </span></td>
-					<td><input type="text" name="equName" id="equName" class="empty"></td>
+					<td><input type="text" name="equName" id="equName"
+						class="empty"></td>
 				</tr>
 				<tr>
 					<td>모델<span class="needStar"> * </span></td>
-					<td><input type="text" name="equModel" id="equModel" class="empty"></td>
+					<td><input type="text" name="equModel" id="equModel"
+						class="empty"></td>
 				</tr>
 				<tr>
 					<td>설비상태<span class="needStar"> *</span></td>
 					<td>
 						<div id="divRadio">
-							<input type="radio" id="equStat1" name="equStat" value="Y" checked>
-							<label for="equStat1">가동</label>
-							<input type="radio" id="equStat2" name="equStat" value="N">
-							<label for="equStat2">비가동</label>
+							<input type="radio" id="equStat1" name="equStat" value="Y"
+								checked> <label for="equStat1">가동</label> <input
+								type="radio" id="equStat2" name="equStat" value="N"> <label
+								for="equStat2">비가동</label>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>설비라인<span class="needStar"> *</span></td>
-					<td><input type="text" name="equLine" id="equLine" class="empty"></td>
+					<td><input type="text" name="equLine" id="equLine"
+						class="empty"></td>
 				</tr>
 				<tr>
 					<td>표준온도<span class="needStar"> *</span></td>
@@ -58,13 +64,21 @@
 				</tr>
 				<tr>
 					<td>공정코드<span class="needStar"> * </span></td>
-					<td colspan="2"><input type="text" name="procId" id="procId" class="empty" readonly>
-						<button type="button" id="pdBtn" class="sixBtn2" style="margin-right: 10px;"
-							data-bs-toggle="modal">조회</button></td>
+					<td colspan="2"><input type="text" name="procId" id="procId"
+						class="empty" readonly style="background: #ccdceb;">
+						<button type="button" id="pdBtn" class="sixBtn2"
+							style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
 				</tr>
 				<tr>
 					<td>점검주기<span class="needStar"> *</span></td>
-					<td><input type="text" name="equCheck" id="equCheck" class="empty"></td>
+					<td><input type="text" name="equCheck" id="equCheck"
+						class="empty"></td>
+				</tr>
+				<tr>
+					<td>등록일자<span class="needStar"> *</span></td>
+					
+					<td><input type="date" name="addDate" id="addDate"></td>
+					
 				</tr>
 				<tr>
 					<td>담당자<span class="needStar"> *</span></td>
@@ -73,21 +87,27 @@
 			</table>
 
 			<div>
-				<button type="button" class="sixBtn2" style="float: right;" id="delBtn">삭제</button>
-				<button type="button" class="sixBtn2" style="float: right;" id="modBtn">수정</button>
-				<button type="button" class="sixBtn2" style="float: right;" id="addBtn">등록</button>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="delBtn">삭제</button>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="modBtn">수정</button>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="addBtn">등록</button>
 			</div>
-			<br><br>
+			<br> <br>
 
 			<!-- 공정코드 선택 Modal 시작 -->
-			<div class="modal fade" id="pdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-				aria-labelledby="pdModal" aria-hidden="true">
+			<div class="modal fade" id="pdModal" data-bs-backdrop="static"
+				data-bs-keyboard="false" tabindex="-1" aria-labelledby="pdModal"
+				aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<!-- 모달 헤더 -->
 						<div class="modal-header">
-							<h5 class="modal-title" id="pdModalLabel" style="font-family: 'MaruBuri';">공정코드 선택</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							<h5 class="modal-title" id="pdModalLabel"
+								style="font-family: 'MaruBuri';">공정코드 선택</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
 						</div>
 						<!-- 모달 바디 -->
 						<div class="modal-body">
@@ -95,8 +115,7 @@
 							<div id="pdGrid"></div>
 						</div>
 						<!-- 모달 푸터(버튼부분) -->
-						<div class="modal-footer">
-						</div>
+						<div class="modal-footer"></div>
 					</div>
 				</div>
 			</div>
@@ -136,40 +155,65 @@
 				rowHeaders: ['rowNum'],
 				columns: [{
 						header: '설비코드',
-						name: 'equCode'
+						name: 'equCode',
+						sortable : true,
+						align: 'center'
 					},
 					{
 						header: '공정코드',
-						name: 'procId'
+						name: 'procId',
+						align: 'center'
 					},
 					{
 						header: '설비명',
-						name: 'equName'
+						name: 'equName',
+						align: 'center'
 					},
 					{
 						header: '모델',
-						name: 'equModel'
+						name: 'equModel',
+						align: 'center'
 					},
 					{
 						header: '설비상태',
 						name: 'equStat',
-						filter: 'select'
+						filter: 'select',
+						align: 'center',
+						formatter: 'listItemText',
+						editor: {
+							type: 'select',
+							options: {
+								listItems: [
+									{text: '가동', value: 'Y'},
+									{text: '비가동', value: 'N'},	
+								]
+						      }
+					        }
 					},
 					{
 						header: '설비라인',
-						name: 'equLine'
+						name: 'equLine',
+						align: 'center'
 					},
 					{
 						header: '점검주기',
-						name: 'equCheck'
+						name: 'equCheck',
+						align: 'center'
 					},
 					{
 						header: '기준온도',
 						name: 'ctemp',
+						align: 'center'
+					},
+					{
+						header: '등록일자',
+						name: 'addDate',
+						align: 'center'
 					},
 					{
 						header: '담당자',
-						name: 'empId'
+						name: 'empId',
+						align: 'center'
 					}
 				]
 
@@ -291,6 +335,7 @@
 				$('#equStat').val(dataRow.equStat);
 				$('#equLine').val(dataRow.equLine);
 				$('#equCheck').val(dataRow.equCheck);
+				$('#addDate').val(dataRow.addDate);
 				$('#empId').val(dataRow.empId);
 				$('#ctemp').val(dataRow.ctemp);
 				// 라디오 버튼이 Y 나 N 일떄 가동 비가동으로 전환 
@@ -301,7 +346,12 @@
 				}
 			});
 
+			// 등록버튼 기능 구현
 			$('#addBtn').on('click', function (e) {
+				if (selRow === '') {
+					alert('등록 정보를 입력하시오.')
+				} else {
+				
 				console.log($('#addForm').serialize())
 				$.ajax({
 					url: '/equipment/equAdd',
@@ -310,6 +360,7 @@
 					dataType: 'json',
 					success: function (result) {
 						alert('설비정보가 등록되었습니다');
+						console.log('result : ');
 						console.log(result);
 						//등록 버튼을 누르면 리스트에 삽입된다.     
 						const appendedData = result
@@ -317,7 +368,6 @@
 						// 리스트를 리셋. 등록데이터가 바로 뜸.
 						grid.resetData(result);
 						setTimeout(() => orderingGrid.refreshLayout(), 1000);
-
 					},
 					error: function (reject) {
 						alert('설비 등록 중 오류가 발생했습니다!');
@@ -326,11 +376,15 @@
 				});
 				// 인풋창을 비워줌
 				$('#addForm input').val('');
-
+			}
 			});
-
+			
 			// 설비정보 수정 
 			$('#modBtn').on('click', function (e) {
+				if (selRow == '') {
+					alert('수정할 데이터가 없습니다.')
+				} else {
+				
 				console.log($('#addForm').serialize())
 				$.ajax({
 					url: '/equipment/equUpdate',
@@ -351,10 +405,15 @@
 				});
 				$('.empty').val('');
 				$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
+			  }
 			})
 
 			// 설비정보 삭제
 			$('#delBtn').on('click', function (e) {
+				if (selRow == '') {
+					alert('삭제 할 설비를 선택하시오.')
+				} else {
+				
 				e.preventDefault();
 				console.log(selRow);
 
@@ -383,6 +442,7 @@
 						alert('설비 삭제 중 오류가 발생했습니다..');
 					}
 				});
+				}
 			});
 		</script>
 

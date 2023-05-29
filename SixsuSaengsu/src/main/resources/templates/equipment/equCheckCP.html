@@ -6,9 +6,17 @@
 <head>
 <meta charset="utf-8">
 <title>설비 점검 관리</title>
+<style>
+.sixBtn2 {
+	margin-right: 7px;
+}
+
+input {
+	margin: 5px;
+}
+</style>
 </head>
 <body>
-
 
 	<div layout:fragment="content">
 
@@ -16,10 +24,83 @@
 		<br>
 		<hr>
 
+		<!-- 인풋창 -->
+		<form action="" method="post" id="addForm">
+			<table>
+				<tr>
+					<td>점검코드<span class="needStar"> * </span></td>
+					<td><input type="text" name="checkCode " id="checkCode "
+						style="background: #ccdceb;" class="empty"></td>
+				</tr>
+				<tr>
+					<td>비가동코드<span class="needStar"> * </span></td>
+					<td><input type="text" name="operCode " id="operCode "
+						class="empty"></td>
+				</tr>
+				<tr>
+					<td>설비코드<span class="needStar"> * </span></td>
+					<td colspan="2"><input type="text" name="procId" id="procId"
+						class="empty" readonly style="background: #ccdceb;">
+						<button type="button" id="pdBtn" class="sixBtn2"
+							style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
+				</tr>
+				<tr>
+					<td>설비명<span class="needStar"> * </span></td>
+					<td><input type="text" name="equName" id="equName"
+						class="empty"></td>
+				</tr>
+				<tr>
+					<td>점검주기<span class="needStar"> *</span></td>
+					<td><input type="text" name="equCheck" id="equCheck"
+						class="empty"></td>
+				</tr>
+				<tr>
+					<td>점검구분<span class="needStar"> *</span></td>
+					<td><input type="text" name="checkType" id="checkType"
+						class="empty"></td>
+						<div id="divRadio">
+							<input type="radio" id="checkType1" name="checkType" value="Y"
+								checked> <label for="checkType1">정기</label> <input
+								type="radio" id="equStat2" name="checkType" value="N"> <label
+								for="equStat2">수시</label>
+						</div>
+				</tr>
+				<tr>
+					<td>판정<span class="needStar"> *</span></td>
+					<td>
+						<div id="divRadio">
+							<input type="radio" id="equSuit1" name="equSuit" value="Y"
+								checked> <label for="equSuit1">적합</label> <input
+								type="radio" id="equStat2" name="equSuit" value="N"> <label
+								for="equStat2">부적합</label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>공정코드<span class="needStar"> * </span></td>
+					<td colspan="2"><input type="text" name="procId" id="procId"
+						class="empty" readonly style="background: #ccdceb;">
+						<button type="button" id="pdBtn" class="sixBtn2"
+							style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
+				</tr>
+				<tr>
+					<td>담당자<span class="needStar"> *</span></td>
+					<td><input type="text" name="empId" id="empId"></td>
+				</tr>
+			</table>
 
+			<div>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="delBtn">삭제</button>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="modBtn">수정</button>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="addBtn">등록</button>
+			</div>
+			<br> <br>
 
-		<hr>
-		<br>
+			<hr>
+			<br>
 	</div>
 </body>
 </html>
