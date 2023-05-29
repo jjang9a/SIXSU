@@ -67,6 +67,12 @@ public class BasicController {
 		service.updateEmp(emp);
 		return "result";
 	}
+	
+	@ResponseBody
+	@GetMapping("/basic/searchEmp") // 사원 조회
+	public List<EmpVO> searchEmp(SearchDTO dto) {
+		return service.searchEmp(dto);
+	}
 
 	// 공통코드
 
@@ -76,7 +82,7 @@ public class BasicController {
 
 	@ResponseBody
 	@GetMapping("/basic/groupList")
-	public List<CodeVO> groupList() {
+	public List<CodeVO> groupList() { // 그룹 리스트
 		List<CodeVO> glist = service.groupList();
 		return glist;
 	}
@@ -98,6 +104,13 @@ public class BasicController {
 	@PostMapping("/basic/modifyCode") // 공통코드 수정
 	public boolean modifyCode(@RequestBody List<CodeVO> list) {
 		return service.updateCode(list);
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/addGroup") // 그룹 등록
+	public CodeVO addGroup(CodeVO code) {
+		service.addGroup(code);
+		return code;
 	}
 
 	// 완제품 관리
@@ -233,7 +246,9 @@ public class BasicController {
 	// 거래처 관리
 
 	@GetMapping("/basic/businessManage")
-	public void businessManage() { // 거래처 관리 화면 띄우기
+	public void businessManage(Model model) { // 거래처 관리 화면 띄우기
+		String key = "BUS_TYPE";
+		model.addAttribute("types", service.getComList(key));
 	}
 
 	@ResponseBody
