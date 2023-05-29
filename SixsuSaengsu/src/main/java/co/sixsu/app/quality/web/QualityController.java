@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
+import co.sixsu.app.quality.domain.QudVO;
 import co.sixsu.app.quality.service.QualityService;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
@@ -126,6 +127,7 @@ public class QualityController {
 	public List<QuaVO> modInspItem(Model model, String inspNum) {
 		List<QuaVO> list = quaService.modInspItem(inspNum);
 		model.addAttribute("list", list);
+		System.out.println("수정 항목 출력:"+list);
 		return list;
 	}
 
@@ -146,12 +148,16 @@ public class QualityController {
 		// return quaService.insertPri(list);
 		return quaService.insertPriAndUpdate(list);
 	}
+	
 
 	// 입고 검사 결과 등록 시 업데이트
 	@ResponseBody
 	@PostMapping("/quality/priRegUpdate")
-	public boolean priRegUpdate(QuaVO qua) {
+	public boolean qComUpdate(QuaVO qua) {
+		System.out.println("abcd");
+		System.out.println(qua);
 		boolean result = quaService.priRegUpdate(qua);
+		//return true;
 		return result;
 	}
 	
@@ -172,6 +178,14 @@ public class QualityController {
 			boolean result = quaService.delReqInsp(inspNum); 
 		
 		    return result;
+		}
+		
+		// 수정 시 qua_details 업데이트
+		@ResponseBody
+		@PostMapping("/quality/updateQd")
+		public List<QuaVO> updateQd(@RequestBody List<QuaVO> list) {
+			System.out.println("검사상세업데이트"+list);
+			return quaService.updateQd(list);
 		}
 	
 

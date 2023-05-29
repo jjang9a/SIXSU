@@ -2,6 +2,7 @@ package co.sixsu.app.material.mapper;
 
 import java.util.List;
 
+import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatShipVO;
@@ -22,7 +23,7 @@ public interface MaterialsMapper {
 	List<MatreqVO> selectMatReq(int reqId);
 	
 	//발주 리스트에서 삭제
-	int deleteMatReq(String reqId);
+	int deleteMatReq(MatreqVO vo);
 	
 	//발주 등록
 	int insertMatReq(MatreqVO vo);
@@ -34,7 +35,7 @@ public interface MaterialsMapper {
 	List<MatrecVO> selectMatRecList();
 	
 	//자재 입고
-	int insertMatRec(String matReqId);
+	int insertMatRec(MatrecVO vo);
 	
 	//자재 리스트
 	List<MatVO> selectMatList();
@@ -71,4 +72,13 @@ public interface MaterialsMapper {
 	
 	//반제품 조정출고
 	int spShipAdj(SpAdjVO vo);
+	
+	//반제품 불량처리대기 리스트
+	List<SpDmgVO> getSpDmgWaitList();
+	
+	//반제품 불량처리 리스트
+	List<SpDmgVO> getSpDmgList();
+	
+	//반제품 불량 처리
+	int insertSpDmg(SpDmgVO vo);
 }

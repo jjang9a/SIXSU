@@ -6,30 +6,70 @@
 <head>
 <meta charset="UTF-8">
 <title>설비 조회</title>
+	<style>
+		#eTable td {
+			padding: 4px 10px;
+			text-align: left;
+		}
+		#Btn {
+			float: right;
+		}
+		.modalTbl {
+			margin: auto;
+			text-align: center;
+			height: 330px;
+		}
+		.modal-body {
+			background: #e5edf5;
+		}
+
+		.modalTbl td {
+			padding-right: 20px;
+		}
+
+		.modal-footer {
+			text-align: center;
+		}
+		.addForm {
+			
+		}
+		
+	</style>
 </head>
 <body>
 	<div layout:fragment="content">
 		<br>
 		<br>
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비조회</h1>
-
+		
+		<!-- 검색 버튼 -->
+			
 		<br>
 		<hr>
+		<div id="Btn">
+				<button class="sixBtn1" id="searchBtn">
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+						fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+		                <path
+							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+		                </svg>
+				</button>
+				<button class="sixBtn2" id="reset">초기화</button>
+			</div>
+		
+	 <!-- 검색 인풋 창 -->	
+	<table id="eTable">
+	<tr>	
 		<td>설비코드<span class="needStar"> * </span></td>
-		<td><input type="text" name="ecode" id="equCode" class="empty"></td>
+		<td><input type="text" name="ecode" id="ecode" class="empty"></td>
 		
 		<td>설비명<span class="needStar"> * </span></td>
 		<td><input type="text" name="ename" id="ename" class="empty"></td>
-		 
-		<button class="sixBtn1" id="searchBtn">
-			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-                <path
-					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                </svg>
-		</button>
-		<button class="sixBtn2" id="reset">초기화</button>
+	</tr>
+	</table>	
+	 
 		
+		<br>
 		<hr>
 		<br>
 
@@ -51,86 +91,87 @@
 					<!--설비정보(상세) 모달 바디 -->
 					<div class="modal-body">
 						<form action="" method="post" id="addForm">
-							<table class="">
-								<div id="equInfo">
-
+						
+								<div id="modalTbl">
+							<table class="table">
+							
 									<tr>
-										<br>
+										
 										<td>설비코드<span class="needStar"> * </span></td>
 										<td><input type="text" name="equCode" id="equCode"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>공정코드<span class="needStar"> * </span></td>
 										<td><input type="text" name="procId" id="procId"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>설비상태<span class="needStar"> * </span></td>
 										<td><input type="text" name="equStat" id="equStat"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>설비명<span class="needStar"> * </span></td>
 										<td><input type="text" name="equName" id="equName"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>설비라인<span class="needStar"> *</span></td>
 										<td><input type="text" name="equLine" id="equLine"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>기준온도<span class="needStar"> *</span></td>
 										<td><input type="text" name="ctemp" id="ctemp"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>판정<span class="needStar"> *</span></td>
 										<td><input type="text" name="equSuit" id="equSuit"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>점검일자<span class="needStar"> *</span></td>
 										<td><input type="text" name="checkDate" id="checkDate"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>점검주기<span class="needStar"> *</span></td>
 										<td><input type="text" name="equCheck" id="equCheck"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>차기 점검일<span class="needStar"> *</span></td>
 										<td><input type="text" name="checkNext" id="checkNext"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>점검구분<span class="needStar"> *</span></td>
 										<td><input type="text" name="checkType" id="checkType"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>점검사유<span class="needStar"> *</span></td>
 										<td><input type="text" name="checkInfo" id="checkInfo"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>비가동시간<span class="needStar"> *</span></td>
 										<td><input type="text" name="operStart" id="operStart"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>비가동사유<span class="needStar"> *</span></td>
 										<td><input type="text" name="operNote" id="operNote"></td>
 									</tr>
 									<tr>
-										<br>
+										
 										<td>비가동구분<span class="needStar"> *</span></td>
 										<td><input type="text" name="operType" id="operType"></td>
 									</tr>
-								</div>
 							</table>
+								</div>
 						</form>
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
@@ -160,40 +201,50 @@
         columns: [
           {
             header: '설비코드',
-            name: 'equCode'
+            name: 'equCode',
+            sortable : true,
+            align: 'center'
           },
           {
             header: '공정코드',
-            name: 'procId'
+            name: 'procId',
+            align: 'center'
           },
           {
             header: '설비명',
-            name: 'equName'
+            name: 'equName',
+            align: 'center'
           },
           {
             header: '모델',
-            name: 'equModel'
+            name: 'equModel',
+            align: 'center'
           },
           {
             header: '설비상태',
             name: 'equStat',
-            filter: 'select'
+            filter: 'select',
+            align: 'center'
           },
           {
              header: '설비라인',
-             name: 'equLine'
+             name: 'equLine',
+             align: 'center'
           },
           {
              header: '점검주기',
-             name: 'equCheck'
+             name: 'equCheck',
+             align: 'center'
           },
           {
-             header: '설비 이미지',
-             name: 'equImg'
-          },
+			 header: '등록일자',
+			 name: 'addDate',
+			 align: 'center'
+			},
           {
              header: '담당자',
-             name: 'empId'
+             name: 'empId',
+             align: 'center'
           },
           {
               header: '차기점검일',
@@ -307,37 +358,46 @@
       });
 
 
+    // 조회 검색버튼 기능
+    let searchType = '';
+    let searchKey = '';
     
-    // 조회기능
     $('#searchBtn').on('click', function(){
-    
-    console.log('클릭됐음.');
-    var searchData = {};
-    searchData.equName = $('input[name="ename"]').val();
-    
-    
-    console.log(searchData);
-    
-    $.ajax({
-    	url : "/equipment/equFilterAjax",
-    	method : "POST",
-    	dataType : "JSON",
-    	data : searchData,
-    	success : function(result){
-    		console.dir(result);
-    		grid.resetData(result);
-    	},
-    	error: function () {
-			alert('오류가 발생했습니다!');
-			console.log(reject);
-		}
-    
-      });
-   
-    })
+    	if($('#ecode').val() == '' && $('#ename').val() == '') {
+    			alert('설비코드, 설비명을 입력해 주세요 !')	
+    	 } else {
+    		 if ($('#ecode').val() != '') {
+					searchType = 'code';
+					searchKey = $('#ecode').val()
+				} else {
+					searchType = 'name';
+					searchKey = $('#ename').val()
+				}
+				
+				$.ajax({
+					url: '/equipment/equFilterAjax',
+					type: 'get',
+					data: {
+						"searchType": searchType,
+						"searchKey": searchKey
+					},
+					dataType: 'json',
+					success: function (result) {
+						grid.resetData(result);
+						nowData = result;
+					},
+					error: function () {
+						alert('오류가 발생했습니다!');
+					}
+				})
+			}
+
+		})
+    		
     
     //초기화 버튼 기능
 			$('#reset').on("click", function (e) {
+				$('#ecode').val('');
 				$('#ename').val('');
 				
 				$.ajax({

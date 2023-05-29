@@ -68,7 +68,7 @@ public InvVO orderAdd(InvVO inv) {
 
 
 
-@Override // 상세주문서만 수정
+@Override // 상세주문서만 입력
 public boolean ordDetAdd(List<OrdVO> list) {
    int count =0;
    for(int i=0; i<list.size(); i++) {

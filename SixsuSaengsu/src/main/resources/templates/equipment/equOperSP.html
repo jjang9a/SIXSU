@@ -4,23 +4,24 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/template}">
 <head>
-<meta charset="utf-8">
-<title>비가동 조회 페이지</title>
+	<meta charset="utf-8">
+	<title>비가동 조회 페이지</title>
+	<style>
+		#oTable td {
+			padding: 4px 10px;
+			text-align: left;
+		}
+	</style>
 </head>
-<body>
 
+<body>
 
 	<div layout:fragment="content">
 
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">비가동 조회 페이지</h1>
-		<br>
-		<hr>
-		<td>비가동 코드<span class="needStar"> * </span></td>
-		<td><input type="text" name="ocode" id="ocode" class="empty"></td>
 		
-		<td>설비명<span class="needStar"> * </span></td>
-		<td><input type="text" name="ename" id="ename" class="empty"></td>
-		
+		<!-- 검색 버튼 -->
+		<div id="Btn">
 		<button class="sixBtn1" id="searchBtn">
 			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
 				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
@@ -29,29 +30,45 @@
                 </svg>
 		</button>
 		<button class="sixBtn2" id="reset">초기화</button>
+		</div>
+		
+		<br>
+		<hr>
+		<!-- 검색 인풋 창 -->
+		<table id="oTable">
+		<tr>
+			<td>설비 코드<span class="needStar"> * </span></td>
+			<td><input type="text" name="ocode" id="ocode" class="empty"></td>
+		
+			<td>설비명<span class="needStar"> * </span></td>
+			<td><input type="text" name="oname" id="oname" class="empty"></td>
+		</tr>
+		</table>
 
+		<br>
 		<hr>
 		<br>
 
-		<!-- 비가동 조회 모달창 -->
-
-		<!-- Modal 시작 -->
+		 <!-- 비가동 조회 모달창 -->
+<!--
+		Modal 시작
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
 			data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<!-- 모달 헤더 -->
+					모달 헤더
 					<div class="modal-header">
 						<h5 class="modal-title" id="staticBackdropLabel"
 							style="font-family: 'MaruBuri';">비가동 상세 정보</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<!--비가동 정보(상세) 모달 바디 -->
+					비가동 정보(상세) 모달 바디
 					<div class="modal-body">
 						<form action="" method="post" id="addForm">
 							<table class="">
+							
 								<div id="equInfo">
 
 									<tr>
@@ -98,7 +115,7 @@
 							</table>
 						</form>
 					</div>
-					<!-- 모달 푸터(버튼부분) -->
+					모달 푸터(버튼부분)
 					<div class="modal-footer">
 						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
 
@@ -106,7 +123,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- Modal 끝 -->
+		Modal 끝 -->
 
 
 		<!-- 그리드 시작 -->
@@ -127,47 +144,55 @@
         columns: [
 		  {
             header: '비가동코드',
-            name: 'operCode'
+            name: 'operCode',
+            sortable : true,
+            hidden : true
+            
           },
           {
             header: '점검코드',
-            name: 'checkCode'
+            name: 'checkCode',
+            hidden : true
+          },
+          {
+             header: '설비상태',
+             name: 'equStat',
+             hidden : true
           },
           {
             header: '설비코드',
-            name: 'equCode'
+            name: 'equCode',
+            align: 'center'
           },
           {
             header: '설비명',
-            name: 'equName'
+            name: 'equName',
+            align: 'center'
           },
-		  {
-             header: '설비상태',
-             name: 'equStat'
-          },
-		  {
-             header: '담당자',
-             name: 'empId'
-          },
-		  {
+          {
               header: '비가동 구분',
               name: 'operType',
-              hidden : true
+              align: 'center'
           },
           {
               header: '비가동 시작',
               name: 'operStart',
-              hidden : true
+              align: 'center'
           },
 		  {
               header: '비가동 종료',
               name: 'operFnish',
-              hidden : true
+              align: 'center'
           },
 		  {
               header: '비고',
               name: 'operNote',
-              hidden : true
+              align: 'center'
+          },
+		  {
+             header: '담당자',
+             name: 'empId',
+             align: 'center'
           },
          
         ]
@@ -201,7 +226,7 @@
         } 
     });
 
-	// 클릭 이벤트 발생
+	/* // 클릭 이벤트 발생
 	grid.on('click', ev => {
     	
     	// focus된 셀이 있는 열 전체 select 처리
@@ -227,12 +252,49 @@
 		$('#operFnish').val(dataRow.operFnish); // 비가동종료
 		$('#operNote').val(dataRow.operNote); // 비가동 비고
 	      
-      });
+      }); */
 
+	
+	// 조회 검색버튼 기능
+    let searchType = '';
+    let searchKey = '';
+    
+    $('#searchBtn').on('click', function(){
+    	if($('#ocode').val() == '' && $('#oname').val() == '') {
+    			alert('검색 항목을 입력해 주세요 !')	
+    	 } else {
+    		 if ($('#ocode').val() != '') {
+					searchType = 'code';
+					searchKey = $('#ocode').val()
+				} else {
+					searchType = 'name';
+					searchKey = $('#oname').val()
+				}
+				
+				$.ajax({
+					url: '/equipment/equOperSearch',
+					type: 'get',
+					data: {
+						"searchType": searchType,
+						"searchKey": searchKey
+					},
+					dataType: 'json',
+					success: function (result) {
+						grid.resetData(result);
+						nowData = result;
+					},
+					error: function () {
+						alert('오류가 발생했습니다!');
+					}
+				})
+			}
+
+		})
 
 	   //초기화 버튼 기능
 	   $('#reset').on("click", function (e) {
-				$('#ename').val('');
+		  		$('#ocode').val('');
+				$('#oname').val('');
 				
 				$.ajax({
 					url: "/equipment/equOperList",

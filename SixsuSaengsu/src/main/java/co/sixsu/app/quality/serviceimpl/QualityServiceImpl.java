@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
+import co.sixsu.app.quality.domain.QudVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
 import co.sixsu.app.quality.service.QualityService;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
@@ -151,14 +152,16 @@ public class QualityServiceImpl implements QualityService {
 		return list;
 	}
 
-	// 자재 입고 검사 결과 등록 시 업데이트
+	// 자재 입고 검사 결과 등록 시 업데이트(qua_com업데이트)
 	@Override
 	@Transactional
 	public boolean priRegUpdate(QuaVO qua) {
+		System.out.println("qua_com업데이트호출");
 		int count = 0; // update 발생 횟수
-		
+		System.out.println("qua_com 업데이트 vo"+qua);
 		count += quaMapper.qComUpdate(qua);
-		count += quaMapper.mUpdate(qua);
+		
+		//count += quaMapper.mUpdate(qua);
 			
 		
 		return count >= 1;
@@ -276,6 +279,7 @@ public class QualityServiceImpl implements QualityService {
 	public List<QuaVO> modInspItem(String inspNum) {
 		return quaMapper.modInspItem(inspNum);
 	}
+	
 
 	
 	// 공정 검사 전 리스트 출력
@@ -306,7 +310,7 @@ public class QualityServiceImpl implements QualityService {
 		    inspNum = quaMapper.pdInspNum();
 		    prd.setInspNum(inspNum);
 
-		    System.out.println("bpdAdd: " + prd); // 디버깅용 출력
+		    System.out.println("bpdAdd: " + prd); // 디버깅 출력
 
 		    quaMapper.bpdAdd(prd);
 
@@ -321,6 +325,23 @@ public class QualityServiceImpl implements QualityService {
 	public List<PrdInspVO> prwList() {
 		return quaMapper.prwList();
 	}
+
+	// 수정시 검사 상세 업데이트
+	@Override
+	public List<QuaVO> updateQd(List<QuaVO> list) {
+		System.out.println("검사 상세 업데이트 서비스");
+		int count=0;
+		for(int i=0; i<list.size(); i++) {
+			QuaVO qua = list.get(i);
+			
+			System.out.println("수정시 상세 업데이트 vo:"+qua);
+			count += quaMapper.updateQd(qua);
+			
+		}
+		
+		return list;
+	}
+
 
 
 

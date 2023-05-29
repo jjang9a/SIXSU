@@ -208,7 +208,8 @@
 					},
 					{
 						header: '발주량',
-						name: 'matReqQt'
+						name: 'matReqQt',
+						editor: 'text'
 					},
 					{
 						header: '거래처코드',
@@ -435,13 +436,9 @@
 
 				$.ajax({
 					url: "/materials/delmatreq",
-					type: "GET",
+					type: "POST",
 					contentType: 'application/json',
-					data: {
-						list: JSON.stringify(matReqIds)
-					},
-					//data : {list : JSON.stringify(matReqIds)},
-					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
+					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
 					},

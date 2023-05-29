@@ -5,6 +5,7 @@ import java.util.List;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
+import co.sixsu.app.quality.domain.QudVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
 public interface QualityService {
@@ -22,12 +23,13 @@ public interface QualityService {
 		List<QuaVO> insertpro(List<QuaVO> list); //자재 입고 검사 등록 프로시저 사용
 		List<QuaVO> inspItem(String matId); // 입고 검사 항목 불러오기
 		List<QuaVO> insertPri(List<QuaVO> list); // 자재 입고 검사 결과 등록
-		boolean priRegUpdate(QuaVO qua); // 자재 입고 검사 결과 등록 시 업데이트
+		boolean priRegUpdate(QuaVO qua); // 자재 입고 검사 결과 등록 시 qua_com 업데이트
 		List<QuaVO> insertPriAndUpdate(List<QuaVO> list); // 결과 등록 + 업데이트
 		//List<QuaVO> reqInspProc(List<QuaVO> list);//자재 입고 검사 결과 등록 프로시저 사용
 		List<QuaVO> afterReqList();// 입고 검사 완료 리스트
 		boolean delReqInsp(String inspNum);// 검사 완료 단건 삭제
 		List<QuaVO> modInspItem(String inspNum);//수정시 검사 항목 불러오기
+		List<QuaVO> updateQd(List<QuaVO> list);//수정 시 qua_details 업데이트
 		
 		List<DetaWorkOrdrVO> bpAddList(); // 공정 검사 등록 리스트 출력
 		List<PrdInspVO> bpdAdd(List<PrdInspVO> list);// 공정 검사 등록
