@@ -9,5 +9,5 @@ public class LotVO {
 	private int cpLotQt;
 	private String cpLotQtCk;
 	private String cpName;
-	
+	private int cpHold;
 }

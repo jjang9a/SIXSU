@@ -16,6 +16,7 @@ public class OrdVO {
 	private String ordEndDate;
 	private String cpSize;
 	private String ordDate;
+	private int cpLot;
 	
 	
 }
