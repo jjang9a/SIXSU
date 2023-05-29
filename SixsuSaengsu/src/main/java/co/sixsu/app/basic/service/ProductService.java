@@ -14,5 +14,6 @@ public interface ProductService {
 	// 완제품 입고 관리
 	List<ReceiveVO> readyCpList(); // 반제품 입고대기 목록
 	List<ReceiveVO> cpRecList(); // 반제품 입고목록
+	List<ReceiveVO> cpRec(List<ReceiveVO> list); // 완제품 입고
 	
 }

@@ -10,6 +10,7 @@ public class FlowVO { // 공정흐름도(folw) 테이블
 	private int flow_num; // 순서
 	private String procId; // 공정코드
 	
+	private String cpId;
 	private String cpName; // 제품명
 	private String procType; // 공정구분
 	private String procName; // 공정명

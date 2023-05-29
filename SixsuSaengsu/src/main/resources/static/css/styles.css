@@ -11306,3 +11306,7 @@ body {
 .tui-grid-cell.cell-pink {
   background-color: #faeaea;
 }
+
+.rightBtn {
+  float: right;
+}

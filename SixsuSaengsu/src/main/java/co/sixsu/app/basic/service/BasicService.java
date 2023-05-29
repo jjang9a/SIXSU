@@ -6,6 +6,7 @@ import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.FlowVO;
 import co.sixsu.app.basic.domain.MaterialVO;
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
@@ -59,4 +60,8 @@ public interface BasicService {
 	boolean updateBom(List<BomVO> list); // BOM 수정
 	boolean deleteBom(List<BomVO> list); // BOM 삭제
 	
+	List<FlowVO> flowList(String id); // 제품별 공정흐름도
+	boolean addFlow(List<FlowVO> list); // 공정흐름도 등록
+	boolean updateFlow(List<FlowVO> list); // 공정흐름도 수정
+	boolean deleteFlow(List<FlowVO> list); // 공정흐름도 삭제
 }

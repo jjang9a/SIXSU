@@ -65,4 +65,5 @@ public class ProductController {
 		List<ReceiveVO> list = service.cpRecList();
 		return list;
 	}
+	
 }
