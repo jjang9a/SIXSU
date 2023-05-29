@@ -74,6 +74,10 @@
 </select>
 
 <insert id="addCp" parameterType="ProductVO">
+	<selectKey keyProperty="cpId" resultType="String" order="BEFORE">
+		SELECT 'CP' || LPAD(TO_NUMBER(NVL(SUBSTR(max(cp_id), -3), 0))+1, 3, '0')
+		FROM complete_prod
+	</selectKey>
 	INSERT INTO complete_prod VALUES (#{cpId}, #{cpName}, #{cpSize}, #{cpLot}, #{cpUnit}, #{cpStat}, #{cpNote})
 </insert>
 
@@ -104,6 +108,10 @@
 </select>
 
 <insert id="addSp" parameterType="ProductVO">
+	<selectKey keyProperty="spId" resultType="String" order="BEFORE">
+		SELECT 'SP' || LPAD(TO_NUMBER(NVL(SUBSTR(max(sp_id), -3), 0))+1, 3, '0')
+		FROM semi_prod
+	</selectKey>
 	INSERT INTO semi_prod VALUES (#{spId}, #{spName}, #{spSize}, #{spLot}, #{spUnit}, #{spStat}, #{spNote})
 </insert>
 
@@ -134,6 +142,10 @@
 </select>
 
 <insert id="addMat" parameterType="MaterialVO">
+	<selectKey keyProperty="matId" resultType="String" order="BEFORE">
+		SELECT 'M' || LPAD(TO_NUMBER(NVL(SUBSTR(max(mat_id), -3), 0))+1, 3, '0')
+		FROM material
+	</selectKey>
 	INSERT INTO material VALUES (#{matId}, #{matName}, #{matSize}, #{matSafe}, #{matUnit}, #{matStat}, #{matNote})
 </insert>
 
@@ -170,6 +182,10 @@
 </select>
 
 <insert id="addBus" parameterType="BusVO">
+	<selectKey keyProperty="busId" resultType="String" order="BEFORE">
+		SELECT 'BUS' || LPAD(TO_NUMBER(NVL(SUBSTR(max(bus_id), -3), 0))+1, 3, '0')
+		FROM business
+	</selectKey>
 	INSERT INTO business VALUES(#{busId}, #{busType} ,#{busName}, #{busNum}, #{busTell}, #{busAddr}, #{busStat}, #{busNote})
 </insert>
 
@@ -223,6 +239,10 @@
 </select>
 
 <insert id="addProc" parameterType="ProcessVO">
+	<selectKey keyProperty="procId" resultType="String" order="BEFORE">
+		SELECT 'PROC' || LPAD(TO_NUMBER(NVL(SUBSTR(max(bus_id), -3), 0))+1, 3, '0')
+		FROM process
+	</selectKey>
 	INSERT INTO process VALUES (#{procId}, #{procType}, #{procName}, #{procStat}, #{procNote})
 </insert>
 
@@ -294,9 +314,43 @@
 	WHERE bom_id = #{bomId}
 </update>
 
-<delete id="deleteBom" parameterType="BomVO">
+<delete id="deleteBom" parameterType="java.util.List">
 	DELETE FROM bom
-	WHERE bom_id = #{bomId}
+	WHERE bom_id IN
+	<foreach collection="list" item="item" open="(" close=")" separator=",">
+		#{bomId}
+	</foreach>
+</delete>
+<!-- BOM관리 종료 -->
+
+<!-- 공정흐름도 관리 -->
+<select id="flowList" parameterType="String" resultType="FlowVO">
+	SELECT flow_id, pd_id, f.proc_id, proc_name, com_name, flow_num
+	FROM FLOW f JOIN PROCESS p
+	ON f.proc_id = p.proc_id
+	JOIN common_code c
+	ON p.proc_type = c.com_id
+	WHERE pd_id = #{id}
+	ORDER BY flow_num
+</select>
+
+<insert id="addFlow" parameterType="FlowVO">
+	INSERT INTO flow VALUES (flow_seq.nextval, #{cpId}, #{flowNum}, #{procId})
+</insert>
+
+<update id="updateFlow" parameterType="FlowVO">
+	UPDATE flow
+	SET flow_num = #{flowNum}
+	WHERE flow_id = #{flowId}
+</update>
+
+<delete id="deleteFlow" parameterType="java.util.List">
+	DELETE FROM FLOW
+	WHERE flow_id IN
+	<foreach collection="list" item="item" open="(" close=")" separator=",">
+		#{flowId}
+	</foreach>
 </delete>
 
+<!-- 공정흐름도 관리 종료 -->
 </mapper>

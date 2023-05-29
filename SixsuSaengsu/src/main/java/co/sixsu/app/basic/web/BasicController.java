@@ -18,6 +18,7 @@ import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.FlowVO;
 import co.sixsu.app.basic.domain.MaterialVO;
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
@@ -331,5 +332,28 @@ public class BasicController {
 	public void flowManage() {
 	}
 	
+	@ResponseBody
+	@GetMapping("/basic/flowList")
+	public List<FlowVO> flowList(@RequestParam String id){
+		return service.flowList(id);
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/addFlow") // BOM 등록
+	public boolean addFlow(@RequestBody List<FlowVO> list) {
+		return service.addFlow(list);
+	}
+
+	@ResponseBody
+	@PostMapping("/basic/modifyFlow") // BOM 수정
+	public boolean modifyFlow(@RequestBody List<FlowVO> list) {
+		return service.updateFlow(list);
+	}
+	
+	@ResponseBody
+	@PostMapping("/basic/deleteFlow") // BOM 수정
+	public boolean deleteFlow(@RequestBody List<FlowVO> list) {
+		return service.deleteFlow(list);
+	}
 	
 }

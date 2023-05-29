@@ -54,7 +54,7 @@
 </update>
 
 <select id="spRecList" resultType="ReceiveVO">
-	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, r.sp_rec_date, e.emp_name as "empName", r.sp_lot_id, s.sp_name
+	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, to_char(r.sp_rec_date, 'yyyy/MM/dd') sp_rec_date, e.emp_name, r.sp_lot_id, s.sp_name, r.sp_rec_qt
 	from sp_rec r join semi_prod s 
 	on r.sp_id = s.sp_id
 	LEFT OUTER join employee e
@@ -78,12 +78,46 @@
 </select>
 
 <select id="cpRecList" resultType="ReceiveVO">
-	select r.cp_rec_id, r.prcs_pfmc_id, l.cp_id, r.cp_rec_tp, r.cp_rec_date, e.emp_name, r.cp_lot_id, s.cp_name
+	select r.cp_rec_id, r.prcs_pfmc_id, l.cp_id, r.cp_rec_tp, to_char(r.cp_rec_date, 'yyyy/MM/dd') cp_rec_date, e.emp_name, r.cp_lot_id, s.cp_name, r.cp_rec_qt
 	from prod_rev r join prod_lot l on r.cp_lot_id = l.cp_lot_id
 	join complete_prod s 
 	on l.cp_id = s.cp_id
 	LEFT OUTER join employee e
 	on r.emp_id = e.emp_id
 </select>
+
+<select id="procCpLotInfo" parameterType="ReceiveVO" statementType="CALLABLE">
+	{CALL proc_cp_lot_info(
+            #{cpId, mode=IN, jdbcType=VARCHAR},
+            #{cpLotId, mode=OUT, jdbcType=VARCHAR},
+            #{cpLotQt, mode=OUT, jdbcType=INTEGER}
+        )
+    }
+</select>
+
+<select id="getCpLotId" parameterType="String" resultType="ReceiveVO">
+	select GET_CP_LOT_ID(#{cpId})
+	from dual
+</select>
+
+<insert id="insertCpLot" parameterType="ReceiveVO">
+	INSERT INTO sp_lot VALUES (#{cpLotId}, #{cpId}, #{cpLotQt}, #{spLotQtCk}, '0')
+</insert>
+
+<insert id="insertCpRec" parameterType="ReceiveVO">
+	<selectKey resultType="ReceiveVO" keyProperty="cpRecId,cpRecDate"  order="BEFORE" >
+		select get_prod_rec_num cp_rec_id, to_char(sysdate, 'yyyy/MM/dd') cp_rec_date
+		from dual
+	</selectKey>
+	
+	INSERT INTO prod_rev VALUES (#{cpRecId}, '정상입고', #{prcsPfmcId}, #{empId}, #{cpRecDate}, #{cpRecQt}, #{cpLotId})
+</insert>
+
+<update id="updateCpLot" parameterType="ReceiveVO">
+	UPDATE prod_lot
+	SET cp_lot_qt=#{cpLotQt}, cp_lot_qt_ck=#{cpLotQtCk}
+	WHERE cp_lot_id=#{cpLotId}
+</update>
+
 
 </mapper>

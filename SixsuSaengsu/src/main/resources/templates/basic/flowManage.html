@@ -94,6 +94,28 @@
 		</div>
 		<!-- 오른쪽 틀 끝 -->
 
+		<!-- 공정 선택 Modal 시작 -->
+		<div class="modal fade" id="procModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="procModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 모달 바디 -->
+					<div class="modal-body">
+						<div id="procGrid"></div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 공정 선택 Modal 끝 -->
+
 		<script>
 			window.onload = function () {
 				$.ajax({
@@ -141,24 +163,24 @@
 			})
 
 			const pdGrid = new tui.Grid({
-					el: document.getElementById('pdGrid'),
-					scrollX: false,
-					scrollY: true,
-					minBodyHeight: 480,
-					columns: [{
-						header: '제품코드',
-						name: 'cpId',
-						align: 'center'
-					}, {
-						header: '제품명',
-						name: 'cpName',
-						align: 'center'
-					}, {
-						header: '규격',
-						name: 'cpSize',
-						align: 'center'
-					}]
-				});
+				el: document.getElementById('pdGrid'),
+				scrollX: false,
+				scrollY: true,
+				minBodyHeight: 480,
+				columns: [{
+					header: '제품코드',
+					name: 'cpId',
+					align: 'center'
+				}, {
+					header: '제품명',
+					name: 'cpName',
+					align: 'center'
+				}, {
+					header: '규격',
+					name: 'cpSize',
+					align: 'center'
+				}]
+			});
 
 			// 그리드 색 변경 테마 적용
 			tui.Grid.applyTheme('default', {
@@ -180,21 +202,223 @@
 				minBodyHeight: 480,
 				draggable: true,
 				columns: [{
+					header: '공정흐름코드',
+					name: 'flowId',
+					hidden: true
+				}, {
+					header: '제품코드',
+					name: 'cpId',
+					hidden: true
+				}, {
 					header: '공정구분',
-					name: 'gname',
+					name: 'comName',
 					align: 'center'
-				},{
+				}, {
 					header: '공정코드',
-					name: 'gid',
+					name: 'procId',
 					align: 'center'
-				},{
+				}, {
 					header: '공정명',
-					name: 'gid',
+					name: 'procName',
+					align: 'center'
+				}, {
+					header: '순서',
+					name: 'flowNum',
+					hidden: true
+				}]
+			});
+
+			const procGrid = new tui.Grid({
+				el: document.getElementById('procGrid'),
+				scrollX: false,
+				scrollY: true,
+				minBodyHeight: 400,
+				columns: [{
+					header: '공정구분',
+					name: 'comName',
+					align: 'center'
+				}, {
+					header: '공정코드',
+					name: 'procId',
+					align: 'center'
+				}, {
+					header: '공정명',
+					name: 'procName',
 					align: 'center'
 				}]
 			});
-			grid.setLanguage('ko');
 
+			// 제품 선택 시 선택정보 기반으로 공정흐름도 데이터 불러오기
+			let pdKey = '';
+			let selRowKey = '';
+			pdGrid.on('dblclick', function (ev) {
+				// 열을 더블클릭하면 제품 정보를 변수에 저장
+				if (selRowKey != ev.rowKey) { // 제품 선택 정보가 달라졌다면
+					pdGrid.removeRowClassName(selRowKey, 'cell-pink'); // 지난 제품 열에서 음영 제거
+				}
+				pdGrid.addRowClassName(ev.rowKey, 'cell-pink'); // 새로운 제품 열에 음영 넣기
+				selRowKey = ev.rowKey
+				let dataRow = pdGrid.getRow(ev.rowKey);
+				pdKey = dataRow.cpId;
+
+				// 오른쪽 그리드 데이터 불러올 ajax호출
+				$.ajax({
+					url: '/basic/flowList',
+					type: 'get',
+					data: {
+						"id": pdKey
+					},
+					success: function (result) {
+						grid.resetData(result);
+					},
+					error: function () {
+						alert('공통코드 조회 중 오류 발생!');
+					}
+				})
+			});
+
+			// 추가 버튼 이벤트 - 공정선택
+			$('#addBtn').on('click', function (e) {
+				if (pdKey == '') {
+					alert('제품이 선택되지 않았습니다!')
+				} else {
+					$.ajax({
+						url: "/basic/activeProcList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							procGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+					setTimeout(() => procGrid.refreshLayout(), 500);
+					$('#procModal').modal('show');
+				}
+			})
+
+			// 공정 선택 이벤트
+			procGrid.on('click', e => {
+				let procData = procGrid.getRow(e.rowKey);
+				let checkDupl = 0;
+				for (let i = 0; i < grid.getRowCount(); i++) {
+					let checkId = grid.getRow(i).procId
+					if (checkId == procData.procId) {
+						checkDupl += 1;
+					}
+				}
+				if (checkDupl > 0) {
+					alert('이미 등록된 공정입니다.');
+				} else {
+					const newData = { // 선택한 열 정보 반반으로 본문 그리드에 추가할 데이터 생성
+						cpId: pdKey,
+						comName: procData.comName,
+						procId: procData.procId,
+						procName: procData.procName
+					};
+					grid.appendRow(newData); // 그리드에 추가
+					$('#procModal').modal('hide');
+				}
+			})
+
+			// 초기화 버튼 이벤트
+			$('#initBtn').on('click', function (e) {
+				if (pdKey == '') {
+					alert('제품이 선택되지 않았습니다!')
+				} else {
+					$.ajax({
+						url: '/basic/flowList',
+						type: 'get',
+						data: {
+							"id": pdKey
+						},
+						success: function (result) {
+							grid.resetData(result);
+						},
+						error: function () {
+							alert('공통코드 조회 중 오류 발생!');
+						}
+					})
+				}
+			})
+
+			let selFlow = 999;
+			// 흐름도 그리드 클릭시 열 정보 저장
+			grid.on('click', (e) => {
+				if (selFlow != e.rowKey) { // 제품 선택 정보가 달라졌다면
+					grid.removeRowClassName(selRowKey, 'cell-pink'); // 지난 제품 열에서 음영 제거
+				}
+				grid.addRowClassName(e.rowKey, 'cell-pink'); // 새로운 제품 열에 음영 넣기
+				selFlow = e.rowKey;
+			})
+
+			// 삭제 버튼 이벤트
+			$('#delBtn').on('click', (e) => {
+				if (pdKey == '') {
+					alert('제품이 선택되지 않았습니다!')
+				} else if (selFlow == 999) {
+					alert('삭제할 열이 선택되지 않았습니다.')
+				} else {
+					grid.removeRow(selFlow, true);
+					selFlow = 999;
+				}
+			})
+
+			// 저장버튼 이벤트
+			$('#saveBtn').on('click', (e) => {
+				if (pdKey == '') {
+					alert('제품이 선택되지 않았습니다!')
+				} else {
+					for (let i = 0; i < grid.getRowCount(); i++) {
+						grid.setValue(i, 'flowNum', grid.getRow(i)._attributes.rowNum, false);
+					}
+					console.log(grid.getModifiedRows())
+					// 생성된 열이 0개가 아니라면 insert ajax 호출
+					if (grid.getModifiedRows().createdRows.length != 0) {
+						$.ajax({
+							url: "/basic/addFlow",
+							method: "POST",
+							dataType: "JSON",
+							contentType: "application/json",
+							data: JSON.stringify(grid.getModifiedRows().createdRows),
+							error: function (reject) {
+								console.log(reject)
+								alert('등록 과정에서 에러가 발생하였습니다.')
+							}
+						})
+					}
+					// 수정된 열이 0개가 아니라면 update ajax 호출
+					if (grid.getModifiedRows().updatedRows.length != 0) {
+						$.ajax({
+							url: "/basic/modifyFlow",
+							method: "POST",
+							dataType: "JSON",
+							contentType: "application/json",
+							data: JSON.stringify(grid.getModifiedRows().updatedRows),
+							error: function (reject) {
+								console.log(reject)
+								alert('업데이트 과정에서 에러가 발생하였습니다.')
+							}
+						})
+					}
+					// 삭제된 열이 0개가 아니라면 update ajax 호출
+					if (grid.getModifiedRows().deletedRows.length != 0) {
+						$.ajax({
+							url: "/basic/deleteFlow",
+							method: "POST",
+							dataType: "JSON",
+							contentType: "application/json",
+							data: JSON.stringify(grid.getModifiedRows().deletedRows),
+							error: function (reject) {
+								console.log(reject)
+								alert('삭제 과정에서 에러가 발생하였습니다.')
+							}
+						})
+					}
+					alert('공정흐름도 정보가 저장되었습니다.')
+				}
+			})
 		</script>
 	</div>
 </body>

@@ -9,6 +9,7 @@ public class ReceiveVO {
 	int goodQt; // 공정실적 양품수량(공정실적) - 입고량
 	String wkEnd; // 완료일(공정실적)  -> 입고일(sysdate)
 	String empId; // 담당자
+	String empName; // 담당자 이름
 	
 	String spId; // 반제품코드
 	String spName; // 반제품명(제품)

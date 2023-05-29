@@ -7,6 +7,7 @@ import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.FlowVO;
 import co.sixsu.app.basic.domain.MaterialVO;
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
@@ -61,6 +62,10 @@ public interface BasicMapper {
 	public List<ProcessVO> activeProcList(); // 사용중인 공정 조회
 	public int addBom(BomVO bom); // BOM 등록
 	public int updateBom(BomVO bom); // BOM 수정
-	public int deleteBom(BomVO bom); // BOM 삭제	
+	public int deleteBom(List<BomVO> list); // BOM 삭제	
 	
+	public List<FlowVO> flowList(String id);
+	public int addFlow(FlowVO flow); // 공정흐름도 등록
+	public int updateFlow(FlowVO flow); // 공정흐름도 수정
+	public int deleteFlow(List<FlowVO> list); // 공정흐름도 삭제	
 }

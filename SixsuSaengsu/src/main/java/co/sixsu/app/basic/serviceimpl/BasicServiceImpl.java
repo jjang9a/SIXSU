@@ -9,6 +9,7 @@ import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.CodeVO;
 import co.sixsu.app.basic.domain.EmpVO;
+import co.sixsu.app.basic.domain.FlowVO;
 import co.sixsu.app.basic.domain.MaterialVO;
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
@@ -269,11 +270,39 @@ public class BasicServiceImpl implements BasicService {
 
 	@Override
 	public boolean deleteBom(List<BomVO> list) {
-		int count = 0; // delete가 발생한 횟수
+		return mapper.deleteBom(list) > 0 ;
+	}
+
+	
+	// 공정흐름도
+	
+	@Override
+	public List<FlowVO> flowList(String id) {
+		return mapper.flowList(id);
+	}
+
+	@Override
+	public boolean addFlow(List<FlowVO> list) {
+		int count = 0; // insert가 발생한 횟수
 		for (int i = 0; i < list.size(); i++) {
-			count += mapper.deleteBom(list.get(i));
+			count += mapper.addFlow(list.get(i));
 		}
 		return count >= 1;
 	}
 
+	@Override
+	public boolean updateFlow(List<FlowVO> list) {
+		int count = 0; // update가 발생한 횟수
+		for (int i = 0; i < list.size(); i++) {
+			count += mapper.updateFlow(list.get(i));
+		}
+		return count >= 1;
+	}
+
+	@Override
+	public boolean deleteFlow(List<FlowVO> list) {
+		return mapper.deleteFlow(list) > 0 ;
+	}
+
+	
 }
