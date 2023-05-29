@@ -17,6 +17,7 @@ public class QuaVO {
 	private int inspQt; // 검사 수량
 	private int suitQt; // 적합 수량
 	private int nsuitQt; // 부적합 수량
+	private int totNsuitQt; // 총 부적합 수량
 	private String inspStat; // 검사 상태
 	private String inspType; // 검사 유형
 	private String inspId; // 검사 항목 코드
