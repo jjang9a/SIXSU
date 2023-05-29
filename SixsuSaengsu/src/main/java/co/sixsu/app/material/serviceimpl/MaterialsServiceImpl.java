@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatShipVO;
@@ -37,8 +38,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//발주 삭제
 		@Override
-		public void deleteMatReq(String[] num) {
-			for(String i : num) {
+		public void deleteMatReq(List<MatreqVO> vo) {
+			for(MatreqVO i : vo) {
 				mapper.deleteMatReq(i);
 			}
 		}
@@ -63,8 +64,10 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//입고 등록
 		@Override
-		public int insertMatRec(String reqId) {
-			return mapper.insertMatRec(reqId);
+		public void insertMatRec(List<MatrecVO> vo) {
+			for(MatrecVO i : vo) {
+				mapper.insertMatRec(i);
+			}
 		}
 		
 		//자재 리스트
@@ -141,6 +144,27 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public void spShipAdj(List<SpAdjVO> vo) {
 			for(SpAdjVO i : vo) {
 				mapper.spShipAdj(i);
+			}
+			
+		}
+		
+		//반제품 불량처리대기 리스트
+		@Override
+		public List<SpDmgVO> getSpDmgWaitList() {
+			return mapper.getSpDmgWaitList();
+		}
+		
+		//반제품 불량처리 리스트
+		@Override
+		public List<SpDmgVO> getSpDmgList() {
+			return mapper.getSpDmgList();
+		}
+		
+		//반제품 불량처리
+		@Override
+		public void insertSpDmg(List<SpDmgVO> vo) {
+			for(SpDmgVO i : vo) {
+				mapper.insertSpDmg(i);
 			}
 			
 		}

@@ -1,8 +1,6 @@
 package co.sixsu.app.material.web;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
+import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatShipVO;
@@ -86,6 +81,11 @@ public class MaterialController {
 	public void spShipList() {
 	}
 	
+	//반제품 반품/페기관리 페이지 열어주기
+	@GetMapping("/materials/spdmg")
+	public void spDmgList() {
+	}
+	
 	//발주내역 리스트
 	@ResponseBody
 	@RequestMapping("/materials/matreqlist")
@@ -132,15 +132,10 @@ public class MaterialController {
 	
 	//발주제거 컨트롤
 	@ResponseBody
-	@RequestMapping("/materials/delmatreq")
-	public String delMatReq(@RequestParam Map<String, Object> paramMap) throws Exception {
-		String jsonData = paramMap.get("list").toString();
-		System.out.println(jsonData);
-		ObjectMapper objectMapper = new ObjectMapper();
-	    String[] dataArray = objectMapper.readValue(jsonData, String[].class);
-	    System.out.println(dataArray.length);
-	    service.deleteMatReq(dataArray);
-		return "/materials/matreq";
+	@PostMapping("/materials/delmatreq")
+	public void delMatReq(@RequestBody List<MatreqVO> vo) {
+		System.out.println(vo);
+		service.deleteMatReq(vo);
 	}
 	
 	//발주등록 컨트롤
@@ -150,7 +145,6 @@ public class MaterialController {
 		System.out.println(vo);
 		service.insertMatReq(vo);
 		return vo;
-		
 		
 	}
 	
@@ -176,22 +170,9 @@ public class MaterialController {
 	//입고등록
 	@PostMapping("/materials/insertmatrec")
     @ResponseBody
-    public void insertMatRec(@RequestBody String reqId) {
-        System.out.println(reqId);
-        ObjectMapper objectMapper = new ObjectMapper(); //json데이터를 java객체로 변환 or java객체를 json데이터로 변환
-        try {
-            JsonNode rootNode = objectMapper.readTree(reqId); //reqId 문자열을 JSON트리로 변환
-            if (rootNode.isArray()) { //JSON트리의 루트 노드가 배열인지 확인
-                ArrayNode arrayNode = (ArrayNode) rootNode; //배열이면 arrayNode로 형변환
-                for (JsonNode node : arrayNode) {
-                    String value = node.asText(); //각 요소를 문자열로 변환
-                    System.out.println(value);
-                    service.insertMatRec(value);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void insertMatRec(@RequestBody List<MatrecVO> vo) {
+		System.out.println(vo);
+		service.insertMatRec(vo);
     }
 	
 	//자재 리스트
@@ -202,22 +183,7 @@ public class MaterialController {
 		System.out.println(list);
 		return list;
 	}
-	
-	/*
-	 * //입고삭제 컨트롤
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping("/materials/delmatrec") public String delMatRec(@RequestParam
-	 * Map<String, Object> paramMap) throws Exception { String jsonData =
-	 * paramMap.get("list").toString(); System.out.println(jsonData); ObjectMapper
-	 * objectMapper = new ObjectMapper(); String[] dataArray =
-	 * objectMapper.readValue(jsonData, String[].class);
-	 * System.out.println(dataArray.length); for(String i : dataArray) {
-	 * System.out.println(i); service.deleteMatRec(i); } return "/materials/matrec";
-	 * }
-	 */
-	
+
 	//입고 삭제 컨트롤
 	@PostMapping("/materials/delmatrec")
     @ResponseBody
@@ -301,6 +267,31 @@ public class MaterialController {
 		System.out.println(vo);
 		service.spShipAdj(vo);
 	}
+	
+	//반제품 불량처리대기 리스트
+	@ResponseBody
+	@RequestMapping("/materials/spdmgwaitlist")
+	public List<SpDmgVO> getSpDmgWaitList(){
+		List<SpDmgVO> list = service.getSpDmgWaitList();
+		return list;
+	}
+	
+	//반제품 처리 리스트 
+	@ResponseBody
+	@RequestMapping("/materials/spdmglist")
+	public List<SpDmgVO> getSpDmgList(){
+		List<SpDmgVO> list = service.getSpDmgList();
+		return list;
+	}
+	
+	//반제품 불량처리
+	@PostMapping("/materials/insertspdmg")
+    @ResponseBody
+    public void insertSpDmg(@RequestBody List<SpDmgVO> vo) {
+		System.out.println("abc");
+		System.out.println(vo);
+		//service.insertSpDmg(vo);
+    }
 }
 
 

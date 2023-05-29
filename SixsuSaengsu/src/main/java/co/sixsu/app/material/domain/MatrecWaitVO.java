@@ -9,4 +9,5 @@ public class MatrecWaitVO {
 	String matName;
 	int suitQt;
 	String inspDate;
+	String matReqId;
 }
