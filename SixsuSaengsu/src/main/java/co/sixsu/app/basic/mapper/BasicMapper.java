@@ -2,6 +2,7 @@ package co.sixsu.app.basic.mapper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
@@ -30,6 +31,7 @@ public interface BasicMapper {
 	public int addCode(CodeVO code); // 공통코드 등록(추가)
 	public int updateCode(CodeVO code); // 공통코드 수정
 	public int addGroup(CodeVO code); // 그룹코드 등록
+	public List<Map<String, String>> commGroupList(String code); //그룹별 상세코드 리스트
 	
 	public List<ProductVO> cpList(); // 완제품 목록 조회
 	public int addCp(ProductVO prod); // 완제품 등록

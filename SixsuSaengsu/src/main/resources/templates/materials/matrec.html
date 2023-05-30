@@ -27,9 +27,9 @@
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 대기 목록</h3>
 		<div id="grid"></div>
 		<button type="button" class="sixBtn2" id="addBtn">입고</button>
-		<button type="button" class="sixBtn2" id="delBtn">삭제</button>
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 목록</h3>
 		<div id="grids"></div>
+		<button type="button" class="sixBtn2" id="delBtn">삭제</button>
 
 		
 		<script>
@@ -95,6 +95,10 @@
 
 
 				columns: [{
+						header: '검사번호',
+						name: 'inspNum'
+					},
+					{
 						header: '발주번호',
 						name: 'matReqId'
 					},
@@ -211,7 +215,7 @@
 			});
 			
 			
-			//입고등록 모달에서 등록 버튼
+			//입고등록 입고 버튼
  			$('#addBtn').on('click', function () {
 /* 				
 				var inspStdId = [];

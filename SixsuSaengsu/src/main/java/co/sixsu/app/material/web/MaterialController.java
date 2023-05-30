@@ -4,15 +4,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.sixsu.app.material.domain.SpDmgVO;
+import co.sixsu.app.basic.service.BasicService;
 import co.sixsu.app.material.domain.MatAdjVO;
+import co.sixsu.app.material.domain.MatDmgVO;
 import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatShipVO;
 import co.sixsu.app.material.domain.MatVO;
@@ -20,15 +21,19 @@ import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.domain.SpAdjVO;
+import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.SpShipVO;
 import co.sixsu.app.material.service.MaterialsService;
 
 
+//자재관리
+//곽호섭
 
 @Controller
 public class MaterialController {
 	
 	@Autowired MaterialsService service;
+	@Autowired BasicService bservice;
 //	
 //	@GetMapping("/test")
 //	public String test() {
@@ -38,7 +43,8 @@ public class MaterialController {
 	
 	//발주관리 페이지 열어주기
 	@GetMapping("/materials/matreq")
-	public void matreqList() {
+	public void matreqList(Model model) {
+		model.addAttribute("REQSTAT",bservice.commGroupList("REQ_STAT"));
 	}
 	
 	//자재입고관리 페이지 열어주기
@@ -86,6 +92,11 @@ public class MaterialController {
 	public void spDmgList() {
 	}
 	
+	//자재 반품/페기관리 페이지 열어주기
+	@GetMapping("/materials/matdmg")
+	public void matDmgList() {
+	}
+	
 	//발주내역 리스트
 	@ResponseBody
 	@RequestMapping("/materials/matreqlist")
@@ -94,41 +105,6 @@ public class MaterialController {
 		return list;
 	}
 	
-	@ResponseBody
-	@RequestMapping("/materials/smatreq")
-	public List<MatreqVO> selectmatreqList(@RequestParam int num){
-		System.out.println(num);
-		List<MatreqVO> list = service.selectMatReq(num);
-		return list;
-	}
-	
-	/*
-	@ResponseBody
-	@RequestMapping("/materials/delmatreq")
-	public String delMatReq(MatreqVO vo, Model modal) {
-		
-		//int result = service.deleteMatReq(vo);
-		  
-		//vo.setMatReqId(vo); 
-		modal.addAttribute("vo",vo);
-		//int result = service.deleteMatReq(vo.getMatReqId());
-		  
-		 //System.out.println(num); 
-		 System.out.println(vo);
-		 //System.out.println(vo.getMatReqId());
-		 
-		 int result = service.deleteMatReq(vo.getMatReqId());
-		 
-		 String re = null; 
-		 if(result== 1) { 
-			 re = "성공";
-		 }
-		 else { 
-			 re = "실패"; 
-		 }
-		return "/materials/matreq";
-	}
-	*/
 	
 	//발주제거 컨트롤
 	@ResponseBody
@@ -143,6 +119,7 @@ public class MaterialController {
 	@PostMapping("/materials/insertmatreq")
 	public MatreqVO insertMatReq(@RequestBody MatreqVO vo) {		
 		System.out.println(vo);
+		vo.setEmpId("12345");
 		service.insertMatReq(vo);
 		return vo;
 		
@@ -288,8 +265,34 @@ public class MaterialController {
 	@PostMapping("/materials/insertspdmg")
     @ResponseBody
     public void insertSpDmg(@RequestBody List<SpDmgVO> vo) {
+		System.out.println("abc");
 		System.out.println(vo);
 		service.insertSpDmg(vo);
+    }
+	
+	//자재 불량처리대기 리스트
+	@ResponseBody
+	@RequestMapping("/materials/matdmgwaitlist")
+	public List<MatDmgVO> getMatDmgWaitList(){
+		List<MatDmgVO> list = service.getMatDmgWaitList();
+		return list;
+	}
+	
+	//반제품 처리 리스트 
+	@ResponseBody
+	@RequestMapping("/materials/matdmglist")
+	public List<MatDmgVO> getMatDmgList(){
+		List<MatDmgVO> list = service.getMatDmgList();
+		return list;
+	}
+	
+	//자재 불량처리
+	@PostMapping("/materials/insertmatdmg")
+    @ResponseBody
+    public void insertMatDmg(@RequestBody List<MatDmgVO> vo) {
+		System.out.println("abc");
+		System.out.println(vo);
+		service.insertMatDmg(vo);
     }
 }
 

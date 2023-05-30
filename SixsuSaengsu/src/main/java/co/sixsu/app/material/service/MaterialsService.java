@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.MatAdjVO;
+import co.sixsu.app.material.domain.MatDmgVO;
 import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatShipVO;
 import co.sixsu.app.material.domain.MatVO;
@@ -13,6 +13,7 @@ import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.domain.SpAdjVO;
+import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.SpShipVO;
 
 @Service
@@ -20,9 +21,6 @@ public interface MaterialsService {
 
 	//발주 리스트
 	List<MatreqVO> getMatReqList();
-	
-	//발주 단건 리스트
-	List<MatreqVO> selectMatReq(int numId);
 	
 	//발주 행 삭제
 	void deleteMatReq(List<MatreqVO> vo);
@@ -81,4 +79,12 @@ public interface MaterialsService {
 	//반제품 풀량처리
 	void insertSpDmg(List<SpDmgVO> vo);
 	
+	//자재 불량처리대기 리스트
+	List<MatDmgVO> getMatDmgWaitList();
+	
+	//자재 불량처리 리스트
+	List<MatDmgVO> getMatDmgList();
+	
+	//자재 불량 처리
+	void insertMatDmg(List<MatDmgVO> vo);
 }

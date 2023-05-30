@@ -15,7 +15,6 @@ public class SpDmgVO {
 	String spLotId;
 	String wkEnd;
 	String empName;
-	String dmgNote;
 	
 	
 	String dspId;

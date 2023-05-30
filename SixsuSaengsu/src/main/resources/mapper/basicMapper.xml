@@ -56,6 +56,14 @@
 	select * from group_code
 </select>
 
+<select id="commGroupList" parameterType="String" resultType="map">
+	SELECT com_id as "value", com_name as "text"
+	FROM common_code
+	WHERE g_id = #{code}
+	ORDER BY com_stat desc, com_id
+</select>
+
+
 <select id="commList" parameterType="SearchDTO" resultType="CodeVO">
 	SELECT *
 	FROM common_code

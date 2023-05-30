@@ -17,5 +17,5 @@ public class MatrecVO {
 	String matRecNote;
 	String empName;
 	String matLotId;
-	
+	String outMessage;
 }
