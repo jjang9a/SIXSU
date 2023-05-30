@@ -89,13 +89,6 @@
 		<div id="grid"></div>
 
 		<script>
-			// 공정코드 선택시 네임 얻어오는 이벤트
-			$('#procType').on('change', function (e) {
-				let select = document.querySelector('#procType')
-				let name = select.options[select.selectedIndex].text
-				$('#comName').val(name);
-			})
-
 			window.onload = function () {
 				let initData = '';
 				let nowData = '';
@@ -109,182 +102,186 @@
 						nowData = result;
 					}
 				});
-				const grid = new tui.Grid({
-					el: document.getElementById('grid'),
-					scrollX: false,
-					scrollY: false,
-					minBodyHeight: 400,
-					pageOptions: {
-						useClient: true,
-						perPage: 10
-					},
-					columns: [{
-						header: '분류코드',
-						name: 'procType',
-						align: 'center',
-						hidden: true
-					}, {
-						header: '분류',
-						name: 'comName',
-						filter: 'select',
-						align: 'center'
-					}, {
-						header: '공정코드',
-						name: 'procId',
-						align: 'center'
-					}, {
-						header: '공정명',
-						name: 'procName',
-						align: 'center'
-					}, {
-						header: '비고',
-						name: 'procNote',
-						align: 'center'
-					}, {
-						header: '활성여부',
-						name: 'procStat',
-						align: 'center'
-					}]
-				});
+			}
 
-				// 그리드 색 변경 테마 적용
-				tui.Grid.applyTheme('default', {
-					cell: {
-						header: {
-							background: '#e5edf5'
-						},
-						normal: {
-							background: '#ffffff'
-						}
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 400,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				columns: [{
+					header: '분류코드',
+					name: 'procType',
+					align: 'center',
+					hidden: true
+				}, {
+					header: '분류',
+					name: 'comName',
+					filter: 'select',
+					align: 'center'
+				}, {
+					header: '공정코드',
+					name: 'procId',
+					align: 'center'
+				}, {
+					header: '공정명',
+					name: 'procName',
+					align: 'center'
+				}, {
+					header: '비고',
+					name: 'procNote',
+					align: 'center'
+				}, {
+					header: '활성여부',
+					name: 'procStat',
+					align: 'center'
+				}]
+			});
+
+			// 그리드 색 변경 테마 적용
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			// 공정코드 선택시 네임 얻어오는 이벤트
+			$('#procType').on('change', function (e) {
+				let select = document.querySelector('#procType')
+				let name = select.options[select.selectedIndex].text
+				$('#comName').val(name);
+			})
+
+			// 등록 버튼 이벤트
+			$('#addBtn').on('click', function (e) {
+				$.ajax({
+					url: '/basic/addProc',
+					type: 'post',
+					data: $('#manageForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						alert('공정이 성공적으로 등록되었습니다');
+						//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+						const appendedData = result
+						grid.appendRow(appendedData);
+					},
+					error: function () {
+						alert('공정 등록 중 오류가 발생했습니다!');
 					}
 				});
+				$('.empty').val('');
+				$('#procType').val('').prop("selected", true);
+			});
 
-				// 등록 버튼 이벤트
-				$('#addBtn').on('click', function (e) {
+			// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
+			let selRow = 999;
+			grid.on('dblclick', function (e) {
+				// 열을 더블클릭하면 열 정보를 변수에 저장
+				selRow = e.rowKey;
+				let dataRow = grid.getRow(selRow);
+				$('#procId').val(dataRow.procId);
+				$('#procName').val(dataRow.procName);
+				$('#procNote').val(dataRow.procNote);
+				if (dataRow.procStat == 'Y') {
+					$("input:radio[name='procStat']:radio[value='Y']").prop('checked', true);
+				} else {
+					$("input:radio[name='procStat']:radio[value='N']").prop('checked', true);
+				}
+				$('#procType').val(dataRow.procType).prop("selected", true);
+			})
+
+			// 수정 버튼 이벤트
+			$('#modiBtn').on('click', function (e) {
+				if (selRow == 999) {
+					alert('수정할 데이터가 없습니다.')
+				} else {
 					$.ajax({
-						url: '/basic/addProc',
+						url: '/basic/modifyProc',
 						type: 'post',
 						data: $('#manageForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
-							alert('자재가 성공적으로 등록되었습니다');
-							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
-							const appendedData = result
-							grid.appendRow(appendedData);
+							alert('공정정보가 성공적으로 수정되었습니다');
+							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
+							const setData = result
+							grid.setRow(selRow, setData);
+							selRow = 999;
+							$('.empty').val('');
+							$('#procType').val('').prop("selected", true);
+							$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
 						},
-						error: function () {
-							alert('자재 등록 중 오류가 발생했습니다!');
+						error: function (reject) {
+							console.loe(reject);
 						}
 					});
-					$('.empty').val('');
-					$('#procType').val('').prop("selected", true);
-				});
+				}
+			})
 
-				// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
-				let selRow = '';
-				grid.on('dblclick', function (e) {
-					// 열을 더블클릭하면 열 정보를 변수에 저장
-					selRow = e.rowKey;
-					let dataRow = grid.getRow(selRow);
-					$('#procId').val(dataRow.procId);
-					$('#procName').val(dataRow.procName);
-					$('#procNote').val(dataRow.procNote);
-					if (dataRow.matStat == 'Y') {
-						$("input:radio[name='matStat']:radio[value='Y']").prop('checked', true);
+			// 검색 버튼 이벤트
+			let searchType = '';
+			let searchKey = '';
+			$('#searchBtn').on('click', function (e) {
+				if ($('#procId').val() == '' && $('#procName').val() == '' && $('#procType').val() == '') {
+					alert('공정코드, 공정명 또는 공정구분으로 검색이 가능합니다.')
+				} else {
+					if ($('#procId').val() != '') {
+						searchType = 'id';
+						searchKey = $('#procId').val()
+					} else if ($('#procName').val() != '') {
+						searchType = 'name';
+						searchKey = $('#procName').val()
 					} else {
-						$("input:radio[name='matStat']:radio[value='N']").prop('checked', true);
+						searchType = 'type';
+						searchKey = $('#procType').val()
 					}
-					$('#procType').val(dataRow.procType).prop("selected", true);
-				})
+					console.log(searchType);
+					console.log(searchKey);
 
-				// 수정 버튼 이벤트
-				$('#modiBtn').on('click', function (e) {
-					if (selRow == '') {
-						alert('수정할 데이터가 없습니다.')
-					} else {
-						$.ajax({
-							url: '/basic/modifyProc',
-							type: 'post',
-							data: $('#manageForm').serialize(),
-							dataType: 'json',
-							success: function (result) {
-								alert('공정정보가 성공적으로 수정되었습니다');
-								//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
-								const setData = result
-								grid.setRow(selRow, setData);
-								selRow = '';
-								$('.empty').val('');
-								$('#procType').val('').prop("selected", true);
-								$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
-							},
-							error: function (reject) {
-								console.loe(reject);
-							}
-						});
-					}
-				})
-
-				// 검색 버튼 이벤트
-				let searchType = '';
-				let searchKey = '';
-				$('#searchBtn').on('click', function (e) {
-					if ($('#procId').val() == '' && $('#procName').val() == '' && $('#procType').val() == '') {
-						alert('공정코드, 공정명 또는 공정구분으로 검색이 가능합니다.')
-					} else {
-						if ($('#procId').val() != '') {
-							searchType = 'id';
-							searchKey = $('#procId').val()
-						} else if ($('#procName').val() != '') {
-							searchType = 'name';
-							searchKey = $('#procName').val()
-						} else {
-							searchType = 'type';
-							searchKey = $('#procType').val()
-						}
-						console.log(searchType);
-						console.log(searchKey);
-
-						$.ajax({
-							url: '/basic/searchProc',
-							type: 'get',
-							data: {
-								"searchType": searchType,
-								"searchKey": searchKey
-							},
-							dataType: 'json',
-							success: function (result) {
-								grid.resetData(result);
-								nowData = result;
-							},
-							error: function (reject) {
-								console.log(reject);
-							}
-						})
-					}
-				})
-
-
-				// 초기화 버튼 이벤트
-				$('#initBtn').on('click', function (e) {
 					$.ajax({
-						url: "/basic/procList",
-						method: "GET",
-						dataType: "JSON",
+						url: '/basic/searchProc',
+						type: 'get',
+						data: {
+							"searchType": searchType,
+							"searchKey": searchKey
+						},
+						dataType: 'json',
 						success: function (result) {
 							grid.resetData(result);
-							initData = result;
 							nowData = result;
+						},
+						error: function (reject) {
+							console.log(reject);
 						}
-					});
-					$('.empty').val('');
-					$('#procType').val('').prop("selected", true);
-					$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
-				})
+					})
+				}
+			})
 
 
-
-				//윈도우 온 로드 종료
-			}
+			// 초기화 버튼 이벤트
+			$('#initBtn').on('click', function (e) {
+				$.ajax({
+					url: "/basic/procList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+						initData = result;
+						nowData = result;
+					}
+				});
+				$('.empty').val('');
+				$('#procType').val('').prop("selected", true);
+				$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
+			})
 		</script>
 	</div>
 </body>

@@ -47,18 +47,16 @@
 				<tr>
 					<td>완제품 코드</td>
 					<td><input type="text" name="cpId" id="cpId" class="empty" placeholder="검색"></td>
-					<td>규격</td>
-					<td><select name="cpSize" id="cpSize">
-							<option value="">----- 선택 -----</option>
-							<option value="330mL">330mL</option>
-							<option value="500mL">500mL</option>
-							<option value="2L">2L</option>
-							<option value="18.9L">18.9L</option>
-						</select></td>
-				</tr>
-				<tr>
 					<td>제품명<span class="needStar"> *</span></td>
 					<td><input type="text" name="cpName" id="cpName" class="empty" placeholder="검색"></td>
+				</tr>
+				<tr>
+					<td>규격</td>
+					<td><select name="cpSize" id="cpSize" style="height: 30px;">
+							<option value="">----- 선택 -----</option>
+							<option th:each="type : ${types}" th:value="${type.comId}" th:text="${type.comName}">
+							</option>
+						</select></td>
 					<td>활성여부<span class="needStar"> *</span></td>
 					<td>
 						<div id="divRadio">
@@ -126,8 +124,12 @@
 					name: 'cpName',
 					align: 'center'
 				}, {
-					header: '규격',
+					header: '규격ID',
 					name: 'cpSize',
+					hidden: true
+				}, {
+					header: '규격',
+					name: 'comName',
 					align: 'center'
 				}, {
 					header: '단위',

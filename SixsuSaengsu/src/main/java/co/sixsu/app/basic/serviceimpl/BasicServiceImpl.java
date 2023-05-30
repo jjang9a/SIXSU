@@ -186,6 +186,9 @@ public class BasicServiceImpl implements BasicService {
 
 	@Override // 거래처 등록
 	public boolean addBus(BusVO bus) {
+		if(bus.getBusAddrDet() != null || !bus.getBusAddrDet().equals("")) {
+			bus.setBusAddr(bus.getBusAddr() + " " + bus.getBusAddrDet());
+		}
 		return mapper.addBus(bus) == 1;
 	}
 

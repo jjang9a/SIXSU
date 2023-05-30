@@ -23,6 +23,6 @@ public class ProductVO { // 완제품(complete_prod), 반제품(semi_prod) 테�
 	private char spStat; // 활성여부(Y/N)
 	private String spNote; // 비고
 	
-
+	private String comName; // 공통코드명
 
 }
