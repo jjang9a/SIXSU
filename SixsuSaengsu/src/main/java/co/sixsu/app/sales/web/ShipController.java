@@ -16,26 +16,27 @@ import co.sixsu.app.sales.domain.OrdVO;
 import co.sixsu.app.sales.domain.ShipVO;
 import co.sixsu.app.sales.service.ShipService;
 
-@Controller		
+@Controller	
+@RequestMapping("/sales/")
 public class ShipController {
 	@Autowired
 	private ShipService service;
 	
-	@GetMapping("/sales/ship")
+	@GetMapping("ship")
 	public void ship() {
 		
 	}
 	
 	//페이지 주문중인 목록 (품질요청 전 그리드 테이블)
 	@ResponseBody
-	@RequestMapping("/sales/orderedList")
+	@RequestMapping("orderedList")
 	public List<OrdVO> orderingList(){
 		List<OrdVO> list = service.orderingList();
 		
 		return list;
 	}
 	//모달창 품목별 lot 재고현황
-	@RequestMapping("/sales/lotProducts")
+	@RequestMapping("lotProducts")
 	@ResponseBody
 	public List<LotVO> lotProducts(@RequestParam String result){
 		System.out.println(result);
@@ -44,11 +45,9 @@ public class ShipController {
 		return list;
 	}
 	//모달창에 자동으로 총수량이 뜨는 기능
-	@RequestMapping("/sales/totalQt")
+	@RequestMapping("totalQt")
 	@ResponseBody
 	public int totalQt(@RequestParam String result) {
-		System.out.println("---------------------");
-		System.out.println("asdlfkjas;ldfkj;alskdjf;aslkdjf");
 		System.out.println(result);
 		service.totalQt(result);
 		
@@ -56,13 +55,13 @@ public class ShipController {
 	}
 	
 	@ResponseBody
-	@PostMapping("sales/shipPro")
+	@PostMapping("shipPro")
 	public List<ShipVO> shipPro(@RequestBody OrdVO ord ){
 		return service.shipPro(ord);
 	}
 	
 	@ResponseBody
-	@RequestMapping("/sales/readyShipList")
+	@RequestMapping("readyShipList")
 	public List<ShipVO> readyShipList(){
 		List<ShipVO> list = service.readyShipList();
 		

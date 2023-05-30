@@ -93,4 +93,5 @@ public List<ShipVO> readyShipList() {
 	return mapper.readyShipList();
 }
 
+
 }

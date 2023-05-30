@@ -5,11 +5,11 @@ import java.util.List;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.sales.domain.GridDataVO;
 import co.sixsu.app.sales.domain.InvVO;
 import co.sixsu.app.sales.domain.OrdVO;
 
 public interface SalesService {
-	List<EmpVO> getEmpList(); // 모달창 전체 회원 조회
 	
 	List<EmpVO> getEmp1List(String keyword); //모달창 회원이름 조회
 	
@@ -23,15 +23,13 @@ public interface SalesService {
 	
 	List<ProductVO> getProdList(); // 상세거래처주문에 상품명을 조회
 	
-	InvVO orderAdd(InvVO inv); //주문서만 등록
+	int orderAdd(InvVO inv); //주문서만 등록
 	
 	boolean orderMod(InvVO inv); //주문서만 수정
 	
 	int orderModDel(InvVO inv); //주문서만 삭제
 	
-	boolean ordDetAdd(List<OrdVO> list); //상세 주문서만 수정
-	
-	boolean ordDetMod(List<OrdVO> list); //상세 주문서만 수정
+	boolean ordDetMod(GridDataVO<OrdVO> list); //상세 주문서만 수정
 	
 	/* boolean ordDetModDel(List<OrdVO> list); */
 	
