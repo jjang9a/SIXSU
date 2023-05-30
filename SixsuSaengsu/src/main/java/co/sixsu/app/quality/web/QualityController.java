@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
-import co.sixsu.app.quality.domain.QudVO;
+import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.quality.service.QualityService;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
@@ -150,7 +150,7 @@ public class QualityController {
 	}
 	
 
-	// 입고 검사 결과 등록 시 업데이트
+	// 검사 결과 등록 시 검사 공통 업데이트
 	@ResponseBody
 	@PostMapping("/quality/priRegUpdate")
 	public boolean qComUpdate(QuaVO qua) {
@@ -198,7 +198,7 @@ public class QualityController {
 		return list;
 	}
 
-	// 제품 품질 관리 검사 등록
+	// 공정 검사 등록
 	  @ResponseBody
 	  @PostMapping("/quality/bpdAdd") 
 	  public List<PrdInspVO> bpdAdd(@RequestBody List<PrdInspVO> list) { 
@@ -217,6 +217,22 @@ public class QualityController {
 		  return list;
 		  
 	  }
+	  
+	  // 제품 품질 검사 완료 리스트
+	  @ResponseBody
+	  @GetMapping("/quality/prdComList")
+	  public List<PrdInspVO> prdComList(Model model){
+		  return quaService.prdComList();
+	  }
+	  
+	  // 출고 검사 목록 리스트
+	  @ResponseBody
+	  @GetMapping("/quality/shInspList")
+	  public List<ShipInspVO> shInspList(Model model){
+		  return quaService.shInspList();
+	  }
+	 
+	  
 	 
 
 }

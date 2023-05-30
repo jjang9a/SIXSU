@@ -10,6 +10,7 @@ import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.domain.QudVO;
+import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
 import co.sixsu.app.quality.service.QualityService;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
@@ -72,10 +73,10 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	//입고 검사 등록 시 검사 번호 자동 등록
-	@Override
-	public String psInspNum() {
-		return quaMapper.psInspNum();
-	}
+//	@Override
+//	public String psInspNum() {
+//		return quaMapper.psInspNum();
+//	}
 
 	// 입고 검사 등록 프로시저 사용
 	@Override
@@ -341,6 +342,20 @@ public class QualityServiceImpl implements QualityService {
 		
 		return list;
 	}
+
+	// 검사 결과 등록 완료 리스트
+	@Override
+	public List<PrdInspVO> prdComList() {
+		return quaMapper.prdComList();
+	}
+
+
+	@Override
+	public List<ShipInspVO> shInspList() {
+		return quaMapper.shInspList();
+	}
+
+
 
 
 
