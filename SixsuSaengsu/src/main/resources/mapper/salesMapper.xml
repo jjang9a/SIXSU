@@ -7,16 +7,14 @@
 <select id="getDate" resultType="java.util.Date">
 	select sysdate from dual
 </select>
-	<!-- 모달창 사원 전체조회 -->
-	<select id="empList"
-		resultType='EmpVO'>
-		select* from employee
-	</select>
+
 	<!--모달창 이름별 사원조회 -->
 	<select id="emp1List"
 		resultType='EmpVO'>
 		select* from employee
+		<if test="keyword != null and keyword !=''">
 		where emp_name = #{keyword}
+		</if>
 	</select>
 	
 	<!-- 모달창 거래처 전체조회 -->
@@ -25,12 +23,14 @@
 		Select* from business	
 	</select>
 	
-	<!-- 모달창 거래이름별 거래처별조회 -->
+	<!-- 모달창 거래이름별 거래처별조회   '%${keyword}%' -->
 	<select id="bus1List"
 		resultType='BusVO'>
 		select* from business	
-		where bus_name = #{keyword}
+		where upper (bus_name) like '%'|| upper(#{keyword}) || '%' 
 	</select>
+	<!-- 대소문자 구별 및 값이 비슷한 경우도 나오게 하는기능 -->
+	
 	
 	<!-- 자동으로 주문번호 등록 -->
 	<select id='makeCode' 
@@ -55,14 +55,27 @@
 	
 	<!-- 주문등록 (주문서만) -->
 	<insert id="orderAdd" parameterType="InvVO">
+	<selectKey keyProperty="ordId" resultType="string" order="BEFORE">
+		select get_order_num() from dual
+	</selectKey>
 	insert into SORDER values(
 	#{ordId}, TO_DATE(#{ordDate}, 'yyyy-MM-dd hh24:mi:ss'),#{ordStat}, #{empId} , #{busId})
 	</insert>
 	
 	<!-- 상세주문등록 -->
 	<insert id="ordDetAdd" parameterType="OrdVO">
-	insert into det_ord values(
-	#{ordDetId}, #{ordQt}, #{ordStatDet}, #{cpId}, #{ordId}, #{ordDetPrice} , TO_DATE(#{ordEndDate}, 'yyyy-MM-dd'), #{ordSalePrice} 
+	<selectKey keyProperty="ordDetId" resultType="string" order="BEFORE">
+		select #{ordId} || '-' || NVL((select max(ord_det_id)+1 from det_ord where ord_id = #{ordId}) ,1) from dual		
+	</selectKey>	
+	insert into det_ord 
+	values(	#{ordDetId}, 
+	        #{ordQt}, 
+	        #{ordStatDet}, 
+	        #{cpId}, 
+	        #{ordId}, 
+	        #{ordDetPrice} , 
+	        TO_DATE(#{ordEndDate}, 'yyyy-MM-dd'), 
+	        #{ordSalePrice} 
 	)
 	</insert>
 	
@@ -103,7 +116,11 @@
 
 	<update id="ordDetMod" parameterType="OrdVO">
 		update det_ord
-		set ord_qt=#{ordQt}, cp_id=#{cpId}, ord_id=#{ordId}, ord_det_price=#{ordDetPrice}, ord_end_date=TO_DATE(#{ordEndDate}, 'yyyy-MM-dd hh24:mi:ss'), ord_sale_price=#{ordSalePrice}
+		set ord_qt=#{ordQt}, 
+		    cp_id=#{cpId}, 
+		    ord_det_price=#{ordDetPrice}, 
+		    ord_end_date=TO_DATE(#{ordEndDate}, 'yyyy-MM-dd hh24:mi:ss'), 
+		    ord_sale_price=#{ordSalePrice}
 		where ord_det_id=#{ordDetId}
 	</update>
 	

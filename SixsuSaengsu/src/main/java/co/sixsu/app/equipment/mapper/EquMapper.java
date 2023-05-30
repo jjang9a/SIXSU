@@ -29,11 +29,19 @@ public interface EquMapper {
 
 	public List<EquInspVO> equCheckList(); // 설비 점검 리스트
 	
-	public List<EquInspVO> equCheckSearch(EquSearchDTO dto); // 설비 조회 페이지 검색기능
+	public List<EquInspVO> equCheckSearch(EquSearchDTO dto); // 점검 조회 페이지 검색기능
+	
+	public int checkAdd(EquInspVO data); // 점검관리(등록) 
+	
+	public int cUpdate(EquInspVO data); // 점검관리 (수정) 
 	
 	public List<EquOperVO> equOperList(); // 비가동 리스트
 
 	public List<EquOperVO> equOperSearch(EquSearchDTO dto); // 비가동 조회 페이지 검색기능
+
+	
+
+	
 	
 	
 

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>설비 점검 조회</title>
     <style>
-    	#cTable td {
+    	#eTable td {
 			padding: 4px 10px;
 			text-align: left;
 		}
@@ -64,7 +64,7 @@
 		<hr>
 		<br>
 
-		<!-- 점검조회 모달창 -->
+		<!-- 점검조회 상세정보 모달창 -->
 
 		<!-- Modal 시작 -->
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
@@ -94,21 +94,16 @@
 										<td><input type="text" name="equName" id="equName"></td>
 									</tr>
 									<tr>
-										<td>차기 점검일<span class="needStar"> *</span></td>
-										<td><input type="text" name="checkNext" id="checkNext"></td>
-									</tr>
-									
-									<tr>
 										<td>점검사유<span class="needStar"> *</span></td>
 										<td><input type="text" name="checkInfo" id="checkInfo"></td>
 									</tr>
 									<tr>
-										<td>비고<span class="needStar"> *</span></td>
-										<td><input type="text" name="checkNote" id="checkNote"></td>
+										<td>조치내역<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkCom" id="checkCom"></td>
 									</tr>
 									<tr>
-										<td>비가동시작<span class="needStar"> *</span></td>
-										<td><input type="text" name="operStart" id="operStart"></td>
+										<td>비고<span class="needStar"> *</span></td>
+										<td><input type="text" name="checkNote" id="checkNote"></td>
 									</tr>
 								</table>
 							</div>
@@ -167,7 +162,11 @@
              header: '점검일자',
              name: 'checkDate',
              align: 'center'
-              
+          },
+          {
+             header: '차기점검일',
+             name: 'checkNext',
+             align: 'center'
           },
 		  {
              header: '점검주기',
@@ -196,15 +195,14 @@
              align: 'center'
           },
           {
+              header: '비고',
+              name: 'checkNote',
+              align: 'center'
+          },
+          {
              header: '담당자',
              name: 'empId',
              align: 'center'
-          },
-          
-          {
-              header: '차기점검일',
-              name: 'checkNext',
-              hidden : true
           },
           {
               header: '점검사유',
@@ -215,12 +213,6 @@
               header: '조치내역',
               name: 'checkCom',
               hidden : true
-          },
-          {
-              header: '비고사유',
-              name: 'checkNote',
-              align: 'center'
-              
           },
           {
               header: '비가동 시작',
@@ -278,12 +270,9 @@
     	
     	$('#checkCode').val(dataRow.checkCode); // 점검코드
 	      $('#equName').val(dataRow.equName); // 설비명
-		  $('#checkNext').val(dataRow.checkNext); // 차기점검일
-	      $('#equSuit').val(dataRow.equSuit); // 판정
-	      $('#checkInfo').val(dataRow.checkInfo); // 점검사유
+		  $('#checkInfo').val(dataRow.checkInfo); // 점검사유
 	      $('#checkCom').val(dataRow.checkCom); // 조치내역
-	      $('#checkNote').val(dataRow.checkNote); // 조치내역
-	      $('#operStart').val(dataRow.operStart); // 비가동시작
+	      $('#checkNote').val(dataRow.checkNote); // 비고
 	      
       });
 

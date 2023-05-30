@@ -68,5 +68,4 @@ order by r.cp_rec_date
 	or cp_ship_stat = '검사완료'
 	</select>	
 	
-	
  </mapper>
