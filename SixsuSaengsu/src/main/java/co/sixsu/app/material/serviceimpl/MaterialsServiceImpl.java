@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.MatAdjVO;
+import co.sixsu.app.material.domain.MatDmgVO;
 import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatShipVO;
 import co.sixsu.app.material.domain.MatVO;
@@ -28,13 +29,6 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public List<MatreqVO> getMatReqList() {
 			return mapper.getMatReqList();
 		}
-		
-		//발주번호로 조회 --- 수정필요!
-		@Override
-		public List<MatreqVO> selectMatReq(int nuqId) {
-			return mapper.selectMatReq(nuqId);
-		}
-
 		
 		//발주 삭제
 		@Override
@@ -79,9 +73,15 @@ public class MaterialsServiceImpl implements MaterialsService{
 		//입고 리스트 삭제
 		@Override
 		public void delMatRec(List<MatrecVO> vo) {
+			int cnt = 0;
 			for(MatrecVO i : vo) {
 				mapper.delMatRec(i);
+				if (i.getOutMessage().equals("1")) {
+					cnt ++;
+				}
 			}
+			System.out.println("abc");
+			System.out.println(cnt);
 		}
 		
 		//자재 LOT 리스트
@@ -163,10 +163,35 @@ public class MaterialsServiceImpl implements MaterialsService{
 		//반제품 불량처리
 		@Override
 		public void insertSpDmg(List<SpDmgVO> vo) {
+			String stat = vo.get(0).getDspStat();
 			for(SpDmgVO i : vo) {
+				i.setDspStat(stat);
 				mapper.insertSpDmg(i);
 				System.out.println("abcd");
 				System.out.println(i);
+			}
+			
+		}
+		
+		//자재 불량처리대기 리스트
+		@Override
+		public List<MatDmgVO> getMatDmgWaitList() {
+			return mapper.getMatDmgWaitList();
+		}
+
+		//자재 불량처리 리스트
+		@Override
+		public List<MatDmgVO> getMatDmgList() {
+			return mapper.getMatDmgList();
+		}
+
+		//자재 불량처리
+		@Override
+		public void insertMatDmg(List<MatDmgVO> vo) {
+			String stat = vo.get(0).getDmatStat();
+			for(MatDmgVO i : vo) {
+				i.setDmatStat(stat);
+				mapper.insertMatDmg(i);
 			}
 			
 		}
