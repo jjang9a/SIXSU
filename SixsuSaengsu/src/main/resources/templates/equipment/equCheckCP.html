@@ -44,7 +44,7 @@
 		<hr>
 		<br>
 		<!-- 인풋창 -->
-		<form action="" method="post" id="addForm">
+		<form action="mt-4" method="post" id="addForm">
 			<table>
 				<tr>
 					<td>점검코드<span class="needStar"> * </span></td>
@@ -80,9 +80,6 @@
 				</tr>
 				<tr>
 					<td>판정<span class="needStar"> *</span></td>
-					<!-- <td><input type="text" name="equSuit" id="equSuit"
-						class="empty"></td> -->
-					
 					  <td>
 						<select name="equSuit">
 						<option value='' selected>----- 선택 -----</option>
@@ -95,7 +92,6 @@
 					<td>점검구분<span class="needStar"> *</span></td>
 					<td><input type="text" name="checkType" id="checkType"
 						class="empty"></td>
-						
 				</tr>
 				<tr>
 					<td>점검사유<span class="needStar"> *</span></td>
@@ -358,7 +354,7 @@
 				selRow = ev.rowKey;
 				// 클릭한 Row의 정보를 dataRow에 저장
 				var dataRow = grid.getRow(ev.rowKey);
-				console.log(dataRow.equCode);
+				console.log(dataRow.checkCode);
 				console.log(dataRow);
 
 				// 클릭시 인풋창에 데이터 불러오기
@@ -376,7 +372,7 @@
 				$('#checkNote').val(dataRow.checkNote); // 점검비고
 				$('#empId').val(dataRow.empId); // 담당자
 				// 라디오 버튼이 Y 나 N 일떄 가동 비가동으로 전환 
-				console.log(dataRow.equSuit)
+				console.log(dataRow.checkCode)
 				if (dataRow.equSuit == 'Y') {
 					console.log('Y들어옴')
 					$("select[name='equSuit']").val('Y');
@@ -421,15 +417,20 @@
 			}
 			});
 			
-			// 설비정보 수정 
+			// 점검 수정 
 			$('#modBtn').on('click', function (e) {
 				if (selRow == '') {
 					alert('수정할 데이터가 없습니다.')
 				} else {
 				
+					
+					
+				//var checkCode = $('#checkCode').val();
+				
+				
 				console.log($('#addForm').serialize())
 				$.ajax({
-					url: '==========================',
+					url: 'cUpdate',
 					type: 'post',
 					data: $('#addForm').serialize(),
 					dataType: 'json',
@@ -451,6 +452,43 @@
 			  }
 			})
 
+			
+			// 점검 삭제
+			$('#delBtn').on('click', function (e) {
+				if (selRow == '') {
+					alert('삭제 정보를 선택하시오.')
+				} else {
+				
+				e.preventDefault();
+				console.log(selRow);
+
+				var checkCode = $('#checkCode').val();
+				$.ajax({
+					url: 'cDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
+					type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
+					contentType: "application/json",
+					data: JSON.stringify({
+						checkCode: $('#checkCode').val()
+					}), // 삭제할 설비의 ID를 전송
+					success: function (result) {
+						// 삭제 성공 시의 처리
+						console.log('설비가 성공적으로 삭제되었습니다.');
+						alert('설비정보가 성공적으로 삭제되었습니다.');
+
+						grid.removeRow(selRow)
+						selRow = '';
+						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주는?
+						$('.empty').val('');
+						$("select[name='equSuit']").val('Y');
+					},
+					error: function (reject) {
+						console.log('설비 삭제 중 오류가 발생했습니다.');
+						console.log('오류 메시지:', reject);
+						alert('설비 삭제 중 오류가 발생했습니다..');
+					}
+				});
+				}
+			});
 			
 					
 		</script>
