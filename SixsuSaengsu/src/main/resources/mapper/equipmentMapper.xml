@@ -148,12 +148,17 @@
 		VALUES(('CHECK' || LPAD(CHECK_SEQ.nextval, 3, '0')), #{equCode}, #{equName}, #{checkDate}, #{checkNext}, #{equCheck}, #{equSuit}, #{checkType}, #{checkInfo}, #{checkCom}, #{checkNote}, #{empId})
 	</insert>
 	
-	<!-- 점검 관리 수정 
+	<!-- 점검 관리 수정 -->
 	<update id="cUpdate" parameterType="EquInspVO">
-		UPDATE equ_con
-		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date=#{addDate}, c_temp=#{ctemp}
-		WHERE equ_code=#{equCode}
-	</update> -->
+		UPDATE equ_insp
+		SET check_code=#{checkCode}, equ_code=#{equCode}, equ_name=#{equName}, check_date=#{checkDate}, check_next=#{checkNext}, equ_check=#{equCheck}, equ_suit=#{equSuit}, check_type=#{checkType}, check_info=#{checkInfo}, check_com=#{checkCom}, check_note=#{checkNote}, emp_id=#{empId}
+		WHERE check_code=#{checkCode}
+	</update> 
+	
+	<!-- 점검 관리 삭제 -->
+	<delete id="cDel" parameterType="EquInspVO">
+		delete from equ_insp where check_code=#{checkCode}
+	</delete>
 	
   	
   	<!-- 비가동 리스트 -->

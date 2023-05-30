@@ -35,9 +35,13 @@ public interface EquMapper {
 	
 	public int cUpdate(EquInspVO data); // 점검관리 (수정) 
 	
+	public int cDel(EquInspVO checkCode); // 점검관리 (삭제)
+	
 	public List<EquOperVO> equOperList(); // 비가동 리스트
 
 	public List<EquOperVO> equOperSearch(EquSearchDTO dto); // 비가동 조회 페이지 검색기능
+
+	
 
 	
 

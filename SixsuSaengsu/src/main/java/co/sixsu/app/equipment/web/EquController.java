@@ -126,10 +126,16 @@ public class EquController {
 	@ResponseBody 
 	@PostMapping("cUpdate") // 점검관리(수정) 
 	public EquInspVO cUpdate(EquInspVO data) {
-		System.out.println("컨트롤러 : "+ data);
+	//	System.out.println("컨트롤러 : "+ data);
 		equService.cUpdate(data);
 		return data;
 	}
+	@ResponseBody 
+	@PostMapping("cDel")  // 점검관리(삭제)
+	public boolean cDel(@RequestBody EquInspVO checkCode) {
+	    System.err.println(checkCode);
+		 return equService.cDel(checkCode);
+	} 
 	
 	@ResponseBody
 	@GetMapping("equOperList") //// 비가동 조회 리스트 ajax
