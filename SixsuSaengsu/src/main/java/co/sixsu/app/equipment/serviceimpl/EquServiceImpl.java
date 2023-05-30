@@ -65,6 +65,16 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
+	public boolean checkAdd(EquInspVO data) { // 점검관리(등록) 
+		return mapper.checkAdd(data) == 1;
+	}
+
+	@Override
+	public boolean cUpdate(EquInspVO data) { // 점검관리 (수정)
+		return mapper.cUpdate(data) == 1;
+	}
+	
+	@Override
 	public List<EquOperVO> equOperList() { // 비가동 리스트
 		return mapper.equOperList();
 	}
@@ -73,6 +83,8 @@ public class EquServiceImpl implements EquService{
 	public List<EquOperVO> equOperSearch(EquSearchDTO dto) { // 비가동 조회 검색기능
 		return mapper.equOperSearch(dto);
 	}
+
+
 	
 
 
