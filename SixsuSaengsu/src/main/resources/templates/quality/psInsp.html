@@ -1,40 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
 
 <head>
-	<meta charset="UTF-8">
-	<title>완제품 출고 품질 관리</title>
-	<style>
-		h1 {
-			margin-bottom: 40px;
-		}
+<meta charset="UTF-8">
+<title>완제품 출고 품질 관리</title>
+<style>
+h1 {
+	margin-bottom: 40px;
+}
 
-		#cpTable {
-			margin: auto;
-		}
+#cpTable {
+	margin: auto;
+}
 
-		#cpTable input,
-		select {
-			padding-left: 10px;
-			width: 230px;
-		}
+#cpTable input, select {
+	padding-left: 10px;
+	width: 230px;
+}
 
-		#divRadio input {
-			padding-left: 7px;
-			width: 20px;
-		}
+#divRadio input {
+	padding-left: 7px;
+	width: 20px;
+}
 
-		#cpTable td {
-			padding: 4px 20px;
-			text-align: center;
-		}
+#cpTable td {
+	padding: 4px 20px;
+	text-align: center;
+}
 
-		.divBtn {
-			text-align: center;
-			padding: 15px 0 30px 0;
-		}
-	</style>
+.divBtn {
+	text-align: center;
+	padding: 15px 0 30px 0;
+}
+</style>
 </head>
 
 <body>
@@ -45,42 +46,38 @@
 		<form action="" method="post" id="cpqForm">
 			<table id="cpTable">
 				<tr>
-					<td>주문 코드</td>
-					<td><input type="text" name="cpId" id="ordId" readonly></td>
+					<td>완제품 출고 코드</td>
+					<td><input type="text" name="cpShipId" id="cpShipId" readonly></td>
 					<td>주문 상세 코드</td>
-					<td><input type="text" name="cpId" id="ordDetId" readonly></td>
+					<td><input type="text" name="ordDetId" id="ordDetId" readonly></td>
 					<td>LOT번호</td>
-					<td><input type="text" name="cpId" id="cpLotId" readonly></td>
+					<td><input type="text" name="cpLotId" id="cpLotId" readonly></td>
 				</tr>
 				<tr>
 					<td>제품명</td>
 					<td><input type="text" name="cpName" id="cpName" readonly></td>
 					<td>제품 코드</td>
-					<td><input type="text" name="cpName" id="cpId" readonly></td>
+					<td><input type="text" name="cpId" id="cpId" readonly></td>
 					<td>요청 수량</td>
-					<td><input type="text" name="cpLot" id="ordQt" readonly></td>
+					<td><input type="text" name="cpShipQt" id="cpShipQt" readonly></td>
 				</tr>
 				<tr>
 					<td>제조 일자</td>
-					<td><input type="text" name="cpLot" id="cpLot" readonly></td>
+					<td><input type="text" name="endDate" id="endDate" readonly></td>
 					<td>유통 기한</td>
-					<td><input type="text" name="cpUnit" id="cpUnit" readonly></td>
-					<td>부적합 수량</td>
-					<td><input type="text" name="cpUnit" id="cpUnit" class="empty"></td>
+					<td><input type="text" name="expDate" id="expDate" readonly></td>
+					<td>적합 여부</td>
+					<td><select name="resStat" id="resStat">
+						<option value="">선택</option>
+						<option value="적합">적합</option>
+						<option value="부적합">부적합</option>
+					</select></td>
 				</tr>
+
 				<tr>
-					<td>포장 부적합 수량</td>
-					<td><input type="text" name="cpUnit" id="cpUnit" class="empty"></td>
-					<td>외형 부적합 수량</td>
-					<td><input type="text" name="cpUnit" id="cpUnit" class="empty"></td>
-					<td>기타 부적합 수량</td>
-					<td><input type="text" name="cpUnit" id="cpUnit" class="empty"></td>
-				</tr>
-				
-				<tr>
-					<td>기타 부적합 사유</td>
-					<td colspan="3"><input type="text" name="cpNote" id="cpNote" class="empty" style="width : 660px;">
-					</td>
+					<td>부적합 사유</td>
+					<td colspan="3"><input type="text" name="detailNote"
+						id="detailNote" class="empty" style="width: 660px;"></td>
 				</tr>
 			</table>
 		</form>
@@ -95,149 +92,180 @@
 		<div id="grid"></div>
 
 		<script>
-			window.onload = function () {
-				let initData = '';
-				let nowData = '';
+			window.onload = function() {
+				//let initData = '';
+				//let nowData = '';
 				$.ajax({
-					url: "",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
+					url : "/quality/shInspList",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
 						grid.resetData(result);
-						initData = result;
-						nowData = result;
+						//initData = result;
+						//nowData = result;
 					}
 				});
 				const grid = new tui.Grid({
-					el: document.getElementById('grid'),
-					scrollX: false,
-					scrollY: false,
-					minBodyHeight: 400,
-					pageOptions: {
-						useClient: true,
-						perPage: 10
+					el : document.getElementById('grid'),
+					scrollX : false,
+					scrollY : false,
+					minBodyHeight : 400,
+					pageOptions : {
+						useClient : true,
+						perPage : 10
 					},
-					columns: [{
-						header: '완제품코드',
-						name: 'cpId',
-						align: 'center'
+					columns : [ {
+						header : '완제품 출고 코드',
+						name : 'cpShipId',
+						align : 'center'
 					}, {
-						header: '제품명',
-						name: 'cpName',
-						align: 'center'
+						header : '주문 상세 코드',
+						name : 'ordDetId',
+						align : 'center'
 					}, {
-						header: '규격',
-						name: 'cpSize',
-						align: 'center'
+						header : 'LOT번호',
+						name : 'cpLotId',
+						align : 'center'
 					}, {
-						header: '단위',
-						name: 'cpUnit',
-						align: 'center'
+						header : '제품코드',
+						name : 'cpId',
+						align : 'center'
 					}, {
-						header: '관리LOT수량',
-						name: 'cpLot',
-						align: 'center'
+						header : '제품명',
+						name : 'cpName',
+						align : 'center'
 					}, {
-						header: '비고',
-						name: 'cpNote',
-						align: 'center'
+						header : '제조일자',
+						name : 'endDate',
+						align : 'center'
 					}, {
-						header: '활성여부',
-						name: 'cpStat',
-						align: 'center'
-					}]
+						header : '유통기한',
+						name : 'expDate',
+						align : 'center'
+					}, {
+						header : '요청수량',
+						name : 'cpShipQt',
+						align : 'center'
+					}, {
+						header : '검수상태',
+						name : 'cpShipStat',
+						align : 'center'
+					}, {
+						header : '요청일자',
+						name : 'cpShipReqDate',
+						align : 'center'
+					}, {
+						header : '완료일자',
+						name : 'inspDate',
+						align : 'center'
+					} ]
 				});
 
 				// 그리드 색 변경 테마 적용
 				tui.Grid.applyTheme('default', {
-					cell: {
-						header: {
-							background: '#e5edf5'
+					cell : {
+						header : {
+							background : '#e5edf5'
 						},
-						normal: {
-							background: '#ffffff'
+						normal : {
+							background : '#ffffff'
 						}
 					}
 				});
 
 				// 등록 버튼 이벤트
-				$('#addBtn').on('click', function (e) {
+				$('#addBtn').on('click', function(e) {
 					$.ajax({
-						url: '',
-						type: 'post',
-						data: $('#cpqForm').serialize(),
-						dataType: 'json',
-						success: function (result) {
-							alert('완제품이 성공적으로 등록되었습니다');
+						url : '',
+						type : 'post',
+						data : $('#cpqForm').serialize(),
+						dataType : 'json',
+						success : function(result) {
+							alert('완제품 출고 검사 결과가 등록되었습니다.');
 							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
-							const appendedData = result
-							grid.appendRow(appendedData);
+							grid.resetData(result);
 						},
-						error: function () {
-							alert('완제품 등록 중 오류가 발생했습니다!');
+						error : function() {
+							alert('완제품 검사 결과 등록 중 오류가 발생했습니다.');
 						}
 					});
-					$('.empty').val('');
+					$('#cpqForm input').val('');
 				});
 
 				// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
 				let selRow = '';
-				grid.on('dblclick', function (e) {
+				grid.on('dblclick', function(e) {
 					// 열을 더블클릭하면 열 정보를 변수에 저장
 					selRow = e.rowKey;
 					let dataRow = grid.getRow(selRow);
+					$('#cpShipId').val(dataRow.cpShipId);
+					$('#ordDetId').val(dataRow.ordDetId);
+					$('#cpLotId').val(dataRow.cpLotId);
 					$('#cpId').val(dataRow.cpId);
 					$('#cpName').val(dataRow.cpName);
-					$('#cpLot').val(dataRow.cpLot);
-					$('#cpNote').val(dataRow.cpNote);
-					if (dataRow.cpStat == 'Y') {
-						$("input:radio[name='cpStat']:radio[value='Y']").prop('checked', true);
-					} else {
-						$("input:radio[name='cpStat']:radio[value='N']").prop('checked', true);
-					}
-					$('#cpSize').val(dataRow.cpSize).prop("selected", true);
+					$('#endDate').val(dataRow.endDate);
+					$('#cpShipQt').val(dataRow.cpShipQt);
+					$('#expDate').val(dataRow.expDate);
+					$('#cpShipStat').val(dataRow.cpShipStat);
+					$('#cpShipReqDate').val(dataRow.cpShipReqDate);
+					$('#inspDate').val(dataRow.inspDate);
+					$('#resStat').val(dataRow.resStat).prop("selected", true);
 				})
 
 				// 수정 버튼 이벤트
-				$('#modiBtn').on('click', function (e) {
-					if (selRow == '') {
-						alert('수정할 데이터가 없습니다.')
-					} else {
-						$.ajax({
-							url: '/',
-							type: 'post',
-							data: $('#cpqForm').serialize(),
-							dataType: 'json',
-							success: function (result) {
-								alert('완제품이 성공적으로 수정되었습니다');
-								//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
-								const setData = result
-								grid.setRow(selRow, setData);
-								selRow = '';
-								$('.empty').val('');
-								$('#cpSize').val('').prop("selected", true);
-								$("input:radio[name='cpStat']:radio[value='Y']").prop('checked', true);
-							},
-							error: function () {
-								alert('완제품 수정 중 오류가 발생했습니다!');
-							}
-						});
-					}
-				})
+				$('#modiBtn')
+						.on(
+								'click',
+								function(e) {
+									if (selRow == '') {
+										alert('수정할 데이터가 없습니다.')
+									} else {
+										$
+												.ajax({
+													url : '/',
+													type : 'post',
+													data : $('#cpqForm')
+															.serialize(),
+													dataType : 'json',
+													success : function(result) {
+														alert('완제품이 성공적으로 수정되었습니다');
+														//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
+														const setData = result
+														grid.setRow(selRow,
+																setData);
+														selRow = '';
+														$('.empty').val('');
+														$('#cpSize')
+																.val('')
+																.prop(
+																		"selected",
+																		true);
+														$(
+																"input:radio[name='cpStat']:radio[value='Y']")
+																.prop(
+																		'checked',
+																		true);
+													},
+													error : function() {
+														alert('완제품 수정 중 오류가 발생했습니다!');
+													}
+												});
+									}
+								})
 
 				// 검색 버튼 이벤트
 				let searchType = '';
 				let searchKey = '';
-				$('#searchBtn').on('click', function (e) {
+				$('#searchBtn').on('click', function(e) {
 					if ($('#cpId').val() == '' && $('#cpName').val() == '') {
 						if (initData == nowData) {
 							alert('완제품 코드 또는 제품명으로 검색이 가능합니다.')
 						} else {
 							$.ajax({
-								url: "/basic/cpList",
-								method: "GET",
-								dataType: "JSON",
-								success: function (result) {
+								url : "/basic/cpList",
+								method : "GET",
+								dataType : "JSON",
+								success : function(result) {
 									grid.resetData(result);
 								}
 							});
@@ -252,25 +280,24 @@
 						}
 
 						$.ajax({
-							url: '/',
-							type: 'get',
-							data: {
-								"searchType": searchType,
-								"searchKey": searchKey
+							url : '/',
+							type : 'get',
+							data : {
+								"searchType" : searchType,
+								"searchKey" : searchKey
 							},
-							dataType: 'json',
-							success: function (result) {
+							dataType : 'json',
+							success : function(result) {
 								grid.resetData(result);
 								nowData = result;
 							},
-							error: function () {
+							error : function() {
 								alert('완제품 검색 중 오류 발생!');
 							}
 						})
 					}
 
 				})
-
 
 				//윈도우 온 로드 종료
 			}

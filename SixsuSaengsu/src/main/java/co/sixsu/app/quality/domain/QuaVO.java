@@ -48,9 +48,11 @@ public class QuaVO {
 	private String matName; // 자재 명
 	private String matReqStat; // 자재 발주 상태
 	
-	/*
-	 * // 공정 검사 관련 private String wkDataId;// 지시 세부 코드 private String prId;
-	 */
+	//거래처
+	private String busId; //거래처 아이디
+	
+	
+
 	
 	private String result; // 검사 결과
 	private int count;

@@ -11,15 +11,36 @@
 			padding: 4px 10px;
 			text-align: left;
 		}
+		#Btn { /* 버튼 */
+			float: right;
+		}
+		.modalTbl {
+			margin: auto;
+			text-align: center;
+			height: 330px;
+		}
+		.modal-body {
+			background: #e5edf5;
+		}
+		.modalTbl td {
+			padding-right: 20px;
+		}
+		.modal-footer {
+			text-align: center;
+		}
 	</style>
 </head>
 
 <body>
 
 	<div layout:fragment="content">
-
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">비가동 조회 페이지</h1>
 		
+		<br>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">비가동 조회</h1>
+		
+		<br>
+		<hr>
+		<br>
 		<!-- 검색 버튼 -->
 		<div id="Btn">
 		<button class="sixBtn1" id="searchBtn">
@@ -32,8 +53,7 @@
 		<button class="sixBtn2" id="reset">초기화</button>
 		</div>
 		
-		<br>
-		<hr>
+		
 		<!-- 검색 인풋 창 -->
 		<table id="oTable">
 		<tr>

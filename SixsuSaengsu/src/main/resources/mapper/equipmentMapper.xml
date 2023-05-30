@@ -8,22 +8,71 @@
 	
 	<!-- 설비 조회,관리 리스트 -->
 	<select id="equConList" resultType="EquConVO">
-  	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_model, c.equ_stat, c.equ_line, c.equ_check, c.equ_img, i.equ_suit, to_char(i.check_date, 'yyyy-mm-dd') as check_date, to_char(i.check_next, 'yyyy-mm-dd') as check_next , i.check_type, i.check_info, c.c_temp, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, o.oper_fnish, o.oper_type, o.oper_note, to_char(c.add_date, 'yyyy-mm-dd') as add_date , c.emp_id  
-		FROM equ_con c LEFT OUTER JOIN equ_insp i
-		ON c.equ_code = i.equ_code
-		LEFT OUTER JOIN equ_oper o
-		ON c.equ_code = o.equ_code
-            
+	 WITH oper as ( 
+	   SELECT e.equ_code, e.equ_stat, e.oper_start, e.oper_fnish, e.oper_note, e.oper_type
+	    FROM equ_oper e
+	    JOIN(   SELECT equ_code, MAX(oper_fnish) oper_fnish
+	              FROM equ_oper
+	             Group By equ_code)o
+	    ON(e.equ_code = o.equ_code AND e.oper_fnish = o.oper_fnish)
+	   ),
+	CHECKVIEW AS (
+	  SELECT e.equ_code, e.equ_suit, e.check_date, e.check_next, e.check_type, e.check_info
+	    FROM equ_insp e 
+	    JOIN (SELECT equ_code, MAX(check_date) check_date
+	            FROM equ_insp
+	           GROUP BY equ_code) o
+	      ON (e.equ_code = o.equ_code AND e.check_date = o.check_date)
+	)
+	    SELECT  c.equ_code, 
+	  	        c.proc_id, 
+	  	        c.equ_name, 
+	  	        c.equ_model, 
+	  	        c.equ_stat, 
+	  	        c.equ_line, 
+	  	        c.equ_check, 
+	  	        c.equ_img, 
+	  	        i.equ_suit, 
+	  	        to_char(i.check_date, 'yyyy-mm-dd') as check_date, 
+	  	        to_char(i.check_next, 'yyyy-mm-dd') as check_next , 
+	  	        i.check_type, 
+	            i.check_info, 
+	            c.c_temp, 
+	  	        to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, 
+	  	        o.oper_fnish, 
+	  	        o.oper_type, 
+	            o.oper_note, 
+	  	        to_char(c.add_date, 'yyyy-mm-dd') as add_date , 
+	  	        c.emp_id  
+		  FROM equ_con c 
+		  LEFT OUTER JOIN CHECKVIEW i
+	        ON c.equ_code = i.equ_code
+		  LEFT OUTER JOIN oper o
+		    ON c.equ_code = o.equ_code            
   	</select>
   	
   	<!-- 설비조회 검색기능 -->
   	<select id="equFilterList" resultType="EquConVO" parameterType="EquSearchDTO">
-  	SELECT  c.equ_code, c.proc_id, c.equ_name, c.equ_stat, c.equ_line, i.equ_suit, to_char(check_date, 'yyyy-mm-dd') as check_date, to_char(i.check_next, 'yyyy-mm-dd') as check_next, c.equ_check, i.check_info, i.check_info, o.oper_start, o.oper_fnish, c.equ_img
-		FROM EQU_CON c LEFT OUTER JOIN EQU_INSP i
-		ON c.equ_code = i.equ_code
-		LEFT OUTER JOIN EQU_OPER o
-		ON c.equ_code = o.equ_code
-		WHERE 
+  	SELECT  c.equ_code,
+  		    c.proc_id,
+  		    c.equ_name,
+  		    c.equ_stat,
+  		    c.equ_line,
+  		    i.equ_suit,
+  		    to_char(check_date, 'yyyy-mm-dd') as check_date,
+  		    to_char(i.check_next, 'yyyy-mm-dd') as check_next,
+  		    c.equ_check,
+  		    i.check_info,
+  		    i.check_info,
+  		    o.oper_start,
+  		    o.oper_fnish,
+  		    c.equ_img
+	   FROM EQU_CON c LEFT OUTER JOIN EQU_INSP i
+		 ON c.equ_code = i.equ_code
+	   LEFT OUTER JOIN EQU_OPER o
+	     ON c.equ_code = o.equ_code
+	   WHERE
+		
 		<if test='searchType.equals("code")'>
 			c.equ_code like '%'||#{searchKey}||'%' OR lower(c.equ_code) like '%'||#{searchKey}||'%'
 		</if>
@@ -61,7 +110,6 @@
 	<!-- 점검 리스트 -->
 	<select id="equCheckList" resultType="EquInspVO" parameterType="EquSearchDTO">
   		SELECT  i.check_code, 
-  		        o.oper_code, 
   		        c.equ_code, 
   		        c.equ_name, 
   		        c.equ_check, 
@@ -71,14 +119,11 @@
   		        to_char(i.check_next, 'yyyy-mm-dd') as check_next , 
   		        i.check_info, 
   		        i.check_com, 
-  		        i.check_note, 
-  		        to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, 
+  		        i.check_note,  
   		        c.emp_id  
 		  FROM equ_con c 
-    LEFT OUTER JOIN equ_insp i
+   		  JOIN equ_insp i
 			ON c.equ_code = i.equ_code
-	LEFT OUTER JOIN equ_oper o
-			ON c.equ_code = o.equ_code
   	</select>
   	
   	<!-- 점검 검색기능 -->
@@ -97,13 +142,25 @@
 			</if>
   	</select>
   	
+  	<!-- 점검 등록기능 -->
+  	<insert id="checkAdd" parameterType="EquInspVO">
+		INSERT INTO equ_insp (check_code, equ_code, equ_name, check_date, check_next, equ_check, equ_suit, check_type, check_info, check_com, check_note, emp_id)
+		VALUES(('CHECK' || LPAD(CHECK_SEQ.nextval, 3, '0')), #{equCode}, #{equName}, #{checkDate}, #{checkNext}, #{equCheck}, #{equSuit}, #{checkType}, #{checkInfo}, #{checkCom}, #{checkNote}, #{empId})
+	</insert>
+	
+	<!-- 점검 관리 수정 
+	<update id="cUpdate" parameterType="EquInspVO">
+		UPDATE equ_con
+		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date=#{addDate}, c_temp=#{ctemp}
+		WHERE equ_code=#{equCode}
+	</update> -->
+	
   	
   	<!-- 비가동 리스트 -->
 	<select id="equOperList" resultType="EquOperVO">
-  	SELECT  i.check_code, o.oper_code, c.equ_code, c.equ_name, o.oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start , to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, c.emp_id, o.oper_note 
-			FROM equ_con c LEFT OUTER JOIN equ_insp i
-			ON c.equ_code = i.equ_code
-			LEFT OUTER JOIN equ_oper o
+  	SELECT  o.oper_code, c.equ_code, c.equ_name, o.oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start , to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, c.emp_id, o.oper_note 
+			FROM equ_con c
+			JOIN equ_oper o
 			ON c.equ_code = o.equ_code
   	</select>
   	
