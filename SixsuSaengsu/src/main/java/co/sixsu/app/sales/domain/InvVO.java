@@ -1,6 +1,6 @@
 package co.sixsu.app.sales.domain;
 
-import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -20,4 +20,5 @@ public class InvVO {
 	
 	private String empName;
 	
+	List<OrdVO> list;
 }

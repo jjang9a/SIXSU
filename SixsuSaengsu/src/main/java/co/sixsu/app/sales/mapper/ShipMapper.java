@@ -18,4 +18,5 @@ public interface ShipMapper {
 	public int insertProShip(ShipVO vo);
 	public int updateCpLot(LotVO vo);
 	public List<ShipVO> readyShipList();
+	
 }
