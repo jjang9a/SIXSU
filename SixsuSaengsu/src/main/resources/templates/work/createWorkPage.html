@@ -101,7 +101,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 </head>
 <body>
 	<div layout:fragment="content">
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 관리</h1>
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 등록</h1>
 	<hr>
 	<div class="btn_container">
 		
@@ -157,6 +157,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	</div>
 	
 	<button class="submitBtn sixBtn4">등록</button>
+	<button class="cancelBtn sixBtn4">취소</button>
 	</div>
 	
 	<div class="plan_monitor">
@@ -216,7 +217,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">공정선택</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<!-- 모달 바디 -->
@@ -536,7 +537,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				align: 'center'
 			}]
 		});
-		
+		grid_product.setBodyHeight(520);
 			$.ajax({
 				url : "/ajax/getProductList",
 				method : "GET",
@@ -571,7 +572,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				align: 'center'
 			}]
 		  });
-		
+			grid_process.setBodyHeight(520);
 			$.ajax({
 				url: "/basic/activeProcList",
 				method: "GET",
@@ -717,7 +718,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	let grid1Ev
 	grid1.on('click',ev => {
 		let columnName = ev.columnName;
-		if (columnName === 'cpId'){ //컬럼이름 변경하 시오!
+		if (columnName === 'cpId'){
 			console.log(ev.columnName);
 		    console.log(ev.columnIndex);
 			$('#product_modal').modal('show');
@@ -833,6 +834,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				})
 		}
 	})
+	
 	$('.delMatBtn').on('click', function(){
 		if(공정코드선택여부() == true){
 			let removeReady = bom_search2.getCheckedRows();
@@ -853,6 +855,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				})
 		}
 	})
+	
 	// 공정조회 모달창
 	bom_search1.on('click',ev => {
 		let columnName = ev.columnName;
@@ -877,7 +880,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 					console.log(reject)
 				}
 			})
-	})
+	});
+	
 	bom_search1.on('afterChange', function (ev) {
 		  let getRow = bom_search1.getRow(selectBomWorkCode)
 		  console.log(getRow)
@@ -1095,6 +1099,21 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			}
 		})
 	})		
+	
+	$('.cancelBtn').on('click', function(){
+		$.ajax({
+			url: "/ajax/workDataDelete",
+			method: "GET",
+			success: function(result){
+				console.log(result)
+				alert(result)
+			},
+			error: function(reject){
+				console.err(reject)
+			}
+		})
+		
+	})
 	///////////////////함수저장소//////////////////
 	
 	function 세부계획선택여부(){

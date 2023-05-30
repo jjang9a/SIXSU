@@ -1,6 +1,7 @@
 package co.sixsu.app.basic.serviceimpl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -316,6 +317,11 @@ public class BasicServiceImpl implements BasicService {
 	@Override
 	public boolean deleteFlow(List<FlowVO> list) {
 		return mapper.deleteFlow(list) > 0 ;
+	}
+
+	@Override
+	public List<Map<String, String>> commGroupList(String code) {
+		return mapper.commGroupList(code);
 	}
 
 

@@ -1,6 +1,7 @@
 package co.sixsu.app.basic.service;
 
 import java.util.List;
+import java.util.Map;
 
 import co.sixsu.app.basic.domain.BomVO;
 import co.sixsu.app.basic.domain.BusVO;
@@ -25,6 +26,7 @@ public interface BasicService {
 	boolean addCode(List<CodeVO> list); // 공통코드 등록(추가)
 	boolean updateCode(List<CodeVO> list); // 공통코드 수정
 	boolean addGroup(CodeVO code); // 그룹코드 추가
+	public List<Map<String, String>> commGroupList(String code); // 그룹코드별 조회
 	
 	List<ProductVO> cpList(); // 완제품 목록 조회
 	boolean addCp(ProductVO prod); // 완제품 등록

@@ -243,6 +243,17 @@ public class WorkServiceImpl implements WorkService{
 	}
 
 	@Override
+	public String workDataDelete() {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("outParam", null);
+		mapper.workDataDelete(paramMap);
+		String outValue = (String) paramMap.get("outParam");
+		System.out.println(outValue);
+		
+		return outValue;
+	}
+
+	@Override
 	public List<DetaWorkOrdrVO> getWorkList() {
 		return mapper.getWorkList();
 	}
@@ -268,6 +279,7 @@ public class WorkServiceImpl implements WorkService{
 		List<DetaWorkOrdrVO> list = mapper.workFilterAjax(data);
 		return list;
 	}
+
 	
 	
 }

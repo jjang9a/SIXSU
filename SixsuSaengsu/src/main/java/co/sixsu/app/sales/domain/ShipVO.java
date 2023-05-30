@@ -16,5 +16,5 @@ public class ShipVO {
  public int cpLotQt;
  public String cpLotQtCk;
  public int cpHold;
- 
+ long total;
 }

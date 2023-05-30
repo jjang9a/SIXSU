@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.sales.domain.GridDataVO;
 import co.sixsu.app.sales.domain.InvVO;
 import co.sixsu.app.sales.domain.OrdVO;
 import co.sixsu.app.sales.mapper.SalesMapper;
@@ -17,11 +18,6 @@ import co.sixsu.app.sales.service.SalesService;
 public class SalesServiceImpl implements SalesService{
 @Autowired SalesMapper mapper;
 
-@Override   // 모달창 전체 사원 조회
-public List<EmpVO> getEmpList() {
-	
-	return mapper.empList();
-}
 
 @Override  //모달창 회원사원 조회
 public List<EmpVO> getEmp1List(String keyword) {
@@ -60,31 +56,22 @@ public List<ProductVO> getProdList() {
 }
 
 @Override //주문서만 등록
-public InvVO orderAdd(InvVO inv) {
+public int orderAdd(InvVO inv) {
 	inv.setOrdStat("진행중");
+	//order master 등록후 
 	mapper.orderAdd(inv);
-	return inv;
-}
-
-
-
-@Override // 상세주문서만 입력
-public boolean ordDetAdd(List<OrdVO> list) {
-   int count =0;
-   for(int i=0; i<list.size(); i++) {
-      if(list.get(i).getOrdDetId() == null || list.get(i).getOrdDetId().equals("")){
-         continue;
-      }else {
+	
+	//order 상세 주문 등록
+	int count =0;
+	List<OrdVO> list = inv.getList();
+	for(int i=0; i<list.size(); i++) {
          list.get(i).setOrdStatDet("진행중");
-         String bir = list.get(i).getOrdDetId();
-         String id= bir.substring(0,13);
-         list.get(i).setOrdId(id);
-         System.out.println(list.get(i));
-   count += mapper.ordDetAdd(list.get(i));
-      }
-   }
-   return count >=1;
+         list.get(i).setOrdId(inv.getOrdId());
+	     count += mapper.ordDetAdd(list.get(i));
+	}
+	return count;
 }
+
 
 //페이지 마지막부분 주문중인 목록
 @Override
@@ -112,20 +99,27 @@ public boolean orderMod(InvVO inv) {
 }
 
 @Override
-public boolean ordDetMod(List<OrdVO> list) {
-	 int count =0;
-	   for(int i=0; i<list.size(); i++) {
-	      if(list.get(i).getOrdDetId() == null || list.get(i).getOrdDetId().equals("")){
-	         continue;
-	      }else {
-	         
-	         String bir = list.get(i).getOrdDetId();
-	         String id= bir.substring(0,13);
-	         list.get(i).setOrdId(id);
-	         System.out.println(list.get(i));
-	   count += mapper.ordDetMod(list.get(i));
-	      }
-	   }
+public boolean ordDetMod(GridDataVO<OrdVO> vo) {
+	
+	int count =0;
+	//삭제
+	List<OrdVO>  list = vo.getDeletedRows();
+	for (OrdVO i : list) {
+		mapper.productDel(i.getOrdDetId());
+	}
+
+	//수정
+	list = vo.getUpdatedRows();	
+	for(int i=0; i<list.size(); i++) {         
+		count += mapper.ordDetMod(list.get(i));
+	}
+	   
+	//등록
+	list = vo.getCreatedRows();
+	for(int i=0; i<list.size(); i++) {
+         list.get(i).setOrdStatDet("진행중");
+	     count += mapper.ordDetAdd(list.get(i));
+	}	   
 	   return count >=1;
 	
 }

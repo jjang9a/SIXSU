@@ -70,4 +70,6 @@ public interface WorkService {
 
 	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data);
 
+	public String workDataDelete();
+
 }

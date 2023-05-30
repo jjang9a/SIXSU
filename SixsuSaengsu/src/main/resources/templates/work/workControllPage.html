@@ -5,7 +5,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	layout:decorate="~{layout/template}">
 <head>
 <meta charset="UTF-8">
-<title>조회</title>
+<title>관리</title>
 <!-- 토스트~ -->
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 <!-- 부트스트라프 -->
@@ -36,7 +36,17 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		font-size: 12px;
 		color: blue;
 	}
-
+	#left_search{
+		width: 48%;
+		float: left;
+		text-align: right;
+	}
+	#right_search{
+		width: 50%;
+		float: left;
+		margin-left: 20px;
+		text-align: right;
+	}
 </style>
 
 </head>
@@ -45,12 +55,23 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 조회</h1>
 	<hr>
 	
-	<button class="workFilterBtn sixBtn4">검색</button>
+	<button class="workFilterBtn sixBtn2">검색</button>
+	<button class="sixBtn2" onclick="location.href='/work/createWorkPage'">등록</button>
 	<div class="text_container"><p class="filter_text">검색기준 : 날짜</p></div>
 	<br>
 		
-  <div id="grid1"></div>
+  	<div id="grid1"></div>
   
+  	<div class="bom_monitor">
+		<div id="left_search">
+			<div id="bom_search1"></div>
+		</div>
+		
+		<div id="right_search">
+			<div id="bom_search2"></div>
+		</div>
+	</div>
+	
   <!-- 제품 선택 Modal 시작 -->
 		<div class="modal fade" id="workFilter_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="pdModal" aria-hidden="true">
@@ -123,56 +144,79 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	    columns: [
 	      {
 	        header: '지시번호',
-	        name: 'wkHeadId'
+	        name: 'wkHeadId',
+			align : 'center'
 	      },
 	      {
 	        header: '세부번호',
-	        name: 'wkDetaId'
+	        name: 'wkDetaId',
+			align : 'center'
 	      },
 	      {
 	        header: '품목코드',
-	        name: 'cpId'
+	        name: 'cpId',
+			align : 'center'
 	      },
 	      {
 	        header: '제품명',
-	        name: 'cpName'
+	        name: 'cpName',
+			align : 'center'
 	      },
 	      {
 	        header: '계획수량',
-	        name: 'detaQt'
+	        name: 'detaQt',
+			align : 'center'
 	      },
 	      {
 	        header: '완료수량',
-	        name: 'goodQt'
+	        name: 'goodQt',
+			align : 'center'
 	      },
 	      {
 	        header: '불량수량',
-	        name: 'dmatQt'
+	        name: 'dmatQt',
+			align : 'center'
 	      },
 	      {
 	          header: '상태',
-	          name: 'cmpltSt'
+	          name: 'cmpltSt',
+				align : 'center'
 	        },
 	      {
 	        header: '착수일',
-	        name: 'startDate'
+	        name: 'startDate',
+			align : 'center'
 	      },
 	      {
 	        header: '완료일',
-	        name: 'endDate'
+	        name: 'endDate',
+			align : 'center'
 	      },
 	      {
 	          header: '작성자',
-	          name: 'empName'
+	          name: 'empName',
+				align : 'center'
 	        },
 	      {
 	        header: '비고',
 	        name: 'memo',
+			align : 'center'
+	      },
+	      {
+	    	  header: ' ',
+	    	  name: 'edit',
+	    	  align: 'center',
+	    	  defaultValue: '수정',
+	    	  renderer: {
+	    		    styles: {
+	    		      color: 'blue'
+	    		    }
+	    		  }
 	      }
 	    ],
 	    pageOptions: {
 	        useClient: true,
-	        perPage: 18
+	        perPage: 10
 	      }
 	  });
 	  
@@ -187,17 +231,86 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 					console.dir(result);
 					grid1.resetData(result);
 					그리드초기수정();
+				},
+				error : function(reject){
+					console.err(reject)
 				}
 			})
 		}
-	  
-	
+	$(window).unload( function () {
 		
+		$.ajax({
+			url : "/ajax/testemp",
+			method : "GET",
+			dataType : "JSON",
+			success : function(result){
+				console.log("첫 출력값 > ")
+				console.dir(result);
+			}
+		})
+	} );
 	
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	var bom_search1 = new tui.Grid({
+	    el: document.getElementById('bom_search1'),
+	    scrollX: false,
+	    scrollY: true,
+	    rowHeaders: ['rowNum'],
+	    columns: [
+ 	      {
+ 	        header: '공정구분',
+ 	        name: 'comName',
+			align : 'center'
+ 	      },
+ 	      {
+ 	        header: '공정코드',
+ 	        name: 'procId',
+			align : 'center'
+ 	      },
+ 	      {
+ 	        header: '공정명',
+ 	        name: 'procName',
+			align : 'center'
+ 	      }
+	    ]
+	  });
+	bom_search1.setBodyHeight(270);		
+		
+	var bom_search2 = new tui.Grid({
+	    el: document.getElementById('bom_search2'),
+	    scrollX: false,
+	    scrollY: true,
+	    rowHeaders: ['rowNum'],
+	    columns: [
+    	  {
+ 	        header: '코드',
+ 	        name: 'matId',
+			align : 'center'
+ 	      },
+ 	      {
+ 	        header: '자재명',
+ 	        name: 'matName',
+			align : 'center'
+ 	      },
+ 	      {
+ 	        header: '규격',
+ 	        name: 'matSize',
+			align : 'center'
+ 	      },
+ 	      {
+ 	        header: '개수',
+ 	        name: 'cpQt',
+			align : 'center'
+ 	        }
+	    ]
+	  });
+	bom_search2.setBodyHeight(270);	
+	
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	  
 	function 그리드초기수정 (){
 		let allGrid = grid1.getData()
 		let deleteHead
@@ -207,7 +320,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		
 		for (let i in allGrid) {
 		    if (allGrid[i].wkHeadId == deleteHead) {
-		      allGrid[i].wkHeadId =  '<div style="text-align: center;">'+ '\"'+ '</div>';
+		      allGrid[i].wkHeadId =  '\"';
 		      if (color_count == false) {
 		        target_ary_false.push(i);
 		      } else {
@@ -243,6 +356,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		    grid1.addCellClassName(rowIndex, 'endDate', 'set_color_false');
 		    grid1.addCellClassName(rowIndex, 'empName', 'set_color_false');
 		    grid1.addCellClassName(rowIndex, 'memo', 'set_color_false');
+		    grid1.addCellClassName(rowIndex, 'edit', 'set_color_false');
 		}
 		
 		for(let i in target_ary_true){
@@ -262,6 +376,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		    grid1.addCellClassName(rowIndex, 'endDate', 'set_color_true');
 		    grid1.addCellClassName(rowIndex, 'empName', 'set_color_true');
 		    grid1.addCellClassName(rowIndex, 'memo', 'set_color_true');
+		    grid1.addCellClassName(rowIndex, 'edit', 'set_color_true');
 		}
 	}
 
@@ -357,12 +472,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		$('#workFilter_modal').modal('hide');
 	})
 	
-	
-	
-	
-	
-	
-	
 	$('.filter_reset').on('click',function(){
 		$('input[name="제품명"]').val('');
         $('input[name="계획"]').val('');
@@ -377,9 +486,67 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         
 	})
 	  
+		  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Grid.on
+
+	grid1.on('click',ev => {
+		//클릭한 세부지시에 대한 공정가져오기
+		
+		if (ev.columnName === 'edit'){ 
+		    console.log('오호홓ㅎㅎ 수정클릭되었다');
+		}
+		
+		$.ajax({
+			url : "/ajax/getWkBomList",
+			method : "GET",
+			dataType : "JSON",
+			contentType: "application/json",
+			data : { data: grid1.getRow(ev.rowKey).wkDetaId },
+			success : function(result){
+				console.dir(result);
+				bom_search1.resetData(result);
+				},
+				error : function(reject){
+					console.log(reject)
+				}
+			})
+		bom_search2.resetData();
+	});
+	
+	let selKey = '';
+	grid1.on('focusChange', (ev) => {
+		if (selKey != ev.rowKey) {
+			grid1.removeRowClassName(selKey, 'cell-pink');
+		}
+		grid1.addRowClassName(ev.rowKey, 'cell-pink');
+		selKey = ev.rowKey;
+	});
+	
+	
+	
+	bom_search1.on('click',ev => {
+		$.ajax({
+			url : "/ajax/getWkMatList",
+			method : "GET",
+			dataType : "JSON",
+			contentType: "application/json",
+			data : { data: bom_search1.getRow(ev.rowKey).wkBomId},
+			success : function(result){
+				console.dir(result);
+				bom_search2.resetData(result);
+				},
+				errer : function(reject){
+					console.log(reject)
+				}
+			})
+	});
 	  
-	  
-	  
+	function test5221(){
+		console.log('클릭성공!!!!')
+	}
 	  
 	tui.Grid.applyTheme('default', {
 	    cell: {

@@ -5,54 +5,6 @@
 
 <mapper namespace="co.sixsu.app.quality.mapper.QualityMapper">
 
-	<!-- 도착 자재 리스트 -->
-	<select id="getArrList" resultType="QuaVO">
-		<!-- SELECT m.mat_req_id, bus_id, mat_id, arr_qt, to_char(arr_date, 'yyyy-MM-dd') 
-			arr_date FROM mat_req m JOIN arr_material a ON (m.mat_req_id = a.mat_req_id) 
-			ORDER BY mat_req_id desc -->
-
-		select r.mat_req_id, b.bus_name, r.mat_id, m.mat_name, a.arr_qt,
-		to_char(arr_date, 'yyyy-MM-dd') arr_date
-		from mat_req r left join
-		material m
-		on r.mat_id = m.mat_id
-		left join business b
-		on r.bus_id =
-		b.bus_id
-		left join arr_material a
-		on r.mat_req_id = a.mat_req_id
-		where
-		r.mat_req_stat='도착'
-		order by mat_req_id
-	</select>
-
-	<!-- 도착 자재 등록 리스트 -->
-	<select id="arrRegList" resultType="QuaVO">
-		<!-- SELECT mat_req_id, bus_id, mat_id FROM mat_req WHERE mat_req_stat='입고대기' 
-			ORDER BY mat_req_id -->
-		select r.mat_req_id, b.bus_name, r.mat_id, m.mat_name, a.arr_qt,
-		to_char(arr_date, 'yyyy-MM-dd') arr_date
-		from mat_req r left join
-		material m
-		on r.mat_id = m.mat_id
-		left join business b
-		on r.bus_id =
-		b.bus_id
-		left join arr_material a
-		on r.mat_req_id = a.mat_req_id
-		WHERE
-		r.mat_req_stat='입고대기'
-		and a.arr_qt is null
-		order by mat_req_id
-	</select>
-
-	<!-- 도착 자재 등록 -->
-	<insert id="insertArr" parameterType="QuaVO">
-		INSERT INTO arr_material
-		(arr_mat_num, mat_req_id, arr_qt) VALUES
-		(arr_seq.nextval, #{matReqId},
-		#{arrQt})
-	</insert>
 
 
 	<!-- 자재 입고 검사 등록 리스트 -->
@@ -67,25 +19,10 @@
 		on r.bus_id =
 		b.bus_id
 		where
-		r.mat_req_stat='입고대기'
+		r.mat_req_stat='A'
 		order by mat_req_id
 	</select>
 
-	<!-- 입고 검사 등록 -->
-	<insert id="insertPr" parameterType="QuaVO">
-		insert into
-		qua_com
-		(insp_num, insp_std_id, insp_qt) values
-		(insf_seq.nextval, #{matReqId},
-		#{inspQt})
-	</insert>
-
-	<!-- 입고 검사 등록 시 자재 발주 업데이트 -->
-	<update id="mrUpdate" parameterType="MatreqVO">
-		update mat_req set
-		mat_req_stat='검사대기'
-		where mat_req_id=#{matReqId}
-	</update>
 
 	<!-- 자재 입고 검사 리스트 -->
 	<select id="prInspList" resultType="QuaVO">
@@ -103,7 +40,7 @@
 		left join business b
 		on r.bus_id = b.bus_id
 		where
-		r.mat_req_stat='검사대기'
+		r.mat_req_stat='B'
 		order by insp_std_id
 	</select>
 
@@ -164,7 +101,8 @@
 	<!-- 입고 검사 상세 결과 등록 -->
 	<insert id="insertPri" parameterType="QuaVO"> insert into
 		qua_details(det_insp_num,
-		insp_num, insp_id, res_val, res_stat) values (#{detInspNum}, #{inspNum},
+		insp_num, insp_id, res_val, res_stat) values
+		(#{detInspNum}, #{inspNum},
 		#{inspId}, #{nsuitQt}, '해당없음')
 	</insert>
 
@@ -188,7 +126,7 @@
 
 
 
-	<!-- 입고 검사 결과 등록 시 검사 공통 업데이트 -->
+	<!-- 검사 결과 등록 시 검사 공통 업데이트 -->
 	<update id="qComUpdate" parameterType="QuaVO">
 		<!-- update qua_com set insp_type='자재 입고 검사', insp_date=sysdate, emp_id=#{empId}, 
 			suit_qt=insp_qt-#{nsuitQt}, nsuit_qt=#{nsuitQt} where insp_num=#{inspNum} -->
@@ -197,7 +135,6 @@
 		insp_num=#{inspNum},
 		insp_item_id=#{inspItemId},
 		insp_qt=#{inspQt},
-		insp_type='자재 입고 검사',
 		insp_date=sysdate,
 		emp_id=#{empId},
 		suit_qt=(#{inspQt}-#{totNsuitQt}),
@@ -211,7 +148,7 @@
 	<!-- 입고 검사 결과 등록 시 자재 발주 업데이트 -->
 	<update id="mUpdate" parameterType="QuaVO">
 		update mat_req set
-		mat_req_stat='검사완료'
+		mat_req_stat='C'
 		where
 		mat_req_id=#{matReqId}
 	</update>
@@ -254,7 +191,7 @@
 		WHERE q.insp_date
 		>=
 		TRUNC(SYSDATE) - 14
-		and r.mat_req_stat='검사완료'
+		and r.mat_req_stat='C'
 		order by
 		q.insp_date
 		desc
@@ -277,15 +214,19 @@
 		on d.wk_deta_id = w.wk_deta_id
 		left join process p
 		on w.proc_id = p.proc_id
+		left join qua_com q
+		on d.wk_deta_id =
+		q.insp_std_id
 		where d.cmplt_st = 'C'
+		and q.insp_num is null
 	</select>
 
-	<!-- 입고 전 검사 번호 자동 등록 -->
+	<!-- 공정검사 전 검사 번호 자동 등록 -->
 	<select id="pdInspNum" resultType="String">
 		select get_qpd_num from dual
 	</select>
 
-	<!-- 공정 검사 등록 -->
+	<!-- 공정 검사 (대기) 등록 -->
 	<insert id="bpdAdd" parameterType="PrdInspVO">
 		insert into qua_com
 		(insp_num,
@@ -300,8 +241,9 @@
 		select q.insp_num, d.wk_deta_id,
 		d.cp_id, p.proc_name, d.deta_qt,
 		d.end_date
-		from qua_com q left join
-		deta_work_ordr d
+		from deta_work_ordr d left
+		join
+		qua_com q
 		on q.insp_std_id = d.wk_deta_id
 		left join work_bom b
 		on
@@ -313,6 +255,48 @@
 		order by
 		d.wk_deta_id
 	</select>
+
+	<!-- 공정 검사 결과 등록 시 update -->
+
+	<!-- 완제품 출고 관리 리스트 -->
+	<select id="shInspList" resultType="ShipInspVO">
+		select s.cp_ship_id, s.ord_det_id, s.cp_lot_id, p.cp_lot_id, c.cp_name,
+		p.cp_id, s.cp_ship_qt, s.cp_ship_stat, 
+		to_char(s.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, q.insp_date
+		from
+		pro_ship s left join qua_com q
+		on s.cp_ship_id = q.insp_std_id
+		left join prod_lot p
+		on s.cp_lot_id = p.cp_lot_id
+		left join complete_prod c
+		on p.cp_id=c.cp_id
+		order by cp_ship_id
+	</select>
+
+
+
+
+	<!-- 도착 자재 리스트 -->
+	<select id="getArrList" resultType="QuaVO">
+		<!-- SELECT m.mat_req_id, bus_id, mat_id, arr_qt, to_char(arr_date, 'yyyy-MM-dd') 
+			arr_date FROM mat_req m JOIN arr_material a ON (m.mat_req_id = a.mat_req_id) 
+			ORDER BY mat_req_id desc -->
+
+		select r.mat_req_id, b.bus_name, r.mat_id, m.mat_name, a.arr_qt,
+		to_char(arr_date, 'yyyy-MM-dd') arr_date
+		from mat_req r left join
+		material m
+		on r.mat_id = m.mat_id
+		left join business b
+		on r.bus_id =
+		b.bus_id
+		left join arr_material a
+		on r.mat_req_id = a.mat_req_id
+		where
+		r.mat_req_stat='도착'
+		order by mat_req_id
+	</select>
+
 
 
 </mapper>

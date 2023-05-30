@@ -32,6 +32,10 @@ public interface EquService {
 	
 	List<EquOperVO> equOperSearch(EquSearchDTO dto); // 점검 조회 검색 기능
 
+	boolean checkAdd(EquInspVO data); // 점검관리(등록) 
+
+	boolean cUpdate(EquInspVO data); // 점검관리 수정 기능
+
 	
 	
 }
