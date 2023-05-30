@@ -232,7 +232,7 @@ public class QualityController {
 		  return quaService.shInspList();
 	  }
 	 
-	  
+	  // 출고 검사 
 	 
 
 }
