@@ -116,7 +116,9 @@ public class BasicController {
 	// 완제품 관리
 
 	@GetMapping("/basic/cpManage")
-	public void cpManage() { // 완제품 관리 화면 띄우기
+	public void cpManage(Model model) { // 완제품 관리 화면 띄우기
+		String key = "cp_size";
+		model.addAttribute("types", service.getComList(key));
 	}
 
 	@ResponseBody

@@ -67,7 +67,7 @@
 					<td>관리LOT수량</td>
 					<td><input type="text" name="spLot" id="spLot" class="empty">
 					<td>단위<span class="needStar"> *</span></td>
-					<td><input type="text" name="spUnit" id="spUnit" value="EA"></td>
+					<td><input type="text" name="spUnit" id="spUnit" value="PCS"></td>
 				</tr>
 				<tr>
 					<td>비고</td>
@@ -84,7 +84,7 @@
 		</div>
 		<!-- 상단 폼 끝 -->
 
-		<!-- 완제품 목록 그리드 -->
+		<!-- 반제품 목록 그리드 -->
 		<div id="grid"></div>
 
 		<script>
@@ -162,13 +162,13 @@
 					data: $('#spForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
-						alert('완제품이 성공적으로 등록되었습니다');
+						alert('반제품이 성공적으로 등록되었습니다');
 						//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
 						const appendedData = result
 						grid.appendRow(appendedData);
 					},
 					error: function () {
-						alert('완제품 등록 중 오류가 발생했습니다!');
+						alert('반제품 등록 중 오류가 발생했습니다!');
 					}
 				});
 				$('.empty').val('');
@@ -183,6 +183,7 @@
 				$('#spId').val(dataRow.spId);
 				$('#spName').val(dataRow.spName);
 				$('#spLot').val(dataRow.spLot);
+				$('#spSize').val(dataRow.spSize);
 				$('#spNote').val(dataRow.spNote);
 				if (dataRow.spStat == 'Y') {
 					$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
@@ -202,7 +203,7 @@
 						data: $('#spForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
-							alert('완제품이 성공적으로 수정되었습니다');
+							alert('반제품이 성공적으로 수정되었습니다');
 							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
 							const setData = result
 							grid.setRow(selRow, setData);
@@ -270,6 +271,8 @@
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
+						$('.empty').val('');
+						$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
 						grid.resetData(result);
 					}
 				});

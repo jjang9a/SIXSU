@@ -11,7 +11,7 @@
 
 <!-- 사원 관리 -->
 <select id="empList" resultType="EmpVO">
-	select emp_id, emp_name, emp_tell, TO_CHAR(emp_birth, 'yyyy/MM/dd') emp_birth, TO_CHAR(emp_hire, 'yyyy/MM/dd') emp_hire, emp_dept, emp_rk, emp_stat, emp_note  
+	select emp_id, emp_name, emp_tell, TO_CHAR(emp_birth, 'yyyy-MM-dd') emp_birth, TO_CHAR(emp_hire, 'yyyy-MM-dd') emp_hire, emp_dept, emp_rk, emp_stat, emp_note  
 	from employee
 	order by emp_stat, emp_id
 </select>
@@ -97,7 +97,9 @@
 
 <!-- 완제품 관리 -->
 <select id="cpList" resultType="ProductVO">
-	select * from complete_prod
+	select *
+	from complete_prod p
+	LEFT OUTER join common_code c on p.cp_size = c.com_id 
 	order by cp_stat desc, cp_id
 </select>
 
@@ -174,7 +176,7 @@
 		SELECT 'M' || LPAD(TO_NUMBER(NVL(SUBSTR(max(mat_id), -3), 0))+1, 3, '0')
 		FROM material
 	</selectKey>
-	INSERT INTO material VALUES (#{matId}, #{matName}, #{matSize}, #{matSafe}, #{matUnit}, #{matStat}, #{matNote})
+	INSERT INTO material VALUES (#{matId}, #{matName}, #{matSize}, #{matUnit}, #{matSafe},#{matStat}, #{matNote})
 </insert>
 
 <update id="updateMat" parameterType="MaterialVO">
@@ -270,7 +272,7 @@
 
 <insert id="addProc" parameterType="ProcessVO">
 	<selectKey keyProperty="procId" resultType="String" order="BEFORE">
-		SELECT 'PROC' || LPAD(TO_NUMBER(NVL(SUBSTR(max(bus_id), -3), 0))+1, 3, '0')
+		SELECT 'PROC' || LPAD(TO_NUMBER(NVL(SUBSTR(max(proc_id), -3), 0))+1, 3, '0')
 		FROM process
 	</selectKey>
 	INSERT INTO process VALUES (#{procId}, #{procType}, #{procName}, #{procStat}, #{procNote})
