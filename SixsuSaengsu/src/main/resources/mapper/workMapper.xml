@@ -110,7 +110,7 @@
 	INSERT INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST) values(#{wkHeadId},#{wkDetaId},'작성중')
 </insert>
 <insert id="addWkBom">
-	INSERT INTO WORK_BOM (WK_BOM_ID, WK_DETA_ID) values('WKB'||wk_BOM_SEQ.nextVal, #{detaCode})
+	INSERT INTO WORK_BOM (WK_BOM_ID, WK_DETA_ID, TYPE) values('WKB'||wk_BOM_SEQ.nextVal, #{detaCode}, '작성중')
 </insert>
 	
 <select id="getDetaWorkHeadList" resultType="DetaWorkOrdrVO">
@@ -233,7 +233,18 @@
 	]]>
 </insert>
 
+<delete id="teset12">
+	DELETE WORK_ORDR WHERE WK_CMPLT_ST = '작성중'
+    DELETE DETA_WORK_ORDR WHERE CMPLT_ST = '작성중'
+    DELETE WORK_BOM WHERE TYPE = '작성중'
+    DELETE WORK_BOM_MAT WHERE TYPE = '작성중'
+</delete>
 
+<select id="workDataDelete" statementType="CALLABLE" resultMap="outResultMap">
+  { CALL WORK_DETA_DELETE (
+  	#{outParam, mode=OUT, jdbcType=VARCHAR}
+  )}
+</select>
 
 
 

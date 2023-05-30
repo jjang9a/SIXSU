@@ -1,6 +1,5 @@
 package co.sixsu.app.work.mapper;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +53,7 @@ public interface WorkMapper {
 	public void modifyBomList(workBomVO wkDetaId);
 	public void modifyDetaWorkList(DetaWorkOrdrVO data);
 	public void workInsertSubmit(Map<String, Object> paramMap);
+	public String workDataDelete(Map<String, Object> paramMap);
 	public List<DetaWorkOrdrVO> getWorkList();
 	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data);
 

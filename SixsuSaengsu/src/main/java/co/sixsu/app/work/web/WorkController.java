@@ -1,16 +1,9 @@
 package co.sixsu.app.work.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import co.sixsu.app.work.service.WorkService;
 
@@ -35,6 +28,13 @@ import co.sixsu.app.work.service.WorkService;
 		public String work2() {
 			System.out.println("viewWorkPage 들어옴");
 			return "/work/viewWorkPage";
+		}
+		@GetMapping("/work/workControllPage")
+		public String workControllPage(Model model) {
+			System.out.println("workControllPage 들어옴");
+			String orderCode = service.addWork();
+			model.addAttribute("orderCode", orderCode);
+		return "/work/workControllPage";
 		}
 		
 		@GetMapping("/work/createWorkPage")

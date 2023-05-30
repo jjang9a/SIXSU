@@ -229,6 +229,17 @@ public class WorkAjaxController {
 		return message;
 	}
 	
+	@RequestMapping("workDataDelete")
+	public String workDataDelete() {
+		return service.workDataDelete();
+	}
+	
+	@RequestMapping("testemp")
+	public String testemp() {
+		System.err.println("들어왔다");
+		return null;
+	}
+	
 	
 	
 	
