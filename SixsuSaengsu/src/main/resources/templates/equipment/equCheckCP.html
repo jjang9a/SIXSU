@@ -6,24 +6,43 @@
 <head>
 <meta charset="utf-8">
 <title>설비 점검 관리</title>
-<style>
-.sixBtn2 {
-	margin-right: 7px;
-}
+	<style>
+		.sixBtn2 {
+			margin-right: 7px;
+		}
+		#addForm td {
+			padding: 4px 10px;
+			text-align: left;
+		}
+		.modalTbl {
+			margin: auto;
+			text-align: center;
+			height: 330px;
+		}
+		.modal-body {
+			background: #e5edf5;
+		}
 
-input {
-	margin: 5px;
-}
-</style>
+		.modalTbl td {
+			padding-right: 20px;
+		}
+
+		.modal-footer {
+			text-align: center;
+		}
+	</style>
+	
 </head>
+
 <body>
-
 	<div layout:fragment="content">
-
+		
+		<br>
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비 점검 관리</h1>
+		
 		<br>
 		<hr>
-
+		<br>
 		<!-- 인풋창 -->
 		<form action="" method="post" id="addForm">
 			<table>
@@ -33,15 +52,10 @@ input {
 						style="background: #ccdceb;" class="empty"></td>
 				</tr>
 				<tr>
-					<td>비가동코드<span class="needStar"> * </span></td>
-					<td><input type="text" name="operCode " id="operCode "
-						class="empty"></td>
-				</tr>
-				<tr>
 					<td>설비코드<span class="needStar"> * </span></td>
-					<td colspan="2"><input type="text" name="procId" id="procId"
+					<td colspan="2"><input type="text" name="equCode" id="equCode"
 						class="empty" readonly style="background: #ccdceb;">
-						<button type="button" id="pdBtn" class="sixBtn2"
+						<button type="button" id="eqBtn" class="sixBtn2"
 							style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
 				</tr>
 				<tr>
@@ -50,38 +64,53 @@ input {
 						class="empty"></td>
 				</tr>
 				<tr>
+					<td>점검일자<span class="needStar"> *</span></td>
+					<td><input type="text" name="checkDate" id="checkDate"
+						class="empty"></td>
+				</tr>
+				<tr>
+					<td>차기점검일<span class="needStar"> *</span></td>
+					<td><input type="text" name="checkNext" id="checkNext"
+						class="empty"></td>
+				</tr>
+				<tr>
 					<td>점검주기<span class="needStar"> *</span></td>
 					<td><input type="text" name="equCheck" id="equCheck"
 						class="empty"></td>
 				</tr>
 				<tr>
+					<td>판정<span class="needStar"> *</span></td>
+					<!-- <td><input type="text" name="equSuit" id="equSuit"
+						class="empty"></td> -->
+					
+					  <td>
+						<select name="equSuit">
+						<option value='' selected>----- 선택 -----</option>
+						<option value="Y">적합</option>
+						<option value="N">부적합</option>
+						</select>
+					</td>  	
+				</tr>
+				<tr>
 					<td>점검구분<span class="needStar"> *</span></td>
 					<td><input type="text" name="checkType" id="checkType"
 						class="empty"></td>
-						<div id="divRadio">
-							<input type="radio" id="checkType1" name="checkType" value="Y"
-								checked> <label for="checkType1">정기</label> <input
-								type="radio" id="equStat2" name="checkType" value="N"> <label
-								for="equStat2">수시</label>
-						</div>
+						
 				</tr>
 				<tr>
-					<td>판정<span class="needStar"> *</span></td>
-					<td>
-						<div id="divRadio">
-							<input type="radio" id="equSuit1" name="equSuit" value="Y"
-								checked> <label for="equSuit1">적합</label> <input
-								type="radio" id="equStat2" name="equSuit" value="N"> <label
-								for="equStat2">부적합</label>
-						</div>
-					</td>
+					<td>점검사유<span class="needStar"> *</span></td>
+					<td><input type="text" name="checkInfo" id="checkInfo"
+						class="empty"></td>
 				</tr>
 				<tr>
-					<td>공정코드<span class="needStar"> * </span></td>
-					<td colspan="2"><input type="text" name="procId" id="procId"
-						class="empty" readonly style="background: #ccdceb;">
-						<button type="button" id="pdBtn" class="sixBtn2"
-							style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
+					<td>조치내역<span class="needStar"> *</span></td>
+					<td><input type="text" name="checkCom" id="checkCom"
+						class="empty"></td>
+				</tr>
+				<tr>
+					<td>비고<span class="needStar"> *</span></td>
+					<td><input type="text" name="checkNote" id="checkNote"
+						class="empty"></td>
 				</tr>
 				<tr>
 					<td>담당자<span class="needStar"> *</span></td>
@@ -97,10 +126,334 @@ input {
 				<button type="button" class="sixBtn2" style="float: right;"
 					id="addBtn">등록</button>
 			</div>
-			<br> <br>
+		<br><br> 
+		
+		<!-- 설비코드 선택 Modal 시작 -->
+			<div class="modal fade" id="eqModal" data-bs-backdrop="static"
+				data-bs-keyboard="false" tabindex="-1" aria-labelledby="eqModal"
+				aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" >
+					<div class="modal-content">
+						<!-- 모달 헤더 -->
+						<div class="modal-header">
+							<h5 class="modal-title" id="eqModalLabel"
+								style="font-family: 'MaruBuri';">설비코드 선택</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<!-- 모달 바디 -->
+						<div class="modal-body">
+							<div class="sel sel1 sel3">설비코드</div>
+							<div id="eqGrid"></div>
+						</div>
+						<!-- 모달 푸터(버튼부분) -->
+						<div class="modal-footer"></div>
+					</div>
+				</div>
+			</div>
+		
+		</form>	
+		
+		<!--  그리드 시작 -->	
+		<div id="grid"></div>
 
-			<hr>
-			<br>
+		<script>
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				scrollX: false,
+				scrollY: false,
+
+				rowHeaders: ['rowNum'],
+				columns: [
+					{
+						header: '설비코드',
+						name: 'equCode',
+						align: 'center'
+					},
+					{
+						header: '설비명',
+						name: 'equName',
+						align: 'center'
+					},
+					{
+						header: '점검일자',
+						name: 'checkDate',
+						align: 'center'
+					},
+					{
+						header: '차기 점검일',
+						name: 'checkNext',
+						align: 'center'
+					},
+					{
+						header: '점검주기',
+						name: 'equCheck',
+						align: 'center'
+					},
+					{
+						header: '판정',
+						name: 'equSuit',
+						filter: 'select',
+						align: 'center',
+						formatter: 'listItemText',
+						editor: {
+							type: 'select',
+							options: {
+								listItems: [
+									{text: '적합', value: 'Y'},
+									{text: '부적합', value: 'N'},	
+								]
+						      }
+					        }
+					},
+					{
+						header: '점검구분',
+						name: 'checkType',
+						filter: 'select',
+						align: 'center',
+						formatter: 'listItemText',
+						editor: {
+							type: 'select',
+							options: {
+								listItems: [
+									{text: '정기', value: '정기'},
+									{text: '수시', value: '수시'},	
+								]
+						      }
+					        }
+					},
+					{
+						header: '담당자',
+						name: 'empId',
+						align: 'center'
+					},
+					{
+						header: '점검코드',
+						name: 'checkCode',
+						hidden : true,
+						align: 'center'
+					},
+					{
+						header: '점검사유',
+						name: 'checkInfo',
+						hidden : true,
+						align: 'center'
+					},
+					{
+						header: '조치내역',
+						name: 'checkCom',
+						hidden : true,
+						align: 'center'
+					},
+					{
+						header: '비고',
+						name: 'checkNote',
+						hidden : true,
+						align: 'center'
+					}
+				]
+
+			});
+			
+			// 설비코드 리스트
+			const eqGrid = new tui.Grid({
+				el: document.getElementById('eqGrid'),
+				scrollX: false,
+				scrollY: true,
+				minBodyHeight: 400,
+				columns: [{
+					header: '설비코드',
+					name: 'equCode',
+					align: 'center',
+				},
+				{
+					header: '설비명',
+					name: 'equName',
+					align: 'center'
+				}
+			   ]
+			});
+			// 그리드 높이 & 색 변경 테마 적용
+			grid.setBodyHeight(400);
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			// 설비코드 조회 버튼을 클릭 했을떄 설비코드 리스트를 불러옴.
+			$('#eqBtn').on('click', function (e) {
+
+				$.ajax({
+					url: "equCon",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						eqGrid.resetData(result);
+						console.log(result)
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				})
+				setTimeout(() => eqGrid.refreshLayout(), 500);
+				$('#eqModal').modal('show');
+			});
+
+			// 설비코드 클릭시 자동으로 등록인풋창에 값이 입력됨
+			eqGrid.on('click', ev => {
+				const focusCell = eqGrid.getFocusedCell()
+				let dataRow = eqGrid.getRow(ev.rowKey);
+				
+				$('#equCode').val(dataRow.equCode);
+				$('#eqModal').modal('hide');
+			})
+			
+			// 페이지가 열리면 기능작동 - 리스트 띄워주기.  
+			window.onload = function () {
+
+				$.ajax({
+					url: "equCheckList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+					}
+				});
+			};
+
+
+			// 색 테마 적용
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					selectedRowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+			
+			// 클릭시 설비 정보데이터 인풋창에 값 불러오기.
+			let selRow = '';
+			grid.on('click', ev => {
+				// focus된 셀이 있는 열 전체 select 처리
+				if(selRow != ev.rowKey){
+					grid.removeRowClassName(selRow, 'cell-pink');
+				}
+				grid.addRowClassName(ev.rowKey, 'cell-pink');
+				selRow = ev.rowKey;
+				// 클릭한 Row의 정보를 dataRow에 저장
+				var dataRow = grid.getRow(ev.rowKey);
+				console.log(dataRow.equCode);
+				console.log(dataRow);
+
+				// 클릭시 인풋창에 데이터 불러오기
+
+				$('#checkCode').val(dataRow.checkCode); // 점검코드
+				$('#equCode').val(dataRow.equCode); // 설비코드
+				$('#equName').val(dataRow.equName); // 설비명
+				$('#checkDate').val(dataRow.checkDate); // 점검일자
+				$('#checkNext').val(dataRow.checkNext); // 차기 점검일
+				$('#equCheck').val(dataRow.equCheck); // 점검주기
+				$('#equSuit').val(dataRow.equSuit); // 판정
+				$('#checkType').val(dataRow.checkType); // 점검구분
+				$('#checkInfo').val(dataRow.checkInfo); // 점검사유
+				$('#checkCom').val(dataRow.checkCom); // 점검내역
+				$('#checkNote').val(dataRow.checkNote); // 점검비고
+				$('#empId').val(dataRow.empId); // 담당자
+				// 라디오 버튼이 Y 나 N 일떄 가동 비가동으로 전환 
+				console.log(dataRow.equSuit)
+				if (dataRow.equSuit == 'Y') {
+					console.log('Y들어옴')
+					$("select[name='equSuit']").val('Y');
+					//$("select[name='equSuit']:option[value='Y']").prop('checked', true);
+				} else {
+					console.log('N들어옴')
+					$("select[name='equSuit']").val('N');
+					//$("select[name='equSuit']:option[value='N']").prop('checked', true);
+				}
+			});
+			
+			// 등록버튼 기능 구현
+			$('#addBtn').on('click', function (e) {
+				if (selRow === '') {
+					alert('등록 정보를 입력하시오.')
+				} else {
+				
+				console.log($('#addForm').serialize())
+				$.ajax({
+					url: 'checkAdd',
+					type: 'post',
+					data: $('#addForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						alert('등록되었습니다');
+						console.log('result : ');
+						console.log(result);
+						//등록 버튼을 누르면 리스트에 삽입된다.     
+						const appendedData = result
+						grid.appendRow(appendedData);
+						// 리스트를 리셋. 등록데이터가 바로 뜸.
+						grid.resetData(result);
+						setTimeout(() => orderingGrid.refreshLayout(), 1000);
+					},
+					error: function (reject) {
+						alert('등록 중 오류가 발생했습니다!');
+						console.log(reject);
+					}
+				});
+				// 인풋창을 비워줌
+				$('#addForm input').val('');
+			}
+			});
+			
+			// 설비정보 수정 
+			$('#modBtn').on('click', function (e) {
+				if (selRow == '') {
+					alert('수정할 데이터가 없습니다.')
+				} else {
+				
+				console.log($('#addForm').serialize())
+				$.ajax({
+					url: '==========================',
+					type: 'post',
+					data: $('#addForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						console.log(result);
+						alert('수정되었습니다');
+						const setData = result
+						grid.setRow(selRow, setData);
+						selRow = '';
+					},
+					error: function (reject) {
+						alert('수정 중 오류가 발생했습니다!');
+						console.log(reject);
+					}
+				});
+				$('.empty').val('');
+				/* $("input:radio[name='equStat']:radio[value='Y']").prop('checked', true); */
+				$("select[name='equSuit']").val('Y');
+			  }
+			})
+
+			
+					
+		</script>
 	</div>
 </body>
 </html>
