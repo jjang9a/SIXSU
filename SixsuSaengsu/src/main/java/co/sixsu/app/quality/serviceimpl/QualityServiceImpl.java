@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
-import co.sixsu.app.quality.domain.QudVO;
 import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
 import co.sixsu.app.quality.service.QualityService;
@@ -19,18 +18,19 @@ import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 public class QualityServiceImpl implements QualityService {
 	@Autowired QualityMapper quaMapper;
 	
-	
+	// 도착 자재 리스트 출력
 	@Override
-	public List<QuaVO> getArrList() {//도착 자재 리스트 출력
+	public List<QuaVO> getArrList() {
 		return quaMapper.getArrList();
 	}
 
-
+	// 도착 자재 등록 리스트
 	@Override
 	public List<QuaVO> arrRegList() {
 		return quaMapper.arrRegList();
 	}
-
+	
+	// 입고 검사 등록 시 자재 발주 상태 업데이트
 	@Override
 	public boolean mrUpdate(List<MatreqVO> mlist) {
 		int count = 0; //insert 발생 횟수
@@ -42,19 +42,19 @@ public class QualityServiceImpl implements QualityService {
 		return count >= 1;
 	}
 
-
+	// 도착 자재 등록
 	@Override
 	public int insertArr(QuaVO am) {
 		return quaMapper.insertArr(am); 
 	}
 
-
+	// 자재 입고 검사 관련
 	@Override
 	public List<QuaVO> proRecList() {
 		return quaMapper.proRecList();
 	}
 
-
+	//자재 입고 검사 등록
 	@Override
 	public boolean insertPr(List<QuaVO> qlist) {
 		int count = 0; //insert 발생 횟수
@@ -66,7 +66,7 @@ public class QualityServiceImpl implements QualityService {
 		return count >= 1;
 	}
 
-
+	// 자재 입고 검사 리스트
 	@Override
 	public List<QuaVO> prInspList() {
 		return quaMapper.prInspList();
@@ -349,7 +349,7 @@ public class QualityServiceImpl implements QualityService {
 		return quaMapper.prdComList();
 	}
 
-
+	// 출고 검사 목록 리스트
 	@Override
 	public List<ShipInspVO> shInspList() {
 		return quaMapper.shInspList();

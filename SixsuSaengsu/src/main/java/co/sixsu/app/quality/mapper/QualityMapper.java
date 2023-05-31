@@ -5,7 +5,6 @@ import java.util.List;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
-import co.sixsu.app.quality.domain.QudVO;
 import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 

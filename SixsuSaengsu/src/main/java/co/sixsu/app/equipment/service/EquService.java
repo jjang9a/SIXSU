@@ -28,14 +28,14 @@ public interface EquService {
 	
 	List<EquInspVO> equCheckSearch(EquSearchDTO dto); // 점검 조회 검색 기능
 
-	List<EquOperVO> equOperList(); // 비가동 리스트
-	
 	List<EquOperVO> equOperSearch(EquSearchDTO dto); // 점검 조회 검색 기능
 
 	boolean checkAdd(EquInspVO data); // 점검관리(등록) 
 
-	boolean cUpdate(EquInspVO data); // 점검관리 수정 기능
+	boolean cUpdate(EquInspVO data); // 점검관리 (수정)
 
-	
+	boolean cDel(EquInspVO checkCode); // 점검관리 (삭제)
+
+	List<EquOperVO> equOperList(); // 비가동 리스트
 	
 }
