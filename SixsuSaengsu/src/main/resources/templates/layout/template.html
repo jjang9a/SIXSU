@@ -67,7 +67,8 @@
                         <div class="sb-sidenav-menu-heading">Interface</div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
+                            data-value="0">
                             <div class="sb-nav-link-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="currentColor"
                                     class="bi bi-arrow-through-heart-fill" viewBox="0 0 16 16">
@@ -94,7 +95,7 @@
                         </div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-                            aria-expanded="false" aria-controls="collapsePages">
+                            aria-expanded="false" aria-controls="collapsePages" data-value="1">
                             <div class="sb-nav-link-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
                                     class="bi bi-receipt" viewBox="0 0 16 16">
@@ -125,7 +126,7 @@
                         </div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#prodnav"
-                            aria-expanded="false" aria-controls="prodnav">
+                            aria-expanded="false" aria-controls="prodnav" data-value="2">
                             <div class="sb-nav-link-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
                                     class="bi bi-gear-fill" viewBox="0 0 16 16">
@@ -148,7 +149,7 @@
                         </div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#matnav"
-                            aria-expanded="false" aria-controls="matnav">
+                            aria-expanded="false" aria-controls="matnav" data-value="3">
                             <div class="sb-nav-link-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
                                     class="bi bi-box-seam" viewBox="0 0 16 16">
@@ -184,7 +185,7 @@
                         </div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#equinav"
-                            aria-expanded="false" aria-controls="equinav">
+                            aria-expanded="false" aria-controls="equinav" data-value="4">
                             <div class="sb-nav-link-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
                                     class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
@@ -213,7 +214,7 @@
                         </div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#qualnav"
-                            aria-expanded="false" aria-controls="qualnav">
+                            aria-expanded="false" aria-controls="qualnav" data-value="5">
                             <div class="sb-nav-link-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="23" fill="currentColor"
                                     class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
@@ -255,6 +256,18 @@
     </script>
     <script src="/js/scripts.js"></script>
     <script>
+        $('.nav-link.collapsed').on('click', (e) => {
+            let sideIndex = $(e.target).attr('data-value');
+            sessionStorage.setItem('sideIndex', sideIndex)
+        })
+
+        let navIndex = sessionStorage.getItem('sideIndex')
+        if (navIndex) {
+            //console.log('사이드바 인덱스 : ' + navIndex);
+            $('#layoutSidenav .nav-link').eq(navIndex).removeClass('collapsed');
+            $('.collapse').eq(navIndex).addClass('show');
+            //$('.nav-link.collapsed').get(navIndex).click();
+        }
         //$('.nav-link.collapsed').get(2).click();
     </script>
 </body>
