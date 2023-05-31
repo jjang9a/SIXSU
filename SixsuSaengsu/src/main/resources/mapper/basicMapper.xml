@@ -304,21 +304,25 @@
 
 <!-- BOM 관리 -->
 <select id="activeCpList" resultType="ProductVO">
-	SELECT *
-	FROM complete_prod
+	SELECT com_name as cp_size, p.*
+	FROM complete_prod p
+    JOIN common_code c ON p.cp_size = c.com_id
 	WHERE cp_stat = 'Y'
+	
 </select>
 
 <select id="activeSpList" resultType="ProductVO">
 	SELECT sp_id as cp_id, sp_name as cp_name, sp_size as cp_size
 	FROM semi_prod
 	WHERE sp_stat = 'Y'
+	ORDER BY cp_id
 </select>
 
 <select id="activeMatList" resultType="ProductVO">
 	SELECT mat_id as cp_id, mat_name as cp_name, mat_size as cp_size
 	FROM material
 	WHERE mat_stat = 'Y'
+	ORDER BY cp_id
 </select>
 
 <select id="activeProcList" resultType="ProcessVO">
@@ -326,6 +330,7 @@
 	FROM process p left outer join common_code c
 	ON p.proc_type = c.com_id
 	WHERE proc_stat = 'Y'
+	ORDER BY proc_id
 </select>
 
 <select id="bomList" parameterType="String" resultType="BomVO">
@@ -333,7 +338,7 @@
 	FROM bom b LEFT OUTER JOIN semi_prod s ON b.bom_mat = s.sp_id
 	LEFT OUTER JOIN material m ON b.bom_mat = m.mat_id
 	LEFT OUTER JOIN process p ON b.proc_id = p.proc_id
-	WHERE pd_id = 'CP001'
+	WHERE pd_id = #{id}
 	ORDER BY bom_id
 </select>
 
@@ -380,7 +385,7 @@
 	DELETE FROM FLOW
 	WHERE flow_id IN
 	<foreach collection="list" item="item" open="(" close=")" separator=",">
-		#{flowId}
+		#{item.flowId}
 	</foreach>
 </delete>
 

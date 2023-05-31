@@ -165,7 +165,7 @@
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">공정선택</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<!-- 모달 바디 -->
@@ -181,278 +181,254 @@
 		<!-- 공정 선택 Modal 끝 -->
 
 		<script>
-			window.onload = function () {
-				const grid = new tui.Grid({
-					el: document.getElementById('grid'),
-					scrollX: false,
-					scrollY: true,
-					rowHeaders: ['checkbox'],
-					minBodyHeight: 400,
-					columns: [{
-						header: 'BOM코드',
-						name: 'bomId',
-						hidden: true
-					}, {
-						header: '제품코드',
-						name: 'pdId',
-						hidden: true
-					}, {
-						header: '구분',
-						name: 'pdType',
-						align: 'center'
-					}, {
-						header: '품목코드',
-						name: 'bomMat',
-						align: 'center'
-					}, {
-						header: '품목명',
-						name: 'matName',
-						align: 'center'
-					}, {
-						header: '소요량',
-						name: 'bomNum',
-						align: 'center',
-						editor: 'text'
-					}, {
-						header: '단위',
-						name: 'bomUnit',
-						align: 'center',
-						editor: 'text'
-					}, {
-						header: '소요공정명',
-						name: 'procName',
-						align: 'center'
-					}, {
-						header: '공정코드',
-						name: 'procId',
-						hidden: true
-					}, {
-						header: '수정일',
-						name: 'updateDate',
-						align: 'center'
-					}]
-				});
+			//window.onload = function () {
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				scrollX: false,
+				scrollY: true,
+				rowHeaders: ['checkbox'],
+				minBodyHeight: 400,
+				columns: [{
+					header: 'BOM코드',
+					name: 'bomId',
+					hidden: true
+				}, {
+					header: '제품코드',
+					name: 'pdId',
+					hidden: true
+				}, {
+					header: '구분',
+					name: 'pdType',
+					align: 'center'
+				}, {
+					header: '품목코드',
+					name: 'bomMat',
+					align: 'center'
+				}, {
+					header: '품목명',
+					name: 'matName',
+					align: 'center'
+				}, {
+					header: '소요량',
+					name: 'bomNum',
+					align: 'center',
+					editor: 'text'
+				}, {
+					header: '단위',
+					name: 'bomUnit',
+					align: 'center',
+					editor: 'text'
+				}, {
+					header: '소요공정명',
+					name: 'procName',
+					align: 'center'
+				}, {
+					header: '공정코드',
+					name: 'procId',
+					hidden: true
+				}, {
+					header: '수정일',
+					name: 'updateDate',
+					align: 'center'
+				}]
+			});
 
 
-				// 그리드 높이 & 색 변경 테마 적용
-				grid.setBodyHeight(400);
-				tui.Grid.applyTheme('default', {
-					cell: {
-						header: {
-							background: '#e5edf5'
-						},
-						normal: {
-							background: '#ffffff'
-						}
+			// 그리드 높이 & 색 변경 테마 적용
+			grid.setBodyHeight(400);
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+
+			const pdGrid = new tui.Grid({
+				el: document.getElementById('pdGrid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 400,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				columns: [{
+					header: '제품코드',
+					name: 'cpId',
+					align: 'center'
+				}, {
+					header: '제품명',
+					name: 'cpName',
+					align: 'center'
+				}, {
+					header: '규격',
+					name: 'cpSize',
+					align: 'center'
+				}]
+			});
+
+
+			$('#pdBtn').on('click', function (e) {
+				$.ajax({
+					url: "/basic/activeCpList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
 					}
 				});
+				setTimeout(() => pdGrid.refreshLayout(), 500);
+				$('#pdModal').modal('show');
+			})
 
-
-				const pdGrid = new tui.Grid({
-					el: document.getElementById('pdGrid'),
-					scrollX: false,
-					scrollY: true,
-					minBodyHeight: 400,
-					columns: [{
-						header: '제품코드',
-						name: 'cpId',
-						align: 'center'
-					}, {
-						header: '제품명',
-						name: 'cpName',
-						align: 'center'
-					}, {
-						header: '규격',
-						name: 'cpSize',
-						align: 'center'
-					}]
-				});
-
-
-				$('#pdBtn').on('click', function (e) {
-					$.ajax({
-						url: "/basic/activeCpList",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							pdGrid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					});
-					setTimeout(() => pdGrid.refreshLayout(), 500);
-					$('#pdModal').modal('show');
-				})
-
-				let selType = '완제품'
-				// 제품 선택 모달창 탭 기능(완제품 클릭)
-				$('.sel1').on('click', function (e) {
-					$('.sel2').removeClass('sel3');
-					$(this).addClass('sel3');
-					selType = '완제품';
-					$.ajax({
-						url: "/basic/activeCpList",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							pdGrid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					});
-				})
-
-				// 제품 선택 모달창 탭 기능(반제품 클릭)
-				$('.sel2').on('click', function (e) {
-					$('.sel1').removeClass('sel3');
-					$(this).addClass('sel3');
-					selType = '반제품';
-					$.ajax({
-						url: "/basic/activeSpList",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							pdGrid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					});
-				})
-
-				// 모달창 제품 선택 이벤트
-				let selPd = ''; // 선택 제품이 무엇인지 담을 변수
-				pdGrid.on('click', function (e) {
-					rowData = pdGrid.getRow(e.rowKey);
-					selPd = rowData.cpId;
-					$('#pdId').val(selPd);
-					$('#pdName').val(rowData.cpName);
-					$('#pdSize').val(rowData.cpSize);
-					$('#pdType').val(selType);
-					$('#pdModal').modal('hide');
-					selType = '완제품';
-
-					$.ajax({
-						url: "/basic/bomList",
-						method: "GET",
-						data: {
-							"id": selPd
-						},
-						dataType: "JSON",
-						success: function (result) {
-							grid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					});
-				})
-
-				// 추가 버튼 이벤트
-				$('#addBtn').on('click', function (e) {
-					if (selPd == '') {
-						alert('제품을 먼저 선택하세요!');
-					} else {
-						const newData = { // 빈 데이터 열 생성
-							pdId: selPd,
-							pdType: '',
-							bomMat: '',
-							matName: '',
-							bomNum: '',
-							bomUnit: '',
-							procName: '',
-							procId: '',
-							updateDate: ''
-						};
-						// 그리드에 빈 열 추가
-						grid.appendRow(newData);
-					}
-				})
-
-				const matGrid = new tui.Grid({
-					el: document.getElementById('matGrid'),
-					scrollX: false,
-					scrollY: true,
-					minBodyHeight: 400,
-					columns: [{
-						header: '품목코드',
-						name: 'cpId',
-						align: 'center'
-					}, {
-						header: '품목명',
-						name: 'cpName',
-						align: 'center'
-					}, {
-						header: '규격',
-						name: 'cpSize',
-						align: 'center'
-					}]
-				});
-
-				const procGrid = new tui.Grid({
-					el: document.getElementById('procGrid'),
-					scrollX: false,
-					scrollY: true,
-					minBodyHeight: 400,
-					columns: [{
-						header: '공정구분',
-						name: 'comName',
-						align: 'center'
-					}, {
-						header: '공정코드',
-						name: 'procId',
-						align: 'center'
-					}, {
-						header: '공정명',
-						name: 'procName',
-						align: 'center'
-					}]
-				});
-
-
-				// BOM입력 자재, 공정 모달
-				let selRow = ''; // 선택된 열이 어딘지 담아 둘 변수
-				grid.on('click', ev => {
-					selRow = ev.rowKey;
-					if (ev.columnName == 'bomMat') {
-						$.ajax({
-							url: "/basic/activeMatList",
-							method: "GET",
-							dataType: "JSON",
-							success: function (result) {
-								matGrid.resetData(result);
-							},
-							error: function (reject) {
-								console.log(reject)
-							}
-						});
-						setTimeout(() => matGrid.refreshLayout(), 500);
-						$('#matModal').modal('show');
-					} else if (ev.columnName == 'procName') {
-						$.ajax({
-							url: "/basic/activeProcList",
-							method: "GET",
-							dataType: "JSON",
-							success: function (result) {
-								procGrid.resetData(result);
-							},
-							error: function (reject) {
-								console.log(reject)
-							}
-						});
-						setTimeout(() => procGrid.refreshLayout(), 500);
-						$('#procModal').modal('show');
+			let selType = '완제품'
+			// 제품 선택 모달창 탭 기능(완제품 클릭)
+			$('.sel1').on('click', function (e) {
+				$('.sel2').removeClass('sel3');
+				$(this).addClass('sel3');
+				selType = '완제품';
+				$.ajax({
+					url: "/basic/activeCpList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
 					}
 				});
+			})
 
-				let matType = '자재'
-				// 자재 선택 모달창 탭 기능(자재 클릭)
-				$('.sel1').on('click', function (e) {
-					$('.sel2').removeClass('sel3');
-					$(this).addClass('sel3');
-					matType = '완제품';
+			// 제품 선택 모달창 탭 기능(반제품 클릭)
+			$('.sel2').on('click', function (e) {
+				$('.sel1').removeClass('sel3');
+				$(this).addClass('sel3');
+				selType = '반제품';
+				$.ajax({
+					url: "/basic/activeSpList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
+
+			// 모달창 제품 선택 이벤트
+			let selPd = ''; // 선택 제품이 무엇인지 담을 변수
+			pdGrid.on('click', function (e) {
+				rowData = pdGrid.getRow(e.rowKey);
+				selPd = rowData.cpId;
+				$('#pdId').val(selPd);
+				$('#pdName').val(rowData.cpName);
+				$('#pdSize').val(rowData.cpSize);
+				$('#pdType').val(selType);
+				$('#pdModal').modal('hide');
+				selType = '완제품';
+
+				$.ajax({
+					url: "/basic/bomList",
+					method: "GET",
+					data: {
+						"id": selPd
+					},
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
+
+			// 추가 버튼 이벤트
+			$('#addBtn').on('click', function (e) {
+				if (selPd == '') {
+					alert('제품을 먼저 선택하세요!');
+				} else {
+					const newData = { // 빈 데이터 열 생성
+						pdId: selPd,
+						pdType: '',
+						bomMat: '',
+						matName: '',
+						bomNum: '',
+						bomUnit: '',
+						procName: '',
+						procId: '',
+						updateDate: ''
+					};
+					// 그리드에 빈 열 추가
+					grid.appendRow(newData);
+				}
+			})
+
+			const matGrid = new tui.Grid({
+				el: document.getElementById('matGrid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 400,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				columns: [{
+					header: '품목코드',
+					name: 'cpId',
+					align: 'center'
+				}, {
+					header: '품목명',
+					name: 'cpName',
+					align: 'center'
+				}, {
+					header: '규격',
+					name: 'cpSize',
+					align: 'center'
+				}]
+			});
+
+			const procGrid = new tui.Grid({
+				el: document.getElementById('procGrid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 400,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				columns: [{
+					header: '공정구분',
+					name: 'comName',
+					align: 'center'
+				}, {
+					header: '공정코드',
+					name: 'procId',
+					align: 'center'
+				}, {
+					header: '공정명',
+					name: 'procName',
+					align: 'center'
+				}]
+			});
+
+
+			// BOM입력 자재, 공정 모달
+			let selRow = ''; // 선택된 열이 어딘지 담아 둘 변수
+			grid.on('click', ev => {
+				selRow = ev.rowKey;
+				if (ev.columnName == 'bomMat') {
 					$.ajax({
 						url: "/basic/activeMatList",
 						method: "GET",
@@ -464,163 +440,205 @@
 							console.log(reject)
 						}
 					});
-				})
-
-				// 자재 선택 모달창 탭 기능(반제품 클릭)
-				$('.sel2').on('click', function (e) {
-					$('.sel1').removeClass('sel3');
-					$(this).addClass('sel3');
-					matType = '반제품';
+					setTimeout(() => matGrid.refreshLayout(), 500);
+					$('#matModal').modal('show');
+				} else if (ev.columnName == 'procName') {
 					$.ajax({
-						url: "/basic/activeSpList",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							matGrid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					});
-				})
-
-				// 자재 선택 이벤트
-				matGrid.on('click', e => {
-					let matData = matGrid.getRow(e.rowKey);
-					// 자재 중복체크
-					let checkDupl = 0;
-					for (let i = 0; i < grid.getRowCount(); i++) {
-						let checkId = grid.getRow(i).bomMat
-						if (checkId == matData.cpId) {
-							checkDupl += 1;
-						}
-					}
-					if (checkDupl > 0) {
-						alert('이미 소요품목으로 등록된 자재입니다.');
-						matData = '';
-						checkDupl = 0;
-					} else {
-						let matjudge = matData.cpId.substr(0, 1);
-						if (matjudge == 'M') {
-							matType = '자재'
-						} else {
-							matType = '반제품'
-						}
-						grid.setValue(selRow, 'pdType', matType, false);
-						grid.setValue(selRow, 'bomMat', matData.cpId, false);
-						grid.setValue(selRow, 'matName', matData.cpName, false);
-						$('#matModal').modal('hide');
-						matType = '자재';
-						checkDupl = 0;
-					}
-				})
-
-				// 공정 선택 이벤트
-				procGrid.on('click', e => {
-					let procData = procGrid.getRow(e.rowKey);
-					grid.setValue(selRow, 'procId', procData.procId, false);
-					grid.setValue(selRow, 'procName', procData.procName, false);
-					$('#procModal').modal('hide');
-				})
-
-				// 저장 버튼 이벤트
-				$('#saveBtn').on('click', function (e) {
-					// 필수항목 빈칸체크
-					let checkBlank = 0;
-					for (let i = 0; i < grid.getRowCount(); i++) {
-						if (grid.getRow(i).bomMat == '' || grid.getRow(i).bomNum == '') {
-							checkBlank += 1;
-							break;
-						}
-					}
-					if (checkBlank > 0) {
-						alert('소요품목 또는 소요량이 입력되지 않은 열이있습니다.');
-						checkBlank = 0;
-						// 필수항목이 다 입력 된 경우에만 통신
-					} else {
-						console.log(grid.getModifiedRows())
-						// 생성된 열이 0개가 아니라면 insert ajax 호출
-						if (grid.getModifiedRows().createdRows.length != 0) {
-							$.ajax({
-								url: "/basic/addBom",
-								method: "POST",
-								dataType: "JSON",
-								contentType: "application/json",
-								data: JSON.stringify(grid.getModifiedRows().createdRows),
-								error: function (reject) {
-									console.log(reject)
-									alert('등록 과정에서 에러가 발생하였습니다.')
-								}
-							})
-						}
-						// 수정된 열이 0개가 아니라면 update ajax 호출
-						if (grid.getModifiedRows().updatedRows.length != 0) {
-							$.ajax({
-								url: "/basic/modifyBom",
-								method: "POST",
-								dataType: "JSON",
-								contentType: "application/json",
-								data: JSON.stringify(grid.getModifiedRows().updatedRows),
-								error: function (reject) {
-									console.log(reject)
-									alert('업데이트 과정에서 에러가 발생하였습니다.')
-								}
-							})
-						}
-						// 삭제된 열이 0개가 아니라면 update ajax 호출
-						if (grid.getModifiedRows().deletedRows.length != 0) {
-							$.ajax({
-								url: "/basic/deleteBom",
-								method: "POST",
-								dataType: "JSON",
-								contentType: "application/json",
-								data: JSON.stringify(grid.getModifiedRows().deletedRows),
-								error: function (reject) {
-									console.log(reject)
-									alert('삭제 과정에서 에러가 발생하였습니다.')
-								}
-							})
-						}
-						alert('BOM정보가 저장되었습니다.')
-					}
-				})
-
-				// 삭제 버튼 이벤트
-				$('#delBtn').on('click', (e) => {
-					grid.removeCheckedRows(false);
-				})
-
-				//초기화 버튼 BOM초기화 이벤트
-				$('#initBtn').on('click', (e) => {
-					$.ajax({
-						url: "/basic/bomList",
-						method: "GET",
+						url: '/basic/flowList',
+						type: 'get',
 						data: {
 							"id": selPd
 						},
-						dataType: "JSON",
 						success: function (result) {
-							grid.resetData(result);
+							procGrid.resetData(result);
 						},
-						error: function (reject) {
-							console.log(reject)
+						error: function () {
+							alert('공통코드 조회 중 오류 발생!');
 						}
-					});
-				})
+					})
+					setTimeout(() => procGrid.refreshLayout(), 500);
+					$('#procModal').modal('show');
+				}
+			});
 
-				// 다운로드 버튼 이벤트
-				$('#printBtn').on('click', function (e) {
-					console.log('저장 버튼 눌림')
-					const options = {
-						includeHiddenColumns: true,
-						fileName: selPd + ' BOM',
-					};
-					grid.export('xlsx', options);
-				})
+			let matType = '자재'
+			// 자재 선택 모달창 탭 기능(자재 클릭)
+			$('.sel1').on('click', function (e) {
+				console.log('자재선택')
+				$('.sel2').removeClass('sel3');
+				$(this).addClass('sel3');
+				matType = '완제품';
+				$.ajax({
+					url: "/basic/activeMatList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						matGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
 
+			// 자재 선택 모달창 탭 기능(반제품 클릭)
+			$('.sel2').on('click', function (e) {
+				console.log('반제품선택')
+				$('.sel1').removeClass('sel3');
+				$(this).addClass('sel3');
+				matType = '반제품';
+				$.ajax({
+					url: "/basic/activeSpList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						matGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
 
-				// 윈도우 온 로드 닫는 괄호
-			}
+			// 자재 선택 이벤트
+			matGrid.on('click', e => {
+				let matData = matGrid.getRow(e.rowKey);
+				// 자재 중복체크
+				let checkDupl = 0;
+				for (let i = 0; i < grid.getRowCount(); i++) {
+					let checkId = grid.getRow(i).bomMat
+					if (checkId == matData.cpId) {
+						checkDupl += 1;
+					}
+				}
+				if (checkDupl > 0) {
+					alert('이미 소요품목으로 등록된 자재입니다.');
+					matData = '';
+					checkDupl = 0;
+				} else {
+					let matjudge = matData.cpId.substr(0, 1);
+					if (matjudge == 'M') {
+						matType = '자재'
+					} else {
+						matType = '반제품'
+					}
+					grid.setValue(selRow, 'pdType', matType, false);
+					grid.setValue(selRow, 'bomMat', matData.cpId, false);
+					grid.setValue(selRow, 'matName', matData.cpName, false);
+					$('.sel2').removeClass('sel3');
+					$('.sel1').addClass('sel3');
+					$('#matModal').modal('hide');
+					matType = '자재';
+					checkDupl = 0;
+				}
+			})
+
+			// 공정 선택 이벤트
+			procGrid.on('click', e => {
+				let procData = procGrid.getRow(e.rowKey);
+				grid.setValue(selRow, 'procId', procData.procId, false);
+				grid.setValue(selRow, 'procName', procData.procName, false);
+				$('#procModal').modal('hide');
+			})
+
+			// 저장 버튼 이벤트
+			$('#saveBtn').on('click', function (e) {
+				// 필수항목 빈칸체크
+				let checkBlank = 0;
+				for (let i = 0; i < grid.getRowCount(); i++) {
+					if (grid.getRow(i).bomMat == '' || grid.getRow(i).bomNum == '') {
+						checkBlank += 1;
+						break;
+					}
+				}
+				if (checkBlank > 0) {
+					alert('소요품목 또는 소요량이 입력되지 않은 열이있습니다.');
+					checkBlank = 0;
+					// 필수항목이 다 입력 된 경우에만 통신
+				} else {
+					console.log(grid.getModifiedRows())
+					// 생성된 열이 0개가 아니라면 insert ajax 호출
+					if (grid.getModifiedRows().createdRows.length != 0) {
+						$.ajax({
+							url: "/basic/addBom",
+							method: "POST",
+							dataType: "JSON",
+							contentType: "application/json",
+							data: JSON.stringify(grid.getModifiedRows().createdRows),
+							error: function (reject) {
+								console.log(reject)
+								alert('등록 과정에서 에러가 발생하였습니다.')
+							}
+						})
+					}
+					// 수정된 열이 0개가 아니라면 update ajax 호출
+					if (grid.getModifiedRows().updatedRows.length != 0) {
+						$.ajax({
+							url: "/basic/modifyBom",
+							method: "POST",
+							dataType: "JSON",
+							contentType: "application/json",
+							data: JSON.stringify(grid.getModifiedRows().updatedRows),
+							error: function (reject) {
+								console.log(reject)
+								alert('업데이트 과정에서 에러가 발생하였습니다.')
+							}
+						})
+					}
+					// 삭제된 열이 0개가 아니라면 update ajax 호출
+					if (grid.getModifiedRows().deletedRows.length != 0) {
+						$.ajax({
+							url: "/basic/deleteBom",
+							method: "POST",
+							dataType: "JSON",
+							contentType: "application/json",
+							data: JSON.stringify(grid.getModifiedRows().deletedRows),
+							error: function (reject) {
+								console.log(reject)
+								alert('삭제 과정에서 에러가 발생하였습니다.')
+							}
+						})
+					}
+					alert('BOM정보가 저장되었습니다.')
+				}
+			})
+
+			// 삭제 버튼 이벤트
+			$('#delBtn').on('click', (e) => {
+				grid.removeCheckedRows(false);
+			})
+
+			//초기화 버튼 BOM초기화 이벤트
+			$('#initBtn').on('click', (e) => {
+				$.ajax({
+					url: "/basic/bomList",
+					method: "GET",
+					data: {
+						"id": selPd
+					},
+					dataType: "JSON",
+					success: function (result) {
+						grid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+				$('#infoTbl input').val('')
+			})
+
+			// 다운로드 버튼 이벤트
+			$('#printBtn').on('click', function (e) {
+				console.log('저장 버튼 눌림')
+				const options = {
+					includeHiddenColumns: true,
+					fileName: selPd + ' BOM',
+				};
+				grid.export('xlsx', options);
+			})
+
+			// 윈도우 온 로드 닫는 괄호
+			//}
 		</script>
 
 	</div>

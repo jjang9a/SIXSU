@@ -356,20 +356,21 @@ public class BasicController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/basic/addFlow") // BOM 등록
+	@PostMapping("/basic/addFlow") // 제품공정 등록
 	public boolean addFlow(@RequestBody List<FlowVO> list) {
 		return service.addFlow(list);
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifyFlow") // BOM 수정
+	@PostMapping("/basic/modifyFlow") // 제품공정 수정
 	public boolean modifyFlow(@RequestBody List<FlowVO> list) {
 		return service.updateFlow(list);
 	}
 	
 	@ResponseBody
-	@PostMapping("/basic/deleteFlow") // BOM 수정
+	@PostMapping("/basic/deleteFlow") // 제품공정 수정
 	public boolean deleteFlow(@RequestBody List<FlowVO> list) {
+		System.out.println(list);
 		return service.deleteFlow(list);
 	}
 	

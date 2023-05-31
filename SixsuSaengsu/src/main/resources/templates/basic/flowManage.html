@@ -65,6 +65,10 @@
 		.sel3 {
 			background-color: white;
 		}
+
+		.modal-body {
+			background: #e5edf5;
+		}
 	</style>
 </head>
 
@@ -101,7 +105,7 @@
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">공정선택</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<!-- 모달 바디 -->
@@ -110,6 +114,8 @@
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
 					<div class="modal-footer">
+						<button type="button" class="sixBtn2" id="procSelBtn">등록</button>
+						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
 					</div>
 				</div>
 			</div>
@@ -182,6 +188,8 @@
 				}]
 			});
 
+			pdGrid.setBodyHeight(480)
+
 			// 그리드 색 변경 테마 적용
 			tui.Grid.applyTheme('default', {
 				cell: {
@@ -232,7 +240,8 @@
 				el: document.getElementById('procGrid'),
 				scrollX: false,
 				scrollY: true,
-				minBodyHeight: 400,
+				minBodyHeight: 480,
+				rowHeaders: ['checkbox'],
 				columns: [{
 					header: '공정구분',
 					name: 'comName',
@@ -247,6 +256,9 @@
 					align: 'center'
 				}]
 			});
+
+			grid.setBodyHeight(480)
+			procGrid.setBodyHeight(480)
 
 			// 제품 선택 시 선택정보 기반으로 공정흐름도 데이터 불러오기
 			let pdKey = '';
@@ -299,27 +311,22 @@
 			})
 
 			// 공정 선택 이벤트
-			procGrid.on('click', e => {
-				let procData = procGrid.getRow(e.rowKey);
-				let checkDupl = 0;
-				for (let i = 0; i < grid.getRowCount(); i++) {
-					let checkId = grid.getRow(i).procId
-					if (checkId == procData.procId) {
-						checkDupl += 1;
-					}
-				}
-				if (checkDupl > 0) {
-					alert('이미 등록된 공정입니다.');
-				} else {
-					const newData = { // 선택한 열 정보 반반으로 본문 그리드에 추가할 데이터 생성
-						cpId: pdKey,
-						comName: procData.comName,
-						procId: procData.procId,
-						procName: procData.procName
-					};
-					grid.appendRow(newData); // 그리드에 추가
-					$('#procModal').modal('hide');
-				}
+			$('#procSelBtn').on('click', e => {
+				// let procData = procGrid.getRow(e.rowKey);
+				// let checkDupl = 0;
+				// for (let i = 0; i < grid.getRowCount(); i++) {
+				// 	let checkId = grid.getRow(i).procId
+				// 	if (checkId == procData.procId) {
+				// 		checkDupl += 1;
+				// 	}
+				// }
+				// if (checkDupl > 0) {
+				// 	alert('이미 등록된 공정입니다.');
+				// } else {
+				newData = procGrid.getCheckedRow();
+				grid.appendRows(newData); // 그리드에 추가
+				$('#procModal').modal('hide');
+				//}
 			})
 
 			// 초기화 버튼 이벤트
@@ -403,6 +410,7 @@
 						})
 					}
 					// 삭제된 열이 0개가 아니라면 update ajax 호출
+					console.log(JSON.stringify(grid.getModifiedRows().deletedRows))
 					if (grid.getModifiedRows().deletedRows.length != 0) {
 						$.ajax({
 							url: "/basic/deleteFlow",
