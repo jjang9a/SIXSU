@@ -21,6 +21,9 @@
 		#modifyBtn {
 			display: none;
 		}
+		#regModal{
+			
+		}
 	</style>
 
 
@@ -78,7 +81,7 @@
 					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 결과 등록 전</h6>
 					<div id="grid"></div>
 
-					<button class="sixBtn6" id="rrBtn">검사결과등록</button>
+					<button class="sixBtn6" id="rrBtn">검사결과입력</button>
 
 					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 등록 완료</h6>
 					<div id="aiGrid"></div>
@@ -846,7 +849,18 @@
 			detailGrid.on('editingFinish', function (e) {
 				if (e.columnName === 'nsuitQt') {
 					calSuitQt(); // 값 계산
+					detailGrid.setValue(e.rowKey, 'resStat', '해당없음');
+				}else if(e.columnName === 'resVal'){
+					let compareData = detailGrid.getRow(e.rowKey);
+					let standard = compareData.stdVal;
+					let myVal = compareData.resVal;
+					if(myVal <= standard){
+						detailGrid.setValue(e.rowKey, 'resStat' ,'적합');
+					}else{
+						detailGrid.setValue(e.rowKey, 'resStat' ,'부적합');
+					}
 				}
+
 			});
 
 	

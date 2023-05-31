@@ -36,6 +36,9 @@ public interface QualityMapper {
 	
 	// 출고 검사 관련
 	List<ShipInspVO> shInspList(); //  출고 검사 목록 리스트
+	int insertShipCom(ShipInspVO com); // 출고 검사 등록 시 검사 공통 insert
+	int insertShipDet(ShipInspVO det); // 출고 검사 등록 시 검사 상세 insert
+	int updateShip(ShipInspVO prs); // 출고 검사 등록 시 완제품 출고 테이블 품질 검사 완료 업데이트
 	
 	
 	// 사용 보류
