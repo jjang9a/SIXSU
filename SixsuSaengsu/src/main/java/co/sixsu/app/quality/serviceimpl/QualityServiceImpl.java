@@ -202,65 +202,7 @@ public class QualityServiceImpl implements QualityService {
 		return list;
 	}
 
-//	@Override
-//	@Transactional
-//	public List<QuaVO> insertPriAndUpdate(List<QuaVO> list) {
-//	    System.out.println("서비스");
-//	    int count = 0; // insert 발생 횟수
-//
-//	    for (int i = 0; i < list.size(); i++) {
-//	        QuaVO qua = list.get(i);
-//	        String detNum = qua.getInspNum() + "-" + i; // 세부 지시 검사번호 생성
-//	        String un = "-";
-//
-//	        qua.setDetInspNum(detNum);
-//	        System.out.println(detNum);
-//
-//	        if (qua.getResVal() == null) {
-//	            qua.setResVal(un);
-//	        }
-//
-//	        count += quaMapper.insertPri(list.get(i));
-//	        System.out.println(count);
-//
-//	        if (i == list.size() - 1) {
-//	            count += quaMapper.qComUpdate(qua);
-//	            count += quaMapper.mUpdate(qua);
-//	        }
-//	    }
-//
-//	    return list;
-//	}
 
-	// 자재 입고 검사 결과 등록 프로시저 사용
-//	@Override
-//	public List<QuaVO> reqInspProc(List<QuaVO> list) {
-//		int count = 0; // insert 발생 횟수
-//
-//	    for (QuaVO qua : list) {
-//	        String detNum = qua.getInspNum(); // 세부 지시 검사번호
-//	        String un = "-";
-//
-//	        detNum += "-" + list.indexOf(qua);
-//	        qua.setDetInspNum(detNum);
-//	        System.out.println(detNum);
-//
-//	        if (qua.getResVal() == null) {
-//	            qua.setResVal(un);
-//	        }
-//
-//	        // 프로시저 호출을 위한 필드 설정
-//	        qua.setCount(count + 1); // 프로시저 매개변수 v_count 설정
-//
-//	        // 프로시저 실행
-//	        quaMapper.reqInspProc(qua);
-//
-//	        count++;
-//	    }
-//
-//	    System.out.println(count);
-//	    return list;
-//	}
 
 	// 입고 검사 완료 리스트
 	@Override
@@ -344,16 +286,15 @@ public class QualityServiceImpl implements QualityService {
 	public List<ShipInspVO> shInspList() {
 		return quaMapper.shInspList();
 	}
-
+	
+	// 출고 검사 등록
 	@Transactional
 	@Override
 	public ShipInspVO shipInspAdd(ShipInspVO ship) {
-		String inspNum = quaMapper.psInspNum();
+		String inspNum = quaMapper.psInspNum(); // 검사 번호 생성
 		ship.setInspNum(inspNum);
 		System.out.println("검사번호:"+inspNum);
-		quaMapper.insertShipCom(ship);
-		String detNum = inspNum + "-" + String.format("%03d", +1); // inspNum-001 형식으로 설정
-		ship.setDetInspNum(detNum);
+		
 		int amount = ship.getCpShipQt();
 		if (ship.getResStat().equals("적합")) {
 			ship.setSuitQt(amount);
@@ -363,12 +304,38 @@ public class QualityServiceImpl implements QualityService {
 			ship.setNsuitQt(amount);
 		}
 		
+		quaMapper.insertShipCom(ship);
+		String detNum = inspNum + "-" + String.format("%03d", +1); // 검사 세부 번호 inspNum-001 형식으로 생성
+		ship.setDetInspNum(detNum);
+		String inspId ="QR999";
+		String inspType = "완제품 출고 검사";
+		ship.setInspId(inspId);
+		ship.setInspType(inspType);
+//		int amount = ship.getCpShipQt();
+//		if (ship.getResStat().equals("적합")) {
+//			ship.setSuitQt(amount);
+//			ship.setNsuitQt(0);
+//		} else {
+//			ship.setSuitQt(0);
+//			ship.setNsuitQt(amount);
+//		}
+		
 		System.out.println(ship);
-
+		
 		quaMapper.insertShipDet(ship);
 		quaMapper.updateShip(ship);
 
 		return ship;
 	}
+
+	// 출고 검사 수정
+	@Override
+	@Transactional
+	public ShipInspVO shipInspMod(ShipInspVO ship) {
+		
+		return null;
+	}
+	
+	
 
 }
