@@ -464,6 +464,7 @@
 			let matType = '자재'
 			// 자재 선택 모달창 탭 기능(자재 클릭)
 			$('.sel1').on('click', function (e) {
+				console.log('자재선택')
 				$('.sel2').removeClass('sel3');
 				$(this).addClass('sel3');
 				matType = '완제품';
@@ -482,6 +483,7 @@
 
 			// 자재 선택 모달창 탭 기능(반제품 클릭)
 			$('.sel2').on('click', function (e) {
+				console.log('반제품선택')
 				$('.sel1').removeClass('sel3');
 				$(this).addClass('sel3');
 				matType = '반제품';
@@ -523,6 +525,8 @@
 					grid.setValue(selRow, 'pdType', matType, false);
 					grid.setValue(selRow, 'bomMat', matData.cpId, false);
 					grid.setValue(selRow, 'matName', matData.cpName, false);
+					$('.sel2').removeClass('sel3');
+					$('.sel1').addClass('sel3');
 					$('#matModal').modal('hide');
 					matType = '자재';
 					checkDupl = 0;

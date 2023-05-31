@@ -7,31 +7,47 @@
 
 <select id="getPlan" resultType="DetaProdPlanVO">
 	SELECT *
-	FROM PLAN_VIEW
-    ORDER BY plan_deta_id
+	  FROM PLAN_VIEW
+     ORDER BY plan_deta_id
 </select>
 
 <select id="getPlanFilter" resultType="DetaProdPlanVO" parameterType="PlanDataVO">
 	SELECT *
-	FROM PLAN_VIEW
-	WHERE (cp_name = #{productName} OR #{productName} IS NULL)
-  	AND (plan_deta_id = #{planNo} OR #{planNo} IS NULL)
-  	AND (emp_name = #{writer} OR #{writer} IS NULL)
+	  FROM PLAN_VIEW
+	 WHERE (cp_name = #{productName} OR #{productName} IS NULL)
+  	   AND (plan_deta_id = #{planNo} OR #{planNo} IS NULL)
+  	   AND (emp_name = #{writer} OR #{writer} IS NULL)
   	${statusFilter}
-    ORDER BY plan_deta_id
+     ORDER BY plan_deta_id
 </select>
 
 <select id="xxxxx" resultType="DetaProdPlanVO">
-	SELECT a.type, a.PLAN_HEAD_ID, b.MAT_ID, c.CP_name, b.deta_qt, b.good_qt,a.plan_due_date, TO_char(b.START_DATE, 'yyyy-MM-dd') AS start_date, TO_char(b.END_DATE, 'yyyy-MM-dd') AS end_date, b.MEMO
-	FROM PROD_PLAN a left JOIN DETA_PROD_PLAN b ON a.PLAN_HEAD_ID = b.PLAN_HEAD_ID
-        left JOIN COMPLETE_PROD c ON b.MAT_ID = c.CP_ID
+	SELECT a.type, 
+	       a.PLAN_HEAD_ID, 
+	       b.MAT_ID, 
+	       c.CP_name, 
+	       b.deta_qt, 
+	       b.good_qt,
+	       a.plan_due_date, 
+	       TO_char(b.START_DATE, 'yyyy-MM-dd') AS start_date, 
+	       TO_char(b.END_DATE, 'yyyy-MM-dd') AS end_date, 
+	       b.MEMO
+	       
+	  FROM PROD_PLAN a 
+	  left JOIN DETA_PROD_PLAN b ON a.PLAN_HEAD_ID = b.PLAN_HEAD_ID
+      left JOIN COMPLETE_PROD c ON b.MAT_ID = c.CP_ID
+      
     ORDER BY a.plan_deta_id
 </select>
 
 <select id="getSorder" resultType="SorderVO">
-	SELECT a.ORD_ID, a.BUS_ID, c.BUS_NAME, TO_char(b.ORD_END_DATE, 'yyyy-MM-dd') AS ORD_END_DATE, TO_char(a.ORD_DATE, 'yyyy-MM-dd') AS ORD_DATE ,a.ORD_STAT
-	FROM SORDER a LEFT JOIN DET_ORD b ON a.ORD_ID = b.ORD_ID
-    LEFT JOIN BUSINESS C ON a.BUS_ID = c.BUS_ID
+	SELECT a.ORD_ID, 
+	       a.BUS_ID, c.BUS_NAME, TO_char(b.ORD_END_DATE, 'yyyy-MM-dd') AS ORD_END_DATE, 
+	       TO_char(a.ORD_DATE, 'yyyy-MM-dd') AS ORD_DATE ,
+	       a.ORD_STAT
+	  FROM SORDER a 
+	  LEFT JOIN DET_ORD b ON a.ORD_ID = b.ORD_ID
+      LEFT JOIN BUSINESS C ON a.BUS_ID = c.BUS_ID
 </select>
 
 <select id="getdetOrd" resultType="detOrdVO">
@@ -47,8 +63,18 @@
 </select>
 
 <insert id="addProdPlan" parameterType="addPlanVO">
-	INSERT INTO PROD_PLAN (PLAN_HEAD_ID, TYPE, PLAN_REG_DATE, EMP_ID,PLAN_START,PLAN_END)
-	values ( #{planHeadId}, #{type}, #{regDate}, #{empName}, TO_DATE(#{startDate},'yyyy-MM-dd'), TO_DATE(#{endDate},'yyyy-MM-dd'))
+	INSERT INTO PROD_PLAN (PLAN_HEAD_ID, 
+	                       TYPE, 
+	                       PLAN_REG_DATE, 
+	                       EMP_ID,
+	                       PLAN_START,
+	                       PLAN_END)
+	values ( #{planHeadId}, 
+	         #{type}, 
+	         #{regDate}, 
+	         #{empName}, 
+	         TO_DATE(#{startDate},'yyyy-MM-dd'), 
+	         TO_DATE(#{endDate},'yyyy-MM-dd'))
 </insert>
 
 <insert id="addDetProdPlan" parameterType="addPlanVO">
@@ -67,19 +93,35 @@
 </select>
 
 <select id="getDetaPlanList" resultType="addPlanVO">
-	SELECT a.PLAN_DETA_ID, a.MAT_ID AS CP_ID, c.CP_NAME, a.DETA_QT, b.SUM_QT, a.CMPLT_ST
-	FROM DETA_PROD_PLAN a  LEFT OUTER JOIN (SELECT DISTINCT a.PLAN_DETA_ID, SUM(b.DETA_QT) AS SUM_QT
-	FROM plan_and_worklink a LEFT OUTER JOIN DETA_WORK_ORDR b ON a.WK_DETA_ID = b.WK_DETA_ID
-	GROUP BY a.PLAN_DETA_ID
-	) b ON a.PLAN_DETA_ID = b.PLAN_DETA_ID
-	    LEFT OUTER JOIN COMPLETE_PROD c ON a.MAT_ID = c.CP_ID 
+with work as (
+ SELECT DISTINCT 
+        a.PLAN_DETA_ID, 
+        SUM(b.DETA_QT) AS SUM_QT
+   FROM plan_and_worklink a 
+   LEFT OUTER JOIN DETA_WORK_ORDR b 
+     ON a.WK_DETA_ID = b.WK_DETA_ID
+  GROUP BY a.PLAN_DETA_ID	
+)
+	SELECT a.PLAN_DETA_ID, 
+	       a.MAT_ID AS CP_ID, 
+	       c.CP_NAME, 
+	       a.DETA_QT, 
+	       b.SUM_QT, 
+	       a.CMPLT_ST
+	 
+	  FROM DETA_PROD_PLAN a  
+	  LEFT OUTER JOIN work b 
+	    ON a.PLAN_DETA_ID = b.PLAN_DETA_ID
+	  LEFT OUTER JOIN COMPLETE_PROD c 
+	    ON a.MAT_ID = c.CP_ID
+	  
     WHERE a.PLAN_HEAD_ID = #{planHeadId}
 	ORDER BY a.PLAN_DETA_ID
 </select>
 
 <select id="getProcessList" resultType="ProcessVO">
 	SELECT *
-	FROM PROCESS
+	  FROM PROCESS
 </select>
 
 <select id="getMaterialList" resultType="MatVO">
@@ -253,11 +295,11 @@
 <!-- ======================================================== -->
 <select id="getWorkList" resultType="DetaWorkOrdrVO">
 	SELECT *              
-	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
+	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT MAT_ID AS CP_ID, MAT_NAME AS CP_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
 	FROM MATERIAL
 	UNION ALL
 	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
-	FROM SEMI_PROD) b ON a.CP_ID = b.MAT_ID
+	FROM SEMI_PROD) b ON a.CP_ID = b.CP_ID
         LEFT OUTER JOIN employee c ON a.EMP_ID = c.EMP_ID
     WHERE CMPLT_ST != '작성중'
     ORDER BY WK_HEAD_ID
@@ -280,7 +322,7 @@
   		AND a.START_DATE BETWEEN TO_DATE(#{workFrom}, 'yyyy-MM-dd') AND TO_DATE(#{workTo}, 'yyyy-MM-dd')
   	</if>
   	<if test="makeFrom != ''">
-  		AND a.START_DATE BETWEEN TO_DATE(#{makeFrom}, 'yyyy-MM-dd') AND TO_DATE(#{makeTo}, 'yyyy-MM-dd')
+  		AND TO_DATE(SUBSTR(a.WK_HEAD_ID,1,8),'yyyyMMdd') BETWEEN TO_DATE(#{makeFrom}, 'yyyy-MM-dd') AND TO_DATE(#{makeTo}, 'yyyy-MM-dd')
   	</if>
     ORDER BY WK_HEAD_ID
     

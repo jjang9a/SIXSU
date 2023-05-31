@@ -5,7 +5,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	layout:decorate="~{layout/template}">
 <head>
 <meta charset="UTF-8">
-<title>신규</title>
+<title>수정</title>
 <!-- 토스트~ -->
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 <!-- 부트스트라프 -->
@@ -40,6 +40,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		border: 1px solid black;
 		padding: 20px;
 		float: left;
+		display: none;
 	}
 	#plan_search1{
 		width: 45%;
@@ -58,7 +59,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		border: 1px solid black;
 		padding: 20px;
 		float: left;
-		display: none;
+		
 	}
 	#left_search{
 		width: 48%;
@@ -72,6 +73,12 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		float: left;
 		margin-left: 20px;
 		text-align: right;
+	}
+	#topBtnContainer{
+		width: 100%
+	}
+	#leftBtn{
+		margin-bottom: 10px;
 	}
 	#rightBtn{
 		float: right;
@@ -106,16 +113,19 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 </head>
 <body>
 	<div layout:fragment="content">
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 등록</h1>
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">지시 수정</h1>
 	<hr>
 	<div class="btn_container">
-		
-		<button class="moveBtn sixBtn4">이동</button>
+	<div id="topBtnContainer">
+		<div id="leftBtn">
+			<button class="moveBtn sixBtn4">이동</button>
+		</div>
 		
 		<div id="rightBtn">
 			<button class="planBtn sixBtn4">생산계획</button>
 			<button class="bomBtn sixBtn4">공정등록</button>
 		</div>
+	</div>	
 	</div>
 	<div class="addContainer">
 	
@@ -265,10 +275,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		
 	<script th:inline="javascript">
     // Thymeleaf에서 값을 가져와서 JavaScript 변수에 할당
-    var orderCode = /*[[${orderCode}]]*/ '';
+    var orderCode = /*[[${headCode}]]*/ '';
 
     // JavaScript를 사용하여 placeholder 값을 설정
     document.getElementById("orderCodeInput").placeholder = orderCode;
+    document.getElementById("orderCodeInput").value = orderCode;
     
 </script>	   
 	
@@ -381,15 +392,17 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 		//첫 페이지에서 뜨는 데이터
 		window.onload = function(){
-			
+			let headCode = $('#orderCodeInput').val();
+			console.log('HeadCode IS =' + headCode)
 			$.ajax({
-				url : "/ajax/getPlanList",
-				method : "GET",
-				dataType : "JSON",
+				url : "/ajax/modifyFirstList",
+				method : "POST",
+				data :  {data : headCode},
 				success : function(result){
 					console.log("첫 출력값 > ")
 					console.dir(result);
-					plan_search1.resetData(result);
+					plan_search1.resetData(result[0]);
+					grid1.resetData(result[1]);
 				},
 				error : function(reject){
 					console.log(reject)
@@ -593,7 +606,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		var grid_mat = new tui.Grid({
 		    el: document.getElementById('grid_mat'),
 		    scrollX: false,
-		    scrollY: false,
+		    scrollY: true,
 		    rowHeaders: ['rowNum'],
 		    columns : [ {
 				header : '코드',
@@ -613,7 +626,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			}
 			]
 		  });
-		
+		grid_mat.setBodyHeight(520);
 			$.ajax({
 				url: "/basic/activeMatList",
 				method: "GET",
@@ -706,6 +719,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	$('.planBtn').on('click', function(){
 		$('.plan_monitor').css('display', 'block')	
 		$('.bom_monitor').css('display', 'none')
+		setTimeout(() =>
+	    (plan_search1.refreshLayout(), 200),
+	    (plan_search2.refreshLayout(), 200))
+	    
 	})
 	
 	$('.bomBtn').on('click', showBom)
@@ -750,7 +767,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				}
 			})
 		showBom()
-		bom_search2.resetData();
+		bom_search2.resetData({});
 		selectBomWorkCode = '';
 		selectMatWorkCode = '';
 	})
@@ -822,6 +839,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	})
 	
 	$('.plusMatBtn').on('click', function(){
+		console.log('여기맞음')
 		if(공정코드선택여부() == true){
 			$.ajax({
 				url : "/ajax/plusMatList",
@@ -864,7 +882,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	// 공정조회 모달창
 	bom_search1.on('click',ev => {
 		let columnName = ev.columnName;
+		
 		selectBomWorkCode = ev.rowKey;
+		
 		if (columnName === 'procId'){ 
 			$('#process_modal').modal('show');
 			//특정 Cell의 데이터 변경 //나중에 제품클릭후 작동되는 함수로 옮길거임
@@ -935,7 +955,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				success : function(result){
 					console.dir(result);
 					bom_search2.resetData(result);
-					selectBomWorkCode = '';
 					},
 					error : function(reject){
 						console.log(reject)
@@ -1003,6 +1022,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		bom_search2.setValue(cell.rowKey, 'matSize', cpSize)
 		$('#mat_modal').modal('hide');
 	})
+	
+	
 	
 	
 	
@@ -1083,7 +1104,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 					});
 				})
 				
-				
 	$('.submitBtn').on('click',function(){
 		console.log('WorkCode : ')
 		let workCode = document.getElementById("orderCodeInput").placeholder
@@ -1103,20 +1123,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		})
 	})		
 	
-	$('.cancelBtn').on('click', function(){
-		$.ajax({
-			url: "/ajax/workDataDelete",
-			method: "GET",
-			success: function(result){
-				console.log(result)
-				alert(result)
-			},
-			error: function(reject){
-				console.err(reject)
-			}
-		})
-		
-	})
+	
+	
 	///////////////////함수저장소//////////////////
 	
 	window.onbeforeunload = function(){
@@ -1150,9 +1158,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			return true
 		}
 	}
-	
-	
-	
 	
 	
 	

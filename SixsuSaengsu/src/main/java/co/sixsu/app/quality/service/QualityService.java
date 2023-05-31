@@ -34,6 +34,7 @@ public interface QualityService {
 		
 		// 출고 검사 관련
 		List<ShipInspVO> shInspList(); //  출고 검사 목록 리스트
+		ShipInspVO shipInspAdd(ShipInspVO ship); // 출고 검사 등록
 		
 		
 		// 사용 보류
