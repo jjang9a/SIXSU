@@ -219,7 +219,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	        perPage: 10
 	      }
 	  });
-	  
+	grid1.setBodyHeight(400);
+	
 	window.onload = function(){
 			
 			$.ajax({
@@ -494,9 +495,19 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 
 	grid1.on('click',ev => {
 		//클릭한 세부지시에 대한 공정가져오기
-		
+		let link = '/work/modifyWorkPage?data=' + grid1.getRow(ev.rowKey).wkDetaId;
 		if (ev.columnName === 'edit'){ 
 		    console.log('오호홓ㅎㅎ 수정클릭되었다');
+		    
+		    if(grid1.getRow(ev.rowKey).cmpltSt === '완료'){
+		    	if(confirm(" 완료된 지시 입니다. 정말 수정하시겠습니까? \n\n 세부지시Code : " + grid1.getRow(ev.rowKey).wkDetaId) == true){
+		    		location.href = link;
+		    	}else{
+		    		return;
+		    	}
+		    }	
+		    location.href = link;
+		    return;
 		}
 		
 		$.ajax({
