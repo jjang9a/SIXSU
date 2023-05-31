@@ -17,6 +17,11 @@ public interface ShipMapper {
 	public int shipPro(OrdVO ord);
 	public int insertProShip(ShipVO vo);
 	public int updateCpLot(LotVO vo);
-	public List<ShipVO> readyShipList();
+	public List<ShipVO> readyShipList(String keyword);
+	
+	
+	public void completeShip(String ordDetId);
+	
+	
 	
 }

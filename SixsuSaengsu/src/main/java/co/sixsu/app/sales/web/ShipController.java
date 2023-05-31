@@ -62,10 +62,18 @@ public class ShipController {
 	
 	@ResponseBody
 	@RequestMapping("readyShipList")
-	public List<ShipVO> readyShipList(){
-		List<ShipVO> list = service.readyShipList();
+	public List<ShipVO> readyShipList(@RequestParam(required = false) String result){
+		List<ShipVO> list = service.readyShipList(result);
 		
 		return list;
+	}
+	
+	@ResponseBody
+	@RequestMapping("completShip")
+	public List<ShipVO> compeletShip(ShipVO vo){
+		
+		service.completeShip(vo);
+		return null;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package co.sixsu.app.work.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import co.sixsu.app.work.domain.detOrdVO;
 import co.sixsu.app.work.domain.workBomVO;
 import co.sixsu.app.work.service.WorkService;
 
+//김인규 생산관리페이지
 @RestController
 @RequestMapping("ajax")
 public class WorkAjaxController {
@@ -80,16 +82,9 @@ public class WorkAjaxController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//@RequestMapping(value = "addPlanAjax", method = RequestMethod.POST)
 	@RequestMapping("addPlanAjax")
-	public void addPlan(@RequestBody List<addPlanVO> data) {
-		System.out.println(data.size());
-		for(addPlanVO i : data) {
-			System.out.println(i);
-			System.out.println(i.getOrdDetId());
-			System.out.println(i.getCpId());
-			System.out.println(i.getOrdQt());
-		}
+	public int addPlan(@RequestBody List<addPlanVO> data) {
 		int result = service.addPlan(data);
-		return ;
+		return result;
 	}
 		
 	@RequestMapping("sorderListAjax")
@@ -154,13 +149,23 @@ public class WorkAjaxController {
 		return list;
 	}
 	
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 */
 	@RequestMapping("getWkBomList")
 	public List<workBomVO> getWkBomList(@RequestParam String data) {
-		System.out.println(data);
+		System.out.println("HIRE IS WorkAjaxController AND My data IS = " + data);
 		List<workBomVO> list = service.getWkBomList(data);
 		return list;
 	}
 	
+	/**
+	 * 
+	 * @param data : 
+	 * @return
+	 */
 	@RequestMapping("plusBomList")
 	public List<workBomVO> plusBomList(@RequestParam String data) {
 		System.out.println(data);
@@ -234,10 +239,11 @@ public class WorkAjaxController {
 		return service.workDataDelete();
 	}
 	
-	@RequestMapping("testemp")
-	public String testemp() {
-		System.err.println("들어왔다");
-		return null;
+	@RequestMapping("modifyFirstList")
+	public List<Object> modifyFirstList(@RequestParam String data) {
+		System.out.println("HeadCode IS = " + data);
+		List<Object> allList = service.modifyFirstList(data);
+		return allList;
 	}
 	
 	
