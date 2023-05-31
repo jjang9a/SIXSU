@@ -6,20 +6,457 @@
 <head>
 <meta charset="utf-8">
 <title>비가동 관리 페이지</title>
+	<style>
+		.sixBtn2 {
+			margin-right: 7px;
+		}
+		.operBtn {
+			margin-top: 100px;
+			height: 150px;
+			width: 150px;
+			margin-right: 60px;
+			border-radius: 25px;
+			font-weight: bolder;
+			font-size: 25px;
+		}
+		#startBtn { 
+			background-color: #ea9999;
+			float: right;
+			
+		}
+		#endBtn {
+			background-color: #6697c3;
+			float: right;
+		}
+		#addForm td {
+			padding: 4px 10px;
+			text-align: left;
+		}
+		#select{
+			width: 188.44px;
+			height: 28.18px;
+		}
+		.modalTbl {
+			margin: auto;
+			text-align: center;
+			height: 330px;
+		}
+		.modal-body {
+			background: #e5edf5;
+		}
+		.modalTbl td {
+			padding-right: 20px;
+		}
+		.modal-footer {
+			text-align: center;
+		}
+	</style>
 </head>
+
 <body>
-
-
 	<div layout:fragment="content">
 
+		<br>
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">비가동 관리 페이지</h1>
+		
 		<br>
 		<hr>
-
-
-
-		<hr>
 		<br>
+			<!-- 인풋창 -->
+		<form action="mt-4" method="post" id="addForm">
+			<table>
+				<tr>
+					<td>비가동 코드<span class="needStar"> * </span></td>
+					<td><input type="text" name="operCode" id="operCode"
+						style="background: #ccdceb;" class="empty"></td>
+				</tr>
+				<tr>
+					<td>설비코드<span class="needStar"> * </span></td>
+					<td colspan="2"><input type="text" name="equCode" id="equCode"
+						class="empty" readonly style="background: #ccdceb;">
+						<button type="button" id="eqBtn" class="sixBtn2"
+							style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
+				</tr>
+				<tr>
+					<td>설비명<span class="needStar"> * </span></td>
+					<td><input type="text" name="equName" id="equName"
+						class="empty"></td>
+				</tr>
+				
+				<tr>
+					<td>비가동 구분<span class="needStar"> *</span></td>
+					  <td>
+						<select id="select" name="operType">
+						<option value='' selected>===== 선택 =====</option>
+						<option th:each="type : ${types}" th:value="${type.comId}" th:text="${type.comName}"></option>
+					    <!-- <option value="세척">세척</option>
+						<option value="중지">중지</option>
+						<option value="점검">점검</option> -->
+						</select>
+					  </td> 
+				</tr>
+				<tr>
+					<td>비가동<span class="needStar"> *</span></td>
+					<td><input type="text" name="operStart" id="operStart"
+						class="empty" readonly style="background: #ccdceb;"></td>
+				</tr>
+
+
+
+				<!-- 가동 비가동 버튼 -->
+				<div id="">
+					<button type="button" class="operBtn" style="" id="startBtn">비가동</button>
+					<button type="button" class="operBtn" style="" id="endBtn">가동</button>	
+				</div>
+				<!-- 가동 비가동 버튼 -->
+
+
+				<tr>
+					<td>가동<span class="needStar"> *</span></td>
+					<td><input type="text" name="operFnish" id="operFnish"
+						class="empty" readonly style="background: #ccdceb;"></td>
+					
+				</tr>
+				<tr>
+					<td>비고<span class="needStar"> *</span></td>
+					<td><input type="text" name="operNote" id="operNote"
+						class="empty"></td>
+				</tr>
+				<tr>
+					<td>담당자<span class="needStar"> *</span></td>
+					<td><input type="text" name="empId" id="empId" class="empty"></td>
+				</tr>
+			</table>
+
+			<div>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="delBtn">삭제</button>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="modBtn">수정</button>
+				<button type="button" class="sixBtn2" style="float: right;"
+					id="addBtn">등록</button>
+				
+			</div>
+		<br><br> 
+
+		<!-- 설비코드 선택 Modal 시작 -->
+		<div class="modal fade" id="eqModal" data-bs-backdrop="static"
+				data-bs-keyboard="false" tabindex="-1" aria-labelledby="eqModal"
+				aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" >
+			<div class="modal-content">
+				<!-- 모달 헤더 -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="eqModalLabel"
+						style="font-family: 'MaruBuri';">설비코드 선택</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<!-- 모달 바디 -->
+				<div class="modal-body">
+					<div class="sel sel1 sel3">설비코드</div>
+					<div id="eqGrid"></div>
+				</div>
+				<!-- 모달 푸터(버튼부분) -->
+				<div class="modal-footer"></div>
+			</div>
+			</div>
+		</div>
+</form>	
+
+	<!--  그리드 시작 -->	
+	<div id="grid"></div>
+
+	<script>
+		const grid = new tui.Grid({
+			el: document.getElementById('grid'),
+			pageOptions: {
+				useClient: true,
+				perPage: 10
+			},
+			scrollX: false,
+			scrollY: false,
+			rowHeaders: ['rowNum'],
+			columns: [
+				{
+					header: '비가동 코드',
+					name: 'operCode',
+					align: 'center'
+				},
+				{
+					header: '설비코드',
+					name: 'equCode',
+					align: 'center'
+				},
+				{
+					header: '설비명',
+					name: 'equName',
+					align: 'center'
+				},
+				{
+					header: '비가동 구분',
+					name: 'operType',
+					filter: 'select',
+					align: 'center',
+					formatter: 'listItemText',
+					editor: {
+						type: 'select',
+						options: {
+						listItems:
+						[   {text: '세척', value: '세척'},
+							{text: '중지', value: '중지'},	
+							{text: '점검', value: '점검'},  ]
+						}
+					}
+				},
+				{
+					header: '비가동',
+					name: 'operStart',
+					align: 'center'
+				},
+				{
+					header: '가동',
+					name: 'operFnish',
+					align: 'center'
+				},
+				{
+					header: '비고',
+					name: 'operNote',
+					align: 'center'
+				}
+			]
+		});
+
+		// 설비코드 리스트
+		const eqGrid = new tui.Grid({
+				el: document.getElementById('eqGrid'),
+				scrollX: false,
+				scrollY: true,
+				minBodyHeight: 400,
+				columns: [{
+					header: '설비코드',
+					name: 'equCode',
+					align: 'center',
+				},
+				{
+					header: '설비명',
+					name: 'equName',
+					align: 'center'
+				}
+			   ]
+			});
+			// 그리드 높이 & 색 변경 테마 적용
+			grid.setBodyHeight(400);
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			// 설비코드 조회 버튼을 클릭 했을떄 설비코드 리스트를 불러옴.
+			$('#eqBtn').on('click', function (e) {
+
+			$.ajax({
+				url: "equCon",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					eqGrid.resetData(result);
+					console.log(result)
+				},
+				error: function (reject) {
+					console.log(reject)
+				}
+			})
+			setTimeout(() => eqGrid.refreshLayout(), 500);
+			$('#eqModal').modal('show');
+			});
+
+			// 설비코드 클릭시 자동으로 등록인풋창에 값이 입력됨
+			eqGrid.on('click', ev => {
+			const focusCell = eqGrid.getFocusedCell()
+			let dataRow = eqGrid.getRow(ev.rowKey);
+
+			$('#equCode').val(dataRow.equCode);
+			$('#eqModal').modal('hide');
+			})
+
+			// 페이지가 열리면 기능작동 - 리스트 띄워주기.  
+			window.onload = function () {
+
+			$.ajax({
+				url: "equOperList",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					grid.resetData(result);
+				}
+			});
+			};
+
+			// 색 테마 적용
+			tui.Grid.applyTheme('default', {
+			cell: {
+				header: {
+					background: '#e5edf5'
+				},
+				selectedRowHeader: {
+					background: '#e5edf5'
+				},
+				normal: {
+					background: '#ffffff'
+				}
+			}
+			});
+			
+			// 클릭시 설비 정보데이터 인풋창에 값 불러오기.
+			let selRow = '';
+			grid.on('click', ev => {
+				// focus된 셀이 있는 열 전체 select 처리
+				if(selRow != ev.rowKey){
+					grid.removeRowClassName(selRow, 'cell-pink');
+				}
+				grid.addRowClassName(ev.rowKey, 'cell-pink');
+				selRow = ev.rowKey;
+				// 클릭한 Row의 정보를 dataRow에 저장
+				var dataRow = grid.getRow(ev.rowKey);
+				console.log(dataRow);
+
+				// 클릭시 인풋창에 데이터 불러오기.
+				$('#operCode').val(dataRow.operCode); // 비가동코드  
+				$('#equCode').val(dataRow.equCode); // 설비코드
+				$('#equName').val(dataRow.equName); // 설비명
+				$('#operType').val(dataRow.operType); // 비가동구분  
+				$('#operStart').val(dataRow.operStart); // 비가동 시작시점
+				$('#operFnish').val(dataRow.operFnish); // 비가동 종료시점
+				$('#operNote').val(dataRow.operNote); // 비가동 비고
+				$('#empId').val(dataRow.empId); // 담당자
+
+				// 비가동 구분 값에 따라 다르게 불러옴.
+				// dataRow.operType == ' ~ ' 일때 select name='operType' 안에 있는 값을 불러온다.
+				if (dataRow.operType == '중지') {
+					console.log('중지')
+					$("select[name='operType']").val('중지');
+					
+				} else if (dataRow.operType == '세척'){
+					console.log('세척')
+					$("select[name='operType']").val('세척');
+					
+				} else  {
+					console.log('점검')
+					$("select[name='operType']").val('점검');
+				}
+			});
+			
+			// 등록버튼 기능 구현
+			$('#startBtn').on('click', function (e) {
+				if (selRow === '') {
+					alert('등록 정보를 입력하시오.')
+				} else {
+				
+				console.log($('#addForm').serialize())
+				$.ajax({
+					url: 'startIn',
+					type: 'post',
+					data: $('#addForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						alert('등록되었습니다');
+						console.log('result : ');
+						console.log(result);
+						//등록 버튼을 누르면 리스트에 삽입된다.     
+						const appendedData = result
+						grid.appendRow(appendedData);
+						// 리스트를 리셋. 등록데이터가 바로 뜸.
+						grid.resetData(result);
+						setTimeout(() => orderingGrid.refreshLayout(), 1000);
+					},
+					error: function (reject) {
+						alert('등록 중 오류가 발생했습니다!');
+						console.log(reject);
+					}
+				});
+				// 인풋창을 비워줌
+				$('#addForm input').val('');
+				$("select[name='equSuit']").val('');
+			}
+			});
+			
+			
+
+
+			// 비가동관리(수정) 
+			$('#modBtn').on('click', function (e) {
+				if (selRow == '') {
+					alert('수정할 데이터가 없습니다.')
+				} else {
+				
+				console.log($('#addForm').serialize())
+				$.ajax({
+					url: 'oUpdate',
+					type: 'post',
+					data: $('#addForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						console.log(result);
+						alert('수정되었습니다');
+						const setData = result
+						grid.setRow(selRow, setData);
+						selRow = '';
+					},
+					error: function (reject) {
+						alert('수정 중 오류가 발생했습니다!');
+						console.log(reject);
+					}
+				});
+				$('.empty').val('');
+				$("select[name='operType']").val('');
+			  }
+			})
+
+			// 비가동 관리(삭제)
+			$('#delBtn').on('click', function (e) {
+				if (selRow == '') {
+					alert('삭제 정보를 선택하시오.')
+				} else {
+				
+				e.preventDefault();
+				console.log(selRow);
+
+				var operCode = $('#operCode').val();
+				$.ajax({
+					url: 'oDel', 
+					type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
+					contentType: "application/json",
+					data: JSON.stringify({
+						operCode: $('#operCode').val()
+					}), // 삭제할 설비의 ID를 전송
+					success: function (result) {
+						// 삭제 성공 시의 처리
+						console.log('설비가 성공적으로 삭제되었습니다.');
+						alert('설비정보가 성공적으로 삭제되었습니다.');
+
+						grid.removeRow(selRow)
+						selRow = '';
+						// 삭제 기능을 하면서 인풋창을 비워주고 셀렉트 리셋.
+						$('.empty').val('');
+						$("select[name='operType']").val('');
+					},
+					error: function (reject) {
+						console.log('설비 삭제 중 오류가 발생했습니다.');
+						console.log('오류 메시지:', reject);
+						alert('설비 삭제 중 오류가 발생했습니다..');
+					}
+				});
+				}
+			});
+
+		</script>
 	</div>
 </body>
 </html>
