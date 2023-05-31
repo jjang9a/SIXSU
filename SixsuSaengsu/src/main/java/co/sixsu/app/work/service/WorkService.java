@@ -72,4 +72,6 @@ public interface WorkService {
 
 	public String workDataDelete();
 
+	public List<Object> modifyFirstList(String data);
+
 }
