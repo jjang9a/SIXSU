@@ -12,6 +12,7 @@ import co.sixsu.app.basic.domain.MaterialVO;
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.basic.domain.SearchDTO;
+import co.sixsu.app.sales.domain.GridDataVO;
 
 public interface BasicService {
 
@@ -23,10 +24,10 @@ public interface BasicService {
 	
 	List<CodeVO> groupList(); // 그룹 코드 조회
 	List<CodeVO> commList(SearchDTO dto); // 특정 공통 코드 조회
-	boolean addCode(List<CodeVO> list); // 공통코드 등록(추가)
-	boolean updateCode(List<CodeVO> list); // 공통코드 수정
+	boolean updateCode(GridDataVO<CodeVO> list); // 공통코드 추가, 수정
 	boolean addGroup(CodeVO code); // 그룹코드 추가
 	public List<Map<String, String>> commGroupList(String code); // 그룹코드별 조회
+	List<CodeVO> getComList(String key); // 공정 구분 목록
 	
 	List<ProductVO> cpList(); // 완제품 목록 조회
 	boolean addCp(ProductVO prod); // 완제품 등록
@@ -50,7 +51,6 @@ public interface BasicService {
 	List<BusVO> searchBus(SearchDTO dto); // 거래처 검색
 	
 	List<ProcessVO> procList(); // 공정 목록 조회
-	List<CodeVO> getComList(String key); // 공정 구분 목록
 	boolean addProc(ProcessVO mat); // 공정 등록
 	boolean updateProc(ProcessVO mat); // 공정 수정
 	List<ProcessVO> searchProc(SearchDTO dto); // 공정 검색
@@ -61,11 +61,9 @@ public interface BasicService {
 	List<ProductVO> activeMaterialList(); // 활성화된 반제품 조회
 	List<ProcessVO> activeProcList(); // 활성화된 공정 조회
 	boolean addBom(List<BomVO> list); // BOM 등록
-	boolean updateBom(List<BomVO> list); // BOM 수정
+	boolean updateBom(GridDataVO<BomVO> list); // BOM 수정
 	boolean deleteBom(List<BomVO> list); // BOM 삭제
 	
 	List<FlowVO> flowList(String id); // 제품별 공정흐름도
-	boolean addFlow(List<FlowVO> list); // 공정흐름도 등록
-	boolean updateFlow(List<FlowVO> list); // 공정흐름도 수정
-	boolean deleteFlow(List<FlowVO> list); // 공정흐름도 삭제
+	boolean updateFlow(GridDataVO<FlowVO> list); // 공정흐름도 등록, 수정, 삭제
 }

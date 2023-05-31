@@ -24,6 +24,7 @@ import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.basic.domain.SearchDTO;
 import co.sixsu.app.basic.service.BasicService;
+import co.sixsu.app.sales.domain.GridDataVO;
 
 @Controller
 public class BasicController {
@@ -95,14 +96,8 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/addCode") // 공통코드 등록
-	public boolean addCode(@RequestBody List<CodeVO> list) {
-		return service.addCode(list);
-	}
-
-	@ResponseBody
-	@PostMapping("/basic/modifyCode") // 공통코드 수정
-	public boolean modifyCode(@RequestBody List<CodeVO> list) {
+	@PostMapping("/basic/modifyCode") // 공통코드 등록, 수정
+	public boolean modifyCode(@RequestBody GridDataVO<CodeVO> list) {
 		return service.updateCode(list);
 	}
 	
@@ -332,7 +327,7 @@ public class BasicController {
 
 	@ResponseBody
 	@PostMapping("/basic/modifyBom") // BOM 수정
-	public boolean modifyBom(@RequestBody List<BomVO> list) {
+	public boolean modifyBom(@RequestBody GridDataVO<BomVO> list) {
 		return service.updateBom(list);
 	}
 	
@@ -346,32 +341,20 @@ public class BasicController {
 	// 제품 공정흐름도
 	
 	@GetMapping("/basic/flowManage")
-	public void flowManage() {
+	public void flowManage() { // 공정흐름도 관리 페이지 띄우기
 	}
 	
 	@ResponseBody
-	@GetMapping("/basic/flowList")
+	@GetMapping("/basic/flowList") // 제품별 공정흐름도
 	public List<FlowVO> flowList(@RequestParam String id){
 		return service.flowList(id);
 	}
-	
-	@ResponseBody
-	@PostMapping("/basic/addFlow") // 제품공정 등록
-	public boolean addFlow(@RequestBody List<FlowVO> list) {
-		return service.addFlow(list);
-	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifyFlow") // 제품공정 수정
-	public boolean modifyFlow(@RequestBody List<FlowVO> list) {
+	@PostMapping("/basic/modifyFlow") // 제품공정 등록, 수정, 삭제
+	public boolean modifyFlow(@RequestBody GridDataVO<FlowVO> list) {
 		return service.updateFlow(list);
 	}
-	
-	@ResponseBody
-	@PostMapping("/basic/deleteFlow") // 제품공정 수정
-	public boolean deleteFlow(@RequestBody List<FlowVO> list) {
-		System.out.println(list);
-		return service.deleteFlow(list);
-	}
+
 	
 }

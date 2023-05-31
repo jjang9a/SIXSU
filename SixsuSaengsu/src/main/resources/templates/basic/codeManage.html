@@ -376,7 +376,6 @@
 					};
 					// 그리드에 빈 열 추가
 					commGrid.appendRow(newData);
-					//newCount = commGrid.getRowCount();
 				}
 			})
 
@@ -389,34 +388,23 @@
 					newRowsArr.push(commGrid.getRow(i));
 				} */
 
-				// 생성된 열이 0개가 아니라면 insert ajax 호출
-				if (commGrid.getModifiedRows().createdRows.length != 0) {
-					$.ajax({
-						url: "/basic/addCode",
-						method: "POST",
-						dataType: "JSON",
-						contentType: "application/json",
-						//data: JSON.stringify(newRowsArr), 
-						data: JSON.stringify(commGrid.getModifiedRows().createdRows),
-						error: function (result) {
-							alert('등록 과정에서 에러가 발생하였습니다.')
-						}
-					})
-				}
 				// 수정된 열이 0개가 아니라면 update ajax 호출
-				if (commGrid.getModifiedRows().updatedRows.length != 0) {
+				if (commGrid.getModifiedRows().length != 0) {
 					$.ajax({
 						url: "/basic/modifyCode",
 						method: "POST",
 						dataType: "JSON",
 						contentType: "application/json",
-						data: JSON.stringify(commGrid.getModifiedRows().updatedRows),
-						error: function (result) {
+						data: JSON.stringify(commGrid.getModifiedRows()),
+						success: function (result) {
+							alert('코드정보가 저장되었습니다.')
+						},
+						error: function (reject) {
+							console.log(reject);
 							alert('업데이트 과정에서 에러가 발생하였습니다.')
 						}
 					})
 				}
-				alert('코드정보가 저장되었습니다.')
 			})
 
 			// 그룹 추가버튼 이벤트
