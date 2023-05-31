@@ -54,6 +54,10 @@
 			font-weight: bold;
 		}
 
+		.sel:hover {
+			cursor: pointer;
+		}
+
 		.sel1 {
 			float: left;
 		}
@@ -556,50 +560,23 @@
 					checkBlank = 0;
 					// 필수항목이 다 입력 된 경우에만 통신
 				} else {
-					console.log(grid.getModifiedRows())
-					// 생성된 열이 0개가 아니라면 insert ajax 호출
-					if (grid.getModifiedRows().createdRows.length != 0) {
-						$.ajax({
-							url: "/basic/addBom",
-							method: "POST",
-							dataType: "JSON",
-							contentType: "application/json",
-							data: JSON.stringify(grid.getModifiedRows().createdRows),
-							error: function (reject) {
-								console.log(reject)
-								alert('등록 과정에서 에러가 발생하였습니다.')
-							}
-						})
-					}
 					// 수정된 열이 0개가 아니라면 update ajax 호출
-					if (grid.getModifiedRows().updatedRows.length != 0) {
+					if (grid.getModifiedRows().length != 0) {
 						$.ajax({
 							url: "/basic/modifyBom",
 							method: "POST",
 							dataType: "JSON",
 							contentType: "application/json",
-							data: JSON.stringify(grid.getModifiedRows().updatedRows),
+							data: JSON.stringify(grid.getModifiedRows()),
+							success: function (result) {
+								alert('BOM정보가 저장되었습니다.');
+							},
 							error: function (reject) {
 								console.log(reject)
 								alert('업데이트 과정에서 에러가 발생하였습니다.')
 							}
 						})
 					}
-					// 삭제된 열이 0개가 아니라면 update ajax 호출
-					if (grid.getModifiedRows().deletedRows.length != 0) {
-						$.ajax({
-							url: "/basic/deleteBom",
-							method: "POST",
-							dataType: "JSON",
-							contentType: "application/json",
-							data: JSON.stringify(grid.getModifiedRows().deletedRows),
-							error: function (reject) {
-								console.log(reject)
-								alert('삭제 과정에서 에러가 발생하였습니다.')
-							}
-						})
-					}
-					alert('BOM정보가 저장되었습니다.')
 				}
 			})
 
