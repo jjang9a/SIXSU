@@ -7,6 +7,15 @@
 	<title>자재조회</title>
 <!-- 	<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
 	<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
+	<style>
+	#gridm .redcolor{
+		background-color : #ffe4e4
+	}
+	#gridm .yellowcolor{
+		background-color : #e8f71c63
+	}
+	
+	</style>
 </head>
 
 <body>
@@ -34,7 +43,7 @@
 		const gridData = [
 
 			];
-			window.onload = function () {
+			window. 0 = function () {
 				
 				$.ajax({
 					url : "/materials/matlist",
@@ -42,6 +51,22 @@
 					dataType : "JSON",
 					success : function(result) {
 						gridm.resetData(result);
+						gridm.getData().forEach(ele=>{
+							if(ele.matSafe/2>ele.matQtSum){
+								gridm.addCellClassName(ele.rowKey, 'matId','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matName','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matSize','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matSafe','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matQtSum','redcolor');
+							}else if((ele.matSafe)>ele.matQtSum){
+								//gridm.addRowClassName(ele.rowKey,'yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matId','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matName','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matSize','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matSafe','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matQtSum','yellowcolor');
+							}
+						});
 					},
  					error: function(reject) {
 						console.log(reject);

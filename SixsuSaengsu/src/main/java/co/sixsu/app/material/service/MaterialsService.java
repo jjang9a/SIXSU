@@ -28,6 +28,9 @@ public interface MaterialsService {
 	//발주 행 등록
 	int insertMatReq(MatreqVO vo);
 	
+	//발주 수정
+	void updateMatReq(List<MatreqVO> vo);
+	
 	//입고대기 리스트
 	List<MatrecWaitVO> getMatRecWaitList();
 	

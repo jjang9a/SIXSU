@@ -26,6 +26,9 @@ public interface MaterialsMapper {
 	//발주 등록
 	int insertMatReq(MatreqVO vo);
 	
+	//발주 수정
+	int updateMatReq(MatreqVO vo);
+	
 	//입고대기 리스트
 	List<MatrecWaitVO> selectMatRecWaitList();
 	

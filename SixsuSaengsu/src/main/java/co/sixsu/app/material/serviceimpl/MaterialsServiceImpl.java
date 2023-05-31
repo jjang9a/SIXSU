@@ -44,6 +44,14 @@ public class MaterialsServiceImpl implements MaterialsService{
 			return mapper.insertMatReq(vo);
 		}
 		
+		//발주 수정
+		@Override
+		public void updateMatReq(List<MatreqVO> vo) {
+			for(MatreqVO i : vo) {
+				mapper.updateMatReq(i);
+			}
+		}
+		
 		//입고대기 리스트
 		@Override
 		public List<MatrecWaitVO> getMatRecWaitList() {
@@ -195,4 +203,6 @@ public class MaterialsServiceImpl implements MaterialsService{
 			}
 			
 		}
+		
+
 }

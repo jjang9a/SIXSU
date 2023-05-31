@@ -10,7 +10,7 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재발주관리</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재발주조회</h1>
 
 		<div id="left">
 			자재명 <input type="text" id="mname">
@@ -44,12 +44,6 @@
 			<div id="left">
 				<button class="sixBtn2" id="check">조회</button>
 				<button class="sixBtn4" id="reset">초기화</button>
-			</div>
-			
-			<div class="rightBtn">
-				<button class="sixBtn4" id="appendBtn" onclick="appendBtn">발주등록</button>
-				<button class="sixBtn2" id="delete">삭제</button>
-				<button class="sixBtn2" id="updateBtn">수정</button>
 			</div>
 		</div>
 
@@ -115,15 +109,6 @@
 
 			window.onload = function () {
 				
-				function setRowDisabled(grid) {
-					let rowList = grid.getData();
-					rowList.forEach((obj) => {
-						if(obj.matReqStat != 'A'){ 
-							grid.disableRow(obj.rowKey, false);
-						}
-					});
-				}
-				
 				$.ajax({
 					url: "/materials/matreqlist",
 					method: "GET",
@@ -131,17 +116,12 @@
 					success: function (result) {
 						grid.resetData(result);
 						gridInsertRow();
-						grid.setValue(0, 'matReqStat', "A", false);
-						setRowDisabled(grid);
 					},
-					error: function(reject){
+ 					error: function(reject){
 						console.log(reject);
 					}
-					
+				
 				});
-
-
-
 				
 				//모달창 전체 거래처 리스트
 				$.ajax({
@@ -318,155 +298,6 @@
 				}]
 			});
 	
-
-
-  			tui.Grid.applyTheme('default', {
-				cell: {
-					header: {
-						background: '#e5edf5'
-					},
-					disabled : {
-						text : '#000'
-					}
-				}
-			});
-
-			
-			//등록버튼을 누르면 추가
-					
-			$('#appendBtn').on("click", function () {
-				
-				$.ajax({
-					url: "/materials/matreqlist",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-						grid.resetData(result);
-						gridInsertRow();
-						$.ajax({
-							url: "/materials/matreqlist",
-							method: "GET",
-							dataType: "JSON",
-							success: function (result) {
-								grid.resetData(result);
-								gridInsertRow();
-								grid.setValue(0, 'busId', grid.getRow(1).busId , false);
-								grid.setValue(0, 'busName', grid.getRow(1).busName , false);
-							},
-		 					error: function(reject){
-								console.log(reject);
-							}
-						
-						});
-					},
- 					error: function(reject){
-						console.log(reject);
-					}
-				
-				});
- 				console.log(JSON.stringify(grid.getRow(0)));
- 				let insertData = JSON.stringify(grid.getRow(0));
- 				$.ajax({
-					url: "/materials/insertmatreq",
-					type: "POST",
-					data: insertData,
-					contentType: 'application/json',
-					//data : {list : JSON.stringify(matReqIds)},
-					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
-					success: function (result) {
-						console.log(result);
-						alert('○발주등록완료○');
-					},
- 					error: function(reject){
-						console.log(reject);
-						alert('※발주등록실패※');
-					}
-
-				})
-				
- 				
- 			});
- 			
-			
-			//그리드 안의 내용 콘솔 찍어보기
-/* 			grid.on('click', ev=> {
-				grid.on('click', ev=> {
-		               console.log(ev.rowKey)
-		               console.log(ev.columns)
-		               //grid.addSelectionOnly(ev.rowKey);
-		               const focusCell = grid.getFocusedCell()
-		               console.log(focusCell)
-		               
-		               let dataRow = grid.getRow(ev.rowKey);
-		               console.log(dataRow);
-		               console.log('발주번호 : ' + dataRow.matReqId);
-		            })
-			})  */
-
-
-
-			//체크된 항목 삭제	    
-			$('#delete').on("click", function () {
-				console.log(grid.getCheckedRows());
-				console.log(grid.getCheckedRows().length);
-				var matReqIds = [];
-				console.log("abcd");
-				for (var i = 0; i < grid.getCheckedRows().length; i++) {
-					console.log(grid.getCheckedRows()[i].matReqId);
-					matReqIds.push(grid.getCheckedRows()[i].matReqId);
-
-				}
-
-				$.ajax({
-					url: "/materials/delmatreq",
-					type: "POST",
-					contentType: 'application/json',
-					data: JSON.stringify(grid.getCheckedRows()),
-					success: function (result) {
-						console.log(result);
-					},
- 					error: function(reject){
-						console.log(reject);
-					}
-				})
-
-
-				grid.removeCheckedRows(false);
-				grid.blur();
-				
-				
-			});
-			
- 			$('#updateBtn').on('click', function () {
- 				console.log(JSON.stringify(grid.getCheckedRows()));
-				$.ajax({
-					url: "/materials/updatematreq",
-					type: "POST",
-					contentType: 'application/json',
-					data: JSON.stringify(grid.getCheckedRows()),
-					success: function (result) {
-						console.log(result);
-						$.ajax({
-							url: "/materials/matreqlist",
-							method: "GET",
-							dataType: "JSON",
-							success: function (result) {
-								grid.resetData(result);
-								gridInsertRow();
-								grid.setValue(0, 'matReqStat', "A", false);
-								setRowDisabled(grid);
-							},
-							error: function(reject){
-								console.log(reject);
-							}
-							
-						});
-					},
- 					error: function(reject){
-						console.log(reject);
-					}
-				})
-			}) 
 			
 			//조회하기
 			$('#check').on("click", function () {
@@ -495,7 +326,6 @@
 					dataType: "JSON",
 					success: function (result) {
 						grid.resetData(result);
-						gridInsertRow();
 					},
  					error: function(reject){
 						console.log(reject);
@@ -503,57 +333,7 @@
 				});
 				
 			});
-			
-			function gridInsertRow(){
-				let prevData = grid.getData();
-				
-				for(let row of prevData){
-					row.rowKey += 1;
-				}
-				prevData.splice(0, 0, {});
-				
-				grid.resetData(prevData);
-			}
-
-			
-	    	let selectRow = '';
-	    	grid.on('click', ev=> {
-	    		abc = ev.rowKey;
-	    		const focusCell = grid.getFocusedCell();
-	    		//console.log(focusCell);
-	    		const dataRow = grid.getRow(ev.rowKey);
-	    		//console.log(dataRow.matReqStat);
-	    		if(dataRow.matReqStat == 'A' && focusCell.columnName == 'matId'){
-			    	   	$('#msearchModal').modal('show');
-			    	   	
-			    }else if (dataRow.matReqStat == 'A' && focusCell.columnName == 'busId'){
-			    		$('#search1Modal').modal('show');
-			    		
-			    }				
-	    	});
-	    	gridm.on('click', evm=> {
-    	   		{
-	    	   		let dataRow = gridm.getRow(evm.rowKey);
-	    	   		console.log(dataRow);
-	    	   		grid.setValue(abc, 'matId', dataRow.matId, false);
-	    	   		grid.setValue(abc, 'matName', dataRow.matName, false);
-	    	   		grid.setValue(abc, 'matSize', dataRow.matSize, false);
-	    	   		abc='';
-	    	   		$('#msearchModal').modal('hide');
-			    	grid.blur();
-    	   		}
-			});
-	    	
-	    	gridt.on('click', evt=> {
-    			{
-    				let dataRow = gridt.getRow(evt.rowKey);
-    				grid.setValue(abc, 'busId', dataRow.busId, false)
-    				grid.setValue(abc, 'busName', dataRow.busName, false)
-    				abc='';
-    				$('#search1Modal').modal('hide');
-    		    	grid.blur();
-    			}
-    		});
+		    
 		</script>
 	</div>
 </body>
