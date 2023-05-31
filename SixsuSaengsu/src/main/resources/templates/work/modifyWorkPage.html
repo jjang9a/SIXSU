@@ -27,6 +27,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	.btn_container{
 		width: 100%;
 	}
+	.topConatiner{
+		width: 100%
+		height: 450px;
+	}
 	.addContainer{
 		width: 40%;
 		height: 450px;
@@ -74,16 +78,19 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		margin-left: 20px;
 		text-align: right;
 	}
-	#topBtnContainer{
-		width: 100%
+	.topBtnContainer{
+		width: 100%;
+		height: 40px;
 	}
 	#leftBtn{
 		margin-bottom: 10px;
+		float: left;
 	}
 	#rightBtn{
 		float: right;
 		margin-right: 40px;
 		margin-bottom: 10px;
+	
 	}
 	.modal-body {
 		background: #e5edf5;
@@ -116,7 +123,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	<h1 class="mt-4" style="font-family: 'MaruBuri';">지시 수정</h1>
 	<hr>
 	<div class="btn_container">
-	<div id="topBtnContainer">
+	<div class="topBtnContainer">
 		<div id="leftBtn">
 			<button class="moveBtn sixBtn4">이동</button>
 		</div>
@@ -127,6 +134,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		</div>
 	</div>	
 	</div>
+	<div class="topContainer">
 	<div class="addContainer">
 	
 	<table>
@@ -173,7 +181,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	  </select>
 	</div>
 	
-	<button class="submitBtn sixBtn4">등록</button>
+	<button class="submitBtn sixBtn4">저장</button>
 	<button class="cancelBtn sixBtn4">취소</button>
 	</div>
 	
@@ -194,10 +202,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			<div id="bom_search2"></div>
 		</div>
 	</div>
-	
+	</div>
 	
 	<!-- <button class="modal_btn sixBtn4">모달버튼</button> -->
-	세부지시<br>
+	<br>
 	<button class="plusBtn sixBtn4">+</button>
 	<button class="removeBtn sixBtn4">삭제</button>
 	<div id="grid1"></div>
@@ -1123,6 +1131,16 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		})
 	})		
 	
+	$('.cancelBtn').on('click', function(){
+		let link = '/work/workControllPage'
+		if(confirm("  페이지를 떠날 시 저장되지 않은 데이터는 사라집니다 \n  페이지를 떠나시겠습니까? \n  지시코드 : " + orderCode) == true){
+    		location.href = link;
+    	}else{
+    		return;
+    	}
+		
+	})
+	
 	
 	
 	///////////////////함수저장소//////////////////
@@ -1130,9 +1148,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	window.onbeforeunload = function(){
 		$.ajax({
 			url: "/ajax/workDataDelete",
-			method: "GET",
+			method : "POST",
+			data : {data : orderCode},
 			success: function(result){
-				console.log(result)
 			},
 			error: function(reject){
 				console.err(reject)
