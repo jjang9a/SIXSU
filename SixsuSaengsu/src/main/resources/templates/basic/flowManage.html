@@ -65,6 +65,10 @@
 		.sel3 {
 			background-color: white;
 		}
+
+		.modal-body {
+			background: #e5edf5;
+		}
 	</style>
 </head>
 
@@ -101,7 +105,7 @@
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">공정선택</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<!-- 모달 바디 -->
@@ -182,6 +186,8 @@
 				}]
 			});
 
+			pdGrid.setBodyHeight(480)
+
 			// 그리드 색 변경 테마 적용
 			tui.Grid.applyTheme('default', {
 				cell: {
@@ -231,8 +237,12 @@
 			const procGrid = new tui.Grid({
 				el: document.getElementById('procGrid'),
 				scrollX: false,
-				scrollY: true,
+				scrollY: false,
 				minBodyHeight: 400,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
 				columns: [{
 					header: '공정구분',
 					name: 'comName',
@@ -247,6 +257,8 @@
 					align: 'center'
 				}]
 			});
+
+			grid.setBodyHeight(480)
 
 			// 제품 선택 시 선택정보 기반으로 공정흐름도 데이터 불러오기
 			let pdKey = '';
@@ -403,6 +415,7 @@
 						})
 					}
 					// 삭제된 열이 0개가 아니라면 update ajax 호출
+					console.log(JSON.stringify(grid.getModifiedRows().deletedRows))
 					if (grid.getModifiedRows().deletedRows.length != 0) {
 						$.ajax({
 							url: "/basic/deleteFlow",
