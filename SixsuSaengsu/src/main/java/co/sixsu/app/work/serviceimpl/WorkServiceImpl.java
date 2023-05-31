@@ -1,5 +1,6 @@
 package co.sixsu.app.work.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ import co.sixsu.app.work.domain.workBomVO;
 import co.sixsu.app.work.mapper.WorkMapper;
 import co.sixsu.app.work.service.WorkService;
 
-@Service("workService")
+@Service
 public class WorkServiceImpl implements WorkService{
 
 	@Autowired WorkMapper mapper;
@@ -86,7 +87,7 @@ public class WorkServiceImpl implements WorkService{
 		//int result = mapper.addPlan(data);
 		
 		
-		return 0;
+		return result;
 	}
 
 	@Override
@@ -121,10 +122,7 @@ public class WorkServiceImpl implements WorkService{
 	@Override
 	public String addWork() {
 		String orderCode = mapper.getOrderCode();
-		int result = mapper.addWork(orderCode);
-		if(result >0) {
-			System.out.println("작업지시 생성성공! "+orderCode);
-		}
+		mapper.addWork(orderCode);
 		return orderCode;
 	}
 
@@ -140,11 +138,6 @@ public class WorkServiceImpl implements WorkService{
 		ob.setWkHeadId(data);
 		ob.setWkDetaId(detaCode);
 		mapper.addDetaWork(ob);
-		//지시BOM추가
-		mapper.addWkBom(detaCode);
-		String bomCode = mapper.getBomCode(detaCode);
-		//자재테이블 추가
-		mapper.addWorkMatBom(bomCode);
 		//list보낼거 선택
 		List<DetaWorkOrdrVO> list = mapper.getDetaWorkHeadList(data);
 		return list;
@@ -278,6 +271,14 @@ public class WorkServiceImpl implements WorkService{
 		System.out.println(data.getWorkTo());
 		List<DetaWorkOrdrVO> list = mapper.workFilterAjax(data);
 		return list;
+	}
+
+	@Override
+	public List<Object> modifyFirstList(String data) {
+		List<Object> allList = new ArrayList<>();
+		allList.add(mapper.getPlanList());
+		allList.add(mapper.getDetaWorkHeadList(data));
+		return allList;
 	}
 
 	
