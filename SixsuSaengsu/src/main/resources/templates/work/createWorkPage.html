@@ -27,6 +27,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	.btn_container{
 		width: 100%;
 	}
+	.topConatiner{
+		width: 100%
+		height: 450px;
+	}
 	.addContainer{
 		width: 40%;
 		height: 450px;
@@ -40,6 +44,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		border: 1px solid black;
 		padding: 20px;
 		float: left;
+		display: none;
 	}
 	#plan_search1{
 		width: 45%;
@@ -58,7 +63,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		border: 1px solid black;
 		padding: 20px;
 		float: left;
-		display: none;
+		
 	}
 	#left_search{
 		width: 48%;
@@ -73,10 +78,19 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		margin-left: 20px;
 		text-align: right;
 	}
+	.topBtnContainer{
+		width: 100%;
+		height: 40px;
+	}
+	#leftBtn{
+		margin-bottom: 10px;
+		float: left;
+	}
 	#rightBtn{
 		float: right;
 		margin-right: 40px;
 		margin-bottom: 10px;
+	
 	}
 	.modal-body {
 		background: #e5edf5;
@@ -106,17 +120,21 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 </head>
 <body>
 	<div layout:fragment="content">
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 등록</h1>
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">지시 수정</h1>
 	<hr>
 	<div class="btn_container">
-		
-		<button class="moveBtn sixBtn4">이동</button>
+	<div class="topBtnContainer">
+		<div id="leftBtn">
+			<button class="moveBtn sixBtn4">이동</button>
+		</div>
 		
 		<div id="rightBtn">
 			<button class="planBtn sixBtn4">생산계획</button>
 			<button class="bomBtn sixBtn4">공정등록</button>
 		</div>
+	</div>	
 	</div>
+	<div class="topContainer">
 	<div class="addContainer">
 	
 	<table>
@@ -184,7 +202,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			<div id="bom_search2"></div>
 		</div>
 	</div>
-	
+	</div>
 	
 	<!-- <button class="modal_btn sixBtn4">모달버튼</button> -->
 	세부지시<br>
@@ -1104,17 +1122,12 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	})		
 	
 	$('.cancelBtn').on('click', function(){
-		$.ajax({
-			url: "/ajax/workDataDelete",
-			method: "GET",
-			success: function(result){
-				console.log(result)
-				alert(result)
-			},
-			error: function(reject){
-				console.err(reject)
-			}
-		})
+		let link = '/work/workControllPage'
+		if(confirm("  페이지를 떠날 시 작성 중인 데이터는 사라집니다 \n  페이지를 떠나시겠습니까? \n  지시코드 : " + orderCode) == true){
+    		location.href = link;
+    	}else{
+    		return;
+    	}
 		
 	})
 	///////////////////함수저장소//////////////////
@@ -1122,9 +1135,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	window.onbeforeunload = function(){
 		$.ajax({
 			url: "/ajax/workDataDelete",
-			method: "GET",
+			method : "POST",
+			data : {data : orderCode},
 			success: function(result){
-				console.log(result)
 			},
 			error: function(reject){
 				console.err(reject)

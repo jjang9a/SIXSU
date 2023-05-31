@@ -236,8 +236,9 @@ public class WorkServiceImpl implements WorkService{
 	}
 
 	@Override
-	public String workDataDelete() {
+	public String workDataDelete(String data) {
 		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("inParam", data);
 		paramMap.put("outParam", null);
 		mapper.workDataDelete(paramMap);
 		String outValue = (String) paramMap.get("outParam");
