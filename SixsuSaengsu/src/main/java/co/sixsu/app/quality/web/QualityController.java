@@ -232,7 +232,14 @@ public class QualityController {
 		  return quaService.shInspList();
 	  }
 	 
-	  // 출고 검사 
-	 
+	  // 출고 검사 결과 등록
+	  @ResponseBody
+	  @PostMapping("/quality/shipInspAdd")
+		public ShipInspVO shipInspAdd(ShipInspVO ship) {
+			System.out.println("출고 검사 등록");
+			System.out.println(ship);
+			
+			return quaService.shipInspAdd(ship);
+	  }
 
 }

@@ -20,6 +20,8 @@
 		b.bus_id
 		where
 		r.mat_req_stat='A'
+		and
+		mat_req_qt>0
 		order by mat_req_id
 	</select>
 
@@ -45,9 +47,9 @@
 	</select>
 
 	<!-- 입고 전 검사 번호 자동 등록 -->
-	<select id="psInspNum" resultType="String">
-		select get_qps_num from dual
-	</select>
+	 <select id="prInspNum" resultType="String">
+		select get_qpr_num from dual
+	</select> 
 
 	<!-- 입고 검사 등록 프로시저 -->
 	<select id="insertPro" statementType="CALLABLE"
@@ -69,14 +71,7 @@
 
 	</select>
 
-	<!-- 검사 담당자 리스트 조회 -->
-	<select id="sEmpList" parameterType="String" resultType="EmpVO">
-		select
-		emp_id, emp_name, emp_dept from employee
-		where emp_stat='재직'
-		and
-		emp_name=#{result}
-	</select>
+
 
 	<!-- 검사 항목 리스트 -->
 	<select id="inspItem" resultType="QuaVO">
@@ -103,7 +98,7 @@
 		qua_details(det_insp_num,
 		insp_num, insp_id, res_val, res_stat) values
 		(#{detInspNum}, #{inspNum},
-		#{inspId}, #{nsuitQt}, '해당없음')
+		#{inspId}, #{nsuitQt}, #{resStat})
 	</insert>
 
 	<!-- 입고 검사 상세 결과 수정 -->
@@ -255,11 +250,32 @@
 		order by
 		d.wk_deta_id
 	</select>
-
-	<!-- 공정 검사 결과 등록 시 update -->
+	
+	<!-- 출고 검사 번호 자동 등록 -->
+  	<select id="psInspNum" resultType="String">
+		select get_qps_num from dual
+	</select> 
+	
+	<!-- 출고 검사 결과 등록 시 검사 공통 등록 -->
+  	<insert id="insertShipCom" parameterType="ShipInspVO">
+		INSERT INTO qua_com (insp_num, insp_std_id, insp_item_id, insp_type, insp_date, emp_id, insp_qt, nsuit_qt, suit_qt, qua_com_note) 
+    	values (#{inspNum}, #{cpShipId}, #{cpId}, '완제품 출고 검사', sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
+	</insert>  
+	
+	<!-- 출고 검사 결과 등록시 검사 세부 등록 -->
+  	<insert id="insertShipDet" parameterType="ShipInspVO">
+		INSERT INTO qua_details (det_insp_num, insp_num, insp_id, res_val, res_stat)
+		values (#{detInspNum}, #{inspNum}, 'QR999', #{resVal}, #{resStat})
+	</insert>  
+	
+	<!-- 출고 검사 결과 등록시 update -->
+ 	 <update id="updateShip" parameterType="ShipInspVO">
+		update pro_ship set cp_ship_stat='품질검사 완료'
+		where cp_ship_id=#{cpShipId}
+	</update>  
 
 	<!-- 완제품 출고 관리 리스트 -->
-	<select id="shInspList" resultType="ShipInspVO">
+ 	<select id="shInspList" resultType="ShipInspVO">
 		select s.cp_ship_id, s.ord_det_id, s.cp_lot_id, p.cp_lot_id, c.cp_name,
 		p.cp_id, s.cp_ship_qt, s.cp_ship_stat, 
 		to_char(s.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, q.insp_date
@@ -271,7 +287,7 @@
 		left join complete_prod c
 		on p.cp_id=c.cp_id
 		order by cp_ship_id
-	</select>
+	</select> 
 
 
 
@@ -296,7 +312,15 @@
 		r.mat_req_stat='도착'
 		order by mat_req_id
 	</select>
-
+	
+		<!-- 검사 담당자 리스트 조회 -->
+	<select id="sEmpList" parameterType="String" resultType="EmpVO">
+		select
+		emp_id, emp_name, emp_dept from employee
+		where emp_stat='재직'
+		and
+		emp_name=#{result}
+	</select>
 
 
 </mapper>
