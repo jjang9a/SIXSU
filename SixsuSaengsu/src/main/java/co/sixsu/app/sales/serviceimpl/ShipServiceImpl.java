@@ -88,9 +88,22 @@ public List<ShipVO> shipPro(OrdVO ord) {
 }
 
 @Override
-public List<ShipVO> readyShipList() {
+public List<ShipVO> readyShipList(String keyword) {
 	// TODO Auto-generated method stub
-	return mapper.readyShipList();
+	return mapper.readyShipList(keyword);
+}
+
+
+
+
+@Override
+public void completeShip(ShipVO vo) {
+	
+	
+		mapper.completeShip(vo.getOrdDetId());
+		
+	
+	
 }
 
 
