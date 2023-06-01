@@ -171,7 +171,7 @@
 		  FROM qua_com q
 		  JOIN mat_req r 
 		    ON q.insp_std_id = r.mat_req_id
-		  JOIN employee e
+	LEFT JOIN employee e
 		    ON
 		       q.emp_id = e.emp_id
 	      JOIN material m 
@@ -179,10 +179,20 @@
 	 LEFT JOIN business b
 		    on r.bus_id = b.bus_id
 		
-  		 WHERE trunc(q.insp_date) >= TRUNC(SYSDATE) - 14
-		 and r.mat_req_stat='C'
+		 WHERE r.mat_req_stat='C'
+		 <if test="inspDate == null">
+  		 AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
+		 </if>
+		 <if test="inspDate != null">
+		  AND TRUNC(q.insp_date) = to_date(#{inspDate},'yyyy-MM-dd')
+		 </if>
+		 <if test="matId != null">
+		  AND matId = #{matId}		 
+		 </if>
+		 <if test="empId != null">
+		 
+		 </if>
 		 order by q.insp_date desc
-
 
 	</select>
 
@@ -255,19 +265,22 @@
 	<!-- 출고 검사 결과 등록 시 검사 공통 등록 -->
   	<insert id="insertShipCom" parameterType="ShipInspVO">
 		INSERT INTO qua_com (insp_num, insp_std_id, insp_item_id, insp_type, insp_date, emp_id, insp_qt, nsuit_qt, suit_qt, qua_com_note) 
-    	values (#{inspNum}, #{cpShipId}, #{cpId}, '완제품 출고 검사', sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
+    	values (#{inspNum}, #{cpShipId}, #{cpId}, #{inspType}, sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
 	</insert>  
 	
 	<!-- 출고 검사 결과 등록시 검사 세부 등록 -->
   	<insert id="insertShipDet" parameterType="ShipInspVO">
 		INSERT INTO qua_details (det_insp_num, insp_num, insp_id, res_val, res_stat)
-		values (#{detInspNum}, #{inspNum}, 'QR999', #{resVal}, #{resStat})
+		values (#{detInspNum}, #{inspNum}, #{inspId}, #{resVal}, #{resStat})
 	</insert>  
 	
 	<!-- 출고 검사 결과 등록시 update -->
  	 <update id="updateShip" parameterType="ShipInspVO">
-		update pro_ship set cp_ship_stat='품질검사 완료'
-		where cp_ship_id=#{cpShipId}
+		 update pro_ship
+		    set 
+		        cp_ship_stat=#{cpShipStat},
+		        insp_num=#{inspNum}
+	      where cp_ship_id=#{cpShipId}
 	</update>  
 
 	<!-- 완제품 출고 관리 리스트 -->
@@ -291,8 +304,8 @@
 	<!-- 완제품 출고 수정 공통 -->
 	<update id="modShipCom" parameterType="ShipInspVO">
 		update qua_com
-		  set  suit_qt       = (#{inspQt}-#{totNsuitQt}),
-			   nsuit_qt      = #{totNsuitQt}
+		  set  suit_qt       = #{suitQt},
+			   nsuit_qt      =  #{nsuitQt}
 		 where
 		        insp_num      = #{inspNum}
  
@@ -301,8 +314,8 @@
 	<!-- 완제품 출고 수정 상세 -->
 	<update id="modShipDet" parameterType="ShipInspVO">
 		update qua_details
-		   set	suit_qt       = #{suitQt},
-				nsuit_qt      = #{unsuitQt}
+		   set	res_val       = #{cpShipQt},
+		   	    res_stat      = #{resStat}
 		 where
 		        insp_num      = #{inspNum}
  

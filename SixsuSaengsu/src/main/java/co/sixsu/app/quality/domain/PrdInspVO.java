@@ -15,5 +15,9 @@ public class PrdInspVO {
 	private String cmpltSt; // 종결 여부
 	private String empId; // 사원 번호 
 	private String empName; // 사원 이름
+	private String prcsPFMCId; // 공정실적코드
+	private int dmatQt; // 불량 수량
+	private int goodQt; // 양품수량
+	
 	
 }

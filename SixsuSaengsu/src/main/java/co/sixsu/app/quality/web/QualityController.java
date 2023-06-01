@@ -47,9 +47,15 @@ public class QualityController {
 	}
 
 	// 반품 검사 페이지
+	@GetMapping("/quality/returnInsp")
+	public void returnInsp() {
+	}
 
 	// 입고 검사 조회 페이지
-
+	@GetMapping("/quality/recInspInq")
+	public void recInspInq() {
+	}
+	
 	// 공정 검사 조회 페이지
 
 	// 입고 검사 대기 등록 리스트
@@ -95,14 +101,6 @@ public class QualityController {
 		System.out.println("수정 항목 출력:" + list);
 		return list;
 	}
-
-	// 입고 검사 결과 등록 프로시저
-//	@ResponseBody
-//	@PostMapping("/quality/priRegister")
-//	public List<QuaVO> reqInspProc(@RequestBody List<QuaVO> list) {
-//		System.out.println(list);
-//		return quaService.reqInspProc(list);
-//	}
 
 	// 입고 검사 결과 등록
 	@ResponseBody
@@ -205,4 +203,11 @@ public class QualityController {
 		quaService.shipInspMod(ship);
 		return ship;
 	}
+	
+	// 반품 검사 목록 리스트
+	
+	// 반품 검사 결과 등록
+	
+	// 반품 검사 결과 수정
+	
 }

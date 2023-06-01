@@ -259,25 +259,37 @@ public class QualityServiceImpl implements QualityService {
 	public ShipInspVO shipInspAdd(ShipInspVO ship) {
 		
 		// 출고 검사 공통 등록
-		String inspNum = quaMapper.psInspNum();
+		String inspNum = quaMapper.psInspNum(); // 검사 번호 생성
 		ship.setInspNum(inspNum);
 		System.out.println("검사번호:"+inspNum);
+		
 		int amount = ship.getCpShipQt();
 		String result = Integer.toString(ship.getCpShipQt()) ;
 		if (ship.getResStat().equals("적합")) {
 			ship.setSuitQt(amount);
 			ship.setNsuitQt(0);	
 			ship.setResVal(result);
+			ship.setCpShipStat("품질검사완료");
 		} else {
 			ship.setSuitQt(0);
 			ship.setNsuitQt(amount);
 			ship.setResVal(result);
+			ship.setCpShipStat("폐기");
 		}
+
 		quaMapper.insertShipCom(ship);
 				
 		// 출고 검사 상세 등록
 		String detNum = inspNum + "-" + String.format("%03d", +1); // inspNum-001 형식으로 설정
 		ship.setDetInspNum(detNum);
+
+		String inspId ="QR999";
+		String inspType = "완제품 출고 검사";
+		ship.setInspId(inspId);
+		ship.setInspType(inspType);
+
+		System.out.println(ship);
+		
 		quaMapper.insertShipDet(ship);
 		
 		// 완제품 출고 업데이트
@@ -305,6 +317,7 @@ public class QualityServiceImpl implements QualityService {
 		quaMapper.modShipDet(ship);
 		
 		return true;
+
 	}
 	
 	
