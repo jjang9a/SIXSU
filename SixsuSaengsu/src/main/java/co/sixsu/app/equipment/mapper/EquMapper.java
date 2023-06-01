@@ -39,7 +39,15 @@ public interface EquMapper {
 	
 	public List<EquOperVO> equOperList(); // 비가동 리스트
 
-	public List<EquOperVO> equOperSearch(EquSearchDTO dto); // 비가동 조회 페이지 검색기능
+	public List<EquOperVO> equOperSearch(EquSearchDTO dto); // 비가동 조회(검색)
+
+	public int oUpdate(EquOperVO data); // 비가동 관리(수정)
+
+	public int oDel(EquOperVO operCode); // 비가동 관리(삭제)
+
+	public int startIn(EquOperVO data); // 비가동 관리 시작버튼(등록)
+
+	public int startUp(EquOperVO data); // 비가동 관리 시작버튼(수정/설비상태)
 
 	
 
