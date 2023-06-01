@@ -102,6 +102,7 @@
 		<if test='searchType.equals("name")'>
 			c.equ_name like '%'||#{searchKey}||'%' OR lower(c.equ_name) like '%'||#{searchKey}||'%'
 		</if>
+		
   	</select>
 
   	<!-- 설비관리 공정코드(조회) ajax -->
@@ -172,6 +173,9 @@
 			</if>
 			<if test='searchType.equals("name")'>
 				c.equ_name like '%'||#{searchKey}||'%' OR lower(c.equ_name) like '%'||#{searchKey}||'%'
+			</if>
+			<if test='searchType.equals("date")'>
+				c.equ_name like '%'||#{searchKey}||'%' OR lower(check_date) like '%'||#{searchKey}||'%'
 			</if>
   	</select>
   	
