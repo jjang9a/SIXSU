@@ -56,5 +56,6 @@ public interface WorkMapper {
 	public String workDataDelete(Map<String, Object> paramMap);
 	public List<DetaWorkOrdrVO> getWorkList();
 	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data);
+	public void getProductBomList(DetaWorkOrdrVO data);
 
 }

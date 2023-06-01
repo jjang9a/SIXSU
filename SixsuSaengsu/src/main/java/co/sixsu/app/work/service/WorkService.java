@@ -62,7 +62,7 @@ public interface WorkService {
 
 	public List<workBomVO> modifyBomList(workBomVO data);
 
-	public List<DetaWorkOrdrVO> modifyDetaWorkList(DetaWorkOrdrVO data);
+	public List<Object> modifyDetaWorkList(DetaWorkOrdrVO data);
 
 	public String workInsertSubmit(String data);
 
