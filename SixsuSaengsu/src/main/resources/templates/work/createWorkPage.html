@@ -120,7 +120,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 </head>
 <body>
 	<div layout:fragment="content">
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">지시 수정</h1>
+	<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 등록</h1>
 	<hr>
 	<div class="btn_container">
 	<div class="topBtnContainer">
@@ -776,11 +776,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	grid1.on('afterChange', function (ev) {
 		  let getRow = grid1.getRow(grid1Ev.rowKey)
 		  console.log(getRow)
+		  console.log('ev : ')
 		  console.log(ev)
 		  console.log(ev.changes[0].columnName)
-		  if(ev.changes[0].columnName != 'cpId'){
+		  if(ev.changes[0].columnName == 'cpId'){
 			  getRow.single = 'Y';
 		  }
+		  
 		  $.ajax({
 				url : "/ajax/modifyDetaWorkList",
 				method : "POST",
@@ -789,7 +791,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				data :  JSON.stringify(getRow),
 				success : function(result){
 					console.dir(result);
-					grid1.resetData(result);
+					grid1.resetData(result[0]);
 					},
 					error : function(reject){
 						console.log(reject)

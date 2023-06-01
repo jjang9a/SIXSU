@@ -214,11 +214,23 @@ public class WorkServiceImpl implements WorkService{
 	}
 
 	@Override
-	public List<DetaWorkOrdrVO> modifyDetaWorkList(DetaWorkOrdrVO data) {
+	public List<Object> modifyDetaWorkList(DetaWorkOrdrVO data) {
 		mapper.modifyDetaWorkList(data);
-		List<DetaWorkOrdrVO> list = mapper.getDetaWorkHeadList(data.getWkHeadId());
+		List<Object> allList = new ArrayList<>();
+		allList.add(mapper.getDetaWorkHeadList(data.getWkHeadId()));
+		boolean test = data.getSingle() == "Y";
+		System.out.println("================ 시작전 =====================================");
+		System.out.println("불린 결과값 : == Y" + test + " getSingle = " + data.getSingle());
+		System.out.println(data.getSingle());
+		if("Y".equals(data.getSingle())) {
+			System.out.println("================ 작동되었음 ! =====================================");
+			System.out.println(data.getWkDetaId());
+			System.out.println(data.getCpId());
+			mapper.getProductBomList(data);
+			
+		}
 		System.out.println(data);
-		return list;
+		return allList;
 	}
 
 	@Override
