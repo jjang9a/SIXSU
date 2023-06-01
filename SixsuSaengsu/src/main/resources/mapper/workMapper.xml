@@ -284,6 +284,7 @@ with work as (
 
 <select id="workDataDelete" statementType="CALLABLE" resultMap="outResultMap">
   { CALL WORK_DETA_DELETE (
+  	#{inParam},
   	#{outParam, mode=OUT, jdbcType=VARCHAR}
   )}
 </select>

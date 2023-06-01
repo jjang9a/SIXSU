@@ -17,4 +17,10 @@ public class ShipVO {
  public String cpLotQtCk;
  public int cpHold;
  long total;
+ 
+ public String busId;
+ public String busName;
+ public String busNum;
+ public String busTell;
+ public String busAddr;
 }

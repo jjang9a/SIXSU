@@ -147,6 +147,10 @@ h1 {
 						name : 'cpShipStat',
 						align : 'center'
 					}, {
+						header : '적합여부',
+						name : 'resStat',
+						align : 'center'
+					},{
 						header : '요청일자',
 						name : 'cpShipReqDate',
 						align : 'center'
@@ -205,6 +209,7 @@ h1 {
 					$('#cpShipReqDate').val(dataRow.cpShipReqDate);
 					$('#inspDate').val(dataRow.inspDate);
 					$('#resStat').val(dataRow.resStat).prop("selected", true);
+					
 				})
 
 				// 수정 버튼 이벤트

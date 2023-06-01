@@ -28,6 +28,7 @@ public class ShipInspVO {
 	 public String resVal; //결과값
 	 public String resStat; // 적합여부
 	 public String inspId; // 검사 항목코드
+	 public String inspType; // 검사유형
 	 
 
 }

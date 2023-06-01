@@ -13,5 +13,9 @@ public interface ShipService {
 	
 	
 	List<ShipVO> shipPro(OrdVO ord);
-	List<ShipVO> readyShipList();
+	List<ShipVO> readyShipList(String keyword);
+	
+	
+	void completeShip(ShipVO vo);
+	
 }

@@ -52,6 +52,13 @@
 		        #{empId})
 	</insert>
 	
+	<!-- 자재 발주 수정 -->
+  	<update id="updateMatReq" parameterType="MatreqVO">
+	  	update mat_req
+	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = #{matEndDate} 
+	  	where mat_req_id = #{matReqId}
+  	</update>
+  	
 	<!-- 입고대기 목록 -->
 	<select id="selectMatRecWaitList" resultType="MatrecWaitVO">
 		select q.insp_num, m.mat_req_id, q.insp_item_id, t.mat_name, q.suit_qt, to_char(q.insp_date, 'yyyy-mm-dd') as insp_date
@@ -67,26 +74,28 @@
 	<!-- 입고 목록-->
 	<select id="selectMatRecList" resultType="MatrecVO">
 		select c.mat_rec_id, 
-		       c.mat_req_id, 
-		       c.insp_num, 
-		       to_char(u.insp_date, 'yyyy-mm-dd') as insp_date, 
-		       c.mat_rec_qt, 
-		       c.mat_rec_type, 
-		       to_char(c.mat_rec_date, 'yyyy-mm-dd') as mat_rec_date, 
-		       c.mat_rec_note, 
-		       c.mat_lot_id,
-		       l.mat_name, 
-		       b.bus_name, 
-		       GET_EMP_NAME(emp_id) as emp_name
+	       c.mat_req_id, 
+	       c.insp_num, 
+	       to_char(u.insp_date, 'yyyy-mm-dd') as insp_date, 
+	       c.mat_rec_qt, 
+	       c.mat_rec_type, 
+	       to_char(c.mat_rec_date, 'yyyy-mm-dd') as mat_rec_date, 
+	       c.mat_rec_note, 
+	       c.mat_lot_id,
+	       l.mat_name, 
+	       b.bus_name, 
+	       GET_EMP_NAME(emp_id) as emp_name
 		from mat_rec c 
 		left join mat_req q
-		on c.mat_req_id = q.mat_req_id
+		 on c.mat_req_id = q.mat_req_id
 		left join qua_com u
-		on c.insp_num = u.insp_num
+		 on c.insp_num = u.insp_num
 		left join business b
-		on q.bus_id = b.bus_id 
+		 on q.bus_id = b.bus_id 
+		left join mat_lot t
+		 on c.mat_lot_id = t.mat_lot_id 
 		left join material l
-		on q.mat_id = l.mat_id
+		 on t.mat_id = l.mat_id
 		order by c.mat_rec_date desc
 	</select>
 	
@@ -101,16 +110,15 @@
   	
   	<!-- 자재목록 -->
   	<select id="selectMatList" resultType="MatVO">
-  		select * 
-  		from material
-  		order by mat_id
+  		with lotsum as (select mat_id, sum(mat_qt) as mat_qt_sum from mat_lot group by mat_id)
+		select m.*, l.mat_qt_sum from material m left join lotsum l on m.mat_id = l.mat_id order by m.mat_id
   	</select>
   	
 	<!-- 입고삭제 프로시저 -->
-	<insert id="delMatRec" parameterType="MatrecVO">
+	<insert id="delMatRec" parameterType="MatrecVO" statementType="CALLABLE">
     <![CDATA[
 	    call  mat_rec_del(
-	      #{matRecId},
+	      #{matRecId, mode=IN, jdbcType=VARCHAR},
 	      #{matLotId, mode=IN, jdbcType=VARCHAR},
 	      #{outMessage, mode=OUT, jdbcType=VARCHAR}
 	    )
@@ -136,6 +144,7 @@
 		 on m.mat_id = l.mat_id
 		
 		order by mat_rec_date desc
+		<!-- 로트역순으로 -->
   	</select>
 	
 	<!-- 자재 출고 리스트-->
@@ -148,6 +157,7 @@
 			   s.mat_ship_qt, 
 			   s.mat_ship_note, 
 			   e.emp_name
+			   
 		from mat_ship s 
 		
 		left join mat_lot l
@@ -160,12 +170,16 @@
 		 on s.emp_id = e.emp_id
 	</select>
 	
-	<!-- 자재 재고조정 리스트 -->
+	<!-- 자재 재고조정 페이지 -->
 	<select id="getMatAdjList" resultType="MatAdjVO">
-		select l.mat_lot_id, l.mat_id, m.mat_name, m.mat_size, l.mat_qt
-		from mat_lot l 
-		left join material m
-		 on l.mat_id = m.mat_id
+		select l.mat_lot_id, 
+		       l.mat_id, 
+		       m.mat_name, 
+		       m.mat_size, 
+		       l.mat_qt
+		  from mat_lot l 
+		  left join material m
+		    on l.mat_id = m.mat_id
 		order by l.mat_lot_id desc
 	</select>
 	
@@ -181,7 +195,7 @@
   	</insert>
   	
   	<!-- 자재 조정출고 프로시저-->
-	<insert id="matShipAdj" parameterType="MatAdjVO">
+	<insert id="matShipAdj" parameterType="MatAdjVO" >
     <![CDATA[
 	    call  mat_adj_del(
 	      #{matLotId, mode=IN, jdbcType=VARCHAR},
@@ -191,15 +205,16 @@
 	    ]]>
   	</insert>
   	
-  	<!-- 반제품 재고조정 리스트 -->
+  	<!-- 반제품 재고조정 페이지 -->
   	<select id="getSpAdjList" resultType="SpAdjVO">
   		select l.sp_lot_id, 
   			   l.sp_id, 
   			   s.sp_name, 
   			   s.sp_size, 
   			   l.sp_qt
-		from sp_lot l left join semi_prod s
-		on l.sp_id = s.sp_id
+		  from sp_lot l 
+		  left join semi_prod s
+		    on l.sp_id = s.sp_id
   	</select>
   	
   	<!-- 반제품 출고 리스트 -->
@@ -213,7 +228,7 @@
   			   s.sp_ship_note, 
   			   e.emp_name
 		from sp_ship s 
-		
+		 
 		left join sp_lot l
 		 on s.sp_lot_id = l.sp_lot_id
 		 
@@ -246,7 +261,7 @@
 	    ]]>
   	</insert>
   	
-  	<!-- 반제품 불량처리 대기 리스트 -->
+  	<!-- 반제품 불량처리 대기 페이지 -->
   	<select id="getSpDmgWaitList" resultType="SpDmgVO">
 		select p.prcs_pfmc_id, p.wk_deta_id, p.pd_id, s.sp_name, s.sp_size, p.dmat_qt, i.sp_ship_id, i.sp_lot_id, to_char(p.wk_end, 'yyyy-mm-dd') as wk_end, e.emp_name,d.dsp_res
 		from process_performance p 
@@ -324,6 +339,8 @@
 		insert into damaged_mat (dmat_id, dmat_res, dmat_stat, mat_ship_id)
 		values (seq_dmat_id.nextval, #{dmatNote}, #{dmatStat}, #{matShipId})
   	</insert>
+  	
+
 </mapper>
 
 

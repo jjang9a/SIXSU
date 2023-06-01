@@ -54,6 +54,10 @@
 			font-weight: bold;
 		}
 
+		.sel:hover {
+			cursor: pointer;
+		}
+
 		.sel1 {
 			float: left;
 		}
@@ -323,8 +327,9 @@
 				// if (checkDupl > 0) {
 				// 	alert('이미 등록된 공정입니다.');
 				// } else {
-				newData = procGrid.getCheckedRow();
+				newData = procGrid.getCheckedRows();
 				grid.appendRows(newData); // 그리드에 추가
+				grid.setColumnValues('cpId', pdKey, false);
 				$('#procModal').modal('hide');
 				//}
 			})
@@ -380,51 +385,23 @@
 					for (let i = 0; i < grid.getRowCount(); i++) {
 						grid.setValue(i, 'flowNum', grid.getRow(i)._attributes.rowNum, false);
 					}
-					console.log(grid.getModifiedRows())
-					// 생성된 열이 0개가 아니라면 insert ajax 호출
-					if (grid.getModifiedRows().createdRows.length != 0) {
-						$.ajax({
-							url: "/basic/addFlow",
-							method: "POST",
-							dataType: "JSON",
-							contentType: "application/json",
-							data: JSON.stringify(grid.getModifiedRows().createdRows),
-							error: function (reject) {
-								console.log(reject)
-								alert('등록 과정에서 에러가 발생하였습니다.')
-							}
-						})
-					}
 					// 수정된 열이 0개가 아니라면 update ajax 호출
-					if (grid.getModifiedRows().updatedRows.length != 0) {
+					if (grid.getModifiedRows().length != 0) {
 						$.ajax({
 							url: "/basic/modifyFlow",
 							method: "POST",
 							dataType: "JSON",
 							contentType: "application/json",
-							data: JSON.stringify(grid.getModifiedRows().updatedRows),
+							data: JSON.stringify(grid.getModifiedRows()),
+							success: function (result) {
+								alert('공정흐름도 정보가 저장되었습니다.');
+							},
 							error: function (reject) {
 								console.log(reject)
-								alert('업데이트 과정에서 에러가 발생하였습니다.')
+								alert('업데이트 과정에서 에러가 발생하였습니다.');
 							}
 						})
 					}
-					// 삭제된 열이 0개가 아니라면 update ajax 호출
-					console.log(JSON.stringify(grid.getModifiedRows().deletedRows))
-					if (grid.getModifiedRows().deletedRows.length != 0) {
-						$.ajax({
-							url: "/basic/deleteFlow",
-							method: "POST",
-							dataType: "JSON",
-							contentType: "application/json",
-							data: JSON.stringify(grid.getModifiedRows().deletedRows),
-							error: function (reject) {
-								console.log(reject)
-								alert('삭제 과정에서 에러가 발생하였습니다.')
-							}
-						})
-					}
-					alert('공정흐름도 정보가 저장되었습니다.')
 				}
 			})
 		</script>

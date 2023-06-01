@@ -241,16 +241,16 @@
 		bus_type = #{searchKey}
 	</if>
 	<if test='searchType.equals("buyName")'>
-		bus_type = 'buy' and bus_name like '%'||#{searchKey}||'%'
+		bus_type = 'BUY' and bus_name like '%'||#{searchKey}||'%'
 	</if>
 	<if test='searchType.equals("buyId")'>
-		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type = 'buy'
+		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type = 'BUY'
 	</if>
 	<if test='searchType.equals("sellName")'>
-		bus_name like '%'||#{searchKey}||'%' and bus_type = 'sel'
+		bus_name like '%'||#{searchKey}||'%' and bus_type = 'SELL'
 	</if>
 	<if test='searchType.equals("sellId")'>
-		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type= 'sel'
+		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type= 'SELL'
 	</if>
 	ORDER BY bus_stat desc, bus_id
 </select>
@@ -355,7 +355,7 @@
 	DELETE FROM bom
 	WHERE bom_id IN
 	<foreach collection="list" item="item" open="(" close=")" separator=",">
-		#{bomId}
+		#{item.bomId}
 	</foreach>
 </delete>
 <!-- BOM관리 종료 -->

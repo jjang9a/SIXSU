@@ -70,7 +70,7 @@ public interface WorkService {
 
 	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data);
 
-	public String workDataDelete();
+	public String workDataDelete(String data);
 
 	public List<Object> modifyFirstList(String data);
 

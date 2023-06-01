@@ -233,12 +233,21 @@ public class WorkAjaxController {
 		String message = service.workInsertSubmit(data);
 		return message;
 	}
-	
+	/**
+	 * 
+	 * @param data is 삭제를 위한 WK_HEAD_ID 코드
+	 */
 	@RequestMapping("workDataDelete")
-	public String workDataDelete() {
-		return service.workDataDelete();
+	public void workDataDelete(@RequestParam String data) {
+		System.out.println("HeadCode IS = " + data);
+		service.workDataDelete(data);
 	}
 	
+	/**
+	 * 		  수정페이지 진입 시 HEAD_ID를 가져와 세부작업지시(List)를 출력한다
+	 * @param data is 수정을 위한 WK_HEAD_ID
+	 * @return
+	 */
 	@RequestMapping("modifyFirstList")
 	public List<Object> modifyFirstList(@RequestParam String data) {
 		System.out.println("HeadCode IS = " + data);

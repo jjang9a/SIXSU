@@ -97,6 +97,11 @@ public class MaterialController {
 	public void matDmgList() {
 	}
 	
+	//발주조회 페이지 열어주기
+	@GetMapping("/materials/matreqlst")
+	public void matReqList() {
+	}
+	
 	//발주내역 리스트
 	@ResponseBody
 	@RequestMapping("/materials/matreqlist")
@@ -123,6 +128,13 @@ public class MaterialController {
 		service.insertMatReq(vo);
 		return vo;
 		
+	}
+	
+	//발주수정 컨트롤
+	@ResponseBody
+	@PostMapping("/materials/updatematreq")
+	public void updateMatReq(@RequestBody List<MatreqVO> vo) {		
+		service.updateMatReq(vo);
 	}
 	
 	

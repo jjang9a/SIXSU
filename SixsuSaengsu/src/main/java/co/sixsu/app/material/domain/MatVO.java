@@ -11,6 +11,7 @@ public class MatVO {
 	int matSafe;
 	String matStat;
 	String matNote;
+	int matQtSum;
 
 
 	String type;
