@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>자재조회</title>
+	<title>반제품조회</title>
 	<style>
 	#gridm .redcolor{
 		background-color : #ffe4e4
@@ -18,10 +18,10 @@
 
 <body>
 	<div layout:fragment="content">
-			<h1 class="mt-4" style="font-family: 'MaruBuri';">자재조회</h1>
+			<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품조회</h1>
 	
 			<div id="left">
-				자재명 <input type="text" id="matId" name="matId">
+				반제품명 <input type="number" id="spId" name="spId">
 				<button class="sixBtn1">
 					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
 						viewBox="0 2 16 16">
@@ -44,29 +44,11 @@
 			window.onload = function () {
 				
 				$.ajax({
-					url : "/materials/matlist",
+					url : "/materials/semiprodlist",
 					method : "GET",
 					dataType : "JSON",
 					success : function(result) {
 						gridm.resetData(result);
-						gridm.getData().forEach(ele=>{
-							if(ele.matSafe/2>ele.matQtSum){
-								gridm.addCellClassName(ele.rowKey, 'matId','redcolor');
-								gridm.addCellClassName(ele.rowKey, 'matName','redcolor');
-								gridm.addCellClassName(ele.rowKey, 'matSize','redcolor');
-								gridm.addCellClassName(ele.rowKey, 'matUnit','redcolor');
-								gridm.addCellClassName(ele.rowKey, 'matSafe','redcolor');
-								gridm.addCellClassName(ele.rowKey, 'matQtSum','redcolor');
-							}else if((ele.matSafe)>ele.matQtSum){
-								//gridm.addRowClassName(ele.rowKey,'yellowcolor');
-								gridm.addCellClassName(ele.rowKey, 'matId','yellowcolor');
-								gridm.addCellClassName(ele.rowKey, 'matName','yellowcolor');
-								gridm.addCellClassName(ele.rowKey, 'matSize','yellowcolor');
-								gridm.addCellClassName(ele.rowKey, 'matUnit','yellowcolor');
-								gridm.addCellClassName(ele.rowKey, 'matSafe','yellowcolor');
-								gridm.addCellClassName(ele.rowKey, 'matQtSum','yellowcolor');
-							}
-						});
 					},
  					error: function(reject) {
 						console.log(reject);
@@ -86,23 +68,23 @@
 				rowHeaders: ['rowNum'],
 				columns : [ 
 					{
-					header : '자재코드',
-					name : 'matId',
+					header : '반제품코드',
+					name : 'spId',
 				}, {
-					header : '자재명',
-					name : 'matName'
+					header : '반제품명',
+					name : 'spName'
 				}, {
-					header : '자재규격',
-					name : 'matSize'
+					header : '반제품규격',
+					name : 'spSize'
 				}, {
 					header : '단위',
-					name : 'matUnit'
+					name : 'spUnit'
 				}, {
-					header : '안전재고',
-					name : 'matSafe'
+					header : '비고',
+					name : 'spNote'
 				}, {
 					header : '현재고',
-					name : 'matQtSum'
+					name : 'spQtSum'
 				}]
 			});
 			

@@ -10,7 +10,46 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재LOT조회</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 LOT 조회</h1>
+		<form action="" method="post" id="matLotForm">
+				<table id="matLotTable">
+					<tr>
+						<td>자재LOT번호</td>
+						<td><input type="text" name="mlot" id="mlot" class="empty" placeholder="검색"></td>
+					</tr>
+					<tr>
+						<td>자재명</td>
+						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색">
+							<button type="button" data-bs-toggle="modal" id="msearch"
+										class="sixBtn2" data-bs-target="#msearchModal">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+									viewBox="0 2 16 16">
+									<path
+										d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+								</svg>
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td>홀드상태</td>
+						<td>
+							<div id="divRadio">
+								<input type="radio" id="matHoldStat1" name="matHoldStat" value="Y" checked>
+								<label for="matHoldStat1">Y</label>
+								<input type="radio" id="matHoldStat2" name="matHoldStat" value="N">
+								<label for="matHoldStat2">N</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>입고일자</td>
+						<td>
+							<input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
+						</td>
+					</tr>
+				</table>
+			</form>
+		<!-- <h1 class="mt-4" style="font-family: 'MaruBuri';">자재LOT조회</h1>
 
 		<div id="left">
 			자재명 <input type="text" id="mname">
@@ -36,12 +75,11 @@
 		<div id="left">
 			입고일자 <input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
 		</div>
-		<div>
+		<div> -->
 			<div id="left">
 				<button class="sixBtn2" id="check">조회</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
-		</div>
 		
 		<div id="grid"></div>
 		<script>

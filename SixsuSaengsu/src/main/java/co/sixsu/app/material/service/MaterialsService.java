@@ -15,6 +15,7 @@ import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.domain.SpAdjVO;
 import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.SpShipVO;
+import co.sixsu.app.material.domain.SpVO;
 
 @Service
 public interface MaterialsService {
@@ -90,4 +91,7 @@ public interface MaterialsService {
 	
 	//자재 불량 처리
 	void insertMatDmg(List<MatDmgVO> vo);
+	
+	//반제품 리스트
+	List<SpVO> getSpList();
 }
