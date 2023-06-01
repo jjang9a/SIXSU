@@ -85,17 +85,21 @@
 				</tr>
 				<tr>
 					<td>판정<span class="needStar"> *</span></td>
-					  <td>
-						<select id="select" name="equSuit">
-							<option value="">===== 선택 =====</option>
-							<!-- <option th:each="type : ${types}" th:value="${type.comId}" th:text="${type.comName}"> -->
+					<td>
+						<select id="equSuit" name="equSuit">
+							<option value=''>===== 선택 =====</option>
+							<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}">
 							</option>
 					</td>  	
 				</tr>
 				<tr>
 					<td>점검구분<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkType" id="checkType"
-						class="empty"></td>
+					<td>
+						<select id="checkType" name="checkType">
+							<option value=''>===== 선택 =====</option>
+							<option th:each="type : ${checkType}" th:value="${type.value}" th:text="${type.text}">
+							</option>
+					</td>
 				</tr>
 				<tr>
 					<td>점검사유<span class="needStar"> *</span></td>
@@ -157,7 +161,10 @@
 		<!--  그리드 시작 -->	
 		<div id="grid"></div>
 
-		<script>
+		<script th:inline="javascript">
+			let equSuit = [[${equSuit}]];
+			let checkType = [[${checkType}]];
+
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
 				pageOptions: {
@@ -166,11 +173,11 @@
 				},
 				scrollX: false,
 				scrollY: false,
-
 				rowHeaders: ['rowNum'],
 				columns: [
 					{
 						header: '설비코드',
+						sortable : true,
 						name: 'equCode',
 						align: 'center'
 					},
@@ -203,10 +210,7 @@
 						editor: {
 							type: 'select',
 							options: {
-								listItems: [
-									{text: '적합', value: 'Y'},
-									{text: '부적합', value: 'N'},	
-								]
+								listItems: equSuit
 						      }
 					        }
 					},
@@ -219,10 +223,7 @@
 						editor: {
 							type: 'select',
 							options: {
-								listItems: [
-									{text: '정기', value: '정기'},
-									{text: '수시', value: '수시'},	
-								]
+								listItems: checkType
 						      }
 					        }
 					},
@@ -362,8 +363,6 @@
 				console.log(dataRow);
 
 				// 클릭시 인풋창에 데이터 불러오기.
-				console.log($('#checkCode').val())
-				console.log('checkCode : '+dataRow.checkCode)
 				$('#checkCode').val(dataRow.checkCode); // 점검코드
 				$('#equCode').val(dataRow.equCode); // 설비코드
 				$('#equName').val(dataRow.equName); // 설비명
@@ -377,21 +376,12 @@
 				$('#checkNote').val(dataRow.checkNote); // 점검비고
 				$('#empId').val(dataRow.empId); // 담당자
 
-				// 셀렉트가 Y 나 N 일떄 가동 비가동으로 전환 
-				if (dataRow.equSuit == 'Y') {
-					console.log('Y들어옴')
-					$("select[name='equSuit']").val('Y');
-					//$("select[name='equSuit']:option[value='Y']").prop('checked', true);
-				} else {
-					console.log('N들어옴')
-					$("select[name='equSuit']").val('N');
-					//$("select[name='equSuit']:option[value='N']").prop('checked', true);
-				}
+
 			});
 			
 			// 등록버튼 기능 구현
 			$('#addBtn').on('click', function (e) {
-				if (selRow === '') {
+				if (selRow == '') {
 					alert('등록 정보를 입력하시오.')
 				} else {
 				
@@ -411,6 +401,7 @@
 						// 리스트를 리셋. 등록데이터가 바로 뜸.
 						grid.resetData(result);
 						setTimeout(() => orderingGrid.refreshLayout(), 1000);
+						
 					},
 					error: function (reject) {
 						alert('등록 중 오류가 발생했습니다!');
@@ -419,7 +410,9 @@
 				});
 				// 인풋창을 비워줌
 				$('#addForm input').val('');
-				$("select[name='equSuit']").val('');
+				// 셀렉트 리셋해줌
+				$('#equSuit').val('').prop("selected", true);
+				$('#checkType').val('').prop("selected", true);
 			}
 			});
 			
@@ -449,7 +442,8 @@
 				});
 				$('.empty').val('');
 				// 셀렉트 리셋해줌 
-				$("select[name='equSuit']").val('');
+				$('#equSuit').val('').prop("selected", true);
+				$('#checkType').val('').prop("selected", true);
 			  }
 			})
 
@@ -478,9 +472,11 @@
 
 						grid.removeRow(selRow)
 						selRow = '';
-						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주는?
+						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주
 						$('.empty').val('');
-						$("select[name='equSuit']").val('');
+						// 셀렉트 리셋해줌
+						$('#equSuit').val('').prop("selected", true);
+						$('#checkType').val('').prop("selected", true);
 					},
 					error: function (reject) {
 						console.log('설비 삭제 중 오류가 발생했습니다.');

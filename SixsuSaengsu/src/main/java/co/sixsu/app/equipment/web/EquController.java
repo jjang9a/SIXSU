@@ -48,7 +48,9 @@ public class EquController {
 	@GetMapping("equCheckCP") // 점검관리 페이지
 	public void equCheckCP(Model model) {
 		String key = "EQU_SUIT";
-		model.addAttribute("types", basicService.getComList(key));
+		String key2 = "CHECK_TYPE";
+		model.addAttribute("equSuit", basicService.commGroupList(key));
+		model.addAttribute("checkType", basicService.commGroupList(key2));
 	}
 	
 	@GetMapping("equOperSP") // 비가동 조회 페이지
@@ -59,7 +61,7 @@ public class EquController {
 	@GetMapping("equOperCP") // 비가동 관리 페이지
 	public void equOperCP(Model model) {
 		String key = "OPER_TYPE";
-		model.addAttribute("types", basicService.getComList(key));
+		model.addAttribute("operType", basicService.commGroupList(key));
 	}
    
 	@ResponseBody

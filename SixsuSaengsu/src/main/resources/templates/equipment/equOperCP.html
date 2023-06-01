@@ -32,8 +32,8 @@
 			padding: 4px 10px;
 			text-align: left;
 		}
-		#select{
-			width: 188.44px;
+		#selected{
+			width: 185.44px;
 			height: 28.18px;
 		}
 		.modalTbl {
@@ -86,12 +86,10 @@
 				<tr>
 					<td>비가동 구분<span class="needStar"> *</span></td>
 					  <td>
-						<select id="select" name="operType">
+						<select id="operType" name="operType">
 						<option value='' selected>===== 선택 =====</option>
-						<option th:each="type : ${types}" th:value="${type.comId}" th:text="${type.comName}"></option>
-					    <!-- <option value="세척">세척</option>
-						<option value="중지">중지</option>
-						<option value="점검">점검</option> -->
+						<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}">
+						</option>
 						</select>
 					  </td> 
 				</tr>
@@ -167,7 +165,9 @@
 	<!--  그리드 시작 -->	
 	<div id="grid"></div>
 
-	<script>
+	<script th:inline="javascript">
+		let operType = [[${operType}]];
+
 		const grid = new tui.Grid({
 			el: document.getElementById('grid'),
 			pageOptions: {
@@ -180,6 +180,7 @@
 			columns: [
 				{
 					header: '비가동 코드',
+					sortable : true,
 					name: 'operCode',
 					align: 'center'
 				},
@@ -202,10 +203,7 @@
 					editor: {
 						type: 'select',
 						options: {
-						listItems:
-						[   {text: '세척', value: '세척'},
-							{text: '중지', value: '중지'},	
-							{text: '점검', value: '점검'},  ]
+							listItems: operType
 						}
 					}
 				},
@@ -337,20 +335,8 @@
 				$('#operNote').val(dataRow.operNote); // 비가동 비고
 				$('#empId').val(dataRow.empId); // 담당자
 
-				// 비가동 구분 값에 따라 다르게 불러옴.
-				// dataRow.operType == ' ~ ' 일때 select name='operType' 안에 있는 값을 불러온다.
-				if (dataRow.operType == '중지') {
-					console.log('중지')
-					$("select[name='operType']").val('중지');
-					
-				} else if (dataRow.operType == '세척'){
-					console.log('세척')
-					$("select[name='operType']").val('세척');
-					
-				} else  {
-					console.log('점검')
-					$("select[name='operType']").val('점검');
-				}
+			
+				$('#operType').val(dataRow.operType).prop("selected", true);
 			});
 			
 			// 등록버튼 기능 구현
@@ -383,12 +369,11 @@
 				});
 				// 인풋창을 비워줌
 				$('#addForm input').val('');
-				$("select[name='equSuit']").val('');
+				// 셀렉트 리셋해줌
+				$('#operType').val('').prop("selected", true);
 			}
 			});
 			
-			
-
 
 			// 비가동관리(수정) 
 			$('#modBtn').on('click', function (e) {
@@ -415,7 +400,8 @@
 					}
 				});
 				$('.empty').val('');
-				$("select[name='operType']").val('');
+				// 셀렉트 리셋해줌
+				$('#operType').val('').prop("selected", true);
 			  }
 			})
 
@@ -445,7 +431,8 @@
 						selRow = '';
 						// 삭제 기능을 하면서 인풋창을 비워주고 셀렉트 리셋.
 						$('.empty').val('');
-						$("select[name='operType']").val('');
+						// 셀렉트 리셋해줌
+						$('#operType').val('').prop("selected", true);
 					},
 					error: function (reject) {
 						console.log('설비 삭제 중 오류가 발생했습니다.');
