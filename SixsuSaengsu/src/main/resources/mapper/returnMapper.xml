@@ -4,5 +4,19 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.sixsu.app.sales.mapper.ReturnMapper">
+<select id="orderComplete" resultType ="ShipCompVO">
+	select d.ord_det_id, 
+	s.ord_Date, c.cp_Name, c.cp_id, d.ord_qt
+	, (select CP_SHIP_REQ_DATE from pro_ship where ord_det_id = d.ord_det_id and rownum= 1)  as  CP_SHIP_REQ_DATE
+	from det_ord d join sorder s
+	on d.ord_id = s.ord_id
+	left outer join complete_prod c
+	on d.cp_id = c.cp_id
+	where d.ord_stat_det = 'C'
+	<if test="keyword != null and keyword !=''">
+		s.bus_id = #{keyword}
+	</if>
+</select>
+
 
 </mapper>

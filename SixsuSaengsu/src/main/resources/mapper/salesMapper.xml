@@ -26,8 +26,10 @@
 	<!-- 모달창 거래이름별 거래처별조회   '%${keyword}%' -->
 	<select id="bus1List"
 		resultType='BusVO'>
-		select* from business	
-		where upper (bus_name) like '%'|| upper(#{keyword}) || '%' 
+		select* from business
+		<if test="keyword != null and keyword !=''">	
+		where upper (bus_name) like '%'|| upper(#{keyword}) || '%'
+		</if> 
 	</select>
 	<!-- 대소문자 구별 및 값이 비슷한 경우도 나오게 하는기능 -->
 	
