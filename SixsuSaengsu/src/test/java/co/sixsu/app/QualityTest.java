@@ -18,11 +18,7 @@ public class QualityTest {
 	@Autowired QualityMapper mapper;
 	
 	
-	@Test
-	public void getArrList() {
-		List<QuaVO> list = mapper.getArrList();
-		System.out.println(list);
-	}
-	
+	//@Test
+
 	
 }

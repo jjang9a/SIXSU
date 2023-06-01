@@ -74,6 +74,8 @@ h1 {
 					<td>부적합 사유</td>
 					<td colspan="3"><input type="text" name="detailNote"
 						id="detailNote" class="empty" style="width: 660px;"></td>
+					<td>검수 상태</td>
+					<td><input type="text" name="cpShipStat" id="cpShipStat" readonly></td>
 				</tr>
 			</table>
 		</form>
@@ -117,7 +119,8 @@ h1 {
 					}, {
 						header : '주문 상세 코드',
 						name : 'ordDetId',
-						align : 'center'
+						align : 'center',
+						hidden: true
 					}, {
 						header : 'LOT번호',
 						name : 'cpLotId',
@@ -147,6 +150,10 @@ h1 {
 						name : 'cpShipStat',
 						align : 'center'
 					}, {
+						header : '적합 여부',
+						name : 'resStat',
+						align : 'center'
+					},{
 						header : '요청일자',
 						name : 'cpShipReqDate',
 						align : 'center'
@@ -223,23 +230,19 @@ h1 {
 															.serialize(),
 													dataType : 'json',
 													success : function(result) {
-														alert('완제품이 성공적으로 수정되었습니다');
+														alert('출고 검사가 성공적으로 수정되었습니다');
 														//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
 														const setData = result
 														grid.setRow(selRow,
 																setData);
 														selRow = '';
 														$('.empty').val('');
-														$('#cpSize')
+														$('#resStat')
 																.val('')
 																.prop(
 																		"selected",
 																		true);
-														$(
-																"input:radio[name='cpStat']:radio[value='Y']")
-																.prop(
-																		'checked',
-																		true);
+														
 													},
 													error : function() {
 														alert('완제품 수정 중 오류가 발생했습니다!');

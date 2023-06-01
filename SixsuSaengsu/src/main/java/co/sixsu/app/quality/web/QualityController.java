@@ -19,8 +19,8 @@ import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.quality.service.QualityService;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
+//조민경 - 품질 관리 컨트롤러
 @Controller
-//@SpringBootApplication
 public class QualityController {
 
 	@Autowired
@@ -30,60 +30,27 @@ public class QualityController {
 	@GetMapping("/quality/arr")
 	public void arr() {
 	}
-	
+
 	// 자재 입고 검사 페이지
 	@GetMapping("/quality/recInsp")
 	public void recInsp() {
 	}
-	
+
 	// 공정 검사 페이지
-		@GetMapping("/quality/prInsp")
-		public void prInsp() {
-		}
-		
+	@GetMapping("/quality/prInsp")
+	public void prInsp() {
+	}
+
 	// 완제품 출고 검사 페이지
-		@GetMapping("/quality/psInsp")
-		public void psInsp() {
-		}
-	
+	@GetMapping("/quality/psInsp")
+	public void psInsp() {
+	}
+
 	// 반품 검사 페이지
-		
+
 	// 입고 검사 조회 페이지
-		
+
 	// 공정 검사 조회 페이지
-		
-	
-
-	// 도착 자재 리스트
-	@ResponseBody
-	@RequestMapping("/quality/arrList")
-	public List<QuaVO> arrList(Model model) {
-		List<QuaVO> list = quaService.getArrList();
-		model.addAttribute("arrList", list);
-		return list;
-	}
-
-	// 자재 도착 등록 대기 리스트
-	@ResponseBody
-	@RequestMapping("/quality/arrRegList")
-	public List<QuaVO> arrRegList(Model model) {
-		List<QuaVO> rList = quaService.arrRegList();
-		model.addAttribute("regList", rList);
-		return rList;
-	}
-
-	// 도착 등록
-	@ResponseBody
-	@PostMapping("/quality/arrRegister")
-	public String arrRegister(QuaVO am, MatreqVO mat) {
-
-		quaService.insertArr(am);
-		System.out.println(am);
-		System.out.println(mat);
-		return "redirect:/quality/arrRegList";
-	}
-
-
 
 	// 입고 검사 대기 등록 리스트
 	@ResponseBody
@@ -99,15 +66,15 @@ public class QualityController {
 	@PostMapping("/quality/prRegister")
 	public List<QuaVO> prRegister(@RequestBody List<QuaVO> list) {
 		System.out.println(list);
-		return quaService.insertpro(list);
+		quaService.insertpro(list);
+		return list;
 	}
 
 	// 입고 검사 대기 리스트
 	@ResponseBody
 	@RequestMapping("/quality/prInspList")
-	public List<QuaVO> prInspList(Model model) {
+	public List<QuaVO> prInspList() {
 		List<QuaVO> priList = quaService.prInspList();
-		model.addAttribute("priList", priList);
 		System.out.println("리스트 출력 확인:" + priList);
 		return priList;
 	}
@@ -115,19 +82,17 @@ public class QualityController {
 	// 입고 검사 항목 불러오기
 	@ResponseBody
 	@RequestMapping("/quality/inspItem")
-	public List<QuaVO> inspItem(Model model, String matId) {
+	public List<QuaVO> inspItem(String matId) {
 		List<QuaVO> list = quaService.inspItem(matId);
-		model.addAttribute("list", list);
 		return list;
 	}
-	
+
 	// 수정 시 입고 검사 항목 불러오기
 	@ResponseBody
 	@RequestMapping("/quality/modInspItem")
-	public List<QuaVO> modInspItem(Model model, String inspNum) {
+	public List<QuaVO> modInspItem(String inspNum) {
 		List<QuaVO> list = quaService.modInspItem(inspNum);
-		model.addAttribute("list", list);
-		System.out.println("수정 항목 출력:"+list);
+		System.out.println("수정 항목 출력:" + list);
 		return list;
 	}
 
@@ -142,104 +107,102 @@ public class QualityController {
 	// 입고 검사 결과 등록
 	@ResponseBody
 	@PostMapping("/quality/priRegister")
-	public List<QuaVO> priRegister(@RequestBody List<QuaVO> list) {
-
+	public int priRegister(@RequestBody List<QuaVO> list) {
 		System.out.println(list);
 		// return quaService.insertPri(list);
 		return quaService.insertPriAndUpdate(list);
 	}
-	
 
 	// 검사 결과 등록 시 검사 공통 업데이트
 	@ResponseBody
 	@PostMapping("/quality/priRegUpdate")
 	public boolean qComUpdate(QuaVO qua) {
-		System.out.println("abcd");
 		System.out.println(qua);
 		boolean result = quaService.priRegUpdate(qua);
-		//return true;
 		return result;
 	}
-	
-	// 입고 검사 완료 리스트
-		@ResponseBody
-		@RequestMapping("/quality/rAfterList")
-		public List<QuaVO> rAfterList(Model model) {
-			List<QuaVO> raList = quaService.afterReqList();
-			model.addAttribute("raList", raList);
-			System.out.println("리스트 출력 확인:" + raList);
-			return raList;
-		}
-	
+
+	// 입고 검사 완료 리스트(2주 이내의 정보)
+	@ResponseBody
+	@RequestMapping("/quality/rAfterList")
+	public List<QuaVO> rAfterList() {
+		List<QuaVO> raList = quaService.afterReqList();
+		System.out.println("리스트 출력 확인:" + raList);
+		return raList;
+	}
+
 	// 입고 검사 완료 삭제
-		@ResponseBody
-		@RequestMapping("/quality/delReqInsp")
-		public boolean delReqInsp(@RequestParam String inspNum) {
-			boolean result = quaService.delReqInsp(inspNum); 
-		
-		    return result;
-		}
-		
-		// 수정 시 qua_details 업데이트
-		@ResponseBody
-		@PostMapping("/quality/updateQd")
-		public List<QuaVO> updateQd(@RequestBody List<QuaVO> list) {
-			System.out.println("검사상세업데이트"+list);
-			return quaService.updateQd(list);
-		}
-	
+	@ResponseBody
+	@RequestMapping("/quality/delReqInsp")
+	public boolean delReqInsp(@RequestParam String inspNum) {
+		boolean result = quaService.delReqInsp(inspNum);
+		return result;
+	}
+
+	// 수정 시 qua_details 업데이트
+	@ResponseBody
+	@PostMapping("/quality/updateQd")
+	public List<QuaVO> updateQd(@RequestBody List<QuaVO> list) {
+		System.out.println("검사상세업데이트" + list);
+		return quaService.updateQd(list);
+	}
 
 	// 제품 품질 관리 - 검사 등록 리스트 출력
 	@ResponseBody
 	@GetMapping("/quality/bpAddList")
-	public List<DetaWorkOrdrVO> bpList(Model model) {
+	public List<DetaWorkOrdrVO> bpList() {
 		List<DetaWorkOrdrVO> list = quaService.bpAddList();
-		model.addAttribute("list", list);
 		return list;
 	}
 
 	// 공정 검사 등록
-	  @ResponseBody
-	  @PostMapping("/quality/bpdAdd") 
-	  public List<PrdInspVO> bpdAdd(@RequestBody List<PrdInspVO> list) { 
-		  System.out.println(list);
-		  
-		  return quaService.bpdAdd(list);
-	}
-	  
-	  // 제품 품질 관리 검사 대기 리스트
-	  @ResponseBody
-	  @GetMapping("/quality/prwList")
-	  public List<PrdInspVO> prwList(Model model){
-		  List<PrdInspVO> list = quaService.prwList();
-		  model.addAttribute("list",list);
-		  
-		  return list;
-		  
-	  }
-	  
-	  // 제품 품질 검사 완료 리스트
-	  @ResponseBody
-	  @GetMapping("/quality/prdComList")
-	  public List<PrdInspVO> prdComList(Model model){
-		  return quaService.prdComList();
-	  }
-	  
-	  // 출고 검사 목록 리스트
-	  @ResponseBody
-	  @GetMapping("/quality/shInspList")
-	  public List<ShipInspVO> shInspList(Model model){
-		  return quaService.shInspList();
-	  }
-	 
-	  // 출고 검사 결과 등록
-	  @ResponseBody
-	  @PostMapping("/quality/shipInspAdd")
-		public ShipInspVO shipInspAdd(ShipInspVO ship) {
-			System.out.println("출고 검사 등록");
-			System.out.println(ship);
-			
-			return quaService.shipInspAdd(ship);
-	  }
+	@ResponseBody
+	@PostMapping("/quality/bpdAdd")
+	public int bpdAdd(@RequestBody List<PrdInspVO> list) {
+		System.out.println(list);
 
+		return quaService.bpdAdd(list);
+	}
+
+	// 제품 품질 관리 검사 대기 리스트
+	@ResponseBody
+	@GetMapping("/quality/prwList")
+	public List<PrdInspVO> prwList() {
+		List<PrdInspVO> list = quaService.prwList();
+
+		return list;
+
+	}
+
+	// 제품 품질 검사 완료 리스트
+	@ResponseBody
+	@GetMapping("/quality/prdComList")
+	public List<PrdInspVO> prdComList() {
+		return quaService.prdComList();
+	}
+
+	// 출고 검사 목록 리스트
+	@ResponseBody
+	@GetMapping("/quality/shInspList")
+	public List<ShipInspVO> shInspList() {
+		return quaService.shInspList();
+	}
+
+	// 출고 검사 결과 등록
+	@ResponseBody
+	@PostMapping("/quality/shipInspAdd")
+	public ShipInspVO shipInspAdd(ShipInspVO ship) {
+		System.out.println("출고 검사 등록");
+		quaService.shipInspAdd(ship);
+		System.out.println(ship);
+		return ship;
+	}
+	
+	// 출고 검사 결과 수정
+	@ResponseBody
+	@PostMapping("/quality/shipInspMod")
+	public ShipInspVO shipInspMod(ShipInspVO ship) {
+		quaService.shipInspMod(ship);
+		return ship;
+	}
 }
