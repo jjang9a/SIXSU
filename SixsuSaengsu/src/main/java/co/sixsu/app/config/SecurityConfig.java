@@ -32,13 +32,18 @@ public class SecurityConfig{
 		http.authorizeHttpRequests((requests) -> 
 		requests
 			.antMatchers("/top","/login", "/**").permitAll()
-			.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // boot에서는 ROLE_ 생략하고 그냥 ADMIN으로 적는것도 가능
+			.antMatchers("/admin/**").hasAuthority("ROLE_A") // boot에서는 ROLE_ 생략하고 그냥 ADMIN으로 적는것도 가능
+			.antMatchers("/admin/**").hasAuthority("ROLE_B")
+			.antMatchers("/admin/**").hasAuthority("ROLE_C")
+			.antMatchers("/admin/**").hasAuthority("ROLE_D")
+			.antMatchers("/admin/**").hasAuthority("ROLE_E")
+			.antMatchers("/admin/**").hasAuthority("ROLE_F")
 			.anyRequest().authenticated())
 		//.formLogin().loginPage("/login").usernameParameter("").and()
 		.formLogin(login -> login.loginPage("/login")
 								.usernameParameter("empId")
 								.successHandler(successHandler()))
-		.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/top")) //.deleteCookies(null) 가능
+		.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login")) //.deleteCookies(null) 가능
 			.csrf().disable();
 		return http.build();
 	}

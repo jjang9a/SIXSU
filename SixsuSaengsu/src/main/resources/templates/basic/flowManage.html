@@ -73,6 +73,10 @@
 		.modal-body {
 			background: #e5edf5;
 		}
+
+		.tui-grid-table:hover {
+			cursor: pointer;
+		}
 	</style>
 </head>
 
@@ -267,7 +271,7 @@
 			// 제품 선택 시 선택정보 기반으로 공정흐름도 데이터 불러오기
 			let pdKey = '';
 			let selRowKey = '';
-			pdGrid.on('dblclick', function (ev) {
+			pdGrid.on('click', function (ev) {
 				// 열을 더블클릭하면 제품 정보를 변수에 저장
 				if (selRowKey != ev.rowKey) { // 제품 선택 정보가 달라졌다면
 					pdGrid.removeRowClassName(selRowKey, 'cell-pink'); // 지난 제품 열에서 음영 제거

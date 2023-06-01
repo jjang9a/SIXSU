@@ -26,6 +26,7 @@ public interface QualityMapper {
 	int delReqInsp(String inspNum);// 검사 완료 단건 삭제
 	List<QuaVO> modInspItem(String inspNum);//수정시 검사 항목 불러오기
 	int updateQd(QuaVO qua);//수정 시 qua_details 업데이트
+	int updateQc(List<QuaVO> list);//수정시 검사 공통 업데이트
 	
 	// 공정 검사 관련
 	List<DetaWorkOrdrVO> bpAddList(); // 공정 검사전 리스트
@@ -39,12 +40,12 @@ public interface QualityMapper {
 	int insertShipCom(ShipInspVO com); // 출고 검사 등록 시 검사 공통 insert
 	int insertShipDet(ShipInspVO det); // 출고 검사 등록 시 검사 상세 insert
 	int updateShip(ShipInspVO prs); // 출고 검사 등록 시 완제품 출고 테이블 품질 검사 완료 업데이트
+	int modShipCom(ShipInspVO vo); // 출고 검사 공통 수정
+	int modShipDet(ShipInspVO vo); // 출고 검사 상세 수정
 	
 	
 	// 사용 보류
-	List<QuaVO> getArrList(); // 도착 자재 리스트
-	List<QuaVO> arrRegList(); // 도착 자재 등록 리스트
-	int insertArr(QuaVO am); // 도착 자재 등록
+
 	void reqInspProc(QuaVO qua);//자재 입고 검사 결과 등록 프로시저 사용
 	String psInspNum(); // 입고 검사 등록 시 검사 번호 자동 등록
 	int insertPr(QuaVO am); // 자재 입고 검사 등록

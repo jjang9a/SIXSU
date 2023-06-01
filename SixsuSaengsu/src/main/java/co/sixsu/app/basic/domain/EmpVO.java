@@ -1,9 +1,17 @@
 package co.sixsu.app.basic.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.Data;
 
 @Data
-public class EmpVO { // 사원 테이블 (employee)
+public class EmpVO implements UserDetails { // 사원 테이블 (employee)
 	
 	private String empId; // 사원번호
 	private String empName; // 이름
@@ -16,5 +24,43 @@ public class EmpVO { // 사원 테이블 (employee)
 	private String empNote; // 비고
 	private String empPw; // 비밀번호
 	
+	private String roleId;
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> auth = new ArrayList<>();
+		auth.add(new SimpleGrantedAuthority(this.roleId));
+		return auth;
+	}
 
+	@Override
+	public String getUsername() {
+		return empId;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// 계정이 만료되었니
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	public String getPassword() {
+		return empPw;
+	}
 }

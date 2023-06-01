@@ -23,13 +23,7 @@ public class CommonTest {
 	@Autowired BasicMapper mapper;
 	@Autowired BasicService service;
 	@Autowired ProductMapper pdMapper;
-	
-	public void getDateTest() {
-		Date date = mapper.getDate();
-		log.debug(date);
-		System.out.println(date);
-	}
-	
+
 	@Test
 	public void groupTest() {
 		List<CodeVO> list1 = mapper.groupList();
