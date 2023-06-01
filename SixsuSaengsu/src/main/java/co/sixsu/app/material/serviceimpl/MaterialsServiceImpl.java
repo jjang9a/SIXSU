@@ -16,6 +16,7 @@ import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.domain.SpAdjVO;
 import co.sixsu.app.material.domain.SpShipVO;
+import co.sixsu.app.material.domain.SpVO;
 import co.sixsu.app.material.mapper.MaterialsMapper;
 import co.sixsu.app.material.service.MaterialsService;
 
@@ -202,6 +203,12 @@ public class MaterialsServiceImpl implements MaterialsService{
 				mapper.insertMatDmg(i);
 			}
 			
+		}
+		
+		//반제품 리스트
+		@Override
+		public List<SpVO> getSpList() {
+			return mapper.getSpList();
 		}
 		
 
