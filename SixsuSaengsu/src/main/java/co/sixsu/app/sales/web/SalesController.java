@@ -60,7 +60,7 @@ public class SalesController {
 //모달창 거래처이름 조회
 	@RequestMapping("bus1List")
 	@ResponseBody
-	public List<BusVO> bus1List(@RequestParam String result) {
+	public List<BusVO> bus1List(@RequestParam(required = false) String result) {
 		System.out.println(result);
 		List<BusVO> list = service.getBus1List(result);
 		return list;
