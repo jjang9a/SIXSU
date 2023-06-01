@@ -196,7 +196,7 @@ window.onload = function() {
 			dataType : "JSON",
 			success : function(result) {
 				orderingGrid.resetData(result);
-				setTimeout(()=>orderingGrid.refreshLayout(),1000);
+				setTimeout(()=>orderingGrid.refreshLayout(),400);
 			}
 		});
 	}

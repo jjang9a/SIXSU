@@ -14,6 +14,10 @@
 			padding: 4px 10px;
 			text-align: left;
 		}
+		#addDate{
+			width: 188.44px;
+			height: 28.18px;
+		}
 		.modalTbl {
 			margin: auto;
 			text-align: center;
@@ -79,7 +83,7 @@
 				</tr>
 				<tr>
 					<td>표준온도<span class="needStar"> *</span></td>
-					<td><input type="text" name="ctemp" id="ctemp" class="empty"></td>
+					<td><input type="text" name="ctemp" id="ctemp" class="empty" placeholder=" * 숫자만 입력하시오 * "></td>
 				</tr>
 				<tr>
 					<td>공정코드<span class="needStar"> * </span></td>
@@ -365,10 +369,6 @@
 
 			// 등록버튼 기능 구현
 			$('#addBtn').on('click', function (e) {
-				if (selRow === '') {
-					alert('등록 정보를 입력하시오.')
-				} else {
-				
 				console.log($('#addForm').serialize())
 				$.ajax({
 					url: '/equipment/equAdd',
@@ -393,7 +393,6 @@
 				});
 				// 인풋창을 비워줌
 				$('#addForm input').val('');
-			}
 			});
 			
 			// 설비정보 수정 

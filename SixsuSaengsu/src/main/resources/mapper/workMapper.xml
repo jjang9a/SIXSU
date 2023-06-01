@@ -126,63 +126,87 @@ with work as (
 
 <select id="getMaterialList" resultType="MatVO">
 	SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
-	FROM MATERIAL
-	UNION ALL
+		FROM MATERIAL
+		
+		UNION ALL
+		
 	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
-	FROM SEMI_PROD
+		FROM SEMI_PROD
 </select>
 
 <select id="getOrderCode" resultType="String">
 	SELECT (to_CHAR(sysdate, 'yyyyMMdd')||'-'|| (NVL(MAX(TO_NUMBER(SUBSTR(WK_HEAD_ID, 10))), 0) + 1))
-	FROM WORK_ORDR
-	WHERE WK_HEAD_ID LIKE to_CHAR(sysdate, 'yyyyMMdd')||'-%'
+		FROM WORK_ORDR
+		WHERE WK_HEAD_ID LIKE to_CHAR(sysdate, 'yyyyMMdd')||'-%'
 </select>
 
 <insert id="addWork">
-	INSERT INTO WORK_ORDR (WK_HEAD_ID, WK_CMPLT_ST) values(#{orderCode},'작성중')
+	INSERT 
+		INTO WORK_ORDR (WK_HEAD_ID, WK_CMPLT_ST) 
+		values (#{orderCode},'작성중')
 </insert>
 
 <select id="getDetaCode" resultType="String">
 	SELECT #{subData} || '-' ||(NVL(MAX(TO_NUMBER(SUBSTR(WK_DETA_ID, LENGTH(#{subData})+2))), 0) + 1)
-	FROM DETA_WORK_ORDR
-	WHERE WK_DETA_ID like '${subData}%'
+		FROM DETA_WORK_ORDR
+		WHERE WK_DETA_ID like '${subData}%'
 </select>
 
 <insert id="addDetaWork" parameterType="DetaWorkOrdrVO">
-	INSERT INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST) values(#{wkHeadId},#{wkDetaId},'작성중')
+	INSERT 
+		INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST) 
+		values(#{wkHeadId},#{wkDetaId},'작성중')
 </insert>
 <insert id="addWkBom">
-	INSERT INTO WORK_BOM (WK_BOM_ID, WK_DETA_ID, TYPE) values('WKB'||wk_BOM_SEQ.nextVal, #{detaCode}, '작성중')
+	INSERT 
+		INTO WORK_BOM (WK_BOM_ID, WK_DETA_ID, TYPE) 
+		values('WKB'||wk_BOM_SEQ.nextVal, #{detaCode}, 
+			   '작성중')
 </insert>
 	
 <select id="getDetaWorkHeadList" resultType="DetaWorkOrdrVO">
 	SELECT *
-	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT CP_ID, CP_NAME
-	FROM complete_prod
-	UNION ALL
+		FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT CP_ID, CP_NAME
+		FROM complete_prod
+		
+		UNION ALL
+		
 	SELECT SP_ID AS CP_ID,SP_NAME AS CP_ID
-	FROM SEMI_PROD) b ON a.cp_ID = b.CP_ID
-        LEFT OUTER JOIN employee c ON a.emp_ID = c.emp_id
-	WHERE WK_HEAD_ID = #{data}
-	ORDER BY a.WK_DETA_ID
+		FROM SEMI_PROD) b 
+			ON a.cp_ID = b.CP_ID
+	       LEFT OUTER JOIN employee c 
+	        ON a.emp_ID = c.emp_id
+			 WHERE WK_HEAD_ID = #{data}
+			 ORDER BY a.WK_DETA_ID
 </select>	
 
 <select id="getWkBomList" resultType="workBomVO">
 	SELECT *
-	FROM WORK_BOM a LEFT OUTER JOIN PROCESS b ON a.PROC_ID = b.PROC_ID
-	LEFT OUTER JOIN COMMON_CODE c ON b.PROC_TYPE = c.COM_id
-	WHERE a.WK_DETA_ID = #{data}
-	ORDER BY WK_BOM_ID
-	
+		FROM WORK_BOM a 
+			LEFT OUTER JOIN PROCESS b 
+			 ON a.PROC_ID = b.PROC_ID
+			 
+			LEFT OUTER JOIN COMMON_CODE c 
+			 ON b.PROC_TYPE = c.COM_id
+			 
+			  WHERE a.WK_DETA_ID = #{data}
+			  ORDER BY WK_BOM_ID
 </select>
 
 <select id="getBomCode" resultType="String">
 	SELECT MAX(WK_BOM_ID)
-	FROM WORK_BOM
-	WHERE WK_DETA_ID = #{detaCode}
+		FROM WORK_BOM
+		WHERE WK_DETA_ID = #{detaCode}
 </select>
 <insert id="addWorkMatBom">
-	INSERT INTO WORK_BOM_MAT (BOM_MAT_ID, WK_BOM_ID, TYPE)values('workMat'||work_mat_seq.nextVal, #{bomCode}, '작성중')
+	INSERT 
+		INTO WORK_BOM_MAT (BOM_MAT_ID, 
+						   WK_BOM_ID, 
+						   TYPE)
+						   
+		values('workMat'||work_mat_seq.nextVal, 
+		 	   #{bomCode}, 
+			   '작성중')
 </insert>
 
 <select id="getWkMatList" resultType="bomMatVO">
@@ -265,6 +289,7 @@ with work as (
   ) }
 </select>
  
+ 
 	
 <insert id="teset" parameterType="String">
 	<![CDATA[
@@ -287,6 +312,15 @@ with work as (
   	#{inParam},
   	#{outParam, mode=OUT, jdbcType=VARCHAR}
   )}
+</select>
+
+<select id="getProductBomList" parameterType="DetaWorkOrdrVO">
+	<![CDATA[
+	{ CALL add_work_bom_mat(
+		#{wkDetaId},
+		#{cpId}
+	)}
+	]]>
 </select>
 
 

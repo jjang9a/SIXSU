@@ -783,9 +783,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	grid1.on('afterChange', function (ev) {
 		  let getRow = grid1.getRow(grid1Ev.rowKey)
 		  console.log(getRow)
+		  console.log('ev : ')
 		  console.log(ev)
 		  console.log(ev.changes[0].columnName)
-		  if(ev.changes[0].columnName != 'cpId'){
+		  if(ev.changes[0].columnName == 'cpId'){
 			  getRow.single = 'Y';
 		  }
 		  $.ajax({
@@ -796,7 +797,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				data :  JSON.stringify(getRow),
 				success : function(result){
 					console.dir(result);
-					grid1.resetData(result);
+					grid1.resetData(result[0]);
 					},
 					error : function(reject){
 						console.log(reject)
