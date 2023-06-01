@@ -46,14 +46,14 @@
 
 		#returnAdd,
 		#waterGrid {
-			width: 450px;
+			width: 766px;
 			margin: auto;
-			height: 492px;
+			height: 410px;
 			background-color: white;
-			padding-top: 170px;
+			padding-top: 120px;
 			display: none;
 			clear: both;
-			margin-bottom: 28px;
+			margin-bottom: 30px;
 		}
 
 		#returnAddForm {
@@ -107,7 +107,7 @@
 					<!-- Modal -->
 					<div class="modal fade" id="regModal" data-bs-backdrop="static" data-bs-keyboard="false"
 						tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-dialog modal-dialog-centered modal-lg">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="staticBackdropLabel">입고 검사 등록</h5>
@@ -453,56 +453,56 @@
 				scrollY: true,
 
 				columns: [{
-					header: '검사번호',
-					name: 'inspNum',
-					hidden: true
-				}, {
-					header: '발주번호',
-					name: 'matReqId',
-					hidden: true
-				}, {
-					header: '검사세부번호',
-					name: 'detInspNum',
-					hidden: true
-				},
-				{
-					header: '검사 항목 코드',
-					//width: 120,
-					name: 'inspId',
-					align: 'center'
+						header: '검사번호',
+						name: 'inspNum',
+						hidden: true
+					}, {
+						header: '발주번호',
+						name: 'matReqId',
+						hidden: true
+					}, {
+						header: '검사세부번호',
+						name: 'detInspNum',
+						hidden: true
+					},
+					{
+						header: '검사 항목 코드',
+						//width: 120,
+						name: 'inspId',
+						align: 'center'
 
-				},
-				{
-					header: '항목명',
-					name: 'inspName',
-					align: 'center'
-				},
-				{
-					header: '설명',
-					name: 'inspExp',
-					align: 'center'
-				},
-				{
-					header: '기준값',
-					name: 'stdVal',
-					align: 'center'
-				}, {
-					header: '결과값',
-					name: 'resVal',
-					editor: 'text',
-					align: 'center'
-				},
-				{
-					header: '부적합 수량',
-					name: 'nsuitQt',
-					editor: 'text',
-					align: 'center'
-				},
-				{
-					header: '적합여부',
-					name: 'resStat',
-					align: 'center'
-				}
+					},
+					{
+						header: '항목명',
+						name: 'inspName',
+						align: 'center'
+					},
+					{
+						header: '설명',
+						name: 'inspExp',
+						align: 'center'
+					},
+					{
+						header: '기준값',
+						name: 'stdVal',
+						align: 'center'
+					}, {
+						header: '결과값',
+						name: 'resVal',
+						editor: 'text',
+						align: 'center'
+					},
+					{
+						header: '부적합 수량',
+						name: 'nsuitQt',
+						editor: 'text',
+						align: 'center'
+					},
+					{
+						header: '적합여부',
+						name: 'resStat',
+						align: 'center'
+					}
 				]
 			});
 
@@ -526,36 +526,36 @@
 				rowHeaders: ['checkbox'],
 
 				columns: [{
-					header: '발주 번호',
-					width: 120,
-					name: 'matReqId',
-					align: 'center'
+						header: '발주 번호',
+						width: 120,
+						name: 'matReqId',
+						align: 'center'
 
-				},
-				{
-					header: '거래처',
-					name: 'busName',
-					align: 'center'
-				},
-				{
-					header: '자재 코드',
-					name: 'matId',
-					align: 'center'
-				},
-				{
-					header: '자재 명',
-					name: 'matName',
-					align: 'center'
-				}, {
-					header: '발주 수량',
-					name: 'matReqQt',
-					align: 'center'
-				},
-				{
-					header: '검사 수량',
-					name: 'inspQt',
-					editor: 'text',
-				}
+					},
+					{
+						header: '거래처',
+						name: 'busName',
+						align: 'center'
+					},
+					{
+						header: '자재 코드',
+						name: 'matId',
+						align: 'center'
+					},
+					{
+						header: '자재 명',
+						name: 'matName',
+						align: 'center'
+					}, {
+						header: '발주 수량',
+						name: 'matReqQt',
+						align: 'center'
+					},
+					{
+						header: '검사 수량',
+						name: 'inspQt',
+						editor: 'text',
+					}
 				]
 			});
 
@@ -811,42 +811,42 @@
 
 			// 검사 결과 등록 클릭 이벤트
 			$('#inspBtn').on('click', function () {
-				console.log(detailGrid.getData())
-				console.log('확인')
-				let formData = $('#prInspForm').serialize();
-				//formData += '&detailData=' + JSON.stringify(detailGrid.getData());
-				//console.log(formData);
-				//formData += JSON.stringify(detailGrid.getData());
+					console.log(detailGrid.getData())
+					console.log('확인')
+					let formData = $('#prInspForm').serialize();
+					//formData += '&detailData=' + JSON.stringify(detailGrid.getData());
+					//console.log(formData);
+					//formData += JSON.stringify(detailGrid.getData());
 
-				// 검사 공통 업데이트 ajax 실행
-				quaComUpdateAjax();
+					// 검사 공통 업데이트 ajax 실행
+					quaComUpdateAjax();
 
-				//등록&update
-				$.ajax({
-					url: '/quality/priRegister',
-					type: 'post',
-					data: JSON.stringify(detailGrid.getData()),
-					contentType: 'application/json',
-					success: function (result) {
+					//등록&update
+					$.ajax({
+						url: '/quality/priRegister',
+						type: 'post',
+						data: JSON.stringify(detailGrid.getData()),
+						contentType: 'application/json',
+						success: function (result) {
 
-						console.log(result);
-						alert('검사 결과값 등록이 완료되었습니다.');
-						// 등록 완료 후 폼과 그리드 숨기고 초기화
-						$('#prInspForm').css('display', 'none');
-						$('.detail').css('display', 'none');
-						$('#prInspForm input').val('');
-
-
-					},
-					error: function (reject) {
-						console.log(reject);
-						alert('검사 결과값 등록에 실패했습니다.')
-					}
-				});
+							console.log(result);
+							alert('검사 결과값 등록이 완료되었습니다.');
+							// 등록 완료 후 폼과 그리드 숨기고 초기화
+							$('#prInspForm').css('display', 'none');
+							$('.detail').css('display', 'none');
+							$('#prInspForm input').val('');
 
 
+						},
+						error: function (reject) {
+							console.log(reject);
+							alert('검사 결과값 등록에 실패했습니다.')
+						}
+					});
 
-			} // on click event 끝
+
+
+				} // on click event 끝
 			)
 
 			// 수정하기 버튼 클릭 이벤트

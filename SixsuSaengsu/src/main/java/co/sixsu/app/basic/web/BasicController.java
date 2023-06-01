@@ -30,7 +30,7 @@ import co.sixsu.app.sales.domain.GridDataVO;
 public class BasicController {
 	@Autowired
 	BasicService service;
-
+	
 	@GetMapping("/login")
 	public void login() { // 로그인 화면 화면 띄우기
 	}

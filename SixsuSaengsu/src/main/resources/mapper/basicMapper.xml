@@ -5,8 +5,17 @@
   
 <mapper namespace="co.sixsu.app.basic.mapper.BasicMapper">
 
-<select id="getDate" resultType="java.util.Date">
-	select sysdate from dual
+<select id="getRole" resultType="String">
+	select role_id
+	from employee_role r join employee e
+	on ( r.dept = e.emp_dept and r.rk = e.emp_rk)
+	where emp_id=#{id}
+</select>
+
+<select id="getEmp" resultType="EmpVO">
+	select *
+	from employee
+	where emp_id=#{empId}
 </select>
 
 <!-- 사원 관리 -->
@@ -315,6 +324,10 @@
 	SELECT sp_id as cp_id, sp_name as cp_name, sp_size as cp_size
 	FROM semi_prod
 	WHERE sp_stat = 'Y'
+    UNION
+	SELECT mat_id cp_id, mat_name cp_name, mat_size cp_size
+	FROM material
+	WHERE mat_id = 'M021'
 	ORDER BY cp_id
 </select>
 

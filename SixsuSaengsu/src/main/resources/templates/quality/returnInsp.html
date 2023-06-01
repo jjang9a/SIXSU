@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+<meta charset="UTF-8">
+<title>반품 품질 관리</title>
+<style>
+h1 {
+	margin-bottom: 40px;
+}
+
+#cpTable {
+	margin: auto;
+}
+
+#cpTable input, select {
+	padding-left: 10px;
+	width: 230px;
+}
+
+
+#cpTable td {
+	padding: 4px 20px;
+	text-align: center;
+}
+
+.divBtn {
+	text-align: center;
+	padding: 15px 0 30px 0;
+}
+</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">완제품 출고 품질 관리</h1>
+
+		<!-- 정보입력 폼 -->
+		<form action="" method="post" id="returnForm">
+			<table id="cpTable">
+				<tr>
+					<td>반품 코드</td>
+					<td><input type="text" name="retId" id="retId" readonly></td>
+					<td>주문 상세 코드</td>
+					<td><input type="text" name="ordDetId" id="ordDetId" readonly></td>
+					<td>LOT번호</td>
+					<td><input type="text" name="cpLotId" id="cpLotId" readonly></td>
+				</tr>
+				<tr>
+					<td>제품명</td>
+					<td><input type="text" name="cpName" id="cpName" readonly></td>
+					<td>제품 코드</td>
+					<td><input type="text" name="cpId" id="cpId" readonly></td>
+					<td>반품 수량</td>
+					<td><input type="text" name="cpShipQt" id="cpShipQt" readonly></td>
+				</tr>
+				<tr>
+					<td>제조 일자</td>
+					<td><input type="text" name="endDate" id="endDate" readonly></td>
+					<td>유통 기한</td>
+					<td><input type="text" name="expDate" id="expDate" readonly></td>
+					<td>적합 여부</td>
+					<td><select name="resStat" id="resStat">
+						<option value="">선택</option>
+						<option value="적합">적합</option>
+						<option value="부적합">부적합</option>
+					</select></td>
+				</tr>
+
+				<tr>
+					<td>부적합 사유</td>
+					<td colspan="3"><input type="text" name="detailNote"
+						id="detailNote" class="empty" style="width: 660px;"></td>
+					<td>검수 상태</td>
+					<td><input type="text" name="cpShipStat" id="cpShipStat" readonly></td>
+				</tr>
+				
+				<tr>
+					<!-- 요청일자 -->
+					<td><input type="hidden" name="cpShipReqDate" id="cpShipReqDate"></td>
+					<!-- 검사일자 -->
+					<td><input type="hidden" name="inspDate" id="inspDate"></td>
+				</tr>
+				
+			</table>
+		</form>
+		<div class="divBtn">
+			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
+			<button type="button" class="sixBtn2" id="addBtn">등록</button>
+			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+		</div>
+		<!-- 상단 폼 끝 -->
+
+		<!-- 완제품 출고 검사 그리드 -->
+		<div id="grid"></div>
+
+		<script>
+			window.onload = function() {
+				//let initData = '';
+				//let nowData = '';
+				$.ajax({
+					url : "/quality/shInspList",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
+						grid.resetData(result);
+						//initData = result;
+						//nowData = result;
+					}
+				});
+				const grid = new tui.Grid({
+					el : document.getElementById('grid'),
+					scrollX : false,
+					scrollY : false,
+					minBodyHeight : 400,
+					pageOptions : {
+						useClient : true,
+						perPage : 10
+					},
+					columns : [ {
+						header : '반품 코드',
+						name : 'cpShipId',
+						align : 'center'
+					}, {
+						header : '주문 상세 코드',
+						name : 'ordDetId',
+						align : 'center',
+						hidden: true
+					}, {
+						header : 'LOT번호',
+						name : 'cpLotId',
+						align : 'center'
+					}, {
+						header : '제품코드',
+						name : 'cpId',
+						align : 'center'
+					}, {
+						header : '제품명',
+						name : 'cpName',
+						align : 'center'
+					}, {
+						header : '제조일자',
+						name : 'endDate',
+						align : 'center'
+					}, {
+						header : '유통기한',
+						name : 'expDate',
+						align : 'center'
+					}, {
+						header : '요청수량',
+						name : 'cpShipQt',
+						align : 'center'
+					}, {
+						header : '검수상태',
+						name : 'cpShipStat',
+						align : 'center'
+					}, {
+						header : '적합여부',
+						name : 'resStat',
+						align : 'center'
+					},{
+						header : '요청일자',
+						name : 'cpShipReqDate',
+						align : 'center'
+					}, {
+						header : '완료일자',
+						name : 'inspDate',
+						align : 'center'
+					} ]
+				});
+
+				// 그리드 색 변경 테마 적용
+				tui.Grid.applyTheme('default', {
+					cell : {
+						header : {
+							background : '#e5edf5'
+						},
+						normal : {
+							background : '#ffffff'
+						}
+					}
+				});
+
+				// 등록 버튼 이벤트
+				$('#addBtn').on('click', function(e) {
+					$.ajax({
+						url : '/',
+						type : 'post',
+						data : $('#returnForm').serialize(),
+						success : function(result) {
+							alert('출고 검사 결과가 등록되었습니다.');
+							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+							grid.setRow(selRow, setData);
+						},
+						error : function() {
+							alert('출고 검사 결과 등록 중 오류가 발생했습니다.');
+						}
+					});
+					$('#cpqForm input').val('');
+				});
+
+				// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
+				let selRow = '';
+				grid.on('dblclick', function(e) {
+					// 열을 더블클릭하면 열 정보를 변수에 저장
+					selRow = e.rowKey;
+					let dataRow = grid.getRow(selRow);
+					$('#cpShipId').val(dataRow.cpShipId);
+					$('#ordDetId').val(dataRow.ordDetId);
+					$('#cpLotId').val(dataRow.cpLotId);
+					$('#cpId').val(dataRow.cpId);
+					$('#cpName').val(dataRow.cpName);
+					$('#endDate').val(dataRow.endDate);
+					$('#cpShipQt').val(dataRow.cpShipQt);
+					$('#expDate').val(dataRow.expDate);
+					$('#cpShipStat').val(dataRow.cpShipStat);
+					$('#cpShipReqDate').val(dataRow.cpShipReqDate);
+					$('#inspDate').val(dataRow.inspDate);
+					$('#resStat').val(dataRow.resStat).prop("selected", true);
+
+					
+				})
+
+				// 수정 버튼 이벤트
+				$('#modiBtn')
+						.on(
+								'click',
+								function(e) {
+									if (selRow == '') {
+										alert('수정할 데이터가 없습니다.')
+									} else {
+										$
+												.ajax({
+													url : '/',
+													type : 'post',
+													data : $('#cpqForm')
+															.serialize(),
+													dataType : 'json',
+													success : function(result) {
+														alert('출고 검사가 성공적으로 수정되었습니다');
+														//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
+														const setData = result
+														grid.setRow(selRow,
+																setData);
+														selRow = '';
+														$('.empty').val('');
+														$('#resStat')
+																.val('')
+																.prop(
+																		"selected",
+																		true);
+														
+													},
+													error : function() {
+														alert('완제품 수정 중 오류가 발생했습니다!');
+													}
+												});
+									}
+								})
+
+				// 검색 버튼 이벤트
+				let searchType = '';
+				let searchKey = '';
+				$('#searchBtn').on('click', function(e) {
+					if ($('#cpId').val() == '' && $('#cpName').val() == '') {
+						if (initData == nowData) {
+							alert('완제품 코드 또는 제품명으로 검색이 가능합니다.')
+						} else {
+							$.ajax({
+								url : "/",
+								method : "GET",
+								dataType : "JSON",
+								success : function(result) {
+									grid.resetData(result);
+								}
+							});
+						}
+					} else {
+						if ($('#cpId').val() != '') {
+							searchType = 'id';
+							searchKey = $('#cpId').val()
+						} else {
+							searchType = 'name';
+							searchKey = $('#cpName').val()
+						}
+
+						$.ajax({
+							url : '/',
+							type : 'get',
+							data : {
+								"searchType" : searchType,
+								"searchKey" : searchKey
+							},
+							dataType : 'json',
+							success : function(result) {
+								grid.resetData(result);
+								nowData = result;
+							},
+							error : function() {
+								alert('완제품 검색 중 오류 발생!');
+							}
+						})
+					}
+
+				})
+
+				//윈도우 온 로드 종료
+			}
+		</script>
+	</div>
+</body>
+
+</html>

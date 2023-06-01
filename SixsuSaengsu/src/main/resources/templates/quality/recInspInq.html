@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+<meta charset="UTF-8">
+<title>자재 입고 검사 결과 조회</title>
+<style>
+h1 {
+	margin-bottom: 40px;
+}
+
+#cpTable {
+	margin: auto;
+}
+
+#cpTable input, select {
+	padding-left: 10px;
+	width: 230px;
+}
+
+
+#cpTable td {
+	padding: 4px 20px;
+	text-align: center;
+}
+
+.divBtn {
+	text-align: center;
+	padding: 15px 0 30px 0;
+}
+</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 입고 검사 결과 조회</h1>
+
+		<!-- 정보입력 폼 -->
+		<form action="" method="post" id="returnForm">
+			<table id="cpTable">
+				<tr>
+					<td>자재 코드</td>
+					<td><input type="text" name="matId" id="matId"></td>
+					<td>자재명</td>
+					<td><input type="text" name="matName" id="matName"></td>
+				</tr>
+				<tr>
+					<td>검사자</td>
+					<td><input type="text" name="empId" id="empId"></td>
+					<td>검사일자</td>
+					<td><input type="date" name="inspDate" id="inspDate"></td>
+				</tr>
+				
+			</table>
+		</form>
+		<div class="divBtn">
+			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
+			<button type="button" class="sixBtn2" id="initBtn">초기화</button>
+		</div>
+		<!-- 상단 폼 끝 -->
+
+		<!-- 자재 검사 완료 그리드 -->
+		<div id="aiGrid"></div>
+
+		<script>
+			window.onload = function() {
+				//let initData = '';
+				//let nowData = '';
+				$.ajax({
+					url : "/quality/rAfterList",
+					method : "GET",
+					dataType : "JSON",
+					success : function(result) {
+						aiGrid.resetData(result);
+						//initData = result;
+						//nowData = result;
+					}
+				});
+				const aiGrid = new tui.Grid({
+					el: document.getElementById('aiGrid'),
+					data: [], //빈 배열로 초기화
+
+					scrollX: false,
+					scrollY: false,
+
+					pageOptions: {
+						useClient: true,
+						perPage: 20
+					},
+
+					columns: [{
+						header: '발주번호',
+						name: 'matReqId',
+						hidden: true
+					}, {
+						header: '거래처',
+						name: 'busName',
+						hidden: true
+					}, {
+						header: '검사번호',
+						name: 'inspNum'
+					}, {
+						header: '자재코드',
+						name: 'matId',
+						align: 'center'
+
+					}, {
+						header: '자재명',
+						name: 'matName',
+						align: 'center'
+					}, {
+						header: '검사수량',
+						name: 'inspQt',
+						align: 'center'
+					}, {
+						header: '부적합 수량',
+						name: 'nsuitQt',
+						align: 'center'
+					}, {
+						header: '검사자',
+						name: 'empName',
+						align: 'center'
+					}, {
+						header: '검사일자',
+						name: 'inspDate',
+						align: 'center'
+					}]
+				});
+
+				// 그리드 색 변경 테마 적용
+				tui.Grid.applyTheme('default', {
+					cell : {
+						header : {
+							background : '#e5edf5'
+						},
+						normal : {
+							background : '#ffffff'
+						}
+					}
+				});
+
+
+				// 검색 버튼 이벤트
+				let searchType = '';
+				let searchKey = '';
+				$('#searchBtn').on('click', function(e) {
+					if ($('#').val() == '' && $('#cpName').val() == '') {
+						if (initData == nowData) {
+							alert('완제품 코드 또는 제품명으로 검색이 가능합니다.')
+						} else {
+							$.ajax({
+								url : "/quality/rAfterList",
+								method : "GET",
+								dataType : "JSON",
+								data : {matId:$('#matId').val(),
+										matName:$('#matName').val(),
+										empId:$('#empId').val(),
+										inspDate:$('#inspDate').val()
+										
+								},
+								success : function(result) {
+									grid.resetData(result);
+								}
+							});
+						}
+					} else {
+						if ($('#cpId').val() != '') {
+							searchType = 'id';
+							searchKey = $('#cpId').val()
+						} else {
+							searchType = 'name';
+							searchKey = $('#cpName').val()
+						}
+
+						$.ajax({
+							url : '/',
+							type : 'get',
+							data : {
+								"searchType" : searchType,
+								"searchKey" : searchKey
+							},
+							dataType : 'json',
+							success : function(result) {
+								grid.resetData(result);
+								nowData = result;
+							},
+							error : function() {
+								alert('완제품 검색 중 오류 발생!');
+							}
+						})
+					}
+
+				})
+
+				//윈도우 온 로드 종료
+			}
+		</script>
+	</div>
+</body>
+
+</html>
