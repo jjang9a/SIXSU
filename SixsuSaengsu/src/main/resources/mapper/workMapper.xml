@@ -289,8 +289,6 @@ with work as (
   ) }
 </select>
  
- 
-	
 <insert id="teset" parameterType="String">
 	<![CDATA[
 	call WORK_DETA_INSERT(
@@ -323,6 +321,14 @@ with work as (
 	]]>
 </select>
 
+<select id="startWorkOrder" statementType="CALLABLE" resultMap="outResultMap">
+  { CALL START_WORK_ORDER(
+    #{headCode, mode=IN, jdbcType=VARCHAR},
+    #{detaCode, mode=IN, jdbcType=VARCHAR},
+    #{resultParam, mode=OUT, jdbcType=VARCHAR}
+  ) }
+</select>
+
 
 
 
@@ -330,26 +336,41 @@ with work as (
 <!-- ======================================================== -->
 <select id="getWorkList" resultType="DetaWorkOrdrVO">
 	SELECT *              
-	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT MAT_ID AS CP_ID, MAT_NAME AS CP_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
-	FROM MATERIAL
+	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT CP_ID AS CP_ID, CP_NAME AS CP_NAME, CP_SIZE, CP_UNIT, CP_STAT,'자재' AS TYPE
+	FROM COMPLETE_PROD
 	UNION ALL
 	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
 	FROM SEMI_PROD) b ON a.CP_ID = b.CP_ID
         LEFT OUTER JOIN employee c ON a.EMP_ID = c.EMP_ID
     WHERE CMPLT_ST != '작성중'
+    AND SUBSTR(a.WK_HEAD_ID, 0,8) >= TO_CHAR(sysdate, 'yyyyMMdd') OR a.WK_DETA_ID IN (SELECT WK_DETA_ID FROM DETA_WORK_ORDR WHERE START_DATE >= TRUNC(sysdate))
+    ORDER BY WK_HEAD_ID
+</select>
+
+<!-- 삭제 고민중.... 쓰는곳이 없다 -->
+<select id="getWorkListForProcess" resultType="DetaWorkOrdrVO">
+	SELECT *              
+	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT CP_ID AS CP_ID, CP_NAME AS CP_NAME, CP_SIZE, CP_UNIT, CP_STAT,'자재' AS TYPE
+	FROM COMPLETE_PROD
+	UNION ALL
+	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
+	FROM SEMI_PROD) b ON a.CP_ID = b.CP_ID
+        LEFT OUTER JOIN employee c ON a.EMP_ID = c.EMP_ID
+    WHERE CMPLT_ST != '작성중'
+    AND SUBSTR(a.WK_HEAD_ID, 0,8) >= TO_CHAR(sysdate, 'yyyyMMdd') OR a.WK_DETA_ID IN (SELECT WK_DETA_ID FROM DETA_WORK_ORDR WHERE START_DATE >= TRUNC(sysdate))
     ORDER BY WK_HEAD_ID
 </select>
 
 <select id="workFilterAjax" parameterType="WorkFilterDataVO" resultType="DetaWorkOrdrVO">
 	SELECT *              
-	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
-	FROM MATERIAL
+	FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT CP_ID AS CP_ID, CP_NAME AS CP_NAME, CP_SIZE, CP_UNIT, CP_STAT,'자재' AS TYPE
+	FROM COMPLETE_PROD
 	UNION ALL
 	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
-	FROM SEMI_PROD) b ON a.CP_ID = b.MAT_ID
+	FROM SEMI_PROD) b ON a.CP_ID = b.CP_ID
         LEFT OUTER JOIN employee c ON a.EMP_ID = c.EMP_ID
         
-    WHERE (b.MAT_NAME = #{productName} OR #{productName} IS NULL)
+    WHERE (b.CP_NAME = #{productName} OR #{productName} IS NULL)
   	AND (a.WK_HEAD_ID = #{workNo} OR #{workNo} IS NULL)
   	AND (c.emp_name = #{writer} OR #{writer} IS NULL)
   	${statusFilter}

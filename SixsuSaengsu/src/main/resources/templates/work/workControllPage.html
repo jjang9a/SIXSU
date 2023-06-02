@@ -1,141 +1,163 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
- 	layout:decorate="~{layout/template}">
+	layout:decorate="~{layout/template}">
 <head>
 <meta charset="UTF-8">
 <title>관리</title>
 <!-- 토스트~ -->
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 <!-- 부트스트라프 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+	crossorigin="anonymous"></script>
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 <!-- 타임리프 -->
+
 <html xmlns:th="http://www.thymeleaf.org"></html>
 <!-- 페이징 눼이쉔~ -->
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
-<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <style>
-	.set_color_false {
-  		background-color: #DADDDE;
-	}
-	
-	.set_color_true {
-		background-color: #ECECEC; 
-	}
-	
-	.text_container{
-		float: right;
-	}
-	.filter_text{
-		font-size: 12px;
-		color: blue;
-	}
-	#left_search{
-		width: 48%;
-		float: left;
-		text-align: right;
-	}
-	#right_search{
-		width: 50%;
-		float: left;
-		margin-left: 20px;
-		text-align: right;
-	}
+.set_color_false {
+	background-color: #DADDDE;
+}
+
+.set_color_true {
+	background-color: #ECECEC;
+}
+
+.text_container {
+	float: right;
+}
+
+.filter_text {
+	font-size: 12px;
+	color: blue;
+}
+
+#left_search {
+	width: 48%;
+	float: left;
+	text-align: right;
+}
+
+#right_search {
+	width: 50%;
+	float: left;
+	margin-left: 20px;
+	text-align: right;
+}
 </style>
 
 </head>
 <body>
 	<div layout:fragment="content">
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 조회</h1>
-	<hr>
-	
-	<button class="workFilterBtn sixBtn2">검색</button>
-	<button class="sixBtn2" onclick="location.href='/work/createWorkPage'">등록</button>
-	<div class="text_container"><p class="filter_text">검색기준 : 날짜</p></div>
-	<br>
-		
-  	<div id="grid1"></div>
-  
-  	<div class="bom_monitor">
-		<div id="left_search">
-			<div id="bom_search1"></div>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 조회</h1>
+		<hr>
+
+		<button class="workFilterBtn sixBtn2">검색</button>
+		<button class="sixBtn2" onclick="location.href='/work/createWorkPage'">등록</button>
+		<div class="text_container">
+			<p class="filter_text">검색기준 : 날짜</p>
 		</div>
-		
-		<div id="right_search">
-			<div id="bom_search2"></div>
+		<br>
+
+		<div id="grid1"></div>
+
+		<div class="bom_monitor">
+			<div id="left_search">
+				<div id="bom_search1"></div>
+			</div>
+
+			<div id="right_search">
+				<div id="bom_search2"></div>
+			</div>
 		</div>
-	</div>
-	
-  <!-- 제품 선택 Modal 시작 -->
-		<div class="modal fade" id="workFilter_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+
+		<!-- 제품 선택 Modal 시작 -->
+		<div class="modal fade" id="workFilter_modal"
+			data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="pdModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-dialog-centered">
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="pdModalLabel" style="font-family: 'MaruBuri';">검색</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<h5 class="modal-title" id="pdModalLabel"
+							style="font-family: 'MaruBuri';">검색</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
 					</div>
 					<!-- 모달 바디 -->
 					<br>
 					<div class="modal-body">
 						<div class="container text-center">
-						
-						  <div class="row">
-						    <div class="col" style="text-align:right;" >
-						      생성일자 <input type="date" name="makeFrom"> ~ <input type="date" name="makeTo">
-						    </div>
-						    
-						    <div class="col" style="text-align:right;" >
-						      제품명 <input type="text" name="제품명">
-						    </div>
-						  </div>
-						  
-						  <div class="row">
-						    <div class="col" style="text-align:right;" >
-						     착수일 <input type="date" name="workFrom"> ~ <input type="date" name="workTo">
-						    </div>
-						    <div class="col" style="text-align:right;" >
-						      지시No. <input type="text" name="계획">
-						    </div>
-						  </div>
-						  
-						  <div class="row">
-						    <div class="col" style="text-align:right;" >
-						    지시상태 <label><input type="checkbox" name="상태" value='완료'>완료</label> <label><input type="checkbox" name="상태" value='진행중'>진행중</label> <label><input type="checkbox" name="상태" value='취소'>취소</label> <label><input type="checkbox" name="상태" value='대기'>대기</label>
-						    </div>
-						    <div class="col" style="text-align:right;" >
-						      작성자 <input type="text" name="작성자">
-						    </div>
-						  </div>
-						  
-						  <br>
-						  <br>
-						  
-						  <div class="row">
-						    <div class="col" style="text-align:center;" >
-						    <button class="sixBtn2 filter_submit">검색</button>
-						    <button class="sixBtn2 filter_reset">초기화</button>
-						    </div>
-						  </div>
+
+							<div class="row">
+								<div class="col" style="text-align: right;">
+									생성일자 <input type="date" name="makeFrom"> ~ <input
+										type="date" name="makeTo">
+								</div>
+
+								<div class="col" style="text-align: right;">
+									제품명 <input type="text" name="제품명">
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col" style="text-align: right;">
+									착수일 <input type="date" name="workFrom"> ~ <input
+										type="date" name="workTo">
+								</div>
+								<div class="col" style="text-align: right;">
+									지시No. <input type="text" name="계획">
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col" style="text-align: right;">
+									지시상태 <label><input type="checkbox" name="상태" value='완료'>완료</label>
+									<label><input type="checkbox" name="상태" value='진행중'>진행중</label>
+									<label><input type="checkbox" name="상태" value='취소'>취소</label>
+									<label><input type="checkbox" name="상태" value='대기'>대기</label>
+								</div>
+								<div class="col" style="text-align: right;">
+									작성자 <input type="text" name="작성자">
+								</div>
+							</div>
+
+							<br> <br>
+
+							<div class="row">
+								<div class="col" style="text-align: center;">
+									<button class="sixBtn2 filter_submit">검색</button>
+									<button class="sixBtn2 filter_reset">초기화</button>
+								</div>
+							</div>
 						</div>
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
-					<div class="modal-footer" style="text-align:center;">
-					
-					</div>
+					<div class="modal-footer" style="text-align: center;"></div>
 				</div>
 			</div>
 		</div>
 		<!-- 제품 선택 Modal 끝 -->
-		
-<script>
+
+		<script>
 	var grid1 = new tui.Grid({
 	    el: document.getElementById('grid1'),
 	    scrollX: false,
@@ -217,7 +239,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	    pageOptions: {
 	        useClient: true,
 	        perPage: 10
-	      }
+	      },
+		columnOptions: {
+	        frozenCount: 1,
+	        frozenBorderWidth: 2
+	     }
 	  });
 	grid1.setBodyHeight(400);
 	
@@ -554,11 +580,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 				}
 			})
 	});
-	  
-	function test5221(){
-		console.log('클릭성공!!!!')
-	}
-	  
+	 
 	tui.Grid.applyTheme('default', {
 	    cell: {
 	        header: {
@@ -573,9 +595,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	    }
 	});
 </script>
-		
-		
-		
+
+
+
 	</div>
 </body>
 </html>

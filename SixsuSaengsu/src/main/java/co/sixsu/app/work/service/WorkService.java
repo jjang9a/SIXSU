@@ -74,4 +74,9 @@ public interface WorkService {
 
 	public List<Object> modifyFirstList(String data);
 
+	public String startWorkOrder(String detaCode);
+
+	public List<DetaWorkOrdrVO> getWorkListForProcess();
+
+
 }
