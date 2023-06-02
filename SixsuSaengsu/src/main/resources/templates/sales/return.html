@@ -95,17 +95,17 @@
               </div>
 
               <div class="btns"></div>
-                거래처명<input type="text" name="busId" id="busId" /> <br />
+                거래처명<input type="text" name="busaName" id="busaName" /> <br />
 				출고 총 수량<input type="text" name="ordTotal" id="ordTotal" /> <br />
 				반품 요청 수량<input type="text" name="returnReq" id="returnReq" /> <br />
 				반품 사유 
-			<select>
-				<option value ="1"> 배송오류 </option>
-				<option value ="2"> 주문오류 </option>
-				<option value ="3"> 상품오류 </option>
+			<select id="returnRes">
+				<option value ="배송오류"> 배송오류 </option>
+				<option value ="주문오류"> 주문오류 </option>
+				<option value ="상품오류"> 상품오류 </option>
 			</select>
 			  <div id="orderGrid"></div>
-			  <button class="sixBtn2" id="search-btn">반품 등록</button>
+			  <button class="sixBtn2" id="compReturn">반품 등록</button>
               <div class="modal-body">
                
               </div>
@@ -240,16 +240,41 @@
 	orderCompleteGrid.on('click',ev=> {
 		let dataRow = orderCompleteGrid.getRow(ev.rowKey);
 		console.log(dataRow);
+		
 		$('#returnReadyModal').modal("show");
+		$('#busaName').val(dataRow.busName);
+		$('#ordTotal').val(dataRow.ordQt);
 		$.ajax({
 			url : "/sales/orderComplete",
 			method : "GET",
 			dataType : "JSON",
 			success : function(result) {
 				busGrid.resetData(result);
+				
 			}
 		});
 	});	
+	
+	$("#compReturn").on("click", function(e){
+		console.log($("#busaName").val())
+		console.log($("#ordTotal").val())
+		console.log($("#returnReq").val())
+		console.log($("#returnRes").val())
+		let check = $("#ordTotal").val()*1 - $("#returnReq").val()*1;
+		
+		if (check <0){
+			alert("반품 수량이 초과하였습니다.");
+			($("#returnReq").val(''))
+		} else{
+			console.log("통과")
+			
+			
+		}
+		
+		
+		
+	})
+	
 	
 	</script>
 </body>

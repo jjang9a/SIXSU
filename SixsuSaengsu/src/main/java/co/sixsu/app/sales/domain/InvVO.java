@@ -20,5 +20,7 @@ public class InvVO {
 	
 	private String empName;
 	
+	private String ordStatName;
+	
 	List<OrdVO> list;
 }

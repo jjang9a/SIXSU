@@ -106,11 +106,35 @@
 
 
 	<!-- 검사 항목 리스트 -->
-	<select id="inspItem" resultType="QuaVO">
+<!-- 	<select id="inspItem" resultType="QuaVO">
 		select * 
 		  from qua_insp_list
+
 		 where insp_item_id=#{inspItemId}
-	</select>
+		 
+	</select> -->
+	
+	<!-- 검사 항목 리스트 -->
+	<select id="inspItem" resultType="QuaVO">
+  	select *
+  	from qua_insp_list
+  <where>
+    <choose>
+      <!-- SP001인 경우 -->
+      <when test="inspItemId.equals('SP001')">
+        and insp_item_id = 'SP001'
+      </when>
+      <!-- SP002 ~ SP013인 경우 -->
+      <when test="inspItemId.startsWith('SP')">
+        and insp_item_id = 'PRO999'
+      </when>
+      <!-- 그 외의 경우 -->
+      <otherwise>
+        and insp_item_id = #{inspItemId}
+      </otherwise>
+    </choose>
+  </where>
+</select>
 
 	<!-- 수정 버튼 클릭 시 검사 항목 불러오기 -->
 	<select id="modInspItem" resultType="QuaVO">
@@ -133,10 +157,13 @@
 		
 		where d.insp_num = #{inspNum}
 		
+		
+		
+		
 	</select>
 
 	<!-- 입고 검사 상세 결과 등록 -->
-	<insert id="insertPri" parameterType="QuaVO"> 
+	<insert id="insertQuaDet" parameterType="QuaVO"> 
 		insert into
 		qua_details(det_insp_num,
 		            insp_num, 
@@ -232,8 +259,9 @@
 		  AND matId = #{matId}		 
 		 </if>
 		 <if test="empId != null">
-		 
+		  AND empId = #{empId}
 		 </if>
+		 
 		 order by q.insp_date desc
 
 	</select>
@@ -245,23 +273,25 @@
 	</delete>
 
 	<!-- 공정 검사 등록 리스트 -->
-	<select id="bpAddList" resultType="DetaWorkOrdrVO">
-		 select d.wk_deta_id, 
-			    d.cp_id,
-		        p.proc_name, 
-		        d.end_date, 
-		        d.deta_qt,
-		        d.end_date
-		from deta_work_ordr d
-		left join work_bom w
-		on d.wk_deta_id = w.wk_deta_id
-		left join process p
-		on w.proc_id = p.proc_id
-		left join qua_com q
-		on d.wk_deta_id =
-		q.insp_std_id
-		where d.cmplt_st = 'C'
-		and q.insp_num is null
+	<select id="bpAddList" resultType="PrdInspVO">
+		 select  p.prcs_pfmc_id, 
+		         p.wk_deta_id, 
+		         p.pd_id, 
+		         p.pd_name, 
+		         p.deta_qt, 
+		         p.wk_end, 
+		         q.insp_num,
+		         b.proc_id,
+		         r.proc_name
+		   from  process_performance p 
+LEFT OUTER JOIN  qua_com q 
+             ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
+LEFT OUTER JOIN  work_bom b
+		     ON  p.wk_deta_id = b.wk_deta_id
+	  LEFT JOIN  process r
+	         ON  b.proc_id = r.proc_id
+          WHERE  q.INSP_NUM IS NULL
+       ORDER BY  p.wk_end
 	</select>
 
 	<!-- 공정검사 전 검사 번호 자동 등록 -->
@@ -276,27 +306,59 @@
 		insp_item_id, insp_type, insp_qt, insp_std_id)
 		values
 		(#{inspNum},
-		#{cpId}, '공정검사', #{detaQt}, #{wkDetaId})
+		#{pdId}, '공정검사', #{detaQt}, #{prcsPfmcId})
 	</insert>
 
 	<!-- 공정 검사 대기 리스트 -->
 	<select id="prwList" resultType="PrdInspVO">
-		select q.insp_num, d.wk_deta_id,
-		d.cp_id, p.proc_name, d.deta_qt,
-		d.end_date
-		from deta_work_ordr d left
-		join
-		qua_com q
-		on q.insp_std_id = d.wk_deta_id
-		left join work_bom b
-		on
-		d.wk_deta_id = b.wk_deta_id
-		left join process p
-		on b.proc_id = p.proc_id
-		where q.insp_date is null
-		and q.insp_num is not null
-		order by
-		d.wk_deta_id
+		 select  p.prcs_pfmc_id, 
+		         p.wk_deta_id, 
+		         p.pd_id, 
+		         p.pd_name, 
+		         p.deta_qt, 
+		         p.good_qt,
+		         p.dmat_qt,
+		         to_char(p.wk_end, 'yyyy-MM-dd') wk_end, 
+		         q.insp_num,
+		         q.insp_date,
+		         b.proc_id,
+		         r.proc_name
+		   from  process_performance p 
+LEFT OUTER JOIN  qua_com q 
+             ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
+LEFT OUTER JOIN  work_bom b
+		     ON  p.wk_deta_id = b.wk_deta_id
+	  LEFT JOIN  process r
+	         ON  b.proc_id = r.proc_id
+          WHERE  q.INSP_NUM IS NOT NULL
+            AND  q.INSP_DATE IS NULL
+       ORDER BY  p.wk_end
+	</select>
+	
+	<!-- 공정 검사 완료 리스트 -->
+		<select id="prdComList" resultType="PrdInspVO">
+		 select  p.prcs_pfmc_id, 
+		         p.wk_deta_id, 
+		         p.pd_id, 
+		         p.pd_name, 
+		         p.deta_qt, 
+		         p.good_qt,
+		         p.dmat_qt,
+		         q.insp_num,
+		         to_char(p.wk_end, 'yyyy-MM-dd') wk_end,
+		         b.proc_id,
+		         r.proc_name,
+                 q.emp_id
+		   from  process_performance p 
+LEFT OUTER JOIN  qua_com q 
+             ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
+LEFT OUTER JOIN  work_bom b
+		     ON  p.wk_deta_id = b.wk_deta_id
+	  LEFT JOIN  process r
+	         ON  b.proc_id = r.proc_id
+          WHERE  q.INSP_NUM IS NOT NULL
+            AND  q.INSP_DATE IS NOT NULL
+       ORDER BY  q.insp_num
 	</select>
 	
 	<!-- 출고 검사 번호 자동 등록 -->

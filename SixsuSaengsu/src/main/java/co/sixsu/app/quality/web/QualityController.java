@@ -61,9 +61,8 @@ public class QualityController {
 	// 입고 검사 대기 등록 리스트
 	@ResponseBody
 	@RequestMapping("/quality/proRecList")
-	public List<QuaVO> proRecList(Model model) {
+	public List<QuaVO> proRecList() {
 		List<QuaVO> prList = quaService.proRecList();
-		model.addAttribute("proRecList", prList);
 		return prList;
 	}
 
@@ -102,13 +101,13 @@ public class QualityController {
 		return list;
 	}
 
-	// 입고 검사 결과 등록
+	// 검사 결과 등록 => 검사 세부 insert
 	@ResponseBody
 	@PostMapping("/quality/priRegister")
 	public int priRegister(@RequestBody List<QuaVO> list) {
 		System.out.println(list);
-		// return quaService.insertPri(list);
-		return quaService.insertPriAndUpdate(list);
+		// return quaService.insertPri(list);insertQuaDet(List<QuaVO> list)
+		return quaService.insertQuaDet(list);
 	}
 
 	// 검사 결과 등록 시 검사 공통 업데이트

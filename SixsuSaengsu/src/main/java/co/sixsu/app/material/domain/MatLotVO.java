@@ -11,4 +11,7 @@ public class MatLotVO {
 	int matQt;
 	String matHoldStat;
 	String matRecDate;
+	
+	String sDate;
+	String eDate;
 }
