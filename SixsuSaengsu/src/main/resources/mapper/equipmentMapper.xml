@@ -11,10 +11,10 @@
 	 WITH oper as ( 
 	   SELECT e.equ_code, e.equ_stat, e.oper_start, e.oper_fnish, e.oper_note, e.oper_type
 	    FROM equ_oper e
-	    JOIN(   SELECT equ_code, MAX(oper_fnish) oper_fnish
+	    JOIN(   SELECT equ_code, MAX(oper_code) oper_code
 	              FROM equ_oper
 	             Group By equ_code)o
-	    ON(e.equ_code = o.equ_code AND e.oper_fnish = o.oper_fnish)
+	    ON(e.equ_code = o.equ_code AND e.oper_code = o.oper_code)
 	   ),
 	CHECKVIEW AS (
 	  SELECT e.equ_code, e.equ_suit, e.check_date, e.check_next, e.check_type, e.check_info
@@ -48,29 +48,52 @@
 		  LEFT OUTER JOIN CHECKVIEW i
 	        ON c.equ_code = i.equ_code
 		  LEFT OUTER JOIN oper o
-		    ON c.equ_code = o.equ_code            
+		    ON c.equ_code = o.equ_code  
   	</select>
   	
-  	<!-- 설비조회 검색기능 -->
+  	<!-- 설비조회(검색) -->
   	<select id="equFilterList" resultType="EquConVO" parameterType="EquSearchDTO">
-  	SELECT  c.equ_code,
-  		    c.proc_id,
-  		    c.equ_name,
-  		    c.equ_stat,
-  		    c.equ_line,
-  		    i.equ_suit,
-  		    to_char(check_date, 'yyyy-mm-dd') as check_date,
-  		    to_char(i.check_next, 'yyyy-mm-dd') as check_next,
-  		    c.equ_check,
-  		    i.check_info,
-  		    i.check_info,
-  		    o.oper_start,
-  		    o.oper_fnish,
-  		    c.equ_img
-	   FROM EQU_CON c LEFT OUTER JOIN EQU_INSP i
-		 ON c.equ_code = i.equ_code
-	   LEFT OUTER JOIN EQU_OPER o
-	     ON c.equ_code = o.equ_code
+  	 WITH oper as ( 
+	   SELECT e.equ_code, e.equ_stat, e.oper_start, e.oper_fnish, e.oper_note, e.oper_type
+	    FROM equ_oper e
+	    JOIN(   SELECT equ_code, MAX(oper_code) oper_code
+	              FROM equ_oper
+	             Group By equ_code)o
+	    ON(e.equ_code = o.equ_code AND e.oper_code = o.oper_code)
+	   ),
+	CHECKVIEW AS (
+	  SELECT e.equ_code, e.equ_suit, e.check_date, e.check_next, e.check_type, e.check_info
+	    FROM equ_insp e 
+	    JOIN (SELECT equ_code, MAX(check_date) check_date
+	            FROM equ_insp
+	           GROUP BY equ_code) o
+	      ON (e.equ_code = o.equ_code AND e.check_date = o.check_date)
+	)
+	    SELECT  c.equ_code, 
+	  	        c.proc_id, 
+	  	        c.equ_name, 
+	  	        c.equ_model, 
+	  	        c.equ_stat, 
+	  	        c.equ_line, 
+	  	        c.equ_check, 
+	  	        c.equ_img, 
+	  	        i.equ_suit, 
+	  	        to_char(i.check_date, 'yyyy-mm-dd') as check_date, 
+	  	        to_char(i.check_next, 'yyyy-mm-dd') as check_next , 
+	  	        i.check_type, 
+	            i.check_info, 
+	            c.c_temp, 
+	  	        to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, 
+	  	        o.oper_fnish, 
+	  	        o.oper_type, 
+	            o.oper_note, 
+	  	        to_char(c.add_date, 'yyyy-mm-dd') as add_date , 
+	  	        c.emp_id  
+		  FROM equ_con c 
+		  LEFT OUTER JOIN CHECKVIEW i
+	        ON c.equ_code = i.equ_code
+		  LEFT OUTER JOIN oper o
+		    ON c.equ_code = o.equ_code 
 	   WHERE
 		
 		<if test='searchType.equals("code")'>
@@ -79,9 +102,10 @@
 		<if test='searchType.equals("name")'>
 			c.equ_name like '%'||#{searchKey}||'%' OR lower(c.equ_name) like '%'||#{searchKey}||'%'
 		</if>
+		
   	</select>
 
-  	<!-- 등록 공정코드(조회) ajax -->
+  	<!-- 설비관리 공정코드(조회) ajax -->
 	<select id="activePdList" resultType="EquConVO">
   		SELECT proc_id
 		FROM equ_con
@@ -89,20 +113,20 @@
             
   	</select>
 
-	<!-- 설비관리 등록 -->
+	<!-- 설비관리(등록) -->
 	<insert id="equAdd" parameterType="EquConVO">
 		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, emp_id, equ_check, add_date, c_temp)
-		VALUES(('EQU' || LPAD(EQU_SEQ.nextval, 3, '0')), #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, #{addDate}, #{ctemp})
+		VALUES(('EQU_' || LPAD(EQU_SEQ.nextval, 3, '0')), #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, #{addDate}, #{ctemp})
 	</insert>
 	
-	<!-- 설비관리 수정 -->
+	<!-- 설비관리(수정) -->
 	<update id="equUpdate" parameterType="EquConVO">
 		UPDATE equ_con
 		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date=#{addDate}, c_temp=#{ctemp}
 		WHERE equ_code=#{equCode}
 	</update>
 	
-	<!-- 설비관리 삭제 -->
+	<!-- 설비관리(삭제) -->
 	<delete id="equDel" parameterType="EquConVO">
 		delete from equ_con where equ_code = #{equCode}
 	</delete>
@@ -126,9 +150,19 @@
 			ON c.equ_code = i.equ_code
   	</select>
   	
-  	<!-- 점검 검색기능 -->
+  	<!-- 점검조회 (검색) -->
 	<select id="equCheckSearch" resultType="EquInspVO" parameterType="EquSearchDTO">
-  		SELECT  i.check_code, o.oper_code, c.equ_code, c.equ_name, c.equ_check, i.equ_suit, i.check_type, to_char(i.check_date, 'yyyy-mm-dd') as check_date, to_char(i.check_next, 'yyyy-mm-dd') as check_next , i.check_info, i.check_com, i.check_note, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, c.emp_id  
+  		SELECT 
+  		i.check_code,
+  		 o.oper_code,
+  		  c.equ_code,
+  		   c.equ_name,
+  		    c.equ_check,
+  		     i.equ_suit,
+  		      i.check_type,
+  		       to_char(i.check_date, 'yyyy-mm-dd') as check_date, to_char(i.check_next, 'yyyy-mm-dd') as check_next ,
+  		        i.check_info, i.check_com, i.check_note,
+  		        to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, c.emp_id  
 			FROM equ_con c LEFT OUTER JOIN equ_insp i
 			ON c.equ_code = i.equ_code
 			LEFT OUTER JOIN equ_oper o
@@ -140,22 +174,26 @@
 			<if test='searchType.equals("name")'>
 				c.equ_name like '%'||#{searchKey}||'%' OR lower(c.equ_name) like '%'||#{searchKey}||'%'
 			</if>
+			<if test='searchType.equals("date")'>
+				c.equ_name like '%'||#{searchKey}||'%' OR lower(check_date) like '%'||#{searchKey}||'%'
+			</if>
   	</select>
   	
-  	<!-- 점검 등록기능 -->
+  	<!-- 점검 관리(등록) -->
   	<insert id="checkAdd" parameterType="EquInspVO">
 		INSERT INTO equ_insp (check_code, equ_code, equ_name, check_date, check_next, equ_check, equ_suit, check_type, check_info, check_com, check_note, emp_id)
-		VALUES(('CHECK' || LPAD(CHECK_SEQ.nextval, 3, '0')), #{equCode}, #{equName}, #{checkDate}, #{checkNext}, #{equCheck}, #{equSuit}, #{checkType}, #{checkInfo}, #{checkCom}, #{checkNote}, #{empId})
+		VALUES(('Check_' || LPAD(CHECK_SEQ.nextval, 3, '0')), #{equCode}, #{equName}, #{checkDate}, #{checkNext}, #{equCheck}, #{equSuit}, #{checkType}, #{checkInfo}, #{checkCom}, #{checkNote}, #{empId})
 	</insert>
 	
-	<!-- 점검 관리 수정 -->
+	<!-- 점검 관리(수정) -->
 	<update id="cUpdate" parameterType="EquInspVO">
 		UPDATE equ_insp
 		SET check_code=#{checkCode}, equ_code=#{equCode}, equ_name=#{equName}, check_date=#{checkDate}, check_next=#{checkNext}, equ_check=#{equCheck}, equ_suit=#{equSuit}, check_type=#{checkType}, check_info=#{checkInfo}, check_com=#{checkCom}, check_note=#{checkNote}, emp_id=#{empId}
 		WHERE check_code=#{checkCode}
 	</update> 
+						
 	
-	<!-- 점검 관리 삭제 -->
+	<!-- 점검 관리(삭제) -->
 	<delete id="cDel" parameterType="EquInspVO">
 		delete from equ_insp where check_code=#{checkCode}
 	</delete>
@@ -163,13 +201,13 @@
   	
   	<!-- 비가동 리스트 -->
 	<select id="equOperList" resultType="EquOperVO">
-  	SELECT  o.oper_code, c.equ_code, c.equ_name, o.oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start , to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, c.emp_id, o.oper_note 
+  	SELECT  o.oper_code, c.equ_code, c.equ_name, o.oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start , to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, c.emp_id, o.oper_note, c.equ_stat
 			FROM equ_con c
 			JOIN equ_oper o
 			ON c.equ_code = o.equ_code
   	</select>
   	
-    <!-- 비가동 조회 검색기능 -->
+    <!-- 비가동 조회(검색) -->
 	<select id="equOperSearch" resultType="EquOperVO" parameterType="EquSearchDTO">
   	SELECT  i.check_code, o.oper_code, c.equ_code, c.equ_name, o.oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start , to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, c.emp_id, o.oper_note 
 			FROM equ_con c LEFT OUTER JOIN equ_insp i
@@ -183,8 +221,32 @@
 			<if test='searchType.equals("name")'>
 				c.equ_name like '%'||#{searchKey}||'%' OR lower(c.equ_name) like '%'||#{searchKey}||'%'
 			</if>
-			
   	</select>
+  	
+  	<!-- 비가동 관리(수정) -->
+	<update id="oUpdate" parameterType="EquOperVO">
+		UPDATE equ_oper
+		SET oper_code=#{operCode}, equ_code=#{equCode}, equ_name=#{equName}, oper_type=#{operType}, oper_note=#{operNote}, emp_id=#{empId}
+		WHERE oper_code=#{operCode}
+	</update> 
+	
+	<!-- 비가동 관리(삭제) -->
+	<delete id="oDel" parameterType="EquOperVO">
+		delete from equ_oper where oper_code=#{operCode}
+	</delete>
+	
+	<!-- 비가동 관리(등록) -->
+  	<insert id="startIn" parameterType="EquOperVO">
+		INSERT INTO equ_oper (oper_code, equ_code, equ_name, oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, oper_note, emp_id)
+		VALUES('Oper_' || LPAD(OPER_SEQ.nextval, 3, '0')), #{equCode}, #{equName}, #{operType}, #{operStart}, #{operFnish},#{operNote}, #{empId})
+	</insert>   
+	
+	<!-- 비가동 관리 등록(수정) -->
+	<update id="startUp" parameterType="EquConVO">
+		UPDATE equ_con
+		SET equ_code=#{equCode}, equ_stat=#{equStat}
+		WHERE equ_code=#{equCode}
+	</update> 
 	
 	
 </mapper>

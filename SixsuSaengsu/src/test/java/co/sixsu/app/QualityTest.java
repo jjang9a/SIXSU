@@ -17,12 +17,4 @@ import lombok.extern.log4j.Log4j2;
 public class QualityTest {
 	@Autowired QualityMapper mapper;
 	
-	
-	@Test
-	public void getArrList() {
-		List<QuaVO> list = mapper.getArrList();
-		System.out.println(list);
-	}
-	
-	
 }

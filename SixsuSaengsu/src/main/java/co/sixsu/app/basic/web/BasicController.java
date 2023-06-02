@@ -1,6 +1,9 @@
 package co.sixsu.app.basic.web;
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,9 +33,11 @@ import co.sixsu.app.sales.domain.GridDataVO;
 public class BasicController {
 	@Autowired
 	BasicService service;
-
+	
 	@GetMapping("/login")
-	public void login() { // 로그인 화면 화면 띄우기
+	public void login(Principal principal, HttpServletRequest request) { // 로그인 화면 화면 띄우기
+//		return request.getContextPath()
+		
 	}
 
 	// 사원관리

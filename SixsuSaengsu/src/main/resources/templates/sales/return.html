@@ -11,7 +11,246 @@
     <div layout:fragment="content">
       <h1 class="mt-4" style="font-family: 'MaruBuri'">완제품반품관리</h1>
       <h3 class="mt-4" style="font-family: 'MaruBuri'">출고현황</h3>
+      거래처명 <input type="text" name="busName" id="busName" />
+      <button
+        type="button"
+        data-bs-toggle="modal"
+        id="searchBusModal"
+        class="sixBtn1"
+        target="#searchModal"
+      ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="18"
+          fill="currentColor"
+          class="bi bi-search"
+          viewBox="0 2 16 16"
+        >
+          <path
+            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+          />
+        </svg></button
+      ><br />
+      거래처코드<input type="text" name="busId" id="busId" /> <br />
+      <button class="sixBtn2" id="infoCollect">조회</button>
+      <button class="sixBtn4" id="infoCollect">초기화</button><br />
+      <div id="orderCompleteGrid"></div>
       
       
+      <!-- 거래처 모달창 -->
+       <div
+        class="modal fade"
+        id="busModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="searchModalLabel">
+                  거래처 목록 조회
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+
+              <div class="btns"></div>
+				거래처명: <input id="search-text" />
+				<button class="sixBtn2" id="search-btn">조회</button>
+				<button class="sixBtn2" id="reset-btn">초기화</button>
+              <div class="modal-body">
+                <div id="busGrid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+       <div
+        class="modal fade"
+        id="returnReadyModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="searchModalLabel">
+                  반품 처리 신청
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+
+              <div class="btns"></div>
+                거래처명<input type="text" name="busId" id="busId" /> <br />
+				출고 총 수량<input type="text" name="ordTotal" id="ordTotal" /> <br />
+				반품 요청 수량<input type="text" name="returnReq" id="returnReq" /> <br />
+				반품 사유 
+			<select>
+				<option value ="1"> 배송오류 </option>
+				<option value ="2"> 주문오류 </option>
+				<option value ="3"> 상품오류 </option>
+			</select>
+			  <div id="orderGrid"></div>
+			  <button class="sixBtn2" id="search-btn">반품 등록</button>
+              <div class="modal-body">
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+	<script>
+	/*--------------------------------
+	// 모달거래처조회 기능	
+	---------------------------------*/	 
+	$("#searchBusModal").on("click", function(e){
+		$('#busModal').modal("show");
+		$.ajax({
+			url: "/sales/bus1List",
+			method :"get",
+			dataType: "JSON",
+			success : function(result){
+				busGrid.resetData(result);
+				setTimeout(()=>busGrid.refreshLayout(),400);
+			}
+		})
+	})
+	$("#search-text").on('keydown', function(e){
+    	if(e.keyCode == 13){
+    		$("#search-btn").click();
+    	}
+    }) // enter 로 조회 하도록 하는기능
+    $("#search-btn").on('click', function(){
+		console.log($("#search-text").val())
+		const result = $("#search-text").val()
+		
+		$.ajax({
+			url : "/sales/bus1List",
+			method : "GET",
+			data : {'result' : result},
+			success : function(result) {
+				busGrid.resetData(result);
+				  $("#search-text").val("");
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		});
+		$('#busModal').on('show.bs.modal',function(e){
+			console.log ('거래처 모달');
+		
+			setTimeout(()=>busGrid.refreshLayout(),400);
+		})
+	})
+	
+	// 모달거래처조회 입력값 초기화
+	$('#reset-btn').on('click',function(e){
+		$.ajax({
+			url : "/sales/bus1List",
+			method : "GET",
+			dataType : "JSON",
+			success : function(result) {
+				busGrid.resetData(result);
+			}
+		});
+	})
+	
+	const busGrid = new tui.Grid({
+		el : document.getElementById('busGrid'),
+		//data : gridData,
+		scrollX : false,
+		scrollY : false,
+		columns : [ 
+			{
+			header : '거래처번호',
+			name : 'busId',
+		}, {
+			header : '거래처명',
+			name : 'busName'
+		}, {
+			header : '사업자번호',
+			name : 'busNum'
+		}, {
+			header : '전화번호',
+			name : 'busTell'
+		}, {
+			header : '주소',
+			name : 'busAddr'
+		}]
+	});
+	busGrid.on('click', ev=> {
+		let dataRow = busGrid.getRow(ev.rowKey);
+		$('#busName').val(dataRow.busName);
+		$('#busId').val(dataRow.busId);
+		$('#busModal').modal('hide');
+	})
+	/*--------------------------------
+	// 완료된 출고 현황표
+	---------------------------------*/	
+	$.ajax({
+		url: "/sales/orderComplete",
+		method: "GET",
+		success : function (result){
+			orderCompleteGrid.resetData(result);
+			setTimeout(()=>orderCompleteGrid.refreshLayout(),400)
+		}
+	})
+
+	const orderCompleteGrid = new tui.Grid({
+		el : document.getElementById('orderCompleteGrid'),
+		//data : gridData,
+		scrollX : false,
+		scrollY : false,
+		columns : [ {
+			header : '주문상세코드',
+			name : 'ordDetId',
+		}, {
+			header : '주문날짜',
+			name : 'ordDate'
+		}, {
+			header : '출고제품 이름',
+			name : 'cpName'
+		}, {
+			header : '출고제품 코드',
+			name : 'cpId'
+		}, {
+			header : '출고제품 수량',
+			name : 'ordQt'
+		}, {
+			header : '출고날짜',
+			name : 'cpShipReqDate'
+		}
+		]
+	});	
+	
+	orderCompleteGrid.on('click',ev=> {
+		let dataRow = orderCompleteGrid.getRow(ev.rowKey);
+		console.log(dataRow);
+		$('#returnReadyModal').modal("show");
+		$.ajax({
+			url : "/sales/orderComplete",
+			method : "GET",
+			dataType : "JSON",
+			success : function(result) {
+				busGrid.resetData(result);
+			}
+		});
+	});	
+	
+	</script>
 </body>
 </html>

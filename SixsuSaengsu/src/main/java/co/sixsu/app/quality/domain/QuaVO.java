@@ -52,8 +52,8 @@ public class QuaVO {
 	private String busId; //거래처 아이디
 	
 	
-
-	
+	private String searchType; // 검색용
+	private String inspDate2; // 검사 일자 검색용
 	private String result; // 검사 결과
 	private int count;
 	

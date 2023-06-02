@@ -14,6 +14,11 @@
 			padding: 4px 10px;
 			text-align: left;
 		}
+		#select,#checkDate,#checkNext{
+			width: 185pxpx;
+			height: 28.18px;
+		}
+		
 		.modalTbl {
 			margin: auto;
 			text-align: center;
@@ -48,7 +53,7 @@
 			<table>
 				<tr>
 					<td>점검코드<span class="needStar"> * </span></td>
-					<td><input type="text" name="checkCode " id="checkCode "
+					<td><input type="text" name="checkCode" id="checkCode"
 						style="background: #ccdceb;" class="empty"></td>
 				</tr>
 				<tr>
@@ -65,12 +70,12 @@
 				</tr>
 				<tr>
 					<td>점검일자<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkDate" id="checkDate"
+					<td><input type="date" name="checkDate" id="checkDate"
 						class="empty"></td>
 				</tr>
 				<tr>
 					<td>차기점검일<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkNext" id="checkNext"
+					<td><input type="date" name="checkNext" id="checkNext"
 						class="empty"></td>
 				</tr>
 				<tr>
@@ -80,18 +85,21 @@
 				</tr>
 				<tr>
 					<td>판정<span class="needStar"> *</span></td>
-					  <td>
-						<select name="equSuit">
-						<option value='' selected>----- 선택 -----</option>
-						<option value="Y">적합</option>
-						<option value="N">부적합</option>
-						</select>
+					<td>
+						<select id="equSuit" name="equSuit">
+							<option value=''>===== 선택 =====</option>
+							<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}">
+							</option>
 					</td>  	
 				</tr>
 				<tr>
 					<td>점검구분<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkType" id="checkType"
-						class="empty"></td>
+					<td>
+						<select id="checkType" name="checkType">
+							<option value=''>===== 선택 =====</option>
+							<option th:each="type : ${checkType}" th:value="${type.value}" th:text="${type.text}">
+							</option>
+					</td>
 				</tr>
 				<tr>
 					<td>점검사유<span class="needStar"> *</span></td>
@@ -110,7 +118,7 @@
 				</tr>
 				<tr>
 					<td>담당자<span class="needStar"> *</span></td>
-					<td><input type="text" name="empId" id="empId"></td>
+					<td><input type="text" name="empId" id="empId" class="empty"></td>
 				</tr>
 			</table>
 
@@ -153,7 +161,10 @@
 		<!--  그리드 시작 -->	
 		<div id="grid"></div>
 
-		<script>
+		<script th:inline="javascript">
+			let equSuit = [[${equSuit}]];
+			let checkType = [[${checkType}]];
+
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
 				pageOptions: {
@@ -162,11 +173,11 @@
 				},
 				scrollX: false,
 				scrollY: false,
-
 				rowHeaders: ['rowNum'],
 				columns: [
 					{
 						header: '설비코드',
+						sortable : true,
 						name: 'equCode',
 						align: 'center'
 					},
@@ -199,10 +210,7 @@
 						editor: {
 							type: 'select',
 							options: {
-								listItems: [
-									{text: '적합', value: 'Y'},
-									{text: '부적합', value: 'N'},	
-								]
+								listItems: equSuit
 						      }
 					        }
 					},
@@ -215,10 +223,7 @@
 						editor: {
 							type: 'select',
 							options: {
-								listItems: [
-									{text: '정기', value: '정기'},
-									{text: '수시', value: '수시'},	
-								]
+								listItems: checkType
 						      }
 					        }
 					},
@@ -357,8 +362,7 @@
 				console.log(dataRow.checkCode);
 				console.log(dataRow);
 
-				// 클릭시 인풋창에 데이터 불러오기
-
+				// 클릭시 인풋창에 데이터 불러오기.
 				$('#checkCode').val(dataRow.checkCode); // 점검코드
 				$('#equCode').val(dataRow.equCode); // 설비코드
 				$('#equName').val(dataRow.equName); // 설비명
@@ -371,22 +375,13 @@
 				$('#checkCom').val(dataRow.checkCom); // 점검내역
 				$('#checkNote').val(dataRow.checkNote); // 점검비고
 				$('#empId').val(dataRow.empId); // 담당자
-				// 라디오 버튼이 Y 나 N 일떄 가동 비가동으로 전환 
-				console.log(dataRow.checkCode)
-				if (dataRow.equSuit == 'Y') {
-					console.log('Y들어옴')
-					$("select[name='equSuit']").val('Y');
-					//$("select[name='equSuit']:option[value='Y']").prop('checked', true);
-				} else {
-					console.log('N들어옴')
-					$("select[name='equSuit']").val('N');
-					//$("select[name='equSuit']:option[value='N']").prop('checked', true);
-				}
+
+
 			});
 			
 			// 등록버튼 기능 구현
 			$('#addBtn').on('click', function (e) {
-				if (selRow === '') {
+				if (selRow == '') {
 					alert('등록 정보를 입력하시오.')
 				} else {
 				
@@ -406,6 +401,7 @@
 						// 리스트를 리셋. 등록데이터가 바로 뜸.
 						grid.resetData(result);
 						setTimeout(() => orderingGrid.refreshLayout(), 1000);
+						
 					},
 					error: function (reject) {
 						alert('등록 중 오류가 발생했습니다!');
@@ -414,6 +410,9 @@
 				});
 				// 인풋창을 비워줌
 				$('#addForm input').val('');
+				// 셀렉트 리셋해줌
+				$('#equSuit').val('').prop("selected", true);
+				$('#checkType').val('').prop("selected", true);
 			}
 			});
 			
@@ -422,11 +421,6 @@
 				if (selRow == '') {
 					alert('수정할 데이터가 없습니다.')
 				} else {
-				
-					
-					
-				//var checkCode = $('#checkCode').val();
-				
 				
 				console.log($('#addForm').serialize())
 				$.ajax({
@@ -447,8 +441,9 @@
 					}
 				});
 				$('.empty').val('');
-				/* $("input:radio[name='equStat']:radio[value='Y']").prop('checked', true); */
-				$("select[name='equSuit']").val('Y');
+				// 셀렉트 리셋해줌 
+				$('#equSuit').val('').prop("selected", true);
+				$('#checkType').val('').prop("selected", true);
 			  }
 			})
 
@@ -477,9 +472,11 @@
 
 						grid.removeRow(selRow)
 						selRow = '';
-						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주는?
+						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주
 						$('.empty').val('');
-						$("select[name='equSuit']").val('Y');
+						// 셀렉트 리셋해줌
+						$('#equSuit').val('').prop("selected", true);
+						$('#checkType').val('').prop("selected", true);
 					},
 					error: function (reject) {
 						console.log('설비 삭제 중 오류가 발생했습니다.');
