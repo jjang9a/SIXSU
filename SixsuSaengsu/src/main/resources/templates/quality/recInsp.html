@@ -48,9 +48,9 @@
 		#waterGrid {
 			width: 766px;
 			margin: auto;
-			height: 410px;
+			height: 390px;
 			background-color: white;
-			padding-top: 120px;
+			padding-top: 110px;
 			display: none;
 			clear: both;
 			margin-bottom: 30px;
@@ -271,7 +271,7 @@
 					dataType: "JSON",
 					success: function (result) {
 						grid2.resetData(result);
-						setTimeout(() => grid2.refreshLayout(), 700);
+						setTimeout(() => grid2.refreshLayout(), 10);
 					},
 					error: function (reject) {
 						console.log(reject);
@@ -517,12 +517,13 @@
 			const grid2 = new tui.Grid({
 				el: document.getElementById('grid2'),
 				data: [], //빈 배열로 초기화
-
+				scrollX: false,
+				scrollY: false,
 				pageOptions: {
 					useClient: true,
-					perPage: 10
+					perPage: 8
 				},
-
+				minBodyHeight: 320,
 				rowHeaders: ['checkbox'],
 
 				columns: [{
@@ -530,7 +531,6 @@
 						width: 120,
 						name: 'matReqId',
 						align: 'center'
-
 					},
 					{
 						header: '거래처',
@@ -559,6 +559,38 @@
 				]
 			});
 
+			const waterGrid = new tui.Grid({
+				el: document.getElementById('waterGrid'),
+				scrollX: false,
+				scrollY: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 8
+				},
+				minBodyHeight: 320,
+				rowHeaders: ['checkbox'],
+				columns: [{
+					header: '공정실적번호',
+					name: 'inspStdId',
+					align: 'center'
+				}, {
+					header: '자재 코드',
+					name: 'inspItemId',
+					align: 'center'
+				}, {
+					header: '자재 명',
+					name: 'matName',
+					align: 'center'
+				}, {
+					header: '생산일',
+					name: 'inspDate',
+					align: 'center'
+				}, {
+					header: '생산수량',
+					name: 'inspQt',
+					editor: 'text',
+				}]
+			});
 
 			//row 정보를 가져오기 위한 dataRow 선언
 			let dataRow;

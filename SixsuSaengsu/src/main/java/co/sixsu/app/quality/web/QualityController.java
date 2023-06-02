@@ -212,8 +212,8 @@ public class QualityController {
 	// 조회 아작스
 	@ResponseBody
 	@PostMapping("/quality/searchInsp")
-	public List<QuaVO> searchInsp() {
-		return null;
+	public List<QuaVO> searchInsp(QuaVO vo) {
+		return quaService.searchInsp(vo);
 	}
 	
 }

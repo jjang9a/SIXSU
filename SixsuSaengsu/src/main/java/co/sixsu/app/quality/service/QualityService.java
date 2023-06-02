@@ -9,7 +9,12 @@ import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
 public interface QualityService {
+	
+		// 장가애
+		List<QuaVO> searchInsp(QuaVO vo); // 검색기능
+		List<QuaVO> getWater(); // 원천수 리스트
 		
+		// 조민경
 		// 검사 등록 공통
 		List<QuaVO> inspItem(String matId); // 검사 항목 불러오기
 		int insertQuaDet(List<QuaVO> list); // 세부 검사 insert
