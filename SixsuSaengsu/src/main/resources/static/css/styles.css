@@ -10941,14 +10941,14 @@ body {
   z-index: 1038;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
-  padding-top: 56px;
+  padding-top: 95px;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav .sb-sidenav-menu {
   overflow-y: auto;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
   padding-left: 225px;
-  top: 56px;
+  top: 95px;
 }
 
 #layoutError {
@@ -11309,4 +11309,13 @@ body {
 
 .rightBtn {
   float: right;
+}
+
+.userInfo{
+  color: rgba(255, 255, 255, 0.7);
+  padding-top: 20px;
+}
+
+.toppadding{
+  padding-top: 50px;
 }
