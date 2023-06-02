@@ -178,8 +178,9 @@ public class MaterialController {
 	//자재 리스트
 	@ResponseBody
 	@RequestMapping("matlist")
-	public List<MatVO> selectMatList(){
-		List<MatVO> list = service.selectMatList();
+	public List<MatVO> selectMatList(MatVO vo){
+		System.err.println(vo);
+		List<MatVO> list = service.selectMatList(vo);
 		System.out.println(list);
 		return list;
 	}
@@ -193,11 +194,12 @@ public class MaterialController {
 		
 	}
 	
-	//lot 리스트
+	//자재 lot 리스트
 	@ResponseBody
 	@RequestMapping("matlotlist")
-	public List<MatLotVO> mLotList(){
-		List<MatLotVO> list = service.mLotList();
+	public List<MatLotVO> mLotList(MatLotVO vo){
+		System.err.println(vo);
+		List<MatLotVO> list = service.mLotList(vo);
 		return list;
 	}
 	
@@ -342,15 +344,15 @@ public class MaterialController {
 		return list;
 	}
 	
-	//자재 불량처리
-	@PostMapping("insertmatdmg")
-    @ResponseBody
-    public void insertMatDmg2(@RequestBody List<MatDmgVO> vo) {
-		System.out.println("abc");
-		
-		System.out.println(vo);
-		service.insertMatDmg(vo);
-    }
+
+	 //자재 불량처리
+	 @PostMapping("insertmatdmg2")
+	 @ResponseBody public void insertMatDmg2(@RequestBody List<MatDmgVO> vo) {
+		 System.out.println("abc");
+		 System.out.println(vo); 
+		 //service.insertMatDmg(vo); 
+	 }
+	 
 }
 
 

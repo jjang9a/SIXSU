@@ -21,7 +21,7 @@
 			<h1 class="mt-4" style="font-family: 'MaruBuri';">자재조회</h1>
 	
 			<div id="left">
-				자재명 <input type="text" id="matId" name="matId">
+				자재명 <input type="text" id="matName" name="matName">
 				<button class="sixBtn1">
 					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
 						viewBox="0 2 16 16">
@@ -41,12 +41,49 @@
 		const gridData = [
 
 			];
-			window.onload = function () {
+			
+		function matList(matName){
+			$.ajax({
+				url : "/materials/matlist",
+				method : "GET",
+				dataType : "JSON",
+				data: {matName : matName},
+				success : function(result) {
+					gridm.resetData(result);
+					gridm.getData().forEach(ele=>{
+						if(ele.matSafe/2>ele.matQtSum){
+							gridm.addCellClassName(ele.rowKey, 'matId','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'matName','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'matSize','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'matUnit','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'matSafe','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'matQtSum','redcolor');
+						}else if((ele.matSafe)>ele.matQtSum){
+							//gridm.addRowClassName(ele.rowKey,'yellowcolor');
+							gridm.addCellClassName(ele.rowKey, 'matId','yellowcolor');
+							gridm.addCellClassName(ele.rowKey, 'matName','yellowcolor');
+							gridm.addCellClassName(ele.rowKey, 'matSize','yellowcolor');
+							gridm.addCellClassName(ele.rowKey, 'matUnit','yellowcolor');
+							gridm.addCellClassName(ele.rowKey, 'matSafe','yellowcolor');
+							gridm.addCellClassName(ele.rowKey, 'matQtSum','yellowcolor');
+						}
+					});
+				},
+					error: function(reject) {
+					console.log(reject);
+				}
+			});
+		}
+		let matName = null;
+		matList(matName);
+		
+/* 			window.onload = function () {
 				
 				$.ajax({
 					url : "/materials/matlist",
 					method : "GET",
 					dataType : "JSON",
+					data: {matName : matName},
 					success : function(result) {
 						gridm.resetData(result);
 						gridm.getData().forEach(ele=>{
@@ -72,7 +109,13 @@
 						console.log(reject);
 					}
 				});
-			}
+			} */
+			
+ 			$('#check').on('click', function(){
+ 				matName = $('#matName').val();
+ 				console.log(matName);
+ 				matList(matName);
+ 			})
 			
 			const gridm = new tui.Grid({
 				el : document.getElementById('gridm'),
@@ -119,6 +162,9 @@
 					}
 				}
 			});
+ 			
+ 			
+
 		</script>
 	</div>
 </body>

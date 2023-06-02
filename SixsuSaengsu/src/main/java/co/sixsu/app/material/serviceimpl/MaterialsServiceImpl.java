@@ -75,8 +75,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//자재 리스트
 		@Override
-		public List<MatVO> selectMatList() {
-			return mapper.selectMatList();
+		public List<MatVO> selectMatList(MatVO vo) {
+			return mapper.selectMatList(vo);
 		}
 		
 		//입고 리스트 삭제
@@ -95,8 +95,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//자재 LOT 리스트
 		@Override
-		public List<MatLotVO> mLotList() {
-			return mapper.mLotList();
+		public List<MatLotVO> mLotList(MatLotVO vo) {
+			return mapper.mLotList(vo);
 		}
 		
 		//자재 출고내역 리스트

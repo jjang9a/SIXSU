@@ -31,8 +31,10 @@
 		<div id="grids"></div>
 		<button type="button" class="sixBtn4" id="delBtn">내역삭제</button>
 		
-		<script>
+
 		
+		<script>
+
 			const gridData = [
 
 			];
@@ -232,7 +234,7 @@
 				console.log(grid.getCheckedRows().length);
 				console.log(JSON.stringify(grid.getCheckedRows()));
 				$.ajax({
-					url: "/materials/insertmatdmg",
+					url: "/materials/insertmatdmg2",
 					method: "POST",
 					contentType: 'application/json',
 					data: JSON.stringify(grid.getCheckedRows()),

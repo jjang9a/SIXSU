@@ -40,16 +40,17 @@ public interface MaterialsMapper {
 	int insertMatRec(MatrecVO vo);
 	
 	//자재 리스트
-	List<MatVO> selectMatList();
+	List<MatVO> selectMatList(MatVO vo);
 	
 	//입고 리스트에서 삭제
 	int delMatRec(MatrecVO vo);
 	
 	//자재 lot 리스트
-	List<MatLotVO> mLotList();
+	List<MatLotVO> mLotList(MatLotVO vo);
 	
-	//자재 lot 리스트
-	int deleteMLot(String matLotId);
+	/*
+	 * //자재 lot 리스트 int deleteMLot(String matLotId);
+	 */
 	
 	//자재 출고 리스트
 	List<MatShipVO> getMatShipList();

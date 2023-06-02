@@ -42,13 +42,13 @@ public interface MaterialsService {
 	void insertMatRec(List<MatrecVO> vo);
 	
 	//자재 리스트
-	List<MatVO> selectMatList();
+	List<MatVO> selectMatList(MatVO vo);
 	
 	//입고 행 삭제
 	void delMatRec(List<MatrecVO> vo);
 	
 	//자재 lot 리스트
-	List<MatLotVO> mLotList();
+	List<MatLotVO> mLotList(MatLotVO vo);
 	
 	//자재 출고 리스트
 	List<MatShipVO> getMatShipList();

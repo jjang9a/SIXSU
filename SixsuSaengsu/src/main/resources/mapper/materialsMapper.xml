@@ -4,6 +4,19 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="co.sixsu.app.material.mapper.MaterialsMapper">
+<sql id="criteria">
+ 	<where>
+		 	<if test="matLotId != null and matLotId != ''.toString()">
+		 		m.mat_lot_id = #{matLotId}
+		 	</if>
+		 	<if test="matId != null and matId != ''.toString()">
+		 		l.mat_id = #{matId}
+		 	</if>
+		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
+		 		c.mat_rec_date  between #{sDate} and #{eDate}
+		 	</if> 
+	</where>
+</sql>
 	<!-- 발주리스트 -->
 	<select id="getMatReqList" resultType="MatreqVO">
 		select m.mat_req_id, 
@@ -109,13 +122,16 @@
   	</insert>
   	
   	<!-- 자재목록 -->
-  	<select id="selectMatList" resultType="MatVO">
+  	<select id="selectMatList" parameterType="MatVO" resultType="MatVO">
   		with lotsum as (select mat_id, sum(mat_qt) as mat_qt_sum from mat_lot group by mat_id)
 		select m.*, l.mat_qt_sum 
 		from material m 
 		left join lotsum l 
 		 on m.mat_id = l.mat_id
 		where m.mat_stat = 'Y'
+		<if test="matName != null and matName != ''.toString()">
+			and m.mat_name = #{matName}
+		</if>
 		order by m.mat_id
   	</select>
   	
@@ -132,7 +148,7 @@
   	</insert>
   	
   	<!-- 자재lot리스트 -->
-  	<select id="mLotList" resultType="MatLotVO">
+  	<select id="mLotList" parameterType="MatLotVO" resultType="MatLotVO">
 		select m.mat_lot_id, 
 			   m.mat_id, 
 			   l.mat_name, 
@@ -147,7 +163,9 @@
 		
 		left join material l
 		 on m.mat_id = l.mat_id
-		 
+		 <!-- 조건 -->
+		  	<include refid="criteria"></include>
+		
 		<!-- 로트역순으로 -->
 		order by substr(mat_lot_id, 5,6) desc, TO_NUMBER(SUBSTR(mat_lot_id, INSTR(mat_lot_id, '-') + 1)) desc
 		
