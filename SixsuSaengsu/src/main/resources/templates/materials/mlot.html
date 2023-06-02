@@ -88,21 +88,46 @@
 			];
 
 
-			window.onload = function () {
+			
+				function mLotList(lot, mat, sDate, eDate){
+					
+					$.ajax({
+						url: "/materials/matlotlist",
+						method: "GET",
+						data:{matLotId : lot, matName : mat, sDate: sDate, eDate:eDate},
+						success: function (result) {
+							grid.resetData(result);
+						},
+	 					error: function(reject){
+							console.log(reject);
+						}
+					
+					});
+
+				}
 				
-				$.ajax({
-					url: "/materials/matlotlist",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-						grid.resetData(result);
-					},
- 					error: function(reject){
-						console.log(reject);
-					}
-				
-				});
-			}
+			let lot =null;
+			let mat = null;
+			let sDate = null;
+			let eDate = null;
+			mLotList(lot, mat, sDate, eDate);
+			
+			$('#check').click(function(){
+				lot = $('#mlot').val();
+				mat = $('#mname').val();
+				sDate = $('#matRecDate').val();
+				eDate = $('#matRecDatee').val();
+				mLotList(lot, mat, sDate, eDate);
+
+			})
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
@@ -150,6 +175,10 @@
 				]
 				
 			});
+			
+			$('#reset').on('click', function(){
+				mLotList(lot, mat, sDate, eDate);
+			})
 			
  			tui.Grid.applyTheme('default', {
 				cell: {
