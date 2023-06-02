@@ -17,6 +17,7 @@ public class OrdVO {
 	private String cpSize;
 	private String ordDate;
 	private int cpLot;
-	
+	private String ordStatDetName;
+	private String busName;
 	
 }

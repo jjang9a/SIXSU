@@ -56,6 +56,9 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		vo.setCpShipQt(list.get(i).getCpLotQt()); //지금 LOT안의 수량을 출고수량으로 설정
 		list.get(i).setCpHold(list.get(i).getCpLotQt()); // 현재 수량을 홀드수량에 셋팅
 		list.get(i).setCpLotQt(0);// 현재수량을 0으로 만듦
+		
+		
+		list.get(i).setCpLotQtCk("LOT_ING");// 현재 lot가 출고 진행중인 상태로 셋팅
 		vo.setEmpId("test");
 		vo.setCpShipStat("검사요청");
 		System.out.println(vo);
@@ -78,6 +81,9 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		vo.setCpShipQt(qt); //지금 LOT안의 수량을 출고수량으로 설정
 		list.get(i).setCpHold(qt); // 현재 수량을 홀드수량에 셋팅
 		list.get(i).setCpLotQt(list.get(i).getCpLotQt() - qt);// 현재수량을 0으로 만듦
+		
+		
+		list.get(i).setCpLotQtCk("LOT_ING");// 현재 lot가 출고 진행중인 상태로 셋팅
 		vo.setEmpId("test");
 		vo.setCpShipStat("검사요청");
 		
