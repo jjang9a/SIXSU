@@ -263,6 +263,12 @@ public class WorkServiceImpl implements WorkService{
 	public List<DetaWorkOrdrVO> getWorkList() {
 		return mapper.getWorkList();
 	}
+	
+	@Override //삭제 고민중... 쓰는곳이 없다
+	public List<DetaWorkOrdrVO> getWorkListForProcess() {
+		return mapper.getWorkListForProcess();
+	}
+
 
 	@Override
 	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data) {
@@ -292,6 +298,30 @@ public class WorkServiceImpl implements WorkService{
 		allList.add(mapper.getPlanList());
 		allList.add(mapper.getDetaWorkHeadList(data));
 		return allList;
+	}
+
+	@Override
+	public String startWorkOrder(String detaCode) {
+		String headCode = "20" + detaCode.substring(0,9);
+		
+		String[] parts = headCode.split("-");  // 문자열을 '-' 기호를 기준으로 분리하여 배열로 저장
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < parts.length - 1; i++) {
+		    sb.append(parts[i]);
+		    System.out.println(parts[i]);
+		    if (i < parts.length - 2) {
+		        sb.append("-");
+		    }
+		} 
+		sb.insert(0, "20");
+		System.out.println(sb);
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("headCode", headCode);
+		paramMap.put("detaCode", detaCode);
+		paramMap.put("resultParam", null);
+		mapper.startWorkOrder(paramMap);
+		String result = (String) paramMap.get("resultParam"); 
+		return result;
 	}
 
 	

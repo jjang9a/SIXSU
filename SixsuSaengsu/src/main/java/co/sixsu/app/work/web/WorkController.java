@@ -58,7 +58,13 @@ import co.sixsu.app.work.service.WorkService;
 		@GetMapping("/work/xPage")
 		public String xPage(Model model) {
 			System.out.println("xPage 들어옴");
-		return "/work/xPage";
+			return "/work/xPage";
+		}
+		
+		@GetMapping("/work/workKiosk")
+		public String xPage() {
+			System.out.println("workKiost 들어옴");
+			return "/work/workKiosk";
 		}
 }
 

@@ -57,5 +57,7 @@ public interface WorkMapper {
 	public List<DetaWorkOrdrVO> getWorkList();
 	public List<DetaWorkOrdrVO> workFilterAjax(WorkFilterDataVO data);
 	public void getProductBomList(DetaWorkOrdrVO data);
+	public void startWorkOrder(Map<String, Object> paramMap);
+	public List<DetaWorkOrdrVO> getWorkListForProcess();
 
 }

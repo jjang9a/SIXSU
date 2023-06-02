@@ -70,6 +70,11 @@ public class WorkAjaxController {
 		List<DetaWorkOrdrVO> list = service.getWorkList();
 		return list;
 	};
+	@RequestMapping("getWorkListForProcess") //삭제 고민중... 쓰는곳이 없다
+	public List<DetaWorkOrdrVO> getWorkListForProcess() {
+		List<DetaWorkOrdrVO> list = service.getWorkListForProcess();
+		return list;
+	};
 	@RequestMapping("workFilterAjax")
 	public List<DetaWorkOrdrVO> workFilterAjax(@RequestBody WorkFilterDataVO data){
 		System.out.println(data);
@@ -255,8 +260,22 @@ public class WorkAjaxController {
 		return allList;
 	}
 	
+	//미완성
+	@RequestMapping("getBomMatList")
+	public List<Object> getBomMatList(@RequestBody DetaWorkOrdrVO detaCode) {
+		System.out.println(detaCode);
+		//List<DetaWorkOrdrVO> list = service.getBomMatList(detaCode);
+		return null;
+	}
 	
-	
+	@RequestMapping("startWorkOrder")
+	public String startWorkOrder(@RequestBody DetaWorkOrdrVO detaCode) {
+		System.out.println("preparing startWorkOrder");
+		System.out.println("detaCode is " + detaCode.getWkDetaId());
+		String result = service.startWorkOrder(detaCode.getWkDetaId());
+		System.out.println(result);
+		return result;
+	}
 	
 	
 	
