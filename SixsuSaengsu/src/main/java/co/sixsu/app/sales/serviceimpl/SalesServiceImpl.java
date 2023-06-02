@@ -57,7 +57,7 @@ public List<ProductVO> getProdList() {
 
 @Override //주문서만 등록
 public int orderAdd(InvVO inv) {
-	inv.setOrdStat("진행중");
+	inv.setOrdStat("ORD_ING");
 	//order master 등록후 
 	mapper.orderAdd(inv);
 	
@@ -65,7 +65,7 @@ public int orderAdd(InvVO inv) {
 	int count =0;
 	List<OrdVO> list = inv.getList();
 	for(int i=0; i<list.size(); i++) {
-         list.get(i).setOrdStatDet("진행중");
+         list.get(i).setOrdStatDet("ORD_DET_ING");
          list.get(i).setOrdId(inv.getOrdId());
 	     count += mapper.ordDetAdd(list.get(i));
 	}
@@ -107,19 +107,19 @@ public boolean ordDetMod(GridDataVO<OrdVO> vo) {
 	for (OrdVO i : list) {
 		mapper.productDel(i.getOrdDetId());
 	}
-
+ System.out.println("삭제완료");
 	//수정
 	list = vo.getUpdatedRows();	
 	for(int i=0; i<list.size(); i++) {         
 		count += mapper.ordDetMod(list.get(i));
 	}
-	   
+	 System.out.println("수정와뇰");   
 	//등록
 	list = vo.getCreatedRows();
 	for(int i=0; i<list.size(); i++) {
-         list.get(i).setOrdStatDet("진행중");
+         list.get(i).setOrdStatDet("ORD_DET_ING");
 	     count += mapper.ordDetAdd(list.get(i));
-	}	   
+	}	  System.out.println("등록완료");  
 	   return count >=1;
 	
 }

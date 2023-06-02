@@ -29,14 +29,17 @@
 </head>
 
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-deepblue">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-deepblue" style="height: 95px;">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html"><img src="/assets/img/logo5.png" style="height:55px"></a>
+        <a class="navbar-brand ps-1" href="index.html"><img src="/assets/img/logo5.png" style="height:65px"></a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+                <p class="userInfo" th:text='|${#authentication.principal.empDept} ${#authentication.principal.empName}님|'>확인</p>
+            </div>
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -181,9 +184,8 @@
                                 <a class="nav-link-a" href="/materials/matadj">자재재고조정</a>
                                 <a class="nav-link-a" href="/materials/spadj">반제품재고조정</a>
                                 <a class="nav-link-a" href="/materials/matdmg">불량자재관리</a>
-                                <a class="nav-link-a" href="#">불량자재조회</a>
                                 <a class="nav-link-a" href="/materials/spdmg">불량반제품관리</a>
-                                <a class="nav-link-a" href="#">불량반제품조회</a>
+                                <a class="nav-link-a" href="/materials/matdmg2">불량품관리</a>
                             </nav>
                         </div>
 
@@ -248,7 +250,7 @@
         </div>
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid px-4" layout:fragment="content">
+                <div class="container-fluid px-4 toppadding" layout:fragment="content">
                     <!--내용 들어가는 자리-->
                 </div>
             </main>

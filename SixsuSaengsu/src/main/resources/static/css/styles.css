@@ -10893,7 +10893,7 @@ body {
   justify-content: space-between;
   min-width: 0;
   flex-grow: 1;
-  min-height: calc(100vh - 56px);
+  min-height: calc(100vh - 95px);
   margin-left: -225px;
 }
 
@@ -10941,14 +10941,14 @@ body {
   z-index: 1038;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
-  padding-top: 56px;
+  padding-top: 95px;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav .sb-sidenav-menu {
   overflow-y: auto;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
   padding-left: 225px;
-  top: 56px;
+  top: 95px;
 }
 
 #layoutError {
@@ -11309,4 +11309,10 @@ body {
 
 .rightBtn {
   float: right;
+  padding: 5px;
+}
+
+.userInfo{
+  color: rgba(255, 255, 255, 0.7);
+  padding-top: 20px;
 }

@@ -112,7 +112,7 @@ public class QualityServiceImpl implements QualityService {
 			}
 			;
 
-			count += quaMapper.insertPri(list.get(i));
+			count += quaMapper.insertQuaDet(list.get(i));
 			System.out.println(count);
 
 		}
@@ -120,7 +120,7 @@ public class QualityServiceImpl implements QualityService {
 		return list;
 	}
 
-	// 자재 입고 검사 결과 등록 시 업데이트(qua_com업데이트)
+	// 자재 입고 검사 결과 등록 시 업데이트(qua_com업데이트), mat_req 업데이트
 	@Override
 	@Transactional
 	public boolean priRegUpdate(QuaVO qua) {
@@ -134,10 +134,10 @@ public class QualityServiceImpl implements QualityService {
 		return count >= 1;
 	}
 
-	// insert+update 합침
+	// 검사 세부 insert
 	@Override
 	@Transactional
-	public int insertPriAndUpdate(List<QuaVO> list) {
+	public int insertQuaDet(List<QuaVO> list) {
 		System.out.println("서비스");
 		int count = 0; // insert 발생 횟수
 		
@@ -149,7 +149,7 @@ public class QualityServiceImpl implements QualityService {
 			qua.setDetInspNum(detNum);
 			System.out.println(detNum);
 
-			count += quaMapper.insertPri(qua);
+			count += quaMapper.insertQuaDet(qua);
 		}
 		
 
@@ -216,6 +216,18 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public List<PrdInspVO> prwList() {
 		return quaMapper.prwList();
+	}
+	
+	
+	// 공정 검사 결과 등록 시 업데이트(qua_com업데이트)
+	@Override
+	@Transactional
+	public int prdComUpdate(List<PrdInspVO> list) {
+		int count = 0; // update 발생 횟수
+		System.out.println("qua_com 업데이트 vo" + list);
+		//count = quaMapper.qComUpdate(qua);
+
+		return count ;
 	}
 	
 	// 수정시 검사 공통 업데이트
@@ -318,6 +330,19 @@ public class QualityServiceImpl implements QualityService {
 		
 		return true;
 
+	}
+
+
+	// 장가애
+	
+	@Override // 검색용
+	public List<QuaVO> searchInsp(QuaVO vo) {
+		return quaMapper.searchInsp(vo);
+	}
+
+	@Override // 원천수 리스트
+	public List<QuaVO> getWater() {
+		return quaMapper.getWater();
 	}
 	
 	

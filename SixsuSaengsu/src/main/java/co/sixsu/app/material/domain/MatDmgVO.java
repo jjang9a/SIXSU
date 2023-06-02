@@ -4,21 +4,19 @@ import lombok.Data;
 
 @Data
 public class MatDmgVO {
-	
-	String prcsPfmcId;
-	String wkDetaId;
-	String pdId;
-	String matName;
-	String matSize;
-	int dmatQt;
-	int matShipId;
-	String matLotId;
-	String wkEnd;
-	String empName;
-	String dmatNote;
-	
+
 	String dmatId;
 	String dmatDate;
-	String dmatRes;
 	String dmatStat;
+	String dmatNote;
+	String dmatResult;
+	
+	//새로운 불량품 페이지필요
+	String inspNum;
+	String inspDate;
+	String matId;
+	String matName;
+	String matSize;
+	int resVal;
+	String empName;
 }

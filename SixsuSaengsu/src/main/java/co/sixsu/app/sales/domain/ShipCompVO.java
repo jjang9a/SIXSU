@@ -11,4 +11,5 @@ public class ShipCompVO {
 	public int ordQt;
 	public String cpShipReqDate;
 	public String busId;
+	public String busName;
 }

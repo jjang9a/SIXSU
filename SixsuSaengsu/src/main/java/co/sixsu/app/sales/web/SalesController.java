@@ -1,10 +1,10 @@
 package co.sixsu.app.sales.web;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.basic.service.BasicService;
 import co.sixsu.app.sales.domain.GridDataVO;
 import co.sixsu.app.sales.domain.InvVO;
 import co.sixsu.app.sales.domain.OrdVO;
@@ -32,9 +31,11 @@ public class SalesController {
 	@Autowired
 	private SalesService service;
 
+
 // 주문서 관리 페이지 열어주기	
 	@GetMapping("invoice")
-	public void invoice() {
+	public void invoice(Model model) {
+	
 	}
 
 

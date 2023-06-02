@@ -75,8 +75,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//자재 리스트
 		@Override
-		public List<MatVO> selectMatList() {
-			return mapper.selectMatList();
+		public List<MatVO> selectMatList(MatVO vo) {
+			return mapper.selectMatList(vo);
 		}
 		
 		//입고 리스트 삭제
@@ -95,8 +95,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//자재 LOT 리스트
 		@Override
-		public List<MatLotVO> mLotList() {
-			return mapper.mLotList();
+		public List<MatLotVO> mLotList(MatLotVO vo) {
+			return mapper.mLotList(vo);
 		}
 		
 		//자재 출고내역 리스트
@@ -209,6 +209,29 @@ public class MaterialsServiceImpl implements MaterialsService{
 		@Override
 		public List<SpVO> getSpList() {
 			return mapper.getSpList();
+		}
+
+		//불량품 처리대기 리스트
+		@Override
+		public List<MatDmgVO> getMatDamageWaitList2() {
+			return mapper.getMatDamageWaitList2();
+		}
+		
+		//불량품 리스트
+		@Override
+		public List<MatDmgVO> getMatDmgList2() {
+			return mapper.getMatDmgList2();
+		}
+		
+		//불량품 불량처리
+		@Override
+		public void insertMatDmg2(List<MatDmgVO> vo) {
+			String stat = vo.get(0).getDmatStat();
+			for(MatDmgVO i : vo) {
+				i.setDmatStat(stat);
+				mapper.insertMatDmg(i);
+			}
+			
 		}
 		
 

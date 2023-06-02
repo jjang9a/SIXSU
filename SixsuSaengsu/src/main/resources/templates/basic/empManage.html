@@ -44,16 +44,17 @@
 			width: 150px;
 		}
 
-		#searchForm{
-			margin: 70px;
+		#searchForm {
+			margin-top: 70px;
 			text-align: center;
 		}
 
-		#searchForm input{
+		#searchForm input {
 			width: 200px;
 			height: 27px;
 		}
-		#searchForm select{
+
+		#searchForm select {
 			width: 102px;
 			height: 27px;
 		}
@@ -64,10 +65,10 @@
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">사원관리</h1>
 		<div class="test">
-			<button type="button" class="sixBtn3" id="initBtn">초기화</button> 
-			<button type="button" class="sixBtn2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">등록</button> 
-			<button type="button" class="sixBtn2" id="modiBtn">수정</button> 
-			<button type="button" class="sixBtn6" id="pwBtn" data-bs-toggle="modal">비밀번호 변경</button> 
+			<button type="button" class="sixBtn3" id="initBtn">초기화</button>
+			<button type="button" class="sixBtn2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">등록</button>
+			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+			<button type="button" class="sixBtn6" id="pwBtn" data-bs-toggle="modal">비밀번호 변경</button>
 		</div>
 
 		<!-- 사원목록 그리드 -->
@@ -81,11 +82,11 @@
 				<option value="name">이름</option>
 			</select>
 			<input type="text" id="searchKey" name="searchKey">
-			<button type="button" class="sixBtn1" id="searchBtn"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-				<path
-					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-			</svg></button>
+			<button type="button" class="sixBtn1" id="searchBtn"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+					height="18" fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+					<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+				</svg></button>
 		</form>
 
 
@@ -208,255 +209,255 @@
 				});
 			}
 
-				const grid = new tui.Grid({
-					el: document.getElementById('grid'),
-					scrollX: false,
-					scrollY: false,
-					minBodyHeight: 480,
-					rowHeaders: ['rowNum'],
-					pageOptions: {
-						useClient: true,
-						perPage: 12
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 480,
+				rowHeaders: ['rowNum'],
+				pageOptions: {
+					useClient: true,
+					perPage: 12
+				},
+				columns: [{
+						header: '사원번호',
+						name: 'empId',
+						align: 'center',
+						sortable: true
 					},
-					columns: [{
-							header: '사원번호',
-							name: 'empId',
-							align : 'center',
-							sortable : true
-						},
-						{
-							header: '이름',
-							name: 'empName',
-							editor: 'text',
-							align : 'center'
-						},
-						{
-							header: '연락처',
-							name: 'empTell',
-							editor: 'text',
-							align : 'center'
-						},
-						{
-							header: '생년월일',
-							name: 'empBirth',
-							align : 'center'
-						},
-						{
-							header: '입사일',
-							name: 'empHire',
-							align : 'center',
-							sortable : true,
-							editor: {
-								type: 'datePicker',
-								options: {
-									format: 'yyyy/MM/dd'
-								}
+					{
+						header: '이름',
+						name: 'empName',
+						editor: 'text',
+						align: 'center'
+					},
+					{
+						header: '연락처',
+						name: 'empTell',
+						editor: 'text',
+						align: 'center'
+					},
+					{
+						header: '생년월일',
+						name: 'empBirth',
+						align: 'center'
+					},
+					{
+						header: '입사일',
+						name: 'empHire',
+						align: 'center',
+						sortable: true,
+						editor: {
+							type: 'datePicker',
+							options: {
+								format: 'yyyy/MM/dd'
 							}
-						},
-						{
-							header: '소속부서',
-							name: 'empDept',
-							align : 'center',
-							filter: 'select',
-							editor: {
-								type: 'select',
-								options: {
-									listItems: [{
-											text: '영업부',
-											value: '영업부'
-										},
-										{
-											text: '생산부',
-											value: '생산부'
-										},
-										{
-											text: '자재부',
-											value: '자재부'
-										},
-										{
-											text: '설비부',
-											value: '설비부'
-										},
-										{
-											text: '품질부',
-											value: '품질부'
-										}
-									]
-								}
-							}
-						},
-						{
-							header: '직급',
-							name: 'empRk',
-							align : 'center',
-							editor: {
-								type: 'select',
-								options: {
-									listItems: [{
-											text: '관리자',
-											value: '관리자'
-										},
-										{
-											text: '사원',
-											value: '사원'
-										}
-									]
-								}
-							}
-						},
-						{
-							header: '상태',
-							name: 'empStat',
-							align : 'center',
-							filter: 'select',
-							editor: {
-								type: 'radio',
-								options: {
-									listItems: [{
-											text: '재직',
-											value: '재직'
-										},
-										{
-											text: '휴직',
-											value: '휴직'
-										},
-										{
-											text: '퇴사',
-											value: '퇴사'
-										}
-									]
-								}
-							}
-						},
-						{
-							header: '비고',
-							name: 'empNote',
-							editor: 'text'
-						},
-
-					]
-				});
-
-				// 그리드 색 변경 테마 적용
-				tui.Grid.applyTheme('default', {
-					cell: {
-						header: {
-							background: '#e5edf5'
-						},
-						rowHeader: {
-							background: '#e5edf5'
-						},
-						normal: {
-							background: '#ffffff'
 						}
+					},
+					{
+						header: '소속부서',
+						name: 'empDept',
+						align: 'center',
+						filter: 'select',
+						editor: {
+							type: 'select',
+							options: {
+								listItems: [{
+										text: '영업부',
+										value: '영업부'
+									},
+									{
+										text: '생산부',
+										value: '생산부'
+									},
+									{
+										text: '자재부',
+										value: '자재부'
+									},
+									{
+										text: '설비부',
+										value: '설비부'
+									},
+									{
+										text: '품질부',
+										value: '품질부'
+									}
+								]
+							}
+						}
+					},
+					{
+						header: '직급',
+						name: 'empRk',
+						align: 'center',
+						editor: {
+							type: 'select',
+							options: {
+								listItems: [{
+										text: '관리자',
+										value: '관리자'
+									},
+									{
+										text: '사원',
+										value: '사원'
+									}
+								]
+							}
+						}
+					},
+					{
+						header: '상태',
+						name: 'empStat',
+						align: 'center',
+						filter: 'select',
+						editor: {
+							type: 'radio',
+							options: {
+								listItems: [{
+										text: '재직',
+										value: '재직'
+									},
+									{
+										text: '휴직',
+										value: '휴직'
+									},
+									{
+										text: '퇴사',
+										value: '퇴사'
+									}
+								]
+							}
+						}
+					},
+					{
+						header: '비고',
+						name: 'empNote',
+						editor: 'text'
+					},
+
+				]
+			});
+
+			// 그리드 색 변경 테마 적용
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			gridD = grid;
+			let selEmpId = '';
+			let selEmpName = '';
+			let selKey = '';
+			grid.on('focusChange', (ev) => {
+				// focus된 셀이 있는 열 전체 select 처리
+				// grid.setSelectionRange({
+				// 	start: [ev.rowKey, 0],
+				// 	end: [ev.rowKey, grid.getColumns().length - 1]
+				// });
+				if (selKey != ev.rowKey) {
+					grid.removeRowClassName(selKey, 'cell-pink');
+				}
+				grid.addRowClassName(ev.rowKey, 'cell-pink');
+				selKey = ev.rowKey;
+
+				// 열 전체 정보 얻기
+				let dataRow = grid.getRow(ev.rowKey);
+				console.log(dataRow);
+				selEmp = dataRow;
+				console.log('열번호 : ' + selKey);
+				selEmpId = dataRow.empId
+				selEmpName = dataRow.empName
+			});
+
+			// 기본창 등록버튼 모달 띄우기 이벤트
+			$('#staticBackdrop').on('shown.bs.modal');
+
+			// 모달 내 등록 ajax 이벤트
+			$('#addBtn').on('click', function (e) {
+				$.ajax({
+					url: '/basic/empAdd',
+					type: 'post',
+					data: $('#addForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						alert('사원이 성공적으로 등록되었습니다');
+						console.log(result);
+						//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+						const appendedData = result
+						grid.appendRow(appendedData);
+					},
+					error: function () {
+						alert('사원 등록 중 오류가 발생했습니다!');
+					}
+				});
+				$('#staticBackdrop input').val('');
+				$('#staticBackdrop').modal('hide');
+			})
+
+
+			// 비밀번호 수정 버튼
+			$('#pwBtn').on('click', function (e) {
+				// 사원이 선택되지 않은 경우 알람 띄우기
+				if (selEmpId == '') {
+					alert('사원이 선택되지 않았습니다!');
+					// 특정 사원이 선택 된 경우 사원번호와 이름을 담아 모달 띄우기
+				} else {
+					$('#pwModal').modal('show');
+					console.log(selEmpId)
+					$('#pwEmpData').html(`${selEmpId} ${selEmpName}`);
+					$('#pwEmpId').val(selEmpId);
+				}
+			})
+
+			// 모달 비밀번호 변경 이벤트
+			$('#pwUpdateBtn').on('click', function (e) {
+				$.ajax({
+					url: '/basic/empPw',
+					type: 'post',
+					data: $('#pwForm').serialize(),
+					dataType: 'json',
+					success: function () {
+						alert('비밀번호가 성공적으로 업데이트 되었습니다');
+					},
+					error: function () {
+						alert('비밀번호 변경 중 오류가 발생했습니다!');
+					}
+				});
+				$('#pwModal input').val('');
+				$('#pwModal').modal('hide');
+				pwEmpId = '';
+			});
+
+			// 수정 버튼 이벤트
+			$('#modiBtn').on('click', function () {
+				$.ajax({
+					url: '/basic/empModify',
+					type: 'post',
+					// 선택된 열의 key값으로 row정보를 받아오고 그것을 JSON타입으로 변환해서 보냄
+					data: JSON.stringify(grid.getRow(selKey)),
+					contentType: 'application/json',
+					success: function () {
+						alert('성공적으로 업데이트 되었습니다');
+					},
+					error: function () {
+						alert('사원 정보 변경 중 오류가 발생했습니다!');
 					}
 				});
 
-				gridD = grid;
-				let selEmpId = '';
-				let selEmpName = '';
-				let selKey = '';
-				grid.on('focusChange', (ev) => {
-					// focus된 셀이 있는 열 전체 select 처리
-					// grid.setSelectionRange({
-					// 	start: [ev.rowKey, 0],
-					// 	end: [ev.rowKey, grid.getColumns().length - 1]
-					// });
-					if (selKey != ev.rowKey) {
-						grid.removeRowClassName(selKey, 'cell-pink');
-					}
-					grid.addRowClassName(ev.rowKey, 'cell-pink');
-					selKey = ev.rowKey;
+			})
 
-					// 열 전체 정보 얻기
-					let dataRow = grid.getRow(ev.rowKey);
-					console.log(dataRow);
-					selEmp = dataRow;
-					console.log('열번호 : ' + selKey);
-					selEmpId = dataRow.empId
-					selEmpName = dataRow.empName
-				});
-
-				// 기본창 등록버튼 모달 띄우기 이벤트
-				$('#staticBackdrop').on('shown.bs.modal');
-
-				// 모달 내 등록 ajax 이벤트
-				$('#addBtn').on('click', function (e) {
-					$.ajax({
-						url: '/basic/empAdd',
-						type: 'post',
-						data: $('#addForm').serialize(),
-						dataType: 'json',
-						success: function (result) {
-							alert('사원이 성공적으로 등록되었습니다');
-							console.log(result);
-							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
-							const appendedData = result
-							grid.appendRow(appendedData);
-						},
-						error: function () {
-							alert('사원 등록 중 오류가 발생했습니다!');
-						}
-					});
-					$('#staticBackdrop input').val('');
-					$('#staticBackdrop').modal('hide');
-				})
-
-
-				// 비밀번호 수정 버튼
-				$('#pwBtn').on('click', function (e) {
-					// 사원이 선택되지 않은 경우 알람 띄우기
-					if (selEmpId == '') {
-						alert('사원이 선택되지 않았습니다!');
-						// 특정 사원이 선택 된 경우 사원번호와 이름을 담아 모달 띄우기
-					} else {
-						$('#pwModal').modal('show');
-						console.log(selEmpId)
-						$('#pwEmpData').html(`${selEmpId} ${selEmpName}`);
-						$('#pwEmpId').val(selEmpId);
-					}
-				})
-
-				// 모달 비밀번호 변경 이벤트
-				$('#pwUpdateBtn').on('click', function (e) {
-					$.ajax({
-						url: '/basic/empPw',
-						type: 'post',
-						data: $('#pwForm').serialize(),
-						dataType: 'json',
-						success: function () {
-							alert('비밀번호가 성공적으로 업데이트 되었습니다');
-						},
-						error: function () {
-							alert('비밀번호 변경 중 오류가 발생했습니다!');
-						}
-					});
-					$('#pwModal input').val('');
-					$('#pwModal').modal('hide');
-					pwEmpId = '';
-				});
-
-				// 수정 버튼 이벤트
-				$('#modiBtn').on('click', function () {
-					$.ajax({
-						url: '/basic/empModify',
-						type: 'post',
-						// 선택된 열의 key값으로 row정보를 받아오고 그것을 JSON타입으로 변환해서 보냄
-						data: JSON.stringify(grid.getRow(selKey)),
-						contentType: 'application/json',
-						success: function () {
-							alert('성공적으로 업데이트 되었습니다');
-						},
-						error: function () {
-							alert('사원 정보 변경 중 오류가 발생했습니다!');
-						}
-					});
-
-				})
-
-				// 검색버튼 이벤트
-				$('#searchBtn').on('click', (e) => {
-					$.ajax({
+			// 검색버튼 이벤트
+			$('#searchBtn').on('click', (e) => {
+				$.ajax({
 					url: '/basic/searchEmp',
 					type: 'get',
 					data: $('#searchForm').serialize(),
@@ -469,11 +470,11 @@
 						alert('사원 조회 중 오류 발생!');
 					}
 				})
-				})
+			})
 
-				// 초기화 버튼 이벤트
-				$('#initBtn').on('click', (e) => {
-					$.ajax({
+			// 초기화 버튼 이벤트
+			$('#initBtn').on('click', (e) => {
+				$.ajax({
 					url: "/basic/empList",
 					method: "GET",
 					dataType: "JSON",
@@ -485,7 +486,7 @@
 						console.log(reject)
 					}
 				});
-				})
+			})
 		</script>
 
 	</div>
