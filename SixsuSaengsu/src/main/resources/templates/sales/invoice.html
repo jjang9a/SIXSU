@@ -138,9 +138,9 @@
 		<div id="orderingGrid"></div>
 		
 		
-		<script>
+		<script th:inline="javascript">
 
-	
+		
 let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이블에 값을 넘기기위해 변수선언
 
 window.onload = function() {
@@ -262,6 +262,7 @@ window.onload = function() {
 		})
 			
 		// 주문 상세 정보 수정
+		console.log(gridy.getModifiedRows())
 		$.ajax({
 			url:'/sales/ordDetMod',
 			type:'post',
@@ -407,7 +408,7 @@ window.onload = function() {
 		
 		{
 			header : '출고여부',
-			name : 'ordStatDet'								
+			name : 'ordStatDetName'								
 		}
 		]
 	});
@@ -663,7 +664,8 @@ window.onload = function() {
 			name : 'busNum'
 		},{
 			header : '진행상태',
-			name : 'ordStat'
+			name : 'ordStatName'
+			
 		},
 		]
 	});		
