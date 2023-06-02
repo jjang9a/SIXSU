@@ -152,6 +152,7 @@
 		<div id="grid"></div>
 
 		<script>
+			
 	    
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
@@ -202,20 +203,18 @@
              align: 'center'
           },
           {
-        	 header: '판정',
-    		 name: 'equSuit',
-    		 filter: 'select',
-    		 align: 'center',
-    		 formatter: 'listItemText',
-    		 editor: {
-    		 type: 'select',
-    		 options: {
-    			listItems: [
-    			{text: '적합', value: 'Y'},
-    			{text: '부적합', value: 'N'},	
-    		   ]
-    	      }
-    	    }
+			 header: '판정',
+			 name: 'equSuit',
+			 filter: 'select',
+			 align: 'center',
+			//  formatter: 'listItemText',
+			//  editor: {
+			//  	type: 'select',
+			// 	options: {
+			// 	listItems: equSuit
+			//	}
+		    //   }
+			
     	  },
           {
              header: '점검구분',
