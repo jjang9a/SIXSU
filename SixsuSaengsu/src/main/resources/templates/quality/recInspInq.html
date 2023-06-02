@@ -48,10 +48,10 @@
 			<input type="hidden" name="searchType" id="searchType">
 			<table id="cpTable">
 				<tr>
-					<td>자재 코드</td>
-					<td><input type="text" name="matId" id="matId" class="inputR"></td>
-					<td>자재명</td>
-					<td><input type="text" name="matName" id="matName" class="inputR"></td>
+					<td>검사번호</td>
+					<td><input type="text" name="inspNum" id="inspNum" class="inputR"></td>
+					<td>제품코드</td>
+					<td><input type="text" name="inspItemId" id="inspItemId" class="inputR"></td>
 				</tr>
 				<tr>
 					<td>검사자</td>
@@ -154,11 +154,11 @@
 				let searchType = '';
 				let searchKey = '';
 				$('#searchBtn').on('click', function (e) {
-					if ($('#matId').val() != '') {
+					if ($('#inspNum').val() != '') {
 						searchType += 'I'
 					}
-					if ($('#matName').val() != '') {
-						searchType += 'N'
+					if ($('#inspItemId').val() != '') {
+						searchType += 'P'
 					}
 					if ($('#empId').val() != '') {
 						searchType += 'E'

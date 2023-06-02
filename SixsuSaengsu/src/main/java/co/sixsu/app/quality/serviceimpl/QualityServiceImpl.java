@@ -319,6 +319,19 @@ public class QualityServiceImpl implements QualityService {
 		return true;
 
 	}
+
+
+	// 장가애
+	
+	@Override // 검색용
+	public List<QuaVO> searchInsp(QuaVO vo) {
+		return quaMapper.searchInsp(vo);
+	}
+
+	@Override // 원천수 리스트
+	public List<QuaVO> getWater() {
+		return quaMapper.getWater();
+	}
 	
 	
 

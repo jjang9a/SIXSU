@@ -10,8 +10,11 @@ import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
 public interface QualityMapper {
 	
+	// 장가애
+	List<QuaVO> searchInsp(QuaVO search); // 검색기능
+	List<QuaVO> getWater(); // 자재검사 원천수 리스트
 	
-	
+	// 조민경
 	// 검사 관련 공통 사용
 	List<QuaVO> inspItem(String matId); // 검사 항목 불러오기
 	int qComUpdate(QuaVO qua); // 검사 등록 시 qua_com 업데이트

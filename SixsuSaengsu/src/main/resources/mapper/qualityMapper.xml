@@ -5,6 +5,48 @@
 
 <mapper namespace="co.sixsu.app.quality.mapper.QualityMapper">
 
+	<!-- 장가애 -->
+	
+	<!-- 검색용 -->
+	<sql id="criteria">
+		<trim prefix="and (" suffix=")" prefixOverrides="and">
+			<foreach collection="typeArr" item="type">
+				<trim prefix=" and ">
+						<if test="type == 'I'.toString() ">
+							insp_num like '%'||#{inspNum}||'%'
+						</if>
+						<if test="type == 'P'.toString()">
+							insp_item_id like '%'||#{insp_item_id}||'%'
+						</if>
+						<if test="type == 'E'.toString()">
+							emp_id like like '%'||#{empId}||'%'
+						</if>
+						<if test="type == 'D'.toString()">
+							insp_date between to_date(#{inspDate}, 'YYYY-MM-DD') and
+							to_date(#{inspDate2}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+						</if>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+		
+	<select id="searchInsp" resultType="QuaVO">
+		select *
+		from qua_com 
+		where 1=1
+      <include refid="criteria"></include>
+	</select>
+
+	<!-- 원천수 자재 리스트 출력 -->
+	<select id="getWater" resultType="QuaVO">
+		select prcs_pfmc_id insp_std_id, pd_id insp_item_id, pd_name mat_name, good_qt insp_qt, wk_end insp_date
+		from PROCESS_PERFORMANCE
+		left outer join qua_com on insp_item_id = pd_id
+		where pd_id = 'M021'
+		and insp_num IS NULL
+	</select>
+	
+	<!-- 조민경 -->
 
 	<!-- 자재 입고 검사 등록 리스트 -->
 	<select id="proRecList" resultType="QuaVO">
