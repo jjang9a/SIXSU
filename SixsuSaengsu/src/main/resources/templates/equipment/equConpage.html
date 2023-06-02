@@ -65,17 +65,7 @@
 					<td><input type="text" name="equModel" id="equModel"
 						class="empty"></td>
 				</tr>
-				<tr>
-					<td>설비상태<span class="needStar"> *</span></td>
-					<td>
-						<div id="divRadio">
-							<input type="radio" id="equStat1" name="equStat" value="Y"
-								checked> <label for="equStat1">가동</label> <input
-								type="radio" id="equStat2" name="equStat" value="N"> <label
-								for="equStat2">비가동</label>
-						</div>
-					</td>
-				</tr>
+			
 				<tr>
 					<td>설비라인<span class="needStar"> *</span></td>
 					<td><input type="text" name="equLine" id="equLine"
@@ -100,12 +90,12 @@
 				<tr>
 					<td>등록일자<span class="needStar"> *</span></td>
 					
-					<td><input type="date" name="addDate" id="addDate"></td>
+					<td><input type="date" name="addDate" id="addDate" class="empty"></td>
 					
 				</tr>
 				<tr>
 					<td>담당자<span class="needStar"> *</span></td>
-					<td><input type="text" name="empId" id="empId"></td>
+					<td><input type="text" name="empId" id="empId" class="empty"></td>
 				</tr>
 			</table>
 
@@ -195,22 +185,7 @@
 						name: 'equModel',
 						align: 'center'
 					},
-					{
-						header: '설비상태',
-						name: 'equStat',
-						filter: 'select',
-						align: 'center',
-						formatter: 'listItemText',
-						editor: {
-							type: 'select',
-							options: {
-								listItems: [
-									{text: '가동', value: 'Y'},
-									{text: '비가동', value: 'N'},	
-								]
-						      }
-					        }
-					},
+					
 					{
 						header: '설비라인',
 						name: 'equLine',
@@ -334,7 +309,7 @@
 
 
 			// 클릭시 설비 정보데이터 인풋창에 값 불러오기.
-			let selRow = '';
+			let selRow = 999;
 			grid.on('click', ev => {
 				// focus된 셀이 있는 열 전체 select 처리
 				if(selRow != ev.rowKey){
@@ -353,18 +328,13 @@
 				$('#procId').val(dataRow.procId);
 				$('#equName').val(dataRow.equName);
 				$('#equModel').val(dataRow.equModel);
-				$('#equStat').val(dataRow.equStat);
+				
 				$('#equLine').val(dataRow.equLine);
 				$('#equCheck').val(dataRow.equCheck);
 				$('#addDate').val(dataRow.addDate);
 				$('#empId').val(dataRow.empId);
 				$('#ctemp').val(dataRow.ctemp);
-				// 라디오 버튼이 Y 나 N 일떄 가동 비가동으로 전환 
-				if (dataRow.equStat == 'Y') {
-					$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
-				} else {
-					$("input:radio[name='equStat']:radio[value='N']").prop('checked', true);
-				}
+				
 			});
 
 			// 등록버튼 기능 구현
@@ -397,7 +367,7 @@
 			
 			// 설비정보 수정 
 			$('#modBtn').on('click', function (e) {
-				if (selRow == '') {
+				if (selRow === 999) {
 					alert('수정할 데이터가 없습니다.')
 				} else {
 				
@@ -412,21 +382,21 @@
 						alert('설비정보가 수정되었습니다');
 						const setData = result
 						grid.setRow(selRow, setData);
-						selRow = '';
+						selRow = 999;
 					},
 					error: function (reject) {
 						alert('설비 수정 중 오류가 발생했습니다!');
 						console.log(reject);
 					}
 				});
-				$('.empty').val('');
-				$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
+				$('#addForm input').val('');
+				
 			  }
 			})
 
 			// 설비정보 삭제
 			$('#delBtn').on('click', function (e) {
-				if (selRow == '') {
+				if (selRow === 999) {
 					alert('삭제 할 설비를 선택하시오.')
 				} else {
 				
@@ -450,7 +420,7 @@
 						selRow = '';
 						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주는?
 						$('.empty').val('');
-						$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
+						
 					},
 					error: function (reject) {
 						console.log('설비 삭제 중 오류가 발생했습니다.');

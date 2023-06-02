@@ -9,7 +9,7 @@
 	<!-- 설비 조회,관리 리스트 -->
 	<select id="equConList" resultType="EquConVO">
 	 WITH oper as ( 
-	   SELECT e.equ_code, e.equ_stat, e.oper_start, e.oper_fnish, e.oper_note, e.oper_type
+	   SELECT e.equ_code, e.oper_start, e.oper_fnish, e.oper_note, e.oper_type
 	    FROM equ_oper e
 	    JOIN(   SELECT equ_code, MAX(oper_code) oper_code
 	              FROM equ_oper
@@ -174,9 +174,9 @@
 			<if test='searchType.equals("name")'>
 				c.equ_name like '%'||#{searchKey}||'%' OR lower(c.equ_name) like '%'||#{searchKey}||'%'
 			</if>
-			<if test='searchType.equals("date")'>
-				c.equ_name like '%'||#{searchKey}||'%' OR lower(check_date) like '%'||#{searchKey}||'%'
-			</if>
+			 <!-- <if test='searchType.equals("date")'>
+				check_date like '%'||#{searchKey}||'%' OR lower(to_date(#date), 'yyyy-mm-dd') like '%'||#{searchKey}||'%'
+			</if>  -->
   	</select>
   	
   	<!-- 점검 관리(등록) -->
@@ -201,9 +201,9 @@
   	
   	<!-- 비가동 리스트 -->
 	<select id="equOperList" resultType="EquOperVO">
-  	SELECT  o.oper_code, c.equ_code, c.equ_name, o.oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start , to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, c.emp_id, o.oper_note, c.equ_stat
+  	SELECT  o.oper_code, c.equ_code, c.equ_name, o.oper_type, to_char(o.oper_start, 'yyyy-MM-dd / hh:mm') as oper_start , to_char(o.oper_fnish, 'yyyy-MM-dd / hh:mm') as oper_fnish, c.emp_id, o.oper_note, o.equ_stat
 			FROM equ_con c
-			JOIN equ_oper o
+			LEFT OUTER JOIN equ_oper o
 			ON c.equ_code = o.equ_code
   	</select>
   	
@@ -226,7 +226,7 @@
   	<!-- 비가동 관리(수정) -->
 	<update id="oUpdate" parameterType="EquOperVO">
 		UPDATE equ_oper
-		SET oper_code=#{operCode}, equ_code=#{equCode}, equ_name=#{equName}, oper_type=#{operType}, oper_note=#{operNote}, emp_id=#{empId}
+		SET oper_code=#{operCode}, equ_code=#{equCode}, equ_name=#{equName}, equ_stat=#{equStat}, oper_type=#{operType}, oper_note=#{operNote}, emp_id=#{empId}
 		WHERE oper_code=#{operCode}
 	</update> 
 	
@@ -237,14 +237,16 @@
 	
 	<!-- 비가동 관리(등록) -->
   	<insert id="startIn" parameterType="EquOperVO">
-		INSERT INTO equ_oper (oper_code, equ_code, equ_name, oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, oper_note, emp_id)
-		VALUES('Oper_' || LPAD(OPER_SEQ.nextval, 3, '0')), #{equCode}, #{equName}, #{operType}, #{operStart}, #{operFnish},#{operNote}, #{empId})
+		<!-- INSERT INTO equ_oper (oper_code, equ_code, equ_name, oper_type, to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, to_char(o.oper_fnish, 'yyyy-mm-dd / hh:mm') as oper_fnish, oper_note, emp_id)
+		VALUES('Oper_' || LPAD(OPER_SEQ.nextval, 3, '0'), #{equCode}, #{equName}, #{operType}, #{operStart}, #{operFnish},#{operNote}, #{empId}) -->
+		INSERT INTO equ_oper (oper_code, equ_code, equ_name, oper_type, oper_start, oper_fnish, oper_note, emp_id)
+		VALUES('Oper_' || LPAD(OPER_SEQ.nextval, 3, '0'), #{equCode}, #{equName}, #{operType}, current_date, TO_DATE(#{operFnish}, 'yyyy-MM-dd / hh24:mi'),#{operNote}, #{empId})
 	</insert>   
 	
 	<!-- 비가동 관리 등록(수정) -->
 	<update id="startUp" parameterType="EquConVO">
 		UPDATE equ_con
-		SET equ_code=#{equCode}, equ_stat=#{equStat}
+		SET equ_code=#{equCode}, equ_stat= 'N'
 		WHERE equ_code=#{equCode}
 	</update> 
 	

@@ -61,7 +61,9 @@ public class EquController {
 	@GetMapping("equOperCP") // 비가동 관리 페이지
 	public void equOperCP(Model model) {
 		String key = "OPER_TYPE";
+		String key2 = "EQU_STAT";
 		model.addAttribute("operType", basicService.commGroupList(key));
+		model.addAttribute("equStat", basicService.commGroupList(key2));
 	}
    
 	@ResponseBody
@@ -112,8 +114,6 @@ public class EquController {
 	@ResponseBody // 점검조회(검색) 
 	@RequestMapping("equCheckSearch")
 	public List<EquInspVO> equCheckSearch(EquSearchDTO dto) {
-		System.out.println("데이터");
-		System.out.println(dto);
 		List<EquInspVO> list = equService.equCheckSearch(dto);
 		return list;
 	}
@@ -178,14 +178,14 @@ public class EquController {
 	} 
 	
 	@ResponseBody 
-	@PostMapping("startIn") // 비가동 관리 시작버튼(등록) 
+	@PostMapping("startIn") // 비가동 관리 비가동 시작버튼(등록) 
 	public EquOperVO startIn(EquOperVO data) { 
 		equService.startIn(data);
 		return data;
 	} 
 	
 	@ResponseBody 
-	@PostMapping("startUp") // 비가동 관리 시작버튼(수정/설비상태) 
+	@PostMapping("startUp") // 비가동 관리 비가동 시작버튼(수정/설비상태) 
 	public EquOperVO startUp(EquOperVO data) { 
 		equService.startUp(data);
 		return data;

@@ -349,7 +349,7 @@
 			});
 			
 			// 클릭시 설비 정보데이터 인풋창에 값 불러오기.
-			let selRow = '';
+			let selRow = 999;
 			grid.on('click', ev => {
 				// focus된 셀이 있는 열 전체 select 처리
 				if(selRow != ev.rowKey){
@@ -381,7 +381,7 @@
 			
 			// 등록버튼 기능 구현
 			$('#addBtn').on('click', function (e) {
-				if (selRow == '') {
+				if (selRow == 999) {
 					alert('등록 정보를 입력하시오.')
 				} else {
 				
@@ -418,7 +418,7 @@
 			
 			// 점검 수정 
 			$('#modBtn').on('click', function (e) {
-				if (selRow == '') {
+				if (selRow == 999) {
 					alert('수정할 데이터가 없습니다.')
 				} else {
 				
@@ -450,7 +450,7 @@
 			
 			// 점검 삭제
 			$('#delBtn').on('click', function (e) {
-				if (selRow == '') {
+				if (selRow == 999) {
 					alert('삭제 정보를 선택하시오.')
 				} else {
 				
