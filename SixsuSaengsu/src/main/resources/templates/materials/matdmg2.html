@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>불량 자재 관리</title>
+	<title>불량품 관리</title>
 	<style>
 		h1 {
 			margin-bottom: 10px;
@@ -22,7 +22,7 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">불량 자재 관리</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">불량품 관리</h1>
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">불량처리 대기 목록</h3>
 		<div id="grid"></div>
 		<button type="button" class="sixBtn4" id="returnBtn">반품등록</button>
@@ -39,7 +39,7 @@
 			window.onload = function () {
 			
 				$.ajax({
-					url: "/materials/matdmglist",
+					url: "/materials/matdmglist2",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -54,7 +54,7 @@
 				
 				
 				$.ajax({
-					url: "/materials/matdmgwaitlist",
+					url: "/materials/matdmgwaitlist2",
 					method: "GET",
 					dataType: "JSON",
 					
@@ -73,7 +73,7 @@
 
 
 
-			//불량 반제품처리대기 리스트
+			//불량품 처리대기 리스트
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
 
@@ -90,19 +90,15 @@
 
 
 				columns: [{
-						header: '공정실적코드',
-						name: 'prcsPfmcId'
-					},
-					{
-						header: '자재LOT번호',
-						name: 'matLotId'
+						header: '검사번호',
+						name: 'instNum'
 					},
 					{
 						header: '자재코드',
-						name: 'pdId'
+						name: 'matId'
 					},
 					{
-						header: '자재품명',
+						header: '자재명',
 						name: 'matName'
 					},
 					{
@@ -111,31 +107,28 @@
 					},
 					{
 						header: '불량수량',
+						name: 'matSize'
+					},
+					{
+						header: '불량수량',
 						name: 'dmatQt'
 					},
 					{
 						header: '불량등록일자',
-						name: 'wkEnd'
+						name: 'empName'
 					},
 					{
 						header: '담당자',
 						name: 'empName'
 					},
 					{
-						header: '불량처리',
-						name: 'dmatStat',
-						hidden: true
+						header: '비고',
+						name: 'dmatNote'
 						
 					},
 					{
-						header: '비고',
-						name: 'dmatNote',
-						editor: 'text'
-					},
-					{
-						header: '출고번호',
-						name: 'matShipId',
-						hidden: true
+						header: '불량처리',
+						name: 'dmatResult'
 					}
 
 				]
@@ -165,12 +158,11 @@
 
 				columns: [{
 						header: '불량등록번호',
-						name: 'dmatId',
-						hidden: true
+						name: 'dmatId'
 					},
 					{
-						header: '공정실적코드',
-						name: 'prcsPfmcId'
+						header: '검사번호',
+						name: 'inspNum'
 					},
 					{
 						header: '출고번호',
@@ -178,7 +170,7 @@
 					},
 					{
 						header: '자재코드',
-						name: 'pdId'
+						name: 'matId'
 					},
 					{
 						header: '자재명',
@@ -190,14 +182,10 @@
 					},
 					{
 						header: '불량수량',
-						name: 'dmatQt'
+						name: 'resVal'
 					},
 					{
-						header: '불량사유',
-						name: 'dmatRes'
-					},
-					{
-						header: '처리상태',
+						header: '처리유형',
 						name: 'dmatStat'
 					},
 					{
@@ -239,8 +227,8 @@
 			
 			//반품버튼
  			$('#returnBtn').on('click', function () {
- 				grid.setValue(0, "dmatStat", "반품");
-				console.log(grid.getCheckedRows()[0].dmatStat);
+ 				grid.setValue(0, "dmatResult", "반품");
+				console.log(grid.getCheckedRows()[0].dmatResult);
 				console.log(grid.getCheckedRows().length);
 				console.log(JSON.stringify(grid.getCheckedRows()));
 				$.ajax({
@@ -251,7 +239,7 @@
 					success: function (result) {
 						console.log(result);
 						$.ajax({
-							url: "/materials/matdmgwaitlist",
+							url: "/materials/matdmgwaitlist2",
 							method: "GET",
 							dataType: "JSON",
 							
@@ -265,7 +253,7 @@
 
 						});
 						$.ajax({
-							url: "/materials/matdmglist",
+							url: "/materials/matdmglist2",
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {
@@ -288,19 +276,19 @@
 			})
 			//폐기버튼
  			$('#dropBtn').on('click', function () {
- 				grid.setValue(0, "dmatStat", "폐기");
-				console.log(grid.getCheckedRows()[0].dmatStat);
+ 				grid.setValue(0, "dmatResult", "폐기");
+				console.log(grid.getCheckedRows()[0].dmatResult);
 				console.log(grid.getCheckedRows().length);
 				console.log(JSON.stringify(grid.getCheckedRows()));
 				$.ajax({
-					url: "/materials/insertmatdmg",
+					url: "/materials/insertmatdmg2",
 					method: "POST",
 					contentType: 'application/json',
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
 						$.ajax({
-							url: "/materials/matdmgwaitlist",
+							url: "/materials/matdmgwaitlist2",
 							method: "GET",
 							dataType: "JSON",
 							
@@ -314,7 +302,7 @@
 
 						});
 						$.ajax({
-							url: "/materials/matdmglist",
+							url: "/materials/matdmglist2",
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {

@@ -346,8 +346,8 @@
 		values (seq_dmat_id.nextval, #{dmatNote}, #{dmatStat}, #{matShipId})
   	</insert>
   	
-  	<!-- 자재 불량 리스트 -->
-	<select id="getMatDamageList" resultType="MatDmgVO">
+  	<!-- 불량품 처리대기 리스트 -->
+	<select id="getMatDamageWaitList2" resultType="MatDmgVO">
 		SELECT d.insp_num, to_char(c.insp_date, 'yyyy-mm-dd') as insp_date, m.mat_id, m.mat_name, m.mat_size, to_number(d.res_val), e.emp_name
 		FROM qua_details d
 		JOIN qua_com c 
@@ -368,6 +368,30 @@
 		                WHERE insp_name = '자재불량')
 		 AND g.insp_num is null
 	</select>
+	
+	<!-- 불량품 처리 리스트 -->
+	<select id="getMatDmgList2" resultType="MatDmgVO">
+		select a.* ,m.mat_id, m.mat_name, m.mat_size, e.emp_name
+		from damaged_mat a 
+		JOIN qua_details d
+		 ON a.insp_num = d.insp_num
+		JOIN qua_com c 
+		 ON d.insp_num = c.insp_num
+		JOIN PROCESS_PERFORMANCE p 
+		 ON c.insp_std_id=p.PRCS_PFMC_ID
+		JOIN work_bom_mat b 
+		 ON p.wk_bom_id = b.wk_bom_id
+		JOIN employee e 
+		 ON a.emp_id = e.emp_id
+		JOIN material m 
+		 ON b.mat_id = m.mat_id
+	</select>
+	
+	<!-- 자재 불량처리 -->
+  	<insert id="insertMatDmg2" parameterType="MatDmgVO">
+		insert into damaged_mat (dmat_id, dmat_stat, dmat_note, emp_Id, insp_num)
+		values (GET_MAT_DMG_ID(), #{dmatResult}, #{dmatNote}, #{empId}, #{inspNum})
+  	</insert>
 	
 	<!-- 반제품 리스트 -->
 	<select id="getSpList" resultType="SpVO">

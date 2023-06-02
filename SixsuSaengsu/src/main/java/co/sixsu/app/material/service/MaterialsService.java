@@ -94,4 +94,13 @@ public interface MaterialsService {
 	
 	//반제품 리스트
 	List<SpVO> getSpList();
+	
+	//불량품 처리대기 리스트
+	List<MatDmgVO> getMatDamageWaitList2();
+	
+	//불량품 리스트
+	List<MatDmgVO> getMatDmgList2();
+	
+	//불량품 불량 처리
+	void insertMatDmg2(List<MatDmgVO> vo);
 }

@@ -210,6 +210,29 @@ public class MaterialsServiceImpl implements MaterialsService{
 		public List<SpVO> getSpList() {
 			return mapper.getSpList();
 		}
+
+		//불량품 처리대기 리스트
+		@Override
+		public List<MatDmgVO> getMatDamageWaitList2() {
+			return mapper.getMatDamageWaitList2();
+		}
+		
+		//불량품 리스트
+		@Override
+		public List<MatDmgVO> getMatDmgList2() {
+			return mapper.getMatDmgList2();
+		}
+		
+		//불량품 불량처리
+		@Override
+		public void insertMatDmg2(List<MatDmgVO> vo) {
+			String stat = vo.get(0).getDmatStat();
+			for(MatDmgVO i : vo) {
+				i.setDmatStat(stat);
+				mapper.insertMatDmg(i);
+			}
+			
+		}
 		
 
 }

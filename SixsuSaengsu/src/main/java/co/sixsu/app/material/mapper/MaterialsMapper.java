@@ -96,5 +96,13 @@ public interface MaterialsMapper {
 	//반제품 리스트
 	List<SpVO> getSpList();
 	
+	//불량품 처리대기 리스트
+	List<MatDmgVO> getMatDamageWaitList2();
+	
+	//불량품 리스트
+	List<MatDmgVO> getMatDmgList2();
+	
+	//불량품 처리
+	int insertMatDmg2(MatDmgVO vo);
 	
 }
