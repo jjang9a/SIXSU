@@ -114,8 +114,6 @@ public class EquController {
 	@ResponseBody // 점검조회(검색) 
 	@RequestMapping("equCheckSearch")
 	public List<EquInspVO> equCheckSearch(EquSearchDTO dto) {
-		System.out.println("데이터");
-		System.out.println(dto);
 		List<EquInspVO> list = equService.equCheckSearch(dto);
 		return list;
 	}
