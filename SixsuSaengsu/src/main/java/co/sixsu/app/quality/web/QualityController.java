@@ -210,4 +210,11 @@ public class QualityController {
 	
 	// 반품 검사 결과 수정
 	
+	// 조회 아작스
+	@ResponseBody
+	@PostMapping("/quality/searchInsp")
+	public List<QuaVO> searchInsp() {
+		return null;
+	}
+	
 }
