@@ -24,7 +24,7 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public List<EquConVO> equFilterList(EquSearchDTO dto) { // 검색기능
+	public List<EquConVO> equFilterList(EquSearchDTO dto) { // 설비조회(검색)
 		return mapper.equFilterList(dto);
 	}
 	
@@ -39,7 +39,7 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public List<ProductVO> activePdList() { // 등록 공정코드(조회) ajax
+	public List<ProductVO> activePdList() { // 설비관리 공정코드(조회) ajax
 		return mapper.activePdList();
 	}
 	
@@ -60,7 +60,7 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public List<EquInspVO> equCheckSearch(EquSearchDTO dto) { //점검 검색기능
+	public List<EquInspVO> equCheckSearch(EquSearchDTO dto) { //점검조회(검색)
 		return mapper.equCheckSearch(dto);
 	}
 
@@ -70,12 +70,12 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public boolean cUpdate(EquInspVO data) { // 점검관리 (수정)
+	public boolean cUpdate(EquInspVO data) { // 점검관리(수정)
 		return mapper.cUpdate(data) == 1;
 	}
 	
 	@Override
-	public boolean cDel(EquInspVO checkCode) { // 점검관리 (삭제)
+	public boolean cDel(EquInspVO checkCode) { // 점검관리(삭제)
 		return mapper.cDel(checkCode) == 1;
 	}
 	
@@ -85,8 +85,28 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public List<EquOperVO> equOperSearch(EquSearchDTO dto) { // 비가동 조회 검색기능
+	public List<EquOperVO> equOperSearch(EquSearchDTO dto) { // 비가동 조회(검색)
 		return mapper.equOperSearch(dto);
+	}
+
+	@Override
+	public boolean oUpdate(EquOperVO data) { // 비가동 관리(수정)
+		return mapper.oUpdate(data) == 1;
+	}
+
+	@Override
+	public boolean oDel(EquOperVO operCode) { // 비가동 관리(삭제)
+		return mapper.oDel(operCode) == 1;
+	}
+
+	@Override
+	public boolean startIn(EquOperVO data) { // 비가동 관리 시작버튼(등록)
+		return mapper.startIn(data) == 1;
+	}
+
+	@Override
+	public boolean startUp(EquOperVO data) { // 비가동 관리 시작버튼(수정/설비상태)
+		return mapper.startUp(data) == 1;
 	}
 
 	

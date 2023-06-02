@@ -16,7 +16,8 @@ import co.sixsu.app.basic.domain.SearchDTO;
 
 public interface BasicMapper {
 
-	public Date getDate();
+	public String getRole(String id); // 권한정보 가져오기
+	public EmpVO getEmp(String id); // 사원조회
 	
 	public List<CodeVO> getComList(String key); // 공통코드 분류 목록(그룹명으로 조회)
 	

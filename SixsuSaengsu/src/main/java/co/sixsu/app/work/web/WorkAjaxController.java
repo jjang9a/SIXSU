@@ -221,10 +221,10 @@ public class WorkAjaxController {
 		return list;
 	}
 	@RequestMapping("modifyDetaWorkList")
-	public List<DetaWorkOrdrVO> modifyDetaWorkList(@RequestBody DetaWorkOrdrVO data) {
+	public List<Object> modifyDetaWorkList(@RequestBody DetaWorkOrdrVO data) {
 		System.out.println(data);
-		List<DetaWorkOrdrVO> list = service.modifyDetaWorkList(data);
-		return list;
+		List<Object> allList = service.modifyDetaWorkList(data);
+		return allList;
 	}
 	
 	@RequestMapping("addSubmit")

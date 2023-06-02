@@ -6,118 +6,152 @@
 <mapper namespace="co.sixsu.app.quality.mapper.QualityMapper">
 
 
-
 	<!-- 자재 입고 검사 등록 리스트 -->
 	<select id="proRecList" resultType="QuaVO">
 		select r.mat_req_id,
-		b.bus_name, r.mat_id, m.mat_name, r.mat_req_qt
-		from mat_req r left join
-		material m
-		on
-		r.mat_id = m.mat_id
-		left join business b
-		on r.bus_id =
-		b.bus_id
-		where
-		r.mat_req_stat='A'
-		and
-		mat_req_qt>0
+		       b.bus_name, 
+		       r.mat_id, 
+		       m.mat_name, 
+		       r.mat_req_qt
+		       
+		  from mat_req r 
+		  left join	material m
+		    on r.mat_id = m.mat_id
+		  left join business b
+		    on r.bus_id = b.bus_id
+		    
+		 where r.mat_req_stat='A'
+		   and mat_req_qt>0
+		   
 		order by mat_req_id
 	</select>
 
 
-	<!-- 자재 입고 검사 리스트 -->
+	<!-- 자재 입고 검사 대기 리스트 -->
 	<select id="prInspList" resultType="QuaVO">
-		select
-		q.insp_std_id,q.insp_num,
-		b.bus_name, r.mat_id, m.mat_name,
-		r.mat_req_qt, q.insp_qt
-		from qua_com q left join
-		mat_req r
-		on
-		q.insp_std_id = r.mat_req_id
-		left join material m
-		on
-		r.mat_id = m.mat_id
-		left join business b
-		on r.bus_id = b.bus_id
-		where
-		r.mat_req_stat='B'
+		 select
+		        q.insp_std_id,
+		        q.insp_num,
+				b.bus_name, 
+				r.mat_id, 
+				m.mat_name,
+				r.mat_req_qt, 
+				q.insp_qt
+				
+		   from qua_com q 
+		   join mat_req r 
+		     on	q.insp_std_id = r.mat_req_id
+		   join material m
+		     on r.mat_id = m.mat_id
+		   left join business b
+		     on r.bus_id = b.bus_id
+		     
+		   where r.mat_req_stat='B'
+		   
 		order by insp_std_id
 	</select>
 
-	<!-- 입고 전 검사 번호 자동 등록 -->
-	 <select id="prInspNum" resultType="String">
-		select get_qpr_num from dual
-	</select> 
 
 	<!-- 입고 검사 등록 프로시저 -->
 	<select id="insertPro" statementType="CALLABLE"
 		parameterType="QuaVO">
 		{CALL insert_pro(
-		#{matReqId, mode=IN, jdbcType=VARCHAR},
-		<!-- #{inspQt, mode=IN, jdbcType=VARCHAR}, -->
-		#{result, mode=INOUT, jdbcType=VARCHAR,
-		javaType=String}
-		)
-		}
+			#{matReqId},
+			<!-- #{inspQt, mode=IN, jdbcType=VARCHAR}, -->
+			#{result, mode=INOUT, jdbcType=VARCHAR,	javaType=String}
+		)}	
 	</select>
-
-	<!-- 검사 담당자 등록 리스트 -->
-	<select id="empList" resultType="EmpVO">
-		select emp_id, emp_name,
-		emp_dept from employee
-		where emp_stat='재직'
-
-	</select>
-
 
 
 	<!-- 검사 항목 리스트 -->
+<!-- 	<select id="inspItem" resultType="QuaVO">
+		select * 
+		  from qua_insp_list
+
+		 where insp_item_id=#{inspItemId}
+		 
+	</select> -->
+	
+	<!-- 검사 항목 리스트 -->
 	<select id="inspItem" resultType="QuaVO">
-		select * from qua_insp_list
-		where insp_item_id=#{inspItemId}
-	</select>
+  	select *
+  	from qua_insp_list
+  <where>
+    <choose>
+      <!-- SP001인 경우 -->
+      <when test="inspItemId.equals('SP001')">
+        and insp_item_id = 'SP001'
+      </when>
+      <!-- SP002 ~ SP013인 경우 -->
+      <when test="inspItemId.startsWith('SP')">
+        and insp_item_id = 'PRO999'
+      </when>
+      <!-- 그 외의 경우 -->
+      <otherwise>
+        and insp_item_id = #{inspItemId}
+      </otherwise>
+    </choose>
+  </where>
+</select>
 
 	<!-- 수정 버튼 클릭 시 검사 항목 불러오기 -->
 	<select id="modInspItem" resultType="QuaVO">
 		select d.insp_num,
-		d.insp_id, d.res_val, l.insp_name, l.insp_exp, l.std_val,
-		q.insp_qt,
-		q.suit_qt, d.res_stat
-		from qua_details d
-		left join qua_com q on
-		d.insp_num = q.insp_num
-		left join qua_insp_list l on d.insp_id =
-		l.insp_id
+			   d.det_insp_num,
+		       d.insp_id, 
+		       d.res_val, 
+		       l.insp_name, 
+		       l.insp_exp, 
+		       l.std_val,
+		       q.insp_qt,
+		       q.suit_qt, 
+		       d.res_stat
+		  
+		  from qua_details d
+		  join qua_com q 
+		    on d.insp_num = q.insp_num
+		  join qua_insp_list l 
+		    on d.insp_id = l.insp_id
+		
 		where d.insp_num = #{inspNum}
+		
+		
+		
+		
 	</select>
 
 	<!-- 입고 검사 상세 결과 등록 -->
-	<insert id="insertPri" parameterType="QuaVO"> insert into
+	<insert id="insertQuaDet" parameterType="QuaVO"> 
+		insert into
 		qua_details(det_insp_num,
-		insp_num, insp_id, res_val, res_stat) values
-		(#{detInspNum}, #{inspNum},
-		#{inspId}, #{nsuitQt}, #{resStat})
+		            insp_num, 
+		            insp_id, 
+		            res_val, 
+		            res_stat) 
+		     values(#{detInspNum}, 
+		            #{inspNum},
+		            #{inspId}, 
+		            #{nsuitQt}, 
+		            #{resStat})
 	</insert>
 
 	<!-- 입고 검사 상세 결과 수정 -->
 	<update id="updateQd" parameterType="QudVO">
 		update qua_details set
-		res_val = #{nsuitQt}
-		where det_insp_num = #{detInspNum}
+		       res_val = #{nsuitQt}
+		 where det_insp_num = #{detInspNum}
 	</update>
-
-	<!-- 입고 검사 상세 결과 등록 -->
-	<!-- <insert id="insertPri" parameterType="QuaVO"> <selectKey keyProperty="detInspNum" 
-		resultType="String" order="BEFORE"> SELECT get_det_insp_num(#{inspNum}) AS 
-		detInspNum FROM DUAL </selectKey> MERGE INTO qua_details d USING (SELECT 
-		1 FROM DUAL) dummy ON (d.det_insp_num = #{detInspNum}) WHEN MATCHED THEN 
-		UPDATE SET d.insp_num = #{inspNum}, d.insp_id = #{inspId}, d.res_val = #{nsuitQt}, 
-		d.res_stat = '해당없음' WHEN NOT MATCHED THEN INSERT (det_insp_num, insp_num, 
-		insp_id, res_val, res_stat) VALUES (#{detInspNum}, #{inspNum}, #{inspId}, 
-		#{nsuitQt}, '해당없음'); </insert> -->
-
+	
+	<!-- 입고 검사 공통 결과 수정 -->
+	<update id="updateQc" parameterType="QuaVO">
+		update qua_com 
+		   set
+			    suit_qt    = (#{inspQt}-#{totNsuitQt}),
+				nsuit_qt   = #{totNsuitQt}
+		where
+			    insp_num   = #{inspNum}
+			
+	</update>
 
 
 
@@ -125,72 +159,68 @@
 	<update id="qComUpdate" parameterType="QuaVO">
 		<!-- update qua_com set insp_type='자재 입고 검사', insp_date=sysdate, emp_id=#{empId}, 
 			suit_qt=insp_qt-#{nsuitQt}, nsuit_qt=#{nsuitQt} where insp_num=#{inspNum} -->
-		update qua_com
-		set
-		insp_num=#{inspNum},
-		insp_item_id=#{inspItemId},
-		insp_qt=#{inspQt},
-		insp_date=sysdate,
-		emp_id=#{empId},
-		suit_qt=(#{inspQt}-#{totNsuitQt}),
-		nsuit_qt=#{totNsuitQt}
+		update   qua_com
+		   set
+				insp_num      = #{inspNum},
+				insp_item_id  = #{inspItemId},
+				insp_qt       = #{inspQt},
+				insp_date     = sysdate,
+				emp_id        = #{empId},
+				suit_qt       = (#{inspQt}-#{totNsuitQt}),
+				nsuit_qt      = #{totNsuitQt}
 		where
-		insp_num=#{inspNum}
+		        insp_num=#{inspNum}
 
 
 	</update>
 
 	<!-- 입고 검사 결과 등록 시 자재 발주 업데이트 -->
 	<update id="mUpdate" parameterType="QuaVO">
-		update mat_req set
-		mat_req_stat='C'
-		where
-		mat_req_id=#{matReqId}
+		 update mat_req 
+		 set
+		     mat_req_stat=#{matReqStat}
+   	   where
+		     mat_req_id=#{inspStdId}
 	</update>
 
-
-	<!-- 자재 입고 검사 결과 등록 프로시저 호출 -->
-	<!-- <select id="reqInspProc" statementType="CALLABLE" parameterType="QuaVO"> 
-		{CALL reqInspProc( #{detInspNum, mode=IN, jdbcType=VARCHAR}, #{inspNum, mode=IN, 
-		jdbcType=VARCHAR}, #{inspId, mode=IN, jdbcType=VARCHAR}, #{resStat, mode=IN, 
-		jdbcType=VARCHAR}, #{nsuitQt, mode=IN, jdbcType=VARCHAR}, #{empId, mode=IN, 
-		jdbcType=VARCHAR}, #{suitQt, mode=IN, jdbcType=VARCHAR}, #{matReqId, mode=IN, 
-		jdbcType=VARCHAR}, #{count, mode=IN, jdbcType=VARCHAR} )} </select> -->
-
-	<!-- 자재 입고 검사 결과 등록 프로시저 호출 -->
-	<!-- <insert id="reqInspProc" parameterType="QuaVO" statementType="CALLABLE"> 
-		{CALL reqInspProc( #{detInspNum, mode=IN, jdbcType=VARCHAR}, #{inspNum, mode=IN, 
-		jdbcType=VARCHAR}, #{inspId, mode=IN, jdbcType=VARCHAR}, #{resStat, mode=IN, 
-		jdbcType=VARCHAR}, #{nsuitQt, mode=IN, jdbcType=VARCHAR}, #{empId, mode=IN, 
-		jdbcType=VARCHAR}, #{suitQt, mode=IN, jdbcType=VARCHAR}, #{matReqId, mode=IN, 
-		jdbcType=VARCHAR}, #{count, mode=IN, jdbcType=VARCHAR} count 필드의 jdbcType을 
-		VARCHAR에서 INTEGER로 수정 )} </insert> -->
 
 	<!-- 입고 검사 완료 리스트 -->
 	<select id="afterReqList" resultType="QuaVO">
 		SELECT q.insp_num,
-		q.insp_std_id, m.mat_name,r.mat_id, q.insp_qt, q.nsuit_qt, e.emp_id,
-		b.bus_id,
-		TO_CHAR(q.insp_date, 'YYYY-MM-DD') AS insp_date
-		FROM qua_com q
-		LEFT JOIN
-		mat_req r ON q.insp_std_id = r.mat_req_id
-		LEFT JOIN employee e
-		ON
-		q.emp_id = e.emp_id
-		LEFT JOIN material m ON
-		r.mat_id = m.mat_id
-		LEFT
-		JOIN business b
-		on r.bus_id = b.bus_id
-		WHERE q.insp_date
-		>=
-		TRUNC(SYSDATE) - 14
-		and r.mat_req_stat='C'
-		order by
-		q.insp_date
-		desc
-
+			   q.insp_std_id, 
+			   m.mat_name,
+			   r.mat_id, 
+			   q.insp_qt, 
+			   q.nsuit_qt, 
+			   e.emp_id,
+			   b.bus_id,
+			   TO_CHAR(q.insp_date, 'YYYY-MM-DD') AS insp_date
+		  FROM qua_com q
+		  JOIN mat_req r 
+		    ON q.insp_std_id = r.mat_req_id
+	LEFT JOIN employee e
+		    ON
+		       q.emp_id = e.emp_id
+	      JOIN material m 
+	        ON r.mat_id = m.mat_id
+	 LEFT JOIN business b
+		    on r.bus_id = b.bus_id
+		
+		 WHERE r.mat_req_stat='C'
+		 <if test="inspDate == null">
+  		 AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
+		 </if>
+		 <if test="inspDate != null">
+		  AND TRUNC(q.insp_date) = to_date(#{inspDate},'yyyy-MM-dd')
+		 </if>
+		 <if test="matId != null">
+		  AND matId = #{matId}		 
+		 </if>
+		 <if test="empId != null">
+		  AND empId = #{empId}
+		 </if>
+		 
+		 order by q.insp_date desc
 
 	</select>
 
@@ -201,19 +231,25 @@
 	</delete>
 
 	<!-- 공정 검사 등록 리스트 -->
-	<select id="bpAddList" resultType="DetaWorkOrdrVO">
-		select d.wk_deta_id, d.cp_id,
-		p.proc_name, d.end_date, d.deta_qt,d.end_date
-		from deta_work_ordr d
-		left join work_bom w
-		on d.wk_deta_id = w.wk_deta_id
-		left join process p
-		on w.proc_id = p.proc_id
-		left join qua_com q
-		on d.wk_deta_id =
-		q.insp_std_id
-		where d.cmplt_st = 'C'
-		and q.insp_num is null
+	<select id="bpAddList" resultType="PrdInspVO">
+		 select  p.prcs_pfmc_id, 
+		         p.wk_deta_id, 
+		         p.pd_id, 
+		         p.pd_name, 
+		         p.deta_qt, 
+		         p.wk_end, 
+		         q.insp_num,
+		         b.proc_id,
+		         r.proc_name
+		   from  process_performance p 
+LEFT OUTER JOIN  qua_com q 
+             ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
+LEFT OUTER JOIN  work_bom b
+		     ON  p.wk_deta_id = b.wk_deta_id
+	  LEFT JOIN  process r
+	         ON  b.proc_id = r.proc_id
+          WHERE  q.INSP_NUM IS NULL
+       ORDER BY  p.wk_end
 	</select>
 
 	<!-- 공정검사 전 검사 번호 자동 등록 -->
@@ -228,27 +264,59 @@
 		insp_item_id, insp_type, insp_qt, insp_std_id)
 		values
 		(#{inspNum},
-		#{cpId}, '공정검사', #{detaQt}, #{wkDetaId})
+		#{pdId}, '공정검사', #{detaQt}, #{prcsPfmcId})
 	</insert>
 
 	<!-- 공정 검사 대기 리스트 -->
 	<select id="prwList" resultType="PrdInspVO">
-		select q.insp_num, d.wk_deta_id,
-		d.cp_id, p.proc_name, d.deta_qt,
-		d.end_date
-		from deta_work_ordr d left
-		join
-		qua_com q
-		on q.insp_std_id = d.wk_deta_id
-		left join work_bom b
-		on
-		d.wk_deta_id = b.wk_deta_id
-		left join process p
-		on b.proc_id = p.proc_id
-		where q.insp_date is null
-		and q.insp_num is not null
-		order by
-		d.wk_deta_id
+		 select  p.prcs_pfmc_id, 
+		         p.wk_deta_id, 
+		         p.pd_id, 
+		         p.pd_name, 
+		         p.deta_qt, 
+		         p.good_qt,
+		         p.dmat_qt,
+		         to_char(p.wk_end, 'yyyy-MM-dd') wk_end, 
+		         q.insp_num,
+		         q.insp_date,
+		         b.proc_id,
+		         r.proc_name
+		   from  process_performance p 
+LEFT OUTER JOIN  qua_com q 
+             ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
+LEFT OUTER JOIN  work_bom b
+		     ON  p.wk_deta_id = b.wk_deta_id
+	  LEFT JOIN  process r
+	         ON  b.proc_id = r.proc_id
+          WHERE  q.INSP_NUM IS NOT NULL
+            AND  q.INSP_DATE IS NULL
+       ORDER BY  p.wk_end
+	</select>
+	
+	<!-- 공정 검사 완료 리스트 -->
+		<select id="prdComList" resultType="PrdInspVO">
+		 select  p.prcs_pfmc_id, 
+		         p.wk_deta_id, 
+		         p.pd_id, 
+		         p.pd_name, 
+		         p.deta_qt, 
+		         p.good_qt,
+		         p.dmat_qt,
+		         q.insp_num,
+		         to_char(p.wk_end, 'yyyy-MM-dd') wk_end,
+		         b.proc_id,
+		         r.proc_name,
+                 q.emp_id
+		   from  process_performance p 
+LEFT OUTER JOIN  qua_com q 
+             ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
+LEFT OUTER JOIN  work_bom b
+		     ON  p.wk_deta_id = b.wk_deta_id
+	  LEFT JOIN  process r
+	         ON  b.proc_id = r.proc_id
+          WHERE  q.INSP_NUM IS NOT NULL
+            AND  q.INSP_DATE IS NOT NULL
+       ORDER BY  q.insp_num
 	</select>
 	
 	<!-- 출고 검사 번호 자동 등록 -->
@@ -270,15 +338,18 @@
 	
 	<!-- 출고 검사 결과 등록시 update -->
  	 <update id="updateShip" parameterType="ShipInspVO">
-		update pro_ship set cp_ship_stat='품질검사 완료'
-		where cp_ship_id=#{cpShipId}
+		 update pro_ship
+		    set 
+		        cp_ship_stat=#{cpShipStat},
+		        insp_num=#{inspNum}
+	      where cp_ship_id=#{cpShipId}
 	</update>  
 
 	<!-- 완제품 출고 관리 리스트 -->
  	<select id="shInspList" resultType="ShipInspVO">
 		select s.cp_ship_id, s.ord_det_id, s.cp_lot_id, p.cp_lot_id, c.cp_name,
-		p.cp_id, s.cp_ship_qt, s.cp_ship_stat, 
-		to_char(s.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, q.insp_date
+		p.cp_id, s.cp_ship_qt, s.cp_ship_stat, d.res_stat,
+		to_char(s.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, to_char(q.insp_date, 'yyyy-MM-dd') insp_date
 		from
 		pro_ship s left join qua_com q
 		on s.cp_ship_id = q.insp_std_id
@@ -286,41 +357,31 @@
 		on s.cp_lot_id = p.cp_lot_id
 		left join complete_prod c
 		on p.cp_id=c.cp_id
-		order by cp_ship_id
+        left join qua_details d
+        on q.insp_num = d.insp_num
+		order by cp_ship_stat desc, cp_ship_id
+		
 	</select> 
-
-
-
-
-	<!-- 도착 자재 리스트 -->
-	<select id="getArrList" resultType="QuaVO">
-		<!-- SELECT m.mat_req_id, bus_id, mat_id, arr_qt, to_char(arr_date, 'yyyy-MM-dd') 
-			arr_date FROM mat_req m JOIN arr_material a ON (m.mat_req_id = a.mat_req_id) 
-			ORDER BY mat_req_id desc -->
-
-		select r.mat_req_id, b.bus_name, r.mat_id, m.mat_name, a.arr_qt,
-		to_char(arr_date, 'yyyy-MM-dd') arr_date
-		from mat_req r left join
-		material m
-		on r.mat_id = m.mat_id
-		left join business b
-		on r.bus_id =
-		b.bus_id
-		left join arr_material a
-		on r.mat_req_id = a.mat_req_id
-		where
-		r.mat_req_stat='도착'
-		order by mat_req_id
-	</select>
 	
-		<!-- 검사 담당자 리스트 조회 -->
-	<select id="sEmpList" parameterType="String" resultType="EmpVO">
-		select
-		emp_id, emp_name, emp_dept from employee
-		where emp_stat='재직'
-		and
-		emp_name=#{result}
-	</select>
+	<!-- 완제품 출고 수정 공통 -->
+	<update id="modShipCom" parameterType="ShipInspVO">
+		update qua_com
+		  set  suit_qt       = #{suitQt},
+			   nsuit_qt      =  #{nsuitQt}
+		 where
+		        insp_num      = #{inspNum}
+ 
+	</update>
+	
+	<!-- 완제품 출고 수정 상세 -->
+	<update id="modShipDet" parameterType="ShipInspVO">
+		update qua_details
+		   set	res_val       = #{cpShipQt},
+		   	    res_stat      = #{resStat}
+		 where
+		        insp_num      = #{inspNum}
+ 
+	</update>
 
 
 </mapper>

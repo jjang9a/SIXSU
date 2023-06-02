@@ -15,17 +15,18 @@ public interface QualityMapper {
 	// 검사 관련 공통 사용
 	List<QuaVO> inspItem(String matId); // 검사 항목 불러오기
 	int qComUpdate(QuaVO qua); // 검사 등록 시 qua_com 업데이트
+	int insertQuaDet(QuaVO qua); // 검사 등록시 검사 세부 insert
 	
 	// 자재 입고 검사 관련
 	List<QuaVO> proRecList(); // 자재 입고 검사 등록 리스트
 	List<QuaVO> prInspList(); // 자재 입고 검사 리스트
 	void insertPro(QuaVO am); // 입고 검사 등록 프로시저 사용
-	int insertPri(QuaVO qua); // 자재 입고 검사 결과 등록
 	int mUpdate(QuaVO qua); // 자재 입고 검사 등록 시 자재 발주 상태 업데이트
 	List<QuaVO> afterReqList();//입고 검사 완료 리스트
 	int delReqInsp(String inspNum);// 검사 완료 단건 삭제
 	List<QuaVO> modInspItem(String inspNum);//수정시 검사 항목 불러오기
 	int updateQd(QuaVO qua);//수정 시 qua_details 업데이트
+	int updateQc(List<QuaVO> list);//수정시 검사 공통 업데이트
 	
 	// 공정 검사 관련
 	List<DetaWorkOrdrVO> bpAddList(); // 공정 검사전 리스트
@@ -33,18 +34,22 @@ public interface QualityMapper {
 	String pdInspNum(); // 공정 검사 등록 시 검사 번호 자동 등록
 	List<PrdInspVO> prwList(); // 공정 검사 대기 리스트
 	List<PrdInspVO> prdComList(); // 공정 검사 완료 리스트
+	// 공정 검사 결과 수정
+	
+	
 	
 	// 출고 검사 관련
 	List<ShipInspVO> shInspList(); //  출고 검사 목록 리스트
 	int insertShipCom(ShipInspVO com); // 출고 검사 등록 시 검사 공통 insert
 	int insertShipDet(ShipInspVO det); // 출고 검사 등록 시 검사 상세 insert
 	int updateShip(ShipInspVO prs); // 출고 검사 등록 시 완제품 출고 테이블 품질 검사 완료 업데이트
+	int modShipCom(ShipInspVO vo); // 출고 검사 공통 수정
+	int modShipDet(ShipInspVO vo); // 출고 검사 상세 수정
 	
+	//반품 검사 관련
 	
 	// 사용 보류
-	List<QuaVO> getArrList(); // 도착 자재 리스트
-	List<QuaVO> arrRegList(); // 도착 자재 등록 리스트
-	int insertArr(QuaVO am); // 도착 자재 등록
+
 	void reqInspProc(QuaVO qua);//자재 입고 검사 결과 등록 프로시저 사용
 	String psInspNum(); // 입고 검사 등록 시 검사 번호 자동 등록
 	int insertPr(QuaVO am); // 자재 입고 검사 등록

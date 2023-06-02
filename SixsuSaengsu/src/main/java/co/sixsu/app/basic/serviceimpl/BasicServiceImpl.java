@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import co.sixsu.app.basic.domain.BomVO;
@@ -20,7 +24,7 @@ import co.sixsu.app.basic.service.BasicService;
 import co.sixsu.app.sales.domain.GridDataVO;
 
 @Service("BasicService")
-public class BasicServiceImpl implements BasicService {
+public class BasicServiceImpl implements BasicService, UserDetailsService {
 
 	@Autowired
 	BasicMapper mapper;
@@ -33,7 +37,9 @@ public class BasicServiceImpl implements BasicService {
 
 	@Override // 비밀번호 업데이트
 	public boolean updatePw(EmpVO emp) {
-		System.out.println("service : " + emp);
+		BCryptPasswordEncoder bcrype = new BCryptPasswordEncoder(10);
+		String password = bcrype.encode(emp.getEmpPw()); // 스프링 시큐리티 비크립트 암호화
+		emp.setEmpPw(password);
 		return mapper.updatePw(emp) == 1;
 	}
 
@@ -42,7 +48,11 @@ public class BasicServiceImpl implements BasicService {
 		emp.setEmpStat("재직");
 		String bir = emp.getEmpBirth();
 		String pw = bir.substring(2, 4) + bir.substring(5, 7) + bir.substring(8);
-		emp.setEmpPw(pw);
+		
+		BCryptPasswordEncoder bcrype = new BCryptPasswordEncoder(10);
+		String password = bcrype.encode(pw); // 스프링 시큐리티 비크립트 암호화
+		
+		emp.setEmpPw(password);
 		mapper.addEmp(emp);
 		return emp;
 	}
@@ -333,9 +343,22 @@ public class BasicServiceImpl implements BasicService {
 		return count >= 1;
 	}
 
-	@Override
+	@Override // 공통코드 사용을 위한 MAP
 	public List<Map<String, String>> commGroupList(String code) {
 		return mapper.commGroupList(code);
+	}
+
+	@Override // 스프링 시큐리티
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// 단건조회
+		EmpVO vo = mapper.getEmp(username);
+		// ID가 없으면 error
+		if (vo == null) {
+			throw new UsernameNotFoundException("no id");
+		}
+		vo.setRoleId(mapper.getRole(username));
+		// ID가 있다면 VO return
+		return vo;
 	}
 
 }
