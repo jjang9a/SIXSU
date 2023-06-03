@@ -216,4 +216,10 @@ public class QualityController {
 		return quaService.searchInsp(vo);
 	}
 	
+	@ResponseBody
+	@GetMapping("/quality/waterAjax")
+	public List<QuaVO> waterAjax(){
+		return quaService.getWater();
+	}
+	
 }

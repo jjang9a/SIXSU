@@ -44,16 +44,19 @@
 			background: #e5edf5;
 		}
 
-		#returnAdd,
-		#waterGrid {
+		#returnAdd {
 			width: 766px;
 			margin: auto;
-			height: 390px;
+			height: 392px;
 			background-color: white;
 			padding-top: 110px;
 			display: none;
 			clear: both;
 			margin-bottom: 30px;
+		}
+
+		#waterGrid {
+			display: none;
 		}
 
 		#returnAddForm {
@@ -453,56 +456,56 @@
 				scrollY: true,
 
 				columns: [{
-						header: '검사번호',
-						name: 'inspNum',
-						hidden: true
-					}, {
-						header: '발주번호',
-						name: 'matReqId',
-						hidden: true
-					}, {
-						header: '검사세부번호',
-						name: 'detInspNum',
-						hidden: true
-					},
-					{
-						header: '검사 항목 코드',
-						//width: 120,
-						name: 'inspId',
-						align: 'center'
+					header: '검사번호',
+					name: 'inspNum',
+					hidden: true
+				}, {
+					header: '발주번호',
+					name: 'matReqId',
+					hidden: true
+				}, {
+					header: '검사세부번호',
+					name: 'detInspNum',
+					hidden: true
+				},
+				{
+					header: '검사 항목 코드',
+					//width: 120,
+					name: 'inspId',
+					align: 'center'
 
-					},
-					{
-						header: '항목명',
-						name: 'inspName',
-						align: 'center'
-					},
-					{
-						header: '설명',
-						name: 'inspExp',
-						align: 'center'
-					},
-					{
-						header: '기준값',
-						name: 'stdVal',
-						align: 'center'
-					}, {
-						header: '결과값',
-						name: 'resVal',
-						editor: 'text',
-						align: 'center'
-					},
-					{
-						header: '부적합 수량',
-						name: 'nsuitQt',
-						editor: 'text',
-						align: 'center'
-					},
-					{
-						header: '적합여부',
-						name: 'resStat',
-						align: 'center'
-					}
+				},
+				{
+					header: '항목명',
+					name: 'inspName',
+					align: 'center'
+				},
+				{
+					header: '설명',
+					name: 'inspExp',
+					align: 'center'
+				},
+				{
+					header: '기준값',
+					name: 'stdVal',
+					align: 'center'
+				}, {
+					header: '결과값',
+					name: 'resVal',
+					editor: 'text',
+					align: 'center'
+				},
+				{
+					header: '부적합 수량',
+					name: 'nsuitQt',
+					editor: 'text',
+					align: 'center'
+				},
+				{
+					header: '적합여부',
+					name: 'resStat',
+					align: 'center'
+				}
 				]
 			});
 
@@ -527,36 +530,49 @@
 				rowHeaders: ['checkbox'],
 
 				columns: [{
-						header: '발주 번호',
-						width: 120,
-						name: 'matReqId',
-						align: 'center'
-					},
-					{
-						header: '거래처',
-						name: 'busName',
-						align: 'center'
-					},
-					{
-						header: '자재 코드',
-						name: 'matId',
-						align: 'center'
-					},
-					{
-						header: '자재 명',
-						name: 'matName',
-						align: 'center'
-					}, {
-						header: '발주 수량',
-						name: 'matReqQt',
-						align: 'center'
-					},
-					{
-						header: '검사 수량',
-						name: 'inspQt',
-						editor: 'text',
-					}
+					header: '발주 번호',
+					width: 120,
+					name: 'matReqId',
+					align: 'center'
+				},
+				{
+					header: '거래처',
+					name: 'busName',
+					align: 'center'
+				},
+				{
+					header: '자재 코드',
+					name: 'matId',
+					align: 'center'
+				},
+				{
+					header: '자재 명',
+					name: 'matName',
+					align: 'center'
+				}, {
+					header: '발주 수량',
+					name: 'matReqQt',
+					align: 'center'
+				},
+				{
+					header: '검사 수량',
+					name: 'inspQt',
+					editor: 'text',
+				}
 				]
+			});
+
+			// 원수 탭 그리드
+			$.ajax({
+				url: "/quality/waterAjax",
+				method: "GET",
+				dataType: "JSON",
+				success: function (result) {
+					waterGrid.resetData(result);
+				},
+				error: function (reject) {
+					console.log(reject);
+				}
 			});
 
 			const waterGrid = new tui.Grid({
@@ -631,9 +647,7 @@
 							console.log(result);
 							const appendedData = result;
 							grid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
-							console.log('숨김 전')
 							$('#regModal').modal('hide');
-							console.log('숨김 후')
 							grid2.removeCheckedRows(false);
 
 							// 업데이트 된 데이터 출력
@@ -843,42 +857,42 @@
 
 			// 검사 결과 등록 클릭 이벤트
 			$('#inspBtn').on('click', function () {
-					console.log(detailGrid.getData())
-					console.log('확인')
-					let formData = $('#prInspForm').serialize();
-					//formData += '&detailData=' + JSON.stringify(detailGrid.getData());
-					//console.log(formData);
-					//formData += JSON.stringify(detailGrid.getData());
+				console.log(detailGrid.getData())
+				console.log('확인')
+				let formData = $('#prInspForm').serialize();
+				//formData += '&detailData=' + JSON.stringify(detailGrid.getData());
+				//console.log(formData);
+				//formData += JSON.stringify(detailGrid.getData());
 
-					// 검사 공통 업데이트 ajax 실행
-					quaComUpdateAjax();
+				// 검사 공통 업데이트 ajax 실행
+				quaComUpdateAjax();
 
-					//등록&update
-					$.ajax({
-						url: '/quality/priRegister',
-						type: 'post',
-						data: JSON.stringify(detailGrid.getData()),
-						contentType: 'application/json',
-						success: function (result) {
+				//등록&update
+				$.ajax({
+					url: '/quality/priRegister',
+					type: 'post',
+					data: JSON.stringify(detailGrid.getData()),
+					contentType: 'application/json',
+					success: function (result) {
 
-							console.log(result);
-							alert('검사 결과값 등록이 완료되었습니다.');
-							// 등록 완료 후 폼과 그리드 숨기고 초기화
-							$('#prInspForm').css('display', 'none');
-							$('.detail').css('display', 'none');
-							$('#prInspForm input').val('');
-
-
-						},
-						error: function (reject) {
-							console.log(reject);
-							alert('검사 결과값 등록에 실패했습니다.')
-						}
-					});
+						console.log(result);
+						alert('검사 결과값 등록이 완료되었습니다.');
+						// 등록 완료 후 폼과 그리드 숨기고 초기화
+						$('#prInspForm').css('display', 'none');
+						$('.detail').css('display', 'none');
+						$('#prInspForm input').val('');
 
 
+					},
+					error: function (reject) {
+						console.log(reject);
+						alert('검사 결과값 등록에 실패했습니다.')
+					}
+				});
 
-				} // on click event 끝
+
+
+			} // on click event 끝
 			)
 
 			// 수정하기 버튼 클릭 이벤트
@@ -973,6 +987,7 @@
 
 			});
 
+			let btnType = req;
 			// 입고검색 탭 기능
 			$('.sel1').on('click', function (e) {
 				$('.sel4').removeClass('sel3');
@@ -980,7 +995,8 @@
 				$(this).addClass('sel3');
 				$('#grid2').css('display', 'block');
 				$('#returnAdd').css('display', 'none');
-				$('#waterAdd').css('display', 'none');
+				$('#waterGrid').css('display', 'none');
+				btnType = req;
 			})
 
 			$('.sel2').on('click', function (e) {
@@ -989,16 +1005,18 @@
 				$(this).addClass('sel3');
 				$('#returnAdd').css('display', 'block');
 				$('#grid2').css('display', 'none');
-				$('#waterAdd').css('display', 'none');
+				$('#waterGrid').css('display', 'none');
+				btnType = pc;
 			})
 
 			$('.sel4').on('click', function (e) {
 				$('.sel2').removeClass('sel3');
 				$('.sel1').removeClass('sel3');
 				$(this).addClass('sel3');
-				$('#waterAdd').css('display', 'block');
+				$('#waterGrid').css('display', 'block');
 				$('#returnAdd').css('display', 'none');
 				$('#grid2').css('display', 'none');
+				btnType = water;
 			})
 		</script>
 	</div>
