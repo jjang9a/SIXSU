@@ -324,6 +324,15 @@ public class WorkServiceImpl implements WorkService{
 		return result;
 	}
 
+	@Override
+	public String endWorkOrder(String wkDetaId) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("detaCode", wkDetaId);
+		paramMap.put("resultParam", null);
+		mapper.endWorkOrder(paramMap);
+		return (String) paramMap.get("resultParam");
+	}
+
 	
 	
 }

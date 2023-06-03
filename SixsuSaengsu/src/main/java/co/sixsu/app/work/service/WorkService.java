@@ -76,6 +76,8 @@ public interface WorkService {
 
 	public String startWorkOrder(String detaCode);
 
+	public String endWorkOrder(String wkDetaId);
+
 	public List<DetaWorkOrdrVO> getWorkListForProcess();
 
 
