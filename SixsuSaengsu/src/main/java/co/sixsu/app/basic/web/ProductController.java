@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.basic.domain.ReceiveVO;
 import co.sixsu.app.basic.service.ProductService;
+import co.sixsu.app.work.domain.PfmcVO;
 
 @Controller
 public class ProductController {
@@ -64,6 +65,19 @@ public class ProductController {
 	public List<ReceiveVO> cpRecList(){
 		List<ReceiveVO> list = service.cpRecList();
 		return list;
+	}
+	
+	
+	// 공정 실적 조회
+	@GetMapping("/work/performanceInfo")
+	public void performanceInfo() {
+		
+	}
+	
+	@ResponseBody
+	@GetMapping("/work/performanceList")
+	public List<PfmcVO> performanceList(){
+		return null;
 	}
 	
 }
