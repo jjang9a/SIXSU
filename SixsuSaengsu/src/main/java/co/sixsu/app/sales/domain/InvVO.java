@@ -8,6 +8,7 @@ import lombok.Data;
 public class InvVO {
 	private String ordId;
 	private String ordDate;
+	private String ordFDate;
 	private String ordStat;
 	private String empId;
 	private String busId;
