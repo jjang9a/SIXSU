@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+<meta charset="UTF-8">
+<title>공정실적</title>
+<style>
+h1 {
+	margin-bottom: 70px;
+}
+
+#infoTbl td {
+	padding: 5px 15px;
+	text-align: center;
+}
+
+#infoTbl {
+	margin: auto;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">공정실적</h1>
+		<!-- 상품선택 -->
+		<table id="infoTbl">
+			<tr>
+				<td>제품코드</td>
+				<td colspan="2" id="pdBtn"><input type="text" id="pdId"
+					readonly>
+					<button type="button" class="sixBtn1">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+							<path
+								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+						</svg>
+					</button> <!-- <button type="button" id="pdBtn" class="sixBtn" style="margin-right: 10px;"
+						data-bs-toggle="modal">조회</button> --></td>
+			</tr>
+			<tr>
+				<td>제품명</td>
+				<td><input type="text" id="pdName" readonly>
+				<td>규격</td>
+				<td><input type="text" id="pdSize" readonly>
+				<td>제품구분</td>
+				<td><input type="text" id="pdType" readonly>
+			</tr>
+		</table>
+		
+		<div id="grid"></div>
+		
+		<script>
+		
+		</script>
+	</div>
+</body>
+</html>
