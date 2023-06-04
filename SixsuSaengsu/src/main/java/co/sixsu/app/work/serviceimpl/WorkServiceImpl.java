@@ -283,6 +283,8 @@ public class WorkServiceImpl implements WorkService{
 				checkFilter += j;
 			}
 			checkFilter += "))";
+			System.out.println("============================");
+			System.out.println(checkFilter);
 			data.setStatusFilter(checkFilter);
 			System.out.println("정돈된 checkFilter : " + checkFilter);
 		}
