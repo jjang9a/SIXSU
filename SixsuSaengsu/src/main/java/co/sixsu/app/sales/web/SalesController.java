@@ -37,12 +37,6 @@ public class SalesController {
 	public void invoice(Model model) {
 	
 	}
-	@RequestMapping("searchOrder")
-	@ResponseBody
-	public List<InvVO> searchOrder() {
-		//List<InvVO> list = service.searchOrder();
-		return null;
-	}
 
 
 
@@ -198,11 +192,6 @@ public class SalesController {
 	 */
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//주문서 관리 페이지 열어주기	
-	// 주문서 관리 페이지 열어주기	
-		@GetMapping("invoiceInquiry")
-		public void invoiceInquiry(Model model) {
-		
-		}
+//주문서 관리 페이지 열어주기	
 
 }

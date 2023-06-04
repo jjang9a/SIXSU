@@ -55,28 +55,96 @@
 		
 		
 		<!-- 검색 인풋 창 -->
-		<Form id="searchForm">
-			<table id="oTable">
-			<tr>
-				<td>설비 코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="equCode" id="ocode" class="empty"></td>
-			
-				<td>설비명<span class="needStar"> * </span></td>
-				<td><input type="text" name="equName" id="oname" class="empty"></td>
-			</tr>
-			<tr>
-				<td>비가동 구분<span class="needStar"> * </span></td>
-				<td><input type="text" name="operType" id="otype" class="empty"></td>
+		<table id="oTable">
+		<tr>
+			<td>설비 코드<span class="needStar"> * </span></td>
+			<td><input type="text" name="ocode" id="ocode" class="empty"></td>
+		
+			<td>설비명<span class="needStar"> * </span></td>
+			<td><input type="text" name="oname" id="oname" class="empty"></td>
+		</tr>
+		</table>
 
-				<td>비가동 시작일<span class="needStar"> * </span></td>
-				<td><input type="date" name="operStart" id="oname" class="empty"></td>
-				<td><input type="date" name="operFnish" id="oname" class="empty"></td>
-			</tr>
-			</table>
-		</Form>
 		<br>
 		<hr>
 		<br>
+
+		 <!-- 비가동 조회 모달창 -->
+<!--
+		Modal 시작
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					모달 헤더
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel"
+							style="font-family: 'MaruBuri';">비가동 상세 정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					비가동 정보(상세) 모달 바디
+					<div class="modal-body">
+						<form action="" method="post" id="addForm">
+							<table class="">
+							
+								<div id="equInfo">
+
+									<tr>
+										<br>
+										<td>비가동 코드<span class="needStar"> * </span></td>
+										<td><input type="text" name="operCode" id="operCode"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>점검코드<span class="needStar"> * </span></td>
+										<td><input type="text" name="checkCode" id="checkCode"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>설비코드<span class="needStar"> * </span></td>
+										<td><input type="text" name="equCode" id="equCode"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>설비명<span class="needStar"> * </span></td>
+										<td><input type="text" name="equName" id="equName"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비가동 구분<span class="needStar"> *</span></td>
+										<td><input type="text" name="operType" id="operType"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비가동 시작<span class="needStar"> *</span></td>
+										<td><input type="text" name="operStart" id="operStart"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비가동 종료<span class="needStar"> *</span></td>
+										<td><input type="text" name="operFnish" id="operFnish"></td>
+									</tr>
+									<tr>
+										<br>
+										<td>비고<span class="needStar"> *</span></td>
+										<td><input type="text" name="operNote" id="operNote"></td>
+									</tr>
+								</div>
+							</table>
+						</form>
+					</div>
+					모달 푸터(버튼부분)
+					<div class="modal-footer">
+						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		Modal 끝 -->
+
 
 		<!-- 그리드 시작 -->
 		<div id="grid"></div>
@@ -99,38 +167,17 @@
             name: 'operCode',
             sortable : true,
             hidden : true
+            
           },
           {
             header: '점검코드',
             name: 'checkCode',
             hidden : true
           },
-		  {
-            header: '설비코드',
-            name: 'equCode',
-            sortable : true,
-            align: 'center'
-          },
           {
-            header: '설비명',
-            name: 'equName',
-            align: 'center'
-          },
-          {
-			header: '설비상태',
-			name: 'equStat',
-			filter: 'select',
-			align: 'center',
-			formatter: 'listItemText',
-			editor: {
-			type: 'select',
-			options: {
-					listItems: [
-						{text: '가동', value: 'STAT-1'},
-						{text: '비가동', value: 'STAT-2'},	
-					]
-				}
-			}
+             header: '설비상태',
+             name: 'equStat',
+             hidden : true
           },
           {
             header: '설비코드',
@@ -143,35 +190,24 @@
             align: 'center'
           },
           {
-            header: '비가동 구분',
-            name: 'operType',
-            align: 'center',
-			formatter: 'listItemText',
-			type: 'select',
-			editor: {
-			options: {
-					listItems: [
-						{text: '중지', value: 'OTYPE-1'},
-						{text: '점검', value: 'OTYPE-2'},
-						{text: '세척', value: 'OTYPE-3'},	
-					]
-				}
-			}
+              header: '비가동 구분',
+              name: 'operType',
+              align: 'center'
           },
           {
-            header: '비가동 시작',
-            name: 'operStart',
-            align: 'center'
+              header: '비가동 시작',
+              name: 'operStart',
+              align: 'center'
           },
 		  {
-            header: '비가동 종료',
-            name: 'operFnish',
-            align: 'center'
+              header: '비가동 종료',
+              name: 'operFnish',
+              align: 'center'
           },
 		  {
-            header: '비고',
-            name: 'operNote',
-            align: 'center'
+              header: '비고',
+              name: 'operNote',
+              align: 'center'
           },
 		  {
              header: '담당자',
@@ -210,6 +246,33 @@
         } 
     });
 
+	/* // 클릭 이벤트 발생
+	grid.on('click', ev => {
+    	
+    	// focus된 셀이 있는 열 전체 select 처리
+		grid.setSelectionRange({
+			start: [ev.rowKey, 0],
+			end: [ev.rowKey, grid.getColumns().length - 1]
+		});
+    	
+    	// 클릭한 Row의 정보를 dataRow에 저장
+        let dataRow = grid.getRow(ev.rowKey);
+    	console.log(dataRow.operCode);
+    	console.log(dataRow);
+    
+    	// 한 열을 클릭시 모달창 띄우기.
+    	$('#staticBackdrop').modal('show');
+    	
+    	$('#operCode').val(dataRow.operCode); // 비가동 코드
+		$('#checkCode').val(dataRow.checkCode); // 점검 코드
+		$('#equCode').val(dataRow.equCode); // 설비 코드
+	    $('#equName').val(dataRow.equName); // 설비명
+		$('#operType').val(dataRow.operType); // 비가동 구분
+	    $('#operStart').val(dataRow.operStart); // 비가동시작
+		$('#operFnish').val(dataRow.operFnish); // 비가동종료
+		$('#operNote').val(dataRow.operNote); // 비가동 비고
+	      
+      }); */
 
 	
 	// 조회 검색버튼 기능
@@ -217,14 +280,24 @@
     let searchKey = '';
     
     $('#searchBtn').on('click', function(){
-    	if($('#ocode').val() === '' && $('#oname').val() === '' && $('#otype').val() === '') {
+    	if($('#ocode').val() == '' && $('#oname').val() == '') {
     			alert('검색 항목을 입력해 주세요 !')	
     	 } else {
+    		 if ($('#ocode').val() != '') {
+					searchType = 'code';
+					searchKey = $('#ocode').val()
+				} else {
+					searchType = 'name';
+					searchKey = $('#oname').val()
+				}
+				
 				$.ajax({
 					url: '/equipment/equOperSearch',
 					type: 'get',
-					data: 
-						$('#searchForm').serialize(),
+					data: {
+						"searchType": searchType,
+						"searchKey": searchKey
+					},
 					dataType: 'json',
 					success: function (result) {
 						grid.resetData(result);

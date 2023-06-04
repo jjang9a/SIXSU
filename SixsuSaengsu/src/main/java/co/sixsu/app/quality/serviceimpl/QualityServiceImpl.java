@@ -344,6 +344,16 @@ public class QualityServiceImpl implements QualityService {
 	public List<QuaVO> getWater() {
 		return quaMapper.getWater();
 	}
+
+	@Override // 검사결과 리스트
+	public List<QuaVO> resultInspList() {
+		return quaMapper.resultInspList();
+	}
+
+	@Override // 검사결과 상세
+	public List<QuaVO> getDetail(String inspNum) {
+		return quaMapper.getDetail(inspNum);
+	}
 	
 	
 

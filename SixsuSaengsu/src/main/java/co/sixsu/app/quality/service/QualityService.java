@@ -11,8 +11,10 @@ import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 public interface QualityService {
 	
 		// 장가애
+		List<QuaVO> resultInspList(); // 2주이내 검사결과 리스트
 		List<QuaVO> searchInsp(QuaVO vo); // 검색기능
 		List<QuaVO> getWater(); // 원천수 리스트
+		List<QuaVO> getDetail(String inspNum); // 검사결과 상세조회
 		
 		// 조민경
 		// 검사 등록 공통

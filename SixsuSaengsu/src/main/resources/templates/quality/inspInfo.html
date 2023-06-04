@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>품질 검사 결과 조회</title>
+	<style>
+		h1 {
+			margin-bottom: 40px;
+		}
+
+		#cpTable {
+			margin: auto;
+		}
+
+		#cpTable input,
+		select {
+			padding-left: 5px;
+		}
+
+		.inputR {
+			width: 210px;
+		}
+
+		.inputS {
+			width: 110px;
+		}
+
+		#cpTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}
+
+		.divBtn {
+			text-align: center;
+			padding: 15px 0 50px 0;
+		}
+
+		.modal-body {
+			background: #e5edf5;
+		}
+
+		.sel {
+			width: 100px;
+			text-align: center;
+			padding: 10px;
+			font-size: 15px;
+			font-weight: bold;
+			float: left;
+		}
+
+		.sel:hover {
+			cursor: pointer;
+		}
+
+		.sel3 {
+			background-color: white;
+		}
+	</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">품질 검사 결과 조회</h1>
+
+		<!-- 정보입력 폼 -->
+		<form action="" method="post" id="searchForm">
+			<input type="hidden" name="searchType" id="searchType">
+			<table id="cpTable">
+				<tr>
+					<td>검사종류</td>
+					<div id="divRadio">
+						<td colspan="3">
+							<input type="radio" id="inspType1" name="inspType" value="INSP-A" checked>
+							<label for="inspType1">자재 입고 검사</label>&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" id="inspType2" name="inspType" value="INSP-B">
+							<label for="inspType2">공정 검사</label>&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" id="inspType3" name="inspType" value="INSP-C">
+							<label for="inspType3">완제품 출고 검사</label>&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" id="inspType3" name="inspType" value="INSP-D">
+							<label for="inspType3">반품 검사</label>
+						</td>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td>검사번호</td>
+					<td><input type="text" name="inspNum" id="inspNum" class="inputR"></td>
+					<td>제품코드</td>
+					<td><input type="text" name="inspItemId" id="inspItemId" class="inputR">
+						<button type="button" class="sixBtn1" id="pdBtn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
+								class="bi bi-search" viewBox="0 2 16 16">
+								<path
+									d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+							</svg>
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td>검사자</td>
+					<td><input type="text" name="empId" id="empId" class="inputR"></td>
+					<td>검사일자</td>
+					<td><input type="date" name="inspDate" id="inspDate" class="inputS"> ~
+						<input type="date" name="inspDate2" id="inspDate2" class="inputS">
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div class="divBtn">
+			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
+			<button type="button" class="sixBtn2" id="initBtn">초기화</button>
+		</div>
+		<!-- 상단 폼 끝 -->
+
+		<!-- 자재 검사 완료 그리드 -->
+		<div id="aiGrid"></div>
+
+		<!-- 제품 선택 Modal 시작 -->
+		<div class="modal fade" id="pdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="pdModal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="pdModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 모달 바디 -->
+					<div class="modal-body">
+						<div class="sel sel1 sel3">완제품</div>
+						<div class="sel sel2">반제품</div>
+						<div class="sel sel4">자 재</div>
+						<div id="pdGrid"></div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 제품 선택 Modal 끝 -->
+		
+		<!-- 검사 상세정보 Modal 시작 -->
+		<div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="detailModal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="detailModalLabel" style="font-family: 'MaruBuri';">검사 상세정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 모달 바디 -->
+					<div class="modal-body">
+						<div id="detailGrid"></div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+					<button type="button" class="sixBtn2" data-bs-dismiss="modal">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 검사 상세정보 Modal 끝 -->
+		
+
+		<script>
+			window.onload = function () {
+				$.ajax({
+					url: "/quality/resultInspList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						aiGrid.resetData(result);
+					}
+				});	
+			}
+				const aiGrid = new tui.Grid({
+					el: document.getElementById('aiGrid'),
+					scrollX: false,
+					scrollY: false,
+					minBodyHeight: 480,
+					pageOptions: {
+						useClient: true,
+						perPage: 12
+					},
+
+					columns: [{
+						header: '검사종류',
+						name: 'inspExp',
+						align: 'center',
+						filter: 'select'
+					}, {
+						header: '검사번호',
+						name: 'inspNum',
+						align: 'center'
+					}, {
+						header: '제품코드',
+						name: 'inspItemId',
+						align: 'center'
+					}, {
+						header: '제품명',
+						name: 'matName',
+						align: 'center'
+					}, {
+						header: '검사수량',
+						name: 'inspQt',
+						align: 'center'
+					}, {
+						header: '부적합 수량',
+						name: 'nsuitQt',
+						align: 'center'
+					}, {
+						header: '검사자',
+						name: 'empName',
+						align: 'center'
+					}, {
+						header: '검사일자',
+						name: 'inspDate',
+						align: 'center',
+						format: 'yyyy-MM-dd'
+					}, {
+						header: '검사기준코드',
+						name: 'inspStdId',
+						align: 'center'
+					}]
+				});
+
+				// 그리드 색 변경 테마 적용
+				tui.Grid.applyTheme('default', {
+					cell: {
+						header: {
+							background: '#e5edf5'
+						},
+						normal: {
+							background: '#ffffff'
+						}
+					}
+				});
+
+				const pdGrid = new tui.Grid({
+					el: document.getElementById('pdGrid'),
+					scrollX: false,
+					scrollY: false,
+					minBodyHeight: 400,
+					pageOptions: {
+						useClient: true,
+						perPage: 10
+					},
+					columns: [{
+						header: '제품코드',
+						name: 'cpId',
+						align: 'center'
+					}, {
+						header: '제품명',
+						name: 'cpName',
+						align: 'center'
+					}, {
+						header: '규격',
+						name: 'cpSize',
+						align: 'center'
+					}]
+				});
+
+				$('#pdBtn').on('click', function (e) {
+					$.ajax({
+						url: "/basic/activeCpList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							pdGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+					setTimeout(() => pdGrid.refreshLayout(), 500);
+					$('#pdModal').modal('show');
+				})
+
+				// 제품 선택 모달창 탭 기능(완제품 클릭)
+				$('.sel1').on('click', function (e) {
+					$('.sel4').removeClass('sel3');
+					$('.sel2').removeClass('sel3');
+					$(this).addClass('sel3');
+					$.ajax({
+						url: "/basic/activeCpList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							pdGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+				})
+
+				// 제품 선택 모달창 탭 기능(반제품 클릭)
+				$('.sel2').on('click', function (e) {
+					$('.sel4').removeClass('sel3');
+					$('.sel1').removeClass('sel3');
+					$(this).addClass('sel3');
+					$.ajax({
+						url: "/basic/activeSpList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							pdGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+				})
+
+				// 제품 선택 모달창 탭 기능(자재 클릭)
+				$('.sel4').on('click', function (e) {
+					$('.sel2').removeClass('sel3');
+					$('.sel1').removeClass('sel3');
+					$(this).addClass('sel3');
+					$.ajax({
+						url: "/basic/activeMatList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							pdGrid.resetData(result);
+						},
+						error: function (reject) {
+							console.log(reject)
+						}
+					});
+				})
+
+				// 모달창 제품 선택 이벤트
+				pdGrid.on('click', function (e) {
+					rowData = pdGrid.getRow(e.rowKey);
+					$('#inspItemId').val(rowData.cpId);
+					$('.sel4').removeClass('sel3');
+					$('.sel2').removeClass('sel3');
+					$('.sel1').addClass('sel3');
+					$('#pdModal').modal('hide');
+				})
+
+
+				// 검색 버튼 이벤트
+				let searchType = '';
+				let searchKey = '';
+				$('#searchBtn').on('click', function (e) {
+					if ($('#inspNum').val() != '') {
+						searchType += 'I'
+					}
+					if ($('#inspItemId').val() != '') {
+						searchType += 'P'
+					}
+					if ($('#empId').val() != '') {
+						searchType += 'E'
+					}
+					if ($('#inspDate').val() != '' && $('#inspDate2').val() != '') {
+						searchType += 'D'
+					}
+					if (searchType != '') {
+						$('#searchType').val(searchType);
+						$.ajax({
+							url: '/quality/searchInsp',
+							type: 'post',
+							data: $('#searchForm').serialize(),
+							dataType: 'json',
+							success: function (result) {
+								const searchData = result
+								aiGrid.resetData(searchData);
+								let searchType = '';
+							},
+							error: function () {
+								alert('검색 중 오류가 발생했습니다!');
+							}
+						});
+					}
+				})
+
+				// 초기화 버튼 이벤트
+				$('#initBtn').on('click', (e)=>{
+					$.ajax({
+						url: "/quality/resultInspList",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							aiGrid.resetData(result);
+							$('.inputR').val('');
+							$('.inputS').val('');
+						}
+					});
+				})
+				
+				// 상세정보 그리드
+				const detailGrid = new tui.Grid({
+				el: document.getElementById('detailGrid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 360,
+				columns: [{
+					header: '검사명',
+					name: 'inspName',
+					align: 'center'
+				}, {
+					header: '기준값',
+					name: 'stdVal',
+					align: 'center'
+				}, {
+					header: '결과값',
+					name: 'resVal',
+					align: 'center'
+				}, {
+					header: '적합여부',
+					name: 'resStat',
+					align: 'center'
+				}]
+			});
+				
+				detailGrid.setBodyHeight(320);
+				
+				// 그리드 클릭시 상세정보 모달 띄우기 이벤트
+				aiGrid.on('click', e => {
+					let key = aiGrid.getRow(e.rowKey).inspNum
+					$.ajax({
+						url: '/quality/getDetail',
+						type: 'get',
+						data: {
+							"inspNum": key
+						},
+						success: function (result) {
+							detailGrid.resetData(result);
+							setTimeout(() => detailGrid.refreshLayout(), 500);
+							$('#detailModal').modal('show');
+						},
+						error: function (r) {
+							console.log(r);
+						}
+					})
+				})
+
+
+		</script>
+	</div>
+</body>
+
+</html>

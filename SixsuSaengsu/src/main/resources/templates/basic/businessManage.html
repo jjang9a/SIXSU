@@ -64,9 +64,9 @@
 			<table id="manageTbl">
 				<tr>
 					<td class="center">거래처 코드</td>
-					<td><input type="text" name="busId" id="busId" class="empty"></td>
+					<td><input type="text" name="busId" id="busId" class="empty" placeholder=" 검색"></td>
 					<td class="center">회사명<span class="needStar"> *</span></td>
-					<td><input type="text" name="busName" id="busName" class="empty"></td>
+					<td><input type="text" name="busName" id="busName" class="empty" placeholder=" 검색"></td>
 				</tr>
 				<tr>
 					<td class="center">분류<span class="needStar"> *</span></td>
@@ -180,6 +180,7 @@
 				}, {
 					header: '활성여부',
 					name: 'busStat',
+					filter: 'select',
 					align: 'center'
 				}]
 			});
@@ -327,55 +328,11 @@
 			})
 
 			// 검색 버튼 이벤트
-			let searchType = '';
-			let searchKey = '';
 			$('#searchBtn').on('click', function (e) {
-				if ($('#busId').val() == '' && $('#busName').val() == '' && $('#busType').val() == '') {
-					alert('검색값을 입력 해 주세요')
-				} else if ($('#busType').val() == '') {
-					if ($('#busId').val() == '') {
-						searchType = 'nameOnly'
-						searchKey = $('#busName').val()
-					}
-					if ($('#busName').val() == '') {
-						searchType = 'idOnly'
-						searchKey = $('#busId').val()
-					}
-				} else if ($('#busType').val() == 'buy') {
-					if ($('#busId').val() == '' && $('#busName').val() == '') {
-						searchType = 'typeOnly'
-						searchKey = 'buy'
-					} else {
-						if ($('#busId').val() == '') {
-							searchType = 'buyName'
-							searchKey = $('#busName').val()
-						} else if ($('#busName').val()) {
-							searchType = 'buyId'
-							searchKey = $('#busId').val()
-						}
-					}
-				} else {
-					if ($('#busId').val() == '' && $('#busName').val() == '') {
-						searchType = 'typeOnly'
-						searchKey = 'sel'
-					} else {
-						if ($('#busId').val() == '') {
-							searchType = 'sellName'
-							searchKey = $('#busName').val()
-						} else if ($('#busName').val() == '') {
-							searchType = 'sellId'
-							searchKey = $('#busId').val()
-						}
-					}
-				}
-
 				$.ajax({
 					url: '/basic/searchBus',
-					type: 'get',
-					data: {
-						"searchType": searchType,
-						"searchKey": searchKey
-					},
+					type: 'post',
+					data: $('#manageForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
 						grid.resetData(result);

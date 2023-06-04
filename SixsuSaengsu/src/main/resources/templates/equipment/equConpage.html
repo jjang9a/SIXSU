@@ -89,7 +89,9 @@
 				</tr>
 				<tr>
 					<td>등록일자<span class="needStar"> *</span></td>
+					
 					<td><input type="date" name="addDate" id="addDate" class="empty"></td>
+					
 				</tr>
 				<tr>
 					<td>담당자<span class="needStar"> *</span></td>
@@ -136,6 +138,19 @@
 		</form>
 
 
+		<!-- 이미지 첨부파일 
+	  <form th:action="@{/item/insert>" method="post" enctype="multipart/form-data">
+		 설비 이미지 : <input type="text" name="Img"><br />
+		 설비 이미지입니다 : <input type="file" name="image"><br />
+		 <input type="submit" value="등록">
+		 
+		<button type="button" class="sixBtn2" style="float: right;" id="addBtn">첨부파일</button>
+		  <img src="equipment/equImg/병입기2.jpg" alt="" loading="lazy">
+	 </form> -->
+
+
+
+
 		<div id="grid"></div>
 
 		<script>
@@ -170,6 +185,7 @@
 						name: 'equModel',
 						align: 'center'
 					},
+					
 					{
 						header: '설비라인',
 						name: 'equLine',
@@ -312,6 +328,7 @@
 				$('#procId').val(dataRow.procId);
 				$('#equName').val(dataRow.equName);
 				$('#equModel').val(dataRow.equModel);
+				
 				$('#equLine').val(dataRow.equLine);
 				$('#equCheck').val(dataRow.equCheck);
 				$('#addDate').val(dataRow.addDate);
@@ -324,7 +341,7 @@
 			$('#addBtn').on('click', function (e) {
 				console.log($('#addForm').serialize())
 				$.ajax({
-					url: 'equAdd',
+					url: '/equipment/equAdd',
 					type: 'post',
 					data: $('#addForm').serialize(),
 					dataType: 'json',

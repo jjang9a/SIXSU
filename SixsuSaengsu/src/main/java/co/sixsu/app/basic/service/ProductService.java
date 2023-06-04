@@ -3,6 +3,8 @@ package co.sixsu.app.basic.service;
 import java.util.List;
 
 import co.sixsu.app.basic.domain.ReceiveVO;
+import co.sixsu.app.quality.domain.QilVO;
+import co.sixsu.app.work.domain.PfmcVO;
 
 public interface ProductService {
 
@@ -15,5 +17,14 @@ public interface ProductService {
 	List<ReceiveVO> readyCpList(); // 반제품 입고대기 목록
 	List<ReceiveVO> cpRecList(); // 반제품 입고목록
 	List<ReceiveVO> cpRec(List<ReceiveVO> list); // 완제품 입고
+	
+	// 공정실적 조회
+	List<PfmcVO> performanceList(); // 공정실적 리스트
+	List<PfmcVO> searchPerformance(PfmcVO vo); // 공정실적 검색
+	
+	// 품질검사 항목관리
+	List<QilVO> getInspList(); // 품질검사 항목 목록
+	boolean addInsp(QilVO vo); // 검사항목 추가
+	boolean updateInsp(QilVO vo); // 검사항목 수정
 	
 }

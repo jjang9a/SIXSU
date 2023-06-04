@@ -4,31 +4,25 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>main</title>
+	<style>
+		body {
+			background: #e5edf5;
+		}
+
+		#logo {
+			padding-top: 120px;
+			text-align: center;
+		}
+	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
-		<h1>수정된 톱 페이지입니다.</h1>
-		<ul>
-			<li><a href="user/user">일반 사용자용 페이지로</a></li>
-			<li><a href="admin/admin">관리자 전용 페이지로</a></li>
-		</ul>
-		<!--/* <div sec:authorize="isAuthenticated()">
-	 <input th:value="${#authentication.principal.username}">님
-		<form action="logout" method="post">
-			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-			<button>로그아웃</button>
-		</form>
+		<div id="logo">
+			<img src="assets/img/water2.png">
+		</div>
 	</div>
-
-	<div sec:authorize="hasRole('ROLE_ADMIN')">
-		This content is only shown to administrators.
-	</div>
-	<div sec:authorize="hasRole('ROLE_USER')">
-		This content is only shown to users.
-	</div>
-	</div> */-->
 </body>
 
 </html>
