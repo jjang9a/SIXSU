@@ -3,6 +3,8 @@ package co.sixsu.app.basic.mapper;
 import java.util.List;
 
 import co.sixsu.app.basic.domain.ReceiveVO;
+import co.sixsu.app.quality.domain.QilVO;
+import co.sixsu.app.work.domain.PfmcVO;
 
 public interface ProductMapper {
 
@@ -25,5 +27,14 @@ public interface ProductMapper {
 	public int insertCpLot(ReceiveVO vo); // 완제품 LOT 새로 부여
 	public int updateCpLot(ReceiveVO vo); // 완제품 LOT 업데이트
 	public String getCpLotId(String cpId); // 완제품 LOT번호 생성
+	
+	// 공정실적 조회
+	public List<PfmcVO> performanceList(); // 공정실적 리스트
+	public List<PfmcVO> searchPerformance(PfmcVO vo); // 공정실적 검색
+	
+	// 검사항목 관리
+	public List<QilVO> getInspList(); // 검사항목 리스트
+	public int addInsp(QilVO vo); // 검사항목 추가
+	public int updateInsp(QilVO vo); // 검사항목 수정
 	
 }

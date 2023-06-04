@@ -4,27 +4,30 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>공정실적</title>
+	<title>검사항목 관리</title>
 	<style>
-		#infoTbl td {
-			padding: 5px 15px;
+		h1 {
+			margin-bottom: 40px;
+		}
+
+		#manageTbl {
+			margin: auto;
+		}
+
+		#manageTbl input,
+		select {
+			padding-left: 10px;
+			width: 160px;
+		}
+
+		#manageTbl td {
+			padding: 4px 10px;
 			text-align: center;
 		}
 
-		#infoTbl {
-			margin: 60px auto 0 auto;
-		}
-
-		select,
-		option,
-		input {
+		.divBtn {
 			text-align: center;
-			width: 160px
-		}
-
-		.center {
-			margin: 25px 0 70px 0;
-			text-align: center;
+			padding: 15px 0 50px 0;
 		}
 
 		.modal-body {
@@ -32,23 +35,16 @@
 		}
 
 		.sel {
-			width: 232.5px;
+			width: 100px;
 			text-align: center;
 			padding: 10px;
 			font-size: 15px;
 			font-weight: bold;
+			float: left;
 		}
 
 		.sel:hover {
 			cursor: pointer;
-		}
-
-		.sel1 {
-			float: left;
-		}
-
-		.sel2 {
-			float: right;
 		}
 
 		.sel3 {
@@ -59,14 +55,31 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">공정실적</h1>
-		<!-- 상품선택 -->
-		<form action="" id="searchForm" method="post">
-			<table id="infoTbl">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">검사항목 관리</h1>
+
+		<!-- 정보입력 폼 -->
+		<form action="" method="post" id="inspForm">
+			<table id="manageTbl">
+				<input type="hidden" name="inspId" id="inspId" class="empty">
 				<tr>
-					<td>품목코드</td>
-					<td id="pdBtn"><input type="text" id="pdId" name="pdId" readonly>
-						<button type="button" class="sixBtn1">
+					<td>검사항목명</td>
+					<td><input type="text" name="inspName" id="inspName" class="empty"></td>
+					<td>검사구분</td>
+					<td>
+						<select id="inspSep" name="inspSep">
+							<option value='' selected>----- 선택 -----</option>
+							<option value="적합여부">적합여부</option>
+							<option value="수량파악">수량파악</option>
+						</select>
+					</td>
+					<td>기준값</td>
+					<td><input type="text" name="stdVal" id="stdVal" class="empty"></td>
+				</tr>
+				<tr>
+					<td>검사제품</td>
+					<td colspan="5">
+						<input type="text" name="inspItemId" id="inspItemId" class="empty" style="width : 647px;">
+						<button type="button" class="sixBtn1" id="pdBtn">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
 								class="bi bi-search" viewBox="0 2 16 16">
 								<path
@@ -74,44 +87,26 @@
 							</svg>
 						</button>
 					</td>
-					<td>공정실적코드</td>
-					<td><input type="text" id="prcsPfmcId" name="prcsPfmcId" style="width : 170px"></td>
-					<td>공정 구분</td>
-					<td><select name="procType" id="procType">
-							<option value="">----- 선택 -----</option>
-							<option th:each="type : ${types}" th:value="${type.comId}" th:text="${type.comName}">
-							</option>
-						</select>
-					</td>
 				</tr>
 				<tr>
-					<td>착수일</td>
-					<td colspan="3"><input type="date" name="wkStart" id="wkStart"
-							style="width : 230px">&nbsp;&nbsp;&nbsp; ~ &nbsp;&nbsp;&nbsp;
-						<input type="date" name="wkEnd" id="wkEnd" style="width : 230px">
-					</td>
-					<td>품목 구분</td>
-					<td><select name="pdType" id="pdType">
-							<option value="">----- 선택 -----</option>
-							<option value="C">완제품</option>
-							<option value="S">반제품</option>
-							<option value="M"> 자 재 </option>
-						</select>
+					<td>설명</td>
+					<td colspan="5"><input type="text" name="inspExp" id="inspExp" class="empty" style="width : 679px;">
 					</td>
 				</tr>
 			</table>
-			<div class="center">
-				<button type="button" class="sixBtn3" id="searchBtn">검색</button>
-				<button type="button" class="sixBtn3" id="initBtn">초기화</button>
-			</div>
 		</form>
+		<div class="divBtn">
+			<button type="button" class="sixBtn2" id="addBtn">등록</button>
+			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+		</div>
+		<!-- 상단 폼 끝 -->
 
 		<div id="grid"></div>
 
 		<!-- 제품 선택 Modal 시작 -->
 		<div class="modal fade" id="pdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="pdModal" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
@@ -122,10 +117,13 @@
 					<div class="modal-body">
 						<div class="sel sel1 sel3">완제품</div>
 						<div class="sel sel2">반제품</div>
+						<div class="sel sel4">자 재</div>
 						<div id="pdGrid"></div>
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
 					<div class="modal-footer">
+						<button type="button" class="sixBtn2" id="pdAddBtn">등록</button>
+						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
 					</div>
 				</div>
 			</div>
@@ -136,7 +134,7 @@
 			window.onload = function () {
 				// 초기데이터(전체조회)
 				$.ajax({
-					url: "/work/performanceList",
+					url: "/quality/getInspList",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -157,57 +155,28 @@
 					perPage: 12
 				},
 				columns: [{
-					header: '공정실적코드',
-					name: 'prcsPfmcId',
+					header: '검사항목코드',
+					name: 'inspId',
+					hidden: true
+				}, {
+					header: '검사항목명',
+					name: 'inspName',
 					align: 'center'
 				}, {
-					header: '공정명',
-					name: 'procName',
+					header: '검사구분',
+					name: 'inspSep',
 					align: 'center'
 				}, {
-					header: '세부지시코드',
-					name: 'wkDetaId',
+					header: '설명',
+					name: 'inspExp',
 					align: 'center'
 				}, {
-					header: '품목코드',
-					name: 'pdId',
+					header: '기준값',
+					name: 'stdVal',
 					align: 'center'
 				}, {
-					header: '품목명',
-					name: 'pdName',
-					align: 'center'
-				}, {
-					header: '단위',
-					name: 'pdUnit',
-					align: 'center',
-					width: 'auto'
-				}, {
-					header: '설비코드',
-					name: 'equCode',
-					align: 'center'
-				}, {
-					header: '착수일',
-					name: 'wkStart',
-					align: 'center'
-				}, {
-					header: '완료일',
-					name: 'wkEnd',
-					align: 'center'
-				}, {
-					header: '지시수량',
-					name: 'detaQt',
-					align: 'center'
-				}, {
-					header: '불량수량',
-					name: 'dmatQt',
-					align: 'center'
-				}, {
-					header: '양품수량',
-					name: 'goodQt',
-					align: 'center'
-				}, {
-					header: '담당자',
-					name: 'empName',
+					header: '검사제품코드',
+					name: 'inspItemId',
 					align: 'center'
 				}]
 			});
@@ -230,12 +199,9 @@
 			const pdGrid = new tui.Grid({
 				el: document.getElementById('pdGrid'),
 				scrollX: false,
-				scrollY: false,
+				scrollY: true,
 				minBodyHeight: 400,
-				pageOptions: {
-					useClient: true,
-					perPage: 10
-				},
+				rowHeaders: ['checkbox'],
 				columns: [{
 					header: '제품코드',
 					name: 'cpId',
@@ -244,13 +210,10 @@
 					header: '제품명',
 					name: 'cpName',
 					align: 'center'
-				}, {
-					header: '규격',
-					name: 'cpSize',
-					align: 'center'
 				}]
 			});
 
+			pdGrid.setBodyHeight(400);
 
 			$('#pdBtn').on('click', function (e) {
 				$.ajax({
@@ -270,6 +233,7 @@
 
 			// 제품 선택 모달창 탭 기능(완제품 클릭)
 			$('.sel1').on('click', function (e) {
+				$('.sel4').removeClass('sel3');
 				$('.sel2').removeClass('sel3');
 				$(this).addClass('sel3');
 				$.ajax({
@@ -287,6 +251,7 @@
 
 			// 제품 선택 모달창 탭 기능(반제품 클릭)
 			$('.sel2').on('click', function (e) {
+				$('.sel4').removeClass('sel3');
 				$('.sel1').removeClass('sel3');
 				$(this).addClass('sel3');
 				$.ajax({
@@ -302,46 +267,95 @@
 				});
 			})
 
+			// 제품 선택 모달창 탭 기능(자재 클릭)
+			$('.sel4').on('click', function (e) {
+				$('.sel2').removeClass('sel3');
+				$('.sel1').removeClass('sel3');
+				$(this).addClass('sel3');
+				$.ajax({
+					url: "/basic/activeMatList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
+
 			// 모달창 제품 선택 이벤트
-			pdGrid.on('click', function (e) {
-				rowData = pdGrid.getRow(e.rowKey);
-				$('#pdId').val(rowData.cpId);
+			$('#pdAddBtn').on('click', function (e) {
+				let pdData = pdGrid.getCheckedRows();
+				let pd = '';
+				pdData.forEach((ele, index) => {
+					pd += ele.cpId
+					if (index < pdData.length - 1) {
+						pd += ', '
+					}
+				});
+				$('#inspItemId').val(pd);
+				$('.sel4').removeClass('sel3');
 				$('.sel2').removeClass('sel3');
 				$('.sel1').addClass('sel3');
 				$('#pdModal').modal('hide');
 			})
 
-			// 검색버튼 이벤트
-			$('#searchBtn').on('click', (e) => {
+			// 등록버튼 이벤트
+			$('#addBtn').on('click', (e) => {
 				$.ajax({
-					url: '/work/searchPerformance',
+					url: '/quality/addInspList',
 					type: 'post',
-					data: $('#searchForm').serialize(),
+					data: $('#inspForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
-						grid.resetData(result);
+						alert('성공적으로 등록되었습니다.')
+						const setData = result
+						grid.appendRow(setData);
+						$('.empty').val('');
+						$('#inspSep').val('').prop("selected", true);
 					},
-					error: function (reject) {
-						console.log(reject);
-						alert('검색 중 오류가 발생했습니다!');
+					error: function (r) {
+						console.log(r);
 					}
 				});
 			})
 
-			// 초기화버튼 이벤트
-			$('#initBtn').on('click', (e) => {
+			let selRow = '';
+			// 그리드 클릭시 정보 호출
+			grid.on('click', (e) => {
+				selRow = e.rowKey;
+				let rowData = grid.getRow(selRow);
+				$('#inspId').val(rowData.inspId);
+				$('#inspName').val(rowData.inspName);
+				$('#inspExp').val(rowData.inspExp);
+				$('#stdVal').val(rowData.stdVal);
+				$('#inspItemId').val(rowData.inspItemId);
+				$('#inspSep').val(rowData.inspSep).prop("selected", true);
+			})
+
+			// 수정버튼 이벤트
+			$('#modiBtn').on('click', (e) => {
 				$.ajax({
-					url: "/work/performanceList",
-					method: "GET",
-					dataType: "JSON",
+					url: '/quality/updateInspList',
+					type: 'post',
+					data: $('#inspForm').serialize(),
+					dataType: 'json',
 					success: function (result) {
-						grid.resetData(result);
+						alert('성공적으로 수정되었습니다.')
+						const setData = result
+						grid.setRow(selRow, setData);
+						selRow = '';
+						$('.empty').val('');
+						$('#inspSep').val('').prop("selected", true);
+					},
+					error: function (r) {
+						console.log(r);
 					}
 				});
-				$('#infoTbl input').val('');
-				$('#pdType').val('').prop("selected", true);
-				$('#procType').val('').prop("selected", true);
 			})
+
 		</script>
 	</div>
 </body>

@@ -69,9 +69,10 @@ public class BasicController {
 
 	@ResponseBody
 	@PostMapping("/basic/empModify") // 사원정보 수정 ajax
-	public String empModify(@RequestBody EmpVO emp) {
+	public boolean empModify(@RequestBody List<EmpVO> emp) {
+		System.out.println(emp);
 		service.updateEmp(emp);
-		return "result";
+		return true;
 	}
 	
 	@ResponseBody
@@ -282,10 +283,9 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/searchBus") // 거래처 검색
-	public List<BusVO> searchBus(SearchDTO dto) {
-		System.out.println(dto);
-		return service.searchBus(dto);
+	@PostMapping("/basic/searchBus") // 거래처 검색
+	public List<BusVO> searchBus(BusVO bus) {
+		return service.searchBus(bus);
 	}
 	
 	
