@@ -371,9 +371,12 @@ with work as (
         LEFT OUTER JOIN employee c ON a.EMP_ID = c.EMP_ID
         
     WHERE (b.CP_NAME = #{productName} OR #{productName} IS NULL)
-  	AND (a.WK_HEAD_ID = #{workNo} OR #{workNo} IS NULL)
+  	<!-- AND (a.WK_HEAD_ID = #{workNo} OR #{workNo} IS NULL) -->
   	AND (c.emp_name = #{writer} OR #{writer} IS NULL)
   	${statusFilter}
+  	<if test="workNo != ''">
+		AND a.WK_HEAD_ID LIKE '%'||#{workNo}||'%' OR a.WK_DETA_ID LIKE '%'||#{workNo}||'%'
+  	</if>
   	<if test="workFrom != ''">
   		AND a.START_DATE BETWEEN TO_DATE(#{workFrom}, 'yyyy-MM-dd') AND TO_DATE(#{workTo}, 'yyyy-MM-dd')
   	</if>

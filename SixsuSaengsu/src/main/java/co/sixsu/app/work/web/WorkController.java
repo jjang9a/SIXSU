@@ -48,7 +48,7 @@ import co.sixsu.app.work.service.WorkService;
 		public String modifyWorkPage(Model model, @RequestParam String data) {
 			System.out.println("modifyWorkPage 들어옴");
 			System.out.println("SELECT CODE IS = " + data);
-			data = "20" + data.substring(0,9);
+			data = "20" + data.substring(0,data.lastIndexOf("-"));
 			System.out.println("BEFORE DATA IS = " + data);
 			model.addAttribute("headCode",data);
 			return "/work/modifyWorkPage";

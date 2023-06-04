@@ -371,13 +371,19 @@
 									success : function(result) {
 										console.log('RESULT :');
 										console.log(result);
-										grid1.resetData(result);
-										그리드초기수정();
+										if(result != 0){
+											grid1.resetData(result);
+											그리드초기수정();
+										}else{
+											alert('검색결과가 없습니다.');
+										}
 									},
 									error : function(reject) {
 										console.err(reject)
 									}
 								})
+								
+								
 								let readyToText = '';
 								if (searchData.productName != '') {
 									readyToText += ' | 제품명: '
@@ -391,12 +397,12 @@
 									readyToText += ' | 작성자: '
 											+ searchData.writer;
 								}
-								if (searchData.workFrom != '') {
+								if (searchData.makeFrom != '') {
 									readyToText += ' | 생성일자: '
 											+ searchData.makeFrom + '~'
 											+ searchData.makeTo;
 								}
-								if (searchData.makeFrom != '') {
+								if (searchData.workFrom != '') {
 									readyToText += ' | 착수일: '
 											+ searchData.workFrom + '~'
 											+ searchData.workTo;
