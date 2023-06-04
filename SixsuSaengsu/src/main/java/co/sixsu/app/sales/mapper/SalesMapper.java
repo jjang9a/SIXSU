@@ -43,6 +43,6 @@ public interface SalesMapper {
 	
 	int productDel(String reqId);
 	
-	public List<InvVO> searchOrder(); // 조회페이지
+	public List<InvVO> searchOrder(InvVO vo); // 조회페이지
 }
 

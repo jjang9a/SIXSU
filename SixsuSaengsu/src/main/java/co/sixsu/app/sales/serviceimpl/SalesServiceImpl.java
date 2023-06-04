@@ -141,9 +141,9 @@ public int orderModDel(InvVO inv) {
 }
 
 @Override
-public List<InvVO> searchOrder() {
+public List<InvVO> searchOrder(InvVO vo) {
 	// TODO Auto-generated method stub
-	return mapper.searchOrder();
+	return mapper.searchOrder(vo);
 }
 
 

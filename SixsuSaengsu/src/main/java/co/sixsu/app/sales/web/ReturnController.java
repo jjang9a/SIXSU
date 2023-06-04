@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.sixsu.app.sales.domain.RetVO;
 import co.sixsu.app.sales.domain.ShipCompVO;
+import co.sixsu.app.sales.domain.ShipVO;
 import co.sixsu.app.sales.service.ReturnService;
 
 @Controller
@@ -31,5 +33,27 @@ public class ReturnController {
 		return list;
 	}
 	
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping("shipList") public List<ShipVO> lotProducts(@RequestParam String
+	 * result){ List<ShipVO> list =service.shipList(result); return list; }
+	 */
+	
+	
+	
+	
+	//
+	@GetMapping("returnInquiry")
+	public void returnInquiry() {
+		
+	}
+	
+	@RequestMapping("searchReturn")
+	@ResponseBody
+	public List<RetVO> searchReturn(RetVO vo) {
+		List<RetVO> list = service.searchReturn(vo);
+		return list;
+	}
 	
 }

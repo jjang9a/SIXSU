@@ -12,4 +12,5 @@ public class ShipCompVO {
 	public String cpShipReqDate;
 	public String busId;
 	public String busName;
+	
 }

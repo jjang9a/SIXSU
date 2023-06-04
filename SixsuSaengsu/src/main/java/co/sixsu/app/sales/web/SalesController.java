@@ -37,12 +37,12 @@ public class SalesController {
 	public void invoice(Model model) {
 	
 	}
-	@RequestMapping("searchOrder")
-	@ResponseBody
-	public List<InvVO> searchOrder() {
-		//List<InvVO> list = service.searchOrder();
-		return null;
-	}
+@RequestMapping("searchOrder")
+@ResponseBody
+public List<InvVO> searchOrder(InvVO vo) {
+	List<InvVO> list = service.searchOrder(vo);
+	return list;
+}
 
 
 

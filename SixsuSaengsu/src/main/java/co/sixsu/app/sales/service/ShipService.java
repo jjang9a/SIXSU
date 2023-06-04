@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.sixsu.app.sales.domain.LotVO;
 import co.sixsu.app.sales.domain.OrdVO;
+import co.sixsu.app.sales.domain.RetVO;
 import co.sixsu.app.sales.domain.ShipVO;
 
 public interface ShipService {
@@ -17,5 +18,5 @@ public interface ShipService {
 	
 	
 	void completeShip(ShipVO vo);
-	
+	List<ShipVO> searchShip(ShipVO vo);
 }
