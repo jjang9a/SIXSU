@@ -9,7 +9,7 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 입고 관리</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 발주 관리</h1>
 		<form action="" method="post" id="reqForm">
 				<table id="reqTable">
 					<tr>
@@ -265,13 +265,13 @@
 					{
 						header: '발주상태',
 						name: 'matReqStat',
-						 formatter: 'listItemText',
-				          editor: {
+						formatter: 'listItemText',
+				         editor: {
 				            type: 'select',
 				            options: {
 				              listItems:reqStat
 				            }
-				          }
+				         }
 					},
 					{
 						header: '납기요청일',

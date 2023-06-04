@@ -13,4 +13,7 @@ public class MatShipVO {
 	int matShipQt;
 	String matShipNote;
 	String empName;
+	
+	String sDate;
+	String eDate;
 }

@@ -34,7 +34,7 @@
 						<td>홀드상태</td>
 						<td>
 							<div id="divRadio">
-								<input type="radio" id="matHoldStat1" name="matHoldStat" value="Y" checked>
+								<input type="radio" id="matHoldStat1" name="matHoldStat" value="Y">
 								<label for="matHoldStat1">Y</label>
 								<input type="radio" id="matHoldStat2" name="matHoldStat" value="N">
 								<label for="matHoldStat2">N</label>
@@ -49,33 +49,6 @@
 					</tr>
 				</table>
 			</form>
-		<!-- <h1 class="mt-4" style="font-family: 'MaruBuri';">자재LOT조회</h1>
-
-		<div id="left">
-			자재명 <input type="text" id="mname">
-			<button type="button" data-bs-toggle="modal" id="msearch"
-						class="sixBtn2" data-bs-target="#msearchModal">
-				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
-					viewBox="0 2 16 16">
-					<path
-						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-				</svg>
-			</button>
-		</div>
-		<div id="left">
-			거래처명 <input type="text" id="bname">
-			<button type="button" data-bs-toggle="modal" id="search1Btn"
-						class="sixBtn2" data-bs-target="#search1Modal">
-				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
-					viewBox="0 2 16 16">
-					<path
-						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-				</svg></button>
-		</div>
-		<div id="left">
-			입고일자 <input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
-		</div>
-		<div> -->
 			<div id="left">
 				<button class="sixBtn2" id="check">조회</button>
 				<button class="sixBtn4" id="reset">초기화</button>
@@ -89,12 +62,12 @@
 
 
 			
-				function mLotList(lot, mat, sDate, eDate){
+				function mLotList(lot, mat, holdStat, sDate, eDate){
 					
 					$.ajax({
 						url: "/materials/matlotlist",
 						method: "GET",
-						data:{matLotId : lot, matName : mat, sDate: sDate, eDate:eDate},
+						data:{matLotId : lot, matName : mat, matHoldStat : holdStat, sDate: sDate, eDate:eDate},
 						success: function (result) {
 							grid.resetData(result);
 						},
@@ -108,6 +81,7 @@
 				
 			let lot =null;
 			let mat = null;
+			let holdStat = null;
 			let sDate = null;
 			let eDate = null;
 			mLotList(lot, mat, sDate, eDate);
@@ -115,9 +89,26 @@
 			$('#check').click(function(){
 				lot = $('#mlot').val();
 				mat = $('#mname').val();
+				holdStat = $("input[name='matHoldStat']:checked").val();
 				sDate = $('#matRecDate').val();
 				eDate = $('#matRecDatee').val();
-				mLotList(lot, mat, sDate, eDate);
+				mLotList(lot, mat, holdStat, sDate, eDate);
+
+			})
+			
+			$('#reset').click(function(){
+				$('#mlot').val('');
+				$('#mname').val('');
+				$("input[name='matHoldStat']:checked").val('');
+				$('#matRecDatee').val('');
+				$('#matRecDate').val('');
+				lot = $('#mlot').val();
+				mat = $('#mname').val();
+				holdStat = $("input[name='matHoldStat']:checked").val();
+				sDate = $('#matRecDate').val();
+				eDate = $('#matRecDatee').val();
+				$('input[type="radio"]').prop('checked', false);
+				mLotList(lot, mat, holdStat, sDate, eDate);
 
 			})
 			
@@ -176,9 +167,6 @@
 				
 			});
 			
-			$('#reset').on('click', function(){
-				mLotList(lot, mat, sDate, eDate);
-			})
 			
  			tui.Grid.applyTheme('default', {
 				cell: {

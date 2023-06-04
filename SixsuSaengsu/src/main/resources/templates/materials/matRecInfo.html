@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>자재입고조회</title>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 입고 조회</h1>
+		<form action="" method="post" id="recForm">
+				<table id="recTable">
+					<tr>
+						<td>자재LOT번호</td>
+						<td><input type="text" name="mlot" id="mlot" class="empty" placeholder="검색"></td>
+					</tr>
+					<tr>
+						<td>자재명</td>
+						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색">
+							<!-- <button type="button" data-bs-toggle="modal" id="msearch"
+										class="sixBtn2" data-bs-target="#msearchModal">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+									viewBox="0 2 16 16">
+									<path
+										d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+								</svg>
+							</button> -->
+						</td>
+					</tr>
+					<tr>
+						<td>거래처명</td>
+						<td><input type="text" name="bname" id="bname" class="empty" placeholder="검색"><button type="button" data-bs-toggle="modal" id="search1Btn"
+							class="sixBtn2" data-bs-target="#search1Modal">
+							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
+								viewBox="0 2 16 16">
+								<path
+									d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+							</svg></button>
+						</td>
+					</tr>
+					<tr>
+						<td>입고유형</td>
+						<td>
+							<div id="divRadio">
+								<input type="radio" id="matRecStat1" name="matRecStat" value="정상입고">
+								<label for="matRecStat1">정상입고</label>
+								<input type="radio" id="matRecStat2" name="matRecStat" value="조정입고">
+								<label for="matRecStatt2">조정입고</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>입고일자</td>
+						<td>
+							<input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
+						</td>
+					</tr>
+				</table>
+				<button type="button" class="sixBtn2" id="search">조회</button>
+				<button type="button" class="sixBtn2" id="reset">초기화</button>
+			</form>
+		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 목록</h3>
+		<div id="grids"></div>
+		
+		<script>
+		
+			const gridData = [
+
+			];
+			window.onload = function () {
+			
+				$.ajax({
+					url: "/materials/matreclist",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						grids.resetData(result);
+						//console.log(result);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+					
+				});
+				
+				
+				
+
+				
+				
+				
+			};
+
+
+
+			
+			
+			// 입고목록 리스트
+ 			const gridDataa = [
+				
+			];
+			
+			const grids = new tui.Grid({
+				el: document.getElementById('grids'),
+
+				scrollX: false,
+				scrollY: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+
+
+				rowHeaders: ['rowNum'],
+
+
+				columns: [{
+						header: '자재입고번호',
+						name: 'matRecId',
+						hidden: true
+					},
+					{
+						header: '자재LOT번호',
+						name: 'matLotId'
+					},
+					{
+						header: '발주번호',
+						name: 'matReqId'
+					},
+					{
+						header: '자재명',
+						name: 'matName'
+					},
+					{
+						header: '입고수량',
+						name: 'matRecQt'
+					},
+					{
+						header: '거래처명',
+						name: 'busName'
+					},
+					{
+						header: '검사일자',
+						name: 'inspDate'
+					},
+					{
+						header: '입고일자',
+						name: 'matRecDate'
+					},
+					{
+						header: '입고유형',
+						name: 'matRecType'
+					},
+					{
+						header: '담당자',
+						name: 'empName'
+					},
+					{
+						header: '비고',
+						name: 'matRecNote'
+					}
+					
+				]
+
+			}); 
+			
+
+
+
+
+
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+			
+			
+
+			
+		</script>
+
+
+
+	</div>
+</body>
+
+</html>
