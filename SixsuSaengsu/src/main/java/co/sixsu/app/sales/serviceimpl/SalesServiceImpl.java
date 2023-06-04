@@ -140,6 +140,12 @@ public int orderModDel(InvVO inv) {
 	
 }
 
+@Override
+public List<InvVO> searchOrder() {
+	// TODO Auto-generated method stub
+	return mapper.searchOrder();
+}
+
 
 
 /*@Override

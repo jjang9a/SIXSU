@@ -7,6 +7,7 @@
 <select id="getDate" resultType="java.util.Date">
 	select sysdate from dual
 </select>
+	
 
 	<!--모달창 이름별 사원조회 -->
 	<select id="emp1List"
@@ -142,5 +143,12 @@
 	delete from det_ord where ord_id=#{ordId}
 	</delete>
 	
+	
+	<select id="searchOrder" parameterType="InvVO">
+	select s.ord_id, TO_CHAR(s.ord_date, 'yyyy-MM-dd') as ord_date, b.bus_name, b.bus_id, b.bus_num, get_com_name(s.ord_stat) ord_stat_name
+	from SORDER s, BUSINESS b
+	where s.bus_id = b.bus_id
+	ORDER BY TO_DATE(SUBSTR(s.ord_id, 4, 6), 'YYMMDD') DESC, TO_NUMBER(SUBSTR(s.ord_id, INSTR(s.ord_id, '-') + 1))DESC
+	</select>
 	
 </mapper>
