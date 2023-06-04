@@ -50,10 +50,10 @@ public interface BasicMapper {
 	public List<MaterialVO> searchMat(SearchDTO dto); // 반제품 검색
 	
 	public int checkBusNum(String num); // 사업자번호 중복 조회
-	public List<BusVO> busList(); // 완제품 목록 조회
-	public int addBus(BusVO bus); // 완제품 등록
-	public int updateBus(BusVO bus); // 완제품 수정
-	public List<BusVO> searchBus(SearchDTO dto); // 완제품 검색
+	public List<BusVO> busList(); // 거래처 목록 조회
+	public int addBus(BusVO bus); // 거래처 등록
+	public int updateBus(BusVO bus); // 거래처 수정
+	public List<BusVO> searchBus(BusVO bus); // 거래처 검색
 		
 	public List<ProcessVO> procList(); // 공정 목록 조회
 	public int addProc(ProcessVO proc); // 공정 등록

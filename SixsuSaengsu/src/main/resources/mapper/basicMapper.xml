@@ -236,31 +236,24 @@
 	WHERE bus_id=#{busId}
 </update>
 
-<select id="searchBus" parameterType="SearchDTO" resultType="BusVO">
-	SELECT *
-	FROM business
-	WHERE 
-	<if test='searchType.equals("idOnly")'>
-		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%'
-	</if>
-	<if test='searchType.equals("nameOnly")'>
-		bus_name like '%'||#{searchKey}||'%'
-	</if>
-	<if test='searchType.equals("typeOnly")'>
-		bus_type = #{searchKey}
-	</if>
-	<if test='searchType.equals("buyName")'>
-		bus_type = 'BUY' and bus_name like '%'||#{searchKey}||'%'
-	</if>
-	<if test='searchType.equals("buyId")'>
-		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type = 'BUY'
-	</if>
-	<if test='searchType.equals("sellName")'>
-		bus_name like '%'||#{searchKey}||'%' and bus_type = 'SELL'
-	</if>
-	<if test='searchType.equals("sellId")'>
-		bus_id like '%'||#{searchKey}||'%' OR lower(bus_id) like '%'||#{searchKey}||'%' and bus_type= 'SELL'
-	</if>
+<sql id="busSql">
+	<where>
+		<if test="busId != null and busId != ''.toString()">
+			bus_id LIKE '%'||upper(#{busId})||'%'
+		</if>
+		<if test="busName != null and busName != ''.toString()">
+			or ( bus_name LIKE '%'||#{busName}||'%' )
+		</if>
+		<if test="busType != null and busType != ''.toString()">
+			and ( bus_type = #{busType} )
+		</if>
+	</where>
+</sql>
+
+<select id="searchBus" resultType="BusVO">
+	SELECT b.*, get_com_name(bus_type) com_name
+	FROM business b
+	<include refid="busSql"></include>
 	ORDER BY bus_stat desc, bus_id
 </select>
 <!-- 거래처 관리 종료 -->
@@ -317,7 +310,7 @@
 	FROM complete_prod p
     JOIN common_code c ON p.cp_size = c.com_id
 	WHERE cp_stat = 'Y'
-	
+	ORDER BY cp_id
 </select>
 
 <select id="activeSpList" resultType="ProductVO">

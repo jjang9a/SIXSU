@@ -31,10 +31,24 @@
 	</sql>
 		
 	<select id="searchInsp" resultType="QuaVO">
-		select *
-		from qua_com 
-		where 1=1
+		select q.insp_num, q.insp_item_id, to_char(insp_date, 'yyyy/MM/dd') insp_date, insp_qt, suit_qt, nsuit_qt ,q.insp_std_id, get_emp_name(emp_id) emp_name, get_com_name(insp_type) insp_exp, NVL(NVL(c.cp_name, s.sp_name), m.mat_name) mat_name
+		from qua_com q
+		left outer join complete_prod c on q.insp_item_id = c.cp_id
+		left outer join semi_prod s on q.insp_item_id = s.sp_id
+		left outer join material m on q.insp_item_id = m.mat_id  
+		where insp_type = #{inspType}
       <include refid="criteria"></include>
+      	order by insp_num desc
+	</select>
+	
+	<select id="resultInspList" resultType="QuaVO">
+		select q.insp_num, q.insp_item_id, to_char(insp_date, 'yyyy/MM/dd') insp_date, insp_qt, suit_qt, nsuit_qt ,q.insp_std_id, get_emp_name(emp_id) emp_name, get_com_name(insp_type) insp_exp, NVL(NVL(c.cp_name, s.sp_name), m.mat_name) mat_name
+		from qua_com q
+		left outer join complete_prod c on q.insp_item_id = c.cp_id
+		left outer join semi_prod s on q.insp_item_id = s.sp_id
+		left outer join material m on q.insp_item_id = m.mat_id  
+		where insp_date between TRUNC(sysdate) - (INTERVAL '14' DAY) and sysdate
+		order by insp_num desc
 	</select>
 
 	<!-- 원천수 자재 리스트 출력 -->
@@ -44,6 +58,15 @@
 		left outer join qua_com on insp_item_id = pd_id
 		where pd_id = 'M021'
 		and insp_num IS NULL
+	</select>
+	
+	<!-- 검사 상세 조회 -->
+	<select id="getDetail" resultType="QuaVO">
+		SELECT D.*, L.INSP_NAME, STD_VAL
+		FROM QUA_DETAILS D
+		JOIN QUA_INSP_LIST L ON D.INSP_ID = L.INSP_ID
+		WHERE INSP_NUM = #{inspNum}
+		order by det_insp_num
 	</select>
 	
 	<!-- 조민경 -->

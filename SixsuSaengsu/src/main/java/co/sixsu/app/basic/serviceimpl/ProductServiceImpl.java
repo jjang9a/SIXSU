@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import co.sixsu.app.basic.domain.ReceiveVO;
 import co.sixsu.app.basic.mapper.ProductMapper;
 import co.sixsu.app.basic.service.ProductService;
+import co.sixsu.app.quality.domain.QilVO;
+import co.sixsu.app.work.domain.PfmcVO;
 
 @Service("ProductService")
 public class ProductServiceImpl implements ProductService{
@@ -240,6 +242,37 @@ public class ProductServiceImpl implements ProductService{
 			// while문 종료 후 = 현재수량이 lot적재단위보다 적거나 같아 진 경우(위와 같음)
 			cpRecMini(ableQt, qt, lotInfo, vo);
 		}
+	}
+
+	
+	// 공정실적 조회
+	
+	@Override // 공정실적 리스트
+	public List<PfmcVO> performanceList() {
+		return mapper.performanceList();
+	}
+
+	@Override // 공정실적 검색
+	public List<PfmcVO> searchPerformance(PfmcVO vo) {
+		return mapper.searchPerformance(vo);
+	}
+
+	
+	// 품질검사 항목 조회
+	
+	@Override // 품질검사 항목 목록
+	public List<QilVO> getInspList() {
+		return mapper.getInspList();
+	}
+
+	@Override
+	public boolean addInsp(QilVO vo) {
+		return mapper.addInsp(vo) == 1;
+	}
+
+	@Override
+	public boolean updateInsp(QilVO vo) {
+		return mapper.updateInsp(vo) == 1;
 	}
 
 	

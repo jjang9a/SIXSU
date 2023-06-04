@@ -16,4 +16,5 @@ public class BusVO { // 거래처 테이블(business)
 	private String busNote; // 비고
 	
 	private String comName; // 공통코드명
+	private String comId;
 }

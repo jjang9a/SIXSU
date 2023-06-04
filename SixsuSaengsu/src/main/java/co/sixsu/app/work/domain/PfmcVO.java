@@ -20,4 +20,8 @@ public class PfmcVO { // 공정실적
 	private String wkBomId; // 지시BOM코드
 	
 	private String pdUnit; // 제품 단위
+	private String empName; // 사원이름
+	private String procType; // 검색용 공정구분
+	private String pdType; // 검색용 품목구분
+	private String procName; // 공정명
 }

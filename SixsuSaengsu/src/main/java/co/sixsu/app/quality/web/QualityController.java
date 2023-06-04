@@ -51,8 +51,8 @@ public class QualityController {
 	public void returnInsp() {
 	}
 
-	// 입고 검사 조회 페이지
-	@GetMapping("/quality/recInspInq")
+	// 검사 조회 페이지
+	@GetMapping("/quality/inspInfo")
 	public void recInspInq() {
 	}
 	
@@ -211,15 +211,26 @@ public class QualityController {
 	
 	// 조회 아작스
 	@ResponseBody
-	@PostMapping("/quality/searchInsp")
+	@PostMapping("/quality/searchInsp") // 품질검사 조회
 	public List<QuaVO> searchInsp(QuaVO vo) {
 		return quaService.searchInsp(vo);
 	}
 	
 	@ResponseBody
-	@GetMapping("/quality/waterAjax")
+	@GetMapping("/quality/waterAjax") // 원천수 입고대기목록
 	public List<QuaVO> waterAjax(){
 		return quaService.getWater();
 	}
 	
+	@ResponseBody
+	@GetMapping("/quality/resultInspList")
+	public List<QuaVO> resultInspList(){ // 2주이내 검사결과 리스트
+		return quaService.resultInspList();
+	}
+	
+	@ResponseBody
+	@GetMapping("/quality/getDetail") // 품질검사 상세결과
+	public List<QuaVO> getDetail(@RequestParam String inspNum){
+		return quaService.getDetail(inspNum);
+	}
 }
