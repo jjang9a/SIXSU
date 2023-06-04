@@ -48,15 +48,11 @@ public interface MaterialsMapper {
 	//자재 lot 리스트
 	List<MatLotVO> mLotList(MatLotVO vo);
 	
-	/*
-	 * //자재 lot 리스트 int deleteMLot(String matLotId);
-	 */
-	
 	//자재 출고 리스트
-	List<MatShipVO> getMatShipList();
+	List<MatShipVO> getMatShipList(MatShipVO vo);
 	
 	//자재 재고조정 리스트
-	List<MatAdjVO> getMatAdjList();
+	List<MatAdjVO> getMatAdjList(String matLotId);
 	
 	//자재 조정입고
 	int matRecAdj(MatAdjVO vo);
@@ -65,10 +61,10 @@ public interface MaterialsMapper {
 	int matShipAdj(MatAdjVO vo);
 	
 	//반제품 재고조정 리스트
-	List<SpAdjVO> getSpAdjList();
+	List<SpAdjVO> getSpAdjList(String spLotId);
 	
 	//반제품 출고 리스트
-	List<SpShipVO> getSpShipList();
+	List<SpShipVO> getSpShipList(SpShipVO vo);
 	
 	//반제품 조정입고
 	int spRecAdj(SpAdjVO vo);
@@ -95,7 +91,7 @@ public interface MaterialsMapper {
 	int insertMatDmg(MatDmgVO vo);
 	
 	//반제품 리스트
-	List<SpVO> getSpList();
+	List<SpVO> getSpList(String spName);
 	
 	//불량품 처리대기 리스트
 	List<MatDmgVO> getMatDamageWaitList2();

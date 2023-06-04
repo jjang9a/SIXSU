@@ -101,14 +101,14 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//자재 출고내역 리스트
 		@Override
-		public List<MatShipVO> getMatShipList() {
-			return mapper.getMatShipList();
+		public List<MatShipVO> getMatShipList(MatShipVO vo) {
+			return mapper.getMatShipList(vo);
 		}
 		
 		//자재 재고조정 리스트
 		@Override
-		public List<MatAdjVO> getMatAdjList() {
-			return mapper.getMatAdjList();
+		public List<MatAdjVO> getMatAdjList(String matLotId) {
+			return mapper.getMatAdjList(matLotId);
 		}
 		
 		//자재 조정입고
@@ -130,14 +130,14 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//반제품 재고조정 리스트
 		@Override
-		public List<SpAdjVO> getSpAdjList() {
-			return mapper.getSpAdjList();
+		public List<SpAdjVO> getSpAdjList(String spLotId) {
+			return mapper.getSpAdjList(spLotId);
 		}
 		
 		//반제품 출고 리스트
 		@Override
-		public List<SpShipVO> getSpShipList() {
-			return mapper.getSpShipList();
+		public List<SpShipVO> getSpShipList(SpShipVO vo) {
+			return mapper.getSpShipList(vo);
 		}
 		
 		//자재 조정입고
@@ -207,8 +207,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//반제품 리스트
 		@Override
-		public List<SpVO> getSpList() {
-			return mapper.getSpList();
+		public List<SpVO> getSpList(String spName) {
+			return mapper.getSpList(spName);
 		}
 
 		//불량품 처리대기 리스트
