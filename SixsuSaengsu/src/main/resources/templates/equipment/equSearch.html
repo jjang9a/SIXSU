@@ -101,7 +101,8 @@
 									</tr>
 									<tr>
 										<td>설비상태<span class="needStar"> * </span></td>
-										<td><input type="text" name="equStat" id="equStat"></td>
+										<td><input type="text" name="equStat" id="equStat"  ></td>
+										
 									</tr>
 									<tr>
 										<td>설비명<span class="needStar"> * </span></td>
@@ -178,7 +179,10 @@
 		<!-- 그리드 시작 -->
 		<div id="grid"></div>
 
-		<script>
+		<script th:inline="javascript">
+		
+	    let equStat = [[${equStat}]];
+		let equSuit = [[${equSuit}]];
 	    
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
@@ -213,20 +217,33 @@
             align: 'center'
           },
           {
-	  		header: '설비상태',
-			name: 'equStat',
-			filter: 'select',
-			align: 'center',
-			formatter: 'listItemText',
-			editor: {
-			type: 'select',
-			options: {
-				listItems: [
-					{text: '가동', value: 'Y'},
-					{text: '비가동', value: 'N'},	
-					]
-			      }
-		        }
+			header: '설비상태',
+					name: 'equStat',
+					filter: 'select',
+					align: 'center',
+					formatter: 'listItemText',
+					editor: {
+						type: 'select',
+						options: {
+							listItems: equStat
+						}
+					}
+
+
+			// header: '설비상태',
+			// name: 'equStat',
+			// filter: 'select',
+			// align: 'center',
+			// formatter: 'listItemText',
+			// editor: {
+			// type: 'select',
+			// options: {
+			// 		listItems: [
+			// 			{text: '가동', value: 'STAT-1'},
+			// 			{text: '비가동', value: 'STAT-2'},	
+			// 		]
+			// 	}
+			// }
 	      },
           {
              header: '설비라인',
@@ -254,21 +271,17 @@
              hidden : true
           },
           {
-         	header: '판정',
-     		name: 'equSuit',
-     		filter: 'select',
-     		align: 'center',
-     		hidden : true,
-     		formatter: 'listItemText',
-     		editor: {
-     		type: 'select',
-     		options: {
-     			listItems: [
-     			{text: '적합', value: 'Y'},
-     			{text: '부적합', value: 'N'},	
-     		   ]
-     	      }
-     	    }
+			header: '판정',
+			formatter: 'listItemText',
+			editor: {
+			type: 'select',
+			options: {
+					listItems: [
+						{text: '적합', value: 'CKECK1'},
+						{text: '부적합', value: 'CKECK2'},	
+					]
+				}
+			}
      	  },
           {
               header: '점검일자',
@@ -357,11 +370,12 @@
     	
     	$('#equCode').val(dataRow.equCode); // 설비코드
 	      $('#procId').val(dataRow.procId); // 공정코드
-	      $('#equStat').val(dataRow.equStat); // 설비상태
 	      $('#equName').val(dataRow.equName); // 설비명
 	      $('#equLine').val(dataRow.equLine); // 설비라인
+		  $('#equStat').val(dataRow.equStat); // 설비상태
 	      $('#equSuit').val(dataRow.equSuit); // 판정
 	      $('#checkDate').val(dataRow.checkDate); // 점검일자
+
 	      $('#equCheck').val(dataRow.equCheck); // 점검주기
 	      $('#checkNext').val(dataRow.checkNext); // 차기점검일
 	      $('#checkType').val(dataRow.checkType); // 점검구분
