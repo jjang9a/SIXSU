@@ -8,6 +8,28 @@
 <meta charset="UTF-8">
 <title>주문서관리</title>
 <style>
+		
+
+		#cpTable input,
+		select {
+			padding-left: 10px;
+			width: 230px;
+		}
+
+		#divRadio input {
+			padding-left: 7px;
+			width: 20px;
+		}
+
+		#cpTable td {
+			
+			text-align: center;
+		}
+
+		.divBtn {
+			text-align: right;
+			padding: 15px 0 30px 0;
+		}
 .modal-body {
 			background: #e5edf5;
 		}
@@ -21,19 +43,19 @@
 		<div>
 			<form action="" method="post" id="allOrderList" name="allOrderList">
 				<h1 class="mt-4" style="font-family: 'MaruBuri';">주문서등록</h1>
-				<div id="left">
-					주문번호<input type="text" name="ordId" id="codeBox">
+				<table id="cpTable">
+				<tr>
+					<td>주문번호</td><td><input type="text" name="ordId" id="codeBox"></td>
 					
-					<br> 주문날짜 <input type="text" name="ordDate"
-						id="ordDate"><br> 주문자 <input type="text"
-						id="orderName" readonly th:value='${#authentication.principal.empName}'>
-
-					
-					<br> 사원번호 <input type="text" name="empId" id="orderNum" readonly th:value='${#authentication.principal.empId}'><br>
-				</div>
-
-				<div id="right">
-					거래처명 <input type="text" id="busName">
+					<td>주문날짜</td><td><input type="text" name="ordDate" id="ordDate"></td>
+				
+					<td>주문자</td><td><input type="text"
+						id="orderName" readonly th:value='${#authentication.principal.empName}'></td>
+				
+					<td>사원번호</td><td><input type="text" name="empId" id="orderNum" readonly th:value='${#authentication.principal.empId}'></td>
+				</tr>
+				<tr>
+					<td>거래처명</td><td><input type="text" id="busName" style="width : 165px;">
 					<button type="button" data-bs-toggle="modal" id="search1Btn"
 						class="sixBtn2" data-bs-target="#search1Modal">
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
@@ -41,22 +63,26 @@
             <path
 								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
-					</button>
-					<br> 거래처코드 <input type="text" name="busId" id="busCode">
-					<br> 사업자번호 <input type="text" id="busNum"> <br>
-					주소 <input type="text" id="busAddr"> <br> 전화번호 <input
-						type="text" id="busTel">
-				</div>
+					</button></td>
+					
+					<td>거래처코드</td><td><input type="text" name="busId" id="busCode"></td>
+				
+				 	<td>사업자번호</td><td><input type="text" id="busNum"></td>
+					
+					<td>주소</td><td><input type="text" id="busAddr"></td>
+				
+					<td>전화번호</td><td><input type="text" id="busTel"></td>
+				</tr>
+				</table>
 			</form>
 		</div>
+		<div class="divBtn">		
 		<div id="bottom">
-			<button class="sixBtn4" id="orderDelete">주문서 초기화</button>
+			<button class="sixBtn4" id="orderDelete">초기화</button>
 			<button class="sixBtn4" id="productConfirm">상품추가</button>
 			<button class="sixBtn4" id="productDelete">상품삭제</button>
-
-
 		</div>
-
+		</div>
 
 		<!-- 모달창 사원조회 -->
 		<div class="modal fade" id="searchModal" tabindex="-1"
@@ -87,7 +113,7 @@
 		<!-- 모달창 거래조회  -->
 		<div class="modal fade" id="search1Modal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
+			<div class="modal-dialog modal-xl">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -130,9 +156,11 @@
 			</div>
 		</div>
 		<div id="gridy"></div>
+		<div class="divBtn">
 		<button class="sixBtn6" id="orderComplete">주문서 완료</button>
 		<button class="sixBtn6" id="orderModify">주문서 수정</button>
 		<button class="sixBtn6" id="deletComplete">주문서 삭제</button>
+		</div>
 		<div id="orderingGrid"></div>
 		
 		
@@ -173,15 +201,7 @@ window.onload = function() {
   	
   	//주문서 초기화 버튼 
 	 $("#orderDelete").on("click", function(){
-		 $('#codeBox').val(null);
-		 $('#ordDate').val(null);
-		 $('#orderName').val(null);
-		 $('#orderNum').val(null);
-		 $('#busName').val(null);
-		 $('#busCode').val(null);
-		 $('#busNum').val(null);
-		 $('#busAddr').val(null);
-		 $('#busTel').val(null);
+		 location.reload();
 	 })
 
 };  //윈도우 온로드 마지막 괄호	
@@ -593,18 +613,23 @@ window.onload = function() {
 			{
 			header : '거래처번호',
 			name : 'busId',
+			align: 'center'
 		}, {
 			header : '거래처명',
-			name : 'busName'
+			name : 'busName',
+			align: 'center'
 		}, {
 			header : '사업자번호',
-			name : 'busNum'
+			name : 'busNum',
+			align: 'center'
 		}, {
 			header : '전화번호',
-			name : 'busTell'
+			name : 'busTell',
+			align: 'center'
 		}, {
 			header : '주소',
-			name : 'busAddr'
+			name : 'busAddr',
+			align: 'center'
 		}]
 	});
 	 
@@ -684,21 +709,27 @@ window.onload = function() {
 		columns : [ {
 			header : '주문코드',
 			name : 'ordId',
+			align: 'center'
 		}, {
 			header : '주문날짜',
 			name : 'ordDate',
+			align: 'center'
 		}, {
 			header : '거래처명',
 			name : 'busName',
+			align: 'center'
 		},{
 			header : '거래처코드',
 			name : 'busId',
+			align: 'center'
 		},{
 			header : '사업자번호',
-			name : 'busNum'
+			name : 'busNum',
+			align: 'center'
 		},{
 			header : '진행상태',
-			name : 'ordStatName'
+			name : 'ordStatName',
+			align: 'center'
 			
 		},
 		]

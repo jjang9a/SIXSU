@@ -14,7 +14,7 @@ public class RetVO {
  public String empId;
  
  
- public String detOrdId;
+ public String ordDetId;
  public String busId;
  public String cpLotId;
  public String cpId;

@@ -36,7 +36,7 @@
   
   <select id="searchReceive"
   		resultType="RecVO">
-  	select *
+  	select r.cp_rec_id, TO_CHAR(r.cp_rec_date, 'yyyy-MM-dd') cp_rec_date, p.cp_lot_id, p.cp_id, c.cp_name, r.cp_rec_qt, get_com_name(r.cp_rec_tp) cp_rec_tp
         from prod_rev r
         left outer join prod_lot p
         on p.cp_lot_id = r.cp_lot_id

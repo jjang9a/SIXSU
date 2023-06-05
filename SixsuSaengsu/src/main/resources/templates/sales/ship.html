@@ -10,9 +10,10 @@
   </head>
   <body>
     <div layout:fragment="content">
+    <form id="searchForm">
       <h1 class="mt-4" style="font-family: 'MaruBuri'">완제품출고관리</h1>
       <h3 class="mt-4" style="font-family: 'MaruBuri'">주문현황</h3>
-      상품명 <input type="text" name="cpName" id="cpNameBox" />
+      상품명 <input type="text" name="cpName" id="cpName" />
       <button
         type="button"
         data-bs-toggle="modal"
@@ -33,12 +34,16 @@
           />
         </svg></button
       ><br />
-      상품코드 <input type="text" name="cpId" id="cpIdBox" /> <br />
-      입고일자 <input type="date" name="startPro" id="startPro" />
-      <input type="date" name="endPro" id="endPro" /> <br />
-      <button class="sixBtn2" id="infoCollect">조회</button>
-      <button class="sixBtn4" id="infoCollect">초기화</button><br />
-
+      상품코드 <input type="text" name="cpId" id="cpId" /> <br />
+      주문일자 <input type="date" name="startDate" id="startDate"/>
+      <input type="date" name="endDate" id="endDate"/> <br />
+      </form>
+      
+      <div class="divBtn">
+				<button type="button" class="sixBtn2 filter_submit" id="search">검색</button>
+				<button type="button" class="sixBtn2 filter_reset" id="clear">초기화</button>				
+				</div>
+	
       <div id="orderListGrid"></div>
 
       <!-- 상품목록 모달창 -->
@@ -103,10 +108,10 @@
 
               <div class="btns">
                 상품명:
-                <input type="text" name="cpId" id="cpOrdNameBox" readonly />
+                <input type="text" name="cpOrdNameBox" id="cpOrdNameBox" readonly />
                 <br />
                 상품코드:
-                <input type="text" name="cpCode" id="cpOrdCode" readonly />
+                <input type="text" name="cpOrdCode" id="cpOrdCode" readonly />
                 <br />
                 주문수량:
                 <input type="text" name="ordQt" id="cpOrdQt" readonly /><br />
@@ -173,7 +178,31 @@
         </div>
       </div>
       <script>
-      
+      $("#search").on("click",(e) =>{
+			 $.ajax({
+	             url: '/sales/orderedList',
+	             type: 'post',
+	             data: $('#searchForm').serialize(),
+	             dataType: 'json',
+	             success: function (result) {
+	            	 orderListGrid.resetData(result);
+	               
+	                
+	             },
+	             error: function (reject) {
+	                console.log(reject);
+	                alert('검색 중 오류가 발생했습니다!');
+	             }
+	          });
+
+		})
+		$("#clear").on("click",(e) =>{
+			 $('#cpName').val('');
+	         $('#cpId').val('');
+	         $('#startDate').val('');
+	         $('#endDate').val('');
+	        
+		})
       
         //상품조회 모달창 부분
         $("#searchProductBtn").on("click", function (e) {
@@ -202,22 +231,25 @@
             {
               header: "완제품 코드",
               name: "cpId",
+              align:"center"
             },
             {
               header: "완제품 이름",
               name: "cpName",
+              align:"center"
             },
             {
               header: "완제품 규격",
               name: "cpSize",
+              align:"center"
             },
           ],
         });
         gridp.on("click", (ev) => {
           const focusCell = gridp.getFocusedCell();
           let dataRow = gridp.getRow(ev.rowKey);
-          $("#cpNameBox").val(dataRow.cpName);
-          $("#cpIdBox").val(dataRow.cpId);
+          $("#cpName").val(dataRow.cpName);
+          $("#cpId").val(dataRow.cpId);
           $("#productModal").modal("hide");
         });
 
@@ -239,38 +271,47 @@
     	  	{
               header: "거래처명",
               name: "busName",
+              align:"center"
             },
         	  {
               header: "주문날짜",
               name: "ordDate",
+              align:"center"
             },
             {
               header: "납기일자",
               name: "ordEndDate",
+              align:"center"
             },
             {
               header: "주문코드",
               name: "ordId",
+              align:"center"
             },
             {
               header: "주문상세코드",
               name: "ordDetId",
+              align:"center"
             },
             {
               header: "제품코드",
               name: "cpId",
+              align:"center"
             },
             {
               header: "제품명",
               name: "cpName",
+              align:"center"
             },
             {
               header: "주문수량",
               name: "ordQt",
+              align:"center"
             },
             {
               header: "관리 lot 수량",
               name: "cpLot",
+              align:"center",
               hidden : true
             }
           ],
@@ -332,18 +373,22 @@
             {
               header: "완제품 LOT",
               name: "cpLotId",
+              align:"center"
             },
             {
               header: "완제품 코드",
               name: "cpId",
+              align:"center"
             },
             {
               header: "완제품 이름",
               name: "cpName",
+              align:"center"
             },
             {
               header: "완제품 수량",
               name: "cpLotQt",
+              align:"center"
             },
           ],
         });
@@ -394,31 +439,38 @@
 	        	{
 	              header: "주문상세코드",
 	              name: "ordDetId",
+	              align:"center",
 	              rowSpan: true
 	            },
 	        	{
 	              header: "완제품 출고코드",
 	              name: "cpShipId",
+	              align:"center"
 	            },
 	            {
 	              header: "완제품 LOT 코드",
 	              name: "cpLotId",
+	              align:"center"
 	            },
 	            {
 	              header: "출고 수량",
 	              name: "cpShipQt",
+	              align:"center"
 	            },
 	            {
 	              header: "출고 요청일자",
 	              name: "cpShipReqDate",
+	              align:"center"
 	            },
 	            {
 	              header: "출고진행상태",
 	              name: "cpShipStat",
+	              align:"center"
 	            },
 	            {
 	              header: "검사번호",
 	              name: "inspNum",
+	              align:"center",
 	              hidden: true
 	            },
           	],
@@ -482,23 +534,37 @@
         	{
               header: "완제품 출고코드",
               name: "cpShipId",
+              align:"center"
             },
             {
               header: "완제품 LOT 코드",
               name: "cpLotId",
+              align:"center"
             },
             {
               header: "출고 수량",
               name: "cpShipQt",
+              align:"center"
             },
             {
               header: "출고진행상태",
               name: "cpShipStat",
+              align:"center"
             },
           ],
         });
       
-       
+		completeShipGrid.setBodyHeight(400);
+		tui.Grid.applyTheme('default', {
+			cell: {
+				header: {
+					background: '#e5edf5'
+				},
+				normal: {
+					background: '#ffffff'
+				}
+			}
+		});		 
         
 		        
       </script>

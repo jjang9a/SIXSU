@@ -10,5 +10,12 @@ import co.sixsu.app.sales.domain.ShipCompVO;
 @Mapper
 public interface ReturnMapper {
 	public List<ShipCompVO> orderComplete(String keyword);
+	
+	
 	public List<RetVO> searchReturn(RetVO vo);
+	
+	public int returnRequest(RetVO vo);
+	public int insertReturn(RetVO vo);
+	
+	
 }
