@@ -44,10 +44,10 @@ h1 {
 				<tr>
 					<td>완제품 출고 코드</td>
 					<td><input type="text" name="cpShipId" id="cpShipId" readonly></td>
-					<td>주문 상세 코드</td>
-					<td><input type="text" name="ordDetId" id="ordDetId" readonly></td>
 					<td>LOT번호</td>
 					<td><input type="text" name="cpLotId" id="cpLotId" readonly></td>
+					<td>검사번호</td>
+					<td><input type="text" name="inspNum" id="inspNum" readonly></td>
 				</tr>
 				<tr>
 					<td>제품명</td>
@@ -59,7 +59,7 @@ h1 {
 				</tr>
 				<tr>
 					<td>제조 일자</td>
-					<td><input type="text" name="endDate" id="endDate" readonly></td>
+					<td><input type="text" name="endDate" id="wkEnd" readonly></td>
 					<td>유통 기한</td>
 					<td><input type="text" name="expDate" id="expDate" readonly></td>
 					<td>적합 여부</td>
@@ -72,8 +72,11 @@ h1 {
 
 				<tr>
 					<td>부적합 사유</td>
-					<td colspan="3"><input type="text" name="detailNote"
-						id="detailNote" class="empty" style="width: 660px;"></td>
+					<td><input type="text" name="detailNote"
+						id="detailNote" class="empty"></td>
+						<!-- <td colspan="3">  style="width: 660px;"-->
+					<td>검사자</td>
+					<td><input type="text" name="empName" id="empName" readonly>
 					<td>검수 상태</td>
 					<td><input type="text" name="cpShipStat" id="cpShipStat" readonly></td>
 				</tr>
@@ -86,7 +89,7 @@ h1 {
 			</table>
 		</form>
 		<div class="divBtn">
-			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
+			<!-- <button type="button" class="sixBtn2" id="searchBtn">검색</button> -->
 			<button type="button" class="sixBtn2" id="addBtn">등록</button>
 			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
 		</div>
@@ -121,7 +124,8 @@ h1 {
 					columns : [ {
 						header : '완제품 출고 코드',
 						name : 'cpShipId',
-						align : 'center'
+						align : 'center',
+						sortable: true
 					}, {
 						header : '주문 상세 코드',
 						name : 'ordDetId',
@@ -138,10 +142,11 @@ h1 {
 					}, {
 						header : '제품명',
 						name : 'cpName',
-						align : 'center'
+						align : 'center',
+						filter: 'select'
 					}, {
 						header : '제조일자',
-						name : 'endDate',
+						name : 'wkEnd',
 						align : 'center'
 					}, {
 						header : '유통기한',
@@ -156,14 +161,33 @@ h1 {
 						name : 'cpShipStat',
 						align : 'center'
 					}, {
-						header : '적합여부',
-						name : 'resStat',
+						header : '검사번호',
+						name : 'inspNum',
 						align : 'center'
 					},{
-						header : '요청일자',
-						name : 'cpShipReqDate',
+						header : '검사자',
+						name : 'empName',
 						align : 'center'
-					}, {
+					},{
+						header : '적합여부',
+						name : 'resStat',
+						align : 'center',
+						filter : 'select',
+						editor : {
+							type : 'select',
+							options : {
+								listItems : [{
+									text : '적합',
+									value : '적합'
+								},
+								{
+									text : '부적합',
+									value : '부적합'
+								}
+								]	
+							}
+						}
+					},{
 						header : '완료일자',
 						name : 'inspDate',
 						align : 'center'
@@ -184,6 +208,11 @@ h1 {
 
 				// 등록 버튼 이벤트
 				$('#addBtn').on('click', function(e) {
+					 // cpShipId 값 확인
+				    if ($('#cpShipId').val() !== '') {
+				        // 동일한 완제품 출고 코드가 있을 경우
+				        alert('동일한 완제품 출고 코드가 있습니다. 다시 확인해주세요.');
+				    } else{
 					$.ajax({
 						url : '/quality/shipInspAdd',
 						type : 'post',
@@ -197,7 +226,11 @@ h1 {
 							alert('출고 검사 결과 등록 중 오류가 발생했습니다.');
 						}
 					});
+				    }
 					$('#cpqForm input').val('');
+					$('#resStat')
+							.val('')
+							.prop("selected", true);
 				});
 
 				// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
@@ -211,13 +244,14 @@ h1 {
 					$('#cpLotId').val(dataRow.cpLotId);
 					$('#cpId').val(dataRow.cpId);
 					$('#cpName').val(dataRow.cpName);
-					$('#endDate').val(dataRow.endDate);
+					$('#wkEnd').val(dataRow.endDate);
 					$('#cpShipQt').val(dataRow.cpShipQt);
 					$('#expDate').val(dataRow.expDate);
 					$('#cpShipStat').val(dataRow.cpShipStat);
-					$('#cpShipReqDate').val(dataRow.cpShipReqDate);
 					$('#inspDate').val(dataRow.inspDate);
 					$('#resStat').val(dataRow.resStat).prop("selected", true);
+					$('#empName').val(dataRow.empName);
+					$('#inspNum').val(dataRow.inspNum);
 
 					
 				})
@@ -258,6 +292,8 @@ h1 {
 												});
 									}
 								})
+								
+								
 
 				// 검색 버튼 이벤트
 				let searchType = '';

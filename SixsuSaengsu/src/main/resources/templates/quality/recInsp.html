@@ -96,7 +96,7 @@
 
 					<!-- 토스트 그리드 코드 -->
 					<!-- 발주 번호 검색 버튼 -->
-					<label>입고검사 등록</label>
+					<label class="mt-4" style="font-family: 'MaruBuri';">입고검사 등록</label>
 					<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#regModal">
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
 							class="bi bi-search" viewBox="0 2 16 16">
@@ -158,7 +158,7 @@
 					</div>
 
 					<!-- 본문 그리드 부분 -->
-					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 결과 등록 전</h6>
+					<!-- <h6 class="mt-4" style="font-family: 'MaruBuri';">검사 결과 등록 전</h6> -->
 					<div class="rightBtn">
 						<button class="sixBtn6" id="rrBtn">검사결과입력</button>
 					</div>
@@ -166,10 +166,10 @@
 
 					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 등록 완료</h6>
 					<div id="aiGrid"></div>
-
+					<div class="rightBtn">
 					<button class="sixBtn2" id="modBtn">수정</button>
 					<button class="sixBtn2" id="delBtn">삭제</button>
-
+					</div>
 				</div>
 				<!-- 영역 설정 div 끝 -->
 
@@ -249,9 +249,10 @@
 						<!-- 세부 검사 항목 끝나는 부분 -->
 
 						<!-- 검사 등록 버튼 -->
+						<div class="rightBtn">
 						<button type="button" class="sixBtn2" id="inspBtn">등록</button>
 						<button type="button" class="sixBtn4" id="modifyBtn">수정하기</button>
-
+						</div>
 					</div>
 
 
@@ -635,6 +636,7 @@
 
 				if (data.length === 0) {
 					alert('검사를 등록해주세요.');
+					return false;
 				} else {
 					// Ajax를 통해 데이터를 서버로 전송하고 등록 성공 후 처리
 					$.ajax({

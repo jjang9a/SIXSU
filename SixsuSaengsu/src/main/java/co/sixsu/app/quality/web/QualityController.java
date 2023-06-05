@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
+import co.sixsu.app.quality.domain.ReturnInspVO;
 import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.quality.service.QualityService;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
@@ -50,6 +51,7 @@ public class QualityController {
 	@GetMapping("/quality/returnInsp")
 	public void returnInsp() {
 	}
+
 
 	// 검사 조회 페이지
 	@GetMapping("/quality/inspInfo")
@@ -204,10 +206,28 @@ public class QualityController {
 	}
 	
 	// 반품 검사 목록 리스트
+	@ResponseBody
+	@GetMapping("/quality/returnList")
+	public List<ReturnInspVO> returnList() {
+		return quaService.returnList();
+	}
 	
 	// 반품 검사 결과 등록
+	@ResponseBody
+	@PostMapping("/quality/returnInspAdd")
+	public ReturnInspVO returnInspAdd(ReturnInspVO ret) {
+		System.out.println("반품 검사 등록");
+		quaService.returnInspAdd(ret);
+		return ret;
+	}
 	
 	// 반품 검사 결과 수정
+	@ResponseBody
+	@PostMapping("/quality/returnInspMod")
+	public ReturnInspVO returnInspMod(ReturnInspVO ret){
+		quaService.returnInspMod(ret);
+		return ret;
+	}
 	
 	// 조회 아작스
 	@ResponseBody
