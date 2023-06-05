@@ -23,7 +23,6 @@
 		#startBtn {
 			background-color: #ea9999;
 			float: right;
-
 		}
 
 		#endBtn {
@@ -35,7 +34,6 @@
 			padding: 4px 10px;
 			text-align: left;
 		}
-
 		#equStat,
 		#operType {
 			width: 185px;
@@ -92,27 +90,20 @@
 					<td><input type="text" name="equName" id="equName" class="empty"></td>
 				</tr>
 				<tr>
-					<!-- <td>설비상태<span class="needStar"> *</span></td>
+				    <td>설비상태<span class="needStar"> *</span></td>
 					<td><input name="equStat" id="equStat"
-						type="text" class="empty" readonly></td>   -->
+						type="text" class="empty" readonly></td>  
 
-					<td>설비상태 <span class="needStar"> *</span></td>
-					<td>
+				<!--	<td>설비상태 <span class="needStar"> *</span></td>
+					 <td>
 						<select id="equStat" name="equStat">
 							<option value='' selected>===== 선택 =====</option>
 							<option th:each="type : ${equStat}" th:value="${type.value}" th:text="${type.text}">
 							</option>
 						</select>
-					</td>
+					</td> -->
 
-					<!--<td>
-						 <div id="divRadio">
-							<input type="radio" id="equStat1" name="equStat" value="Y"
-								checked> <label for="equStat1">가동</label> <input
-								type="radio" id="equStat2" name="equStat" value="N"> <label
-								for="equStat2">비가동</label>
-						</div> 
-					</td>-->
+					
 				</tr>
 				<tr>
 					<td>비가동 구분<span class="needStar"> *</span></td>
@@ -377,7 +368,6 @@
 				$('#operFnish').val(dataRow.operFnish); // 비가동 종료시점
 				$('#operNote').val(dataRow.operNote); // 비가동 비고
 				$('#empId').val(dataRow.empId); // 담당자	
-
 				$('#equStat').val(dataRow.equStat).prop("selected", true); // 설비상태 
 				$('#operType').val(dataRow.operType).prop("selected", true); // 비가동 구분 
 				//$("input:radio[name='equStat']:radio[value="+dataRow.equStat+"]").prop('checked', true); //설비상태
@@ -434,7 +424,7 @@
 				if (selRow == 999) {
 					alert('수정할 데이터가 없습니다.')
 				} else {
-
+					
 					console.log($('#addForm').serialize())
 					$.ajax({
 						url: 'fnishIn',
@@ -479,9 +469,6 @@
 							alert('수정되었습니다');
 							const setData = result
 							grid.setRow(selRow, setData);
-
-							
-
 							selRow = '';
 						},
 						error: function (reject) {
