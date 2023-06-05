@@ -29,7 +29,7 @@ public interface QualityMapper {
 	void insertPro(QuaVO am); // 입고 검사 등록 프로시저 사용
 	int mUpdate(QuaVO qua); // 자재 입고 검사 등록 시 자재 발주 상태 업데이트
 	List<QuaVO> afterReqList();//입고 검사 완료 리스트
-	int delInsp(String inspNum);// 검사 완료 단건 삭제
+	int delInsp(QuaVO qua);// 검사 완료 단건 삭제
 	List<QuaVO> modInspItem(String inspNum);//수정시 검사 항목 불러오기
 	int updateQd(QuaVO qua);//수정 시 qua_details 업데이트
 	int updateQc(List<QuaVO> list);//수정시 검사 공통 업데이트
@@ -39,6 +39,7 @@ public interface QualityMapper {
 	int bpdAdd(PrdInspVO prd);// 공정 검사 등록
 	String pdInspNum(); // 공정 검사 등록 시 검사 번호 자동 등록
 	List<PrdInspVO> prwList(); // 공정 검사 대기 리스트
+	int prdComUpdate(PrdInspVO prd); // 공정 검사 결과 등록 검사 공통 업데이트
 	List<PrdInspVO> prdComList(); // 공정 검사 완료 리스트
 	int delPrdInsp(String inspNum); // 공정 검사 완료 단건 삭제
 	

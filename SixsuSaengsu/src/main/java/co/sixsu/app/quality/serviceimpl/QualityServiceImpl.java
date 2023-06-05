@@ -168,13 +168,13 @@ public class QualityServiceImpl implements QualityService {
 
 	// 입고 검사 완료건 단건 삭제
 	@Override
-	public boolean delInsp(String inspNum) {
-		QuaVO vo = new QuaVO();
-		vo.setInspStdId(inspNum);
-		vo.setMatReqStat("A");
-		quaMapper.mUpdate(vo);
-		return quaMapper.delInsp(inspNum) >= 1;
+	public boolean delInsp(QuaVO qua) {
+		qua.setMatReqStat("A");
+		quaMapper.mUpdate(qua);
+		return quaMapper.delInsp(qua) >= 1;
 	}
+	
+
 
 	// 수정시 검사 항목 리스트
 	@Override
@@ -223,13 +223,12 @@ public class QualityServiceImpl implements QualityService {
 	// 공정 검사 결과 등록 시 업데이트(qua_com업데이트)
 	@Override
 	@Transactional
-	public int prdComUpdate(List<PrdInspVO> list) {
+	public boolean prdComUpdate(PrdInspVO prd) {
 		int count = 0; // update 발생 횟수
-		System.out.println("qua_com 업데이트 vo" + list);
-		//count = quaMapper.qComUpdate(list);
-		//23.06.05 수정할것
+		System.out.println("qua_com 업데이트 vo" + prd);
+		count = quaMapper.prdComUpdate(prd);
 
-		return count ;
+		return count >= 1 ;
 	}
 	
 	// 수정시 검사 공통 업데이트
@@ -340,6 +339,17 @@ public class QualityServiceImpl implements QualityService {
 
 	}
 	
+	//출고 검사 단건 삭제
+	@Override
+	public boolean delShipInsp(QuaVO qua) {
+		ShipInspVO vo = new ShipInspVO();
+		String stdId = qua.getInspStdId();
+		vo.setCpShipId(stdId);
+		vo.setCpShipStat("CP_SHIP_CHECK");
+		quaMapper.updateShip(vo);
+		return quaMapper.delInsp(qua) >= 1;
+	}
+	
 	
 	// 반품 리스트
 	@Override
@@ -417,6 +427,13 @@ public class QualityServiceImpl implements QualityService {
 		return true;
 	}
 
+
+	@Override
+	public boolean delReturnInsp(String inspNum) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 	
 	
@@ -442,6 +459,8 @@ public class QualityServiceImpl implements QualityService {
 	public List<QuaVO> getDetail(String inspNum) {
 		return quaMapper.getDetail(inspNum);
 	}
+
+
 	
 	
 
