@@ -100,8 +100,14 @@
 										<td><input type="text" name="procId" id="procId"></td>
 									</tr>
 									<tr>
-										<td>설비상태<span class="needStar"> * </span></td>
-										<td><input type="text" name="equStat" id="equStat"  ></td>
+										<td>설비상태 <span class="needStar"> *</span></td>
+										<td>
+											<select id="equStat" name="equStat">
+												<option value='' selected>===== 선택 =====</option>
+												<option th:each="type : ${equStat}" th:value="${type.value}" th:text="${type.text}">
+												</option>
+											</select>
+										</td> 
 										
 									</tr>
 									<tr>
@@ -119,7 +125,12 @@
 									</tr>
 									<tr>
 										<td>판정<span class="needStar"> *</span></td>
-										<td><input type="text" name="equSuit" id="equSuit"></td>
+										<td>
+											<select id="equSuit" name="equSuit">
+												<option value=''>===== 선택 =====</option>
+												<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}">
+												</option>
+										</td> 
 									</tr>
 									<tr>
 										<td>점검일자<span class="needStar"> *</span></td>
@@ -135,9 +146,15 @@
 										<td><input type="text" name="checkNext" id="checkNext"></td>
 									</tr>
 									<tr>
-										
 										<td>점검구분<span class="needStar"> *</span></td>
-										<td><input type="text" name="checkType" id="checkType"></td>
+										<td>
+										<!--	<input type="text" name="checkType" id="checkType">  -->
+										
+											 <select id="checkType" name="checkType">
+												<option value=''>===== 선택 =====</option>
+												<option th:each="type : ${checkType}" th:value="${type.value}" th:text="${type.text}">
+												</option>
+										</td> 
 									</tr>
 									<tr>
 										
@@ -157,7 +174,14 @@
 									<tr>
 										
 										<td>비가동구분<span class="needStar"> *</span></td>
-										<td><input type="text" name="operType" id="operType"></td>
+										<!-- <td><input type="text" name="operType" id="operType"></td> -->
+										
+										 <td>
+											<select id="operType" name="operType">
+											<option value=''>===== 선택 =====</option>
+											<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}">
+											</option>
+										</td> 
 									</tr>
 								</table>
 							</div>
@@ -179,7 +203,10 @@
 		<script th:inline="javascript">
 		
 	    let equStat = [[${equStat}]];
-		let equSuit = [[${equSuit}]];
+		let equSuit = [[${equSuit}]]; 
+		let checkType = [[${checkType}]];  
+	    let operType = [[${operType}]];  
+		
 	    
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
@@ -215,18 +242,16 @@
           },
           {
 			header: '설비상태',
-					name: 'equStat',
-					filter: 'select',
-					align: 'center',
-					formatter: 'listItemText',
-					editor: {
-						type: 'select',
-						options: {
-							listItems: equStat
+			name: 'equStat',
+			filter: 'select',
+			align: 'center',
+			formatter: 'listItemText',
+			editor: {
+				type: 'select',
+				options: {
+				listItems: equStat
 						}
 					}
-
-
 			// header: '설비상태',
 			// name: 'equStat',
 			// filter: 'select',
@@ -270,6 +295,7 @@
           {
 			header: '판정',
 			name: 'equSuit',
+			align: 'center',
 			formatter: 'listItemText',
 			editor: {
 			 	type: 'select',
@@ -283,11 +309,19 @@
               name: 'checkDate',
               hidden : true
           },
-          {
-              header: '점검구분',
-              name: 'checkType',
-              hidden : true
-          },
+           {
+        	  header: '점검구분',
+			  name: 'checkType',
+			  hidden : true,
+			  align: 'center',
+			  formatter: 'listItemText',
+			  editor: {
+				type: 'select',
+				options: {
+				listItems: checkType
+			   }
+			}
+          },  
           {
               header: '점검사유',
               name: 'checkInfo',
@@ -304,10 +338,18 @@
               hidden : true
           },
           {
-              header: '비가동구분',
-              name: 'operType',
-              hidden : true
-          },
+             header: '비가동구분',
+             name: 'operType',
+             hidden : true,
+			 align: 'center',
+			 formatter: 'listItemText',
+			 editor: {
+				type: 'select',
+				options: {
+				listItems: operType
+			   }
+		     }
+          }, 
           {
               header: '기준온도',
               name: 'ctemp',
