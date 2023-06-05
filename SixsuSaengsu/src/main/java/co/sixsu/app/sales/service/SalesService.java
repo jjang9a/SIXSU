@@ -41,7 +41,8 @@ public interface SalesService {
 
 	int productDel(String num);
 
+	
 	/*
 	 * List<InvVO> searchOrder(InvVO vo);// 조회페이지
-	 */
+	 */	
 }
