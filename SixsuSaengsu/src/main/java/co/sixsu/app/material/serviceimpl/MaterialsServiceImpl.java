@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.sixsu.app.material.domain.SpDmgVO;
+import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatDmgVO;
 import co.sixsu.app.material.domain.MatLotVO;
@@ -51,6 +52,12 @@ public class MaterialsServiceImpl implements MaterialsService{
 			for(MatreqVO i : vo) {
 				mapper.updateMatReq(i);
 			}
+		}
+		
+		//발주 거래처 리스트
+		@Override
+		public List<BusVO> matReqBusList() {
+			return mapper.matReqBusList();
 		}
 		
 		//입고대기 리스트
@@ -233,6 +240,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 			}
 			
 		}
+
+
 		
 
 }
