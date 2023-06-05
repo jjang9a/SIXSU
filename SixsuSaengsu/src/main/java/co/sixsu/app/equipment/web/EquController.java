@@ -43,8 +43,12 @@ public class EquController {
 	public void equSearch(Model model) {
 		String key = "EQU_STAT";
 		String key2 = "EQU_SUIT";
+		String key3 = "CHECK_TYPE";
+		String key4 = "OPER_TYPE";
 		model.addAttribute("equStat", basicService.commGroupList(key));
 		model.addAttribute("equSuit", basicService.commGroupList(key2));
+		model.addAttribute("checkType", basicService.commGroupList(key3));
+		model.addAttribute("operType", basicService.commGroupList(key4));
 	}
 	
 	@GetMapping("equCheckSP") // 점검 조회 페이지
@@ -203,12 +207,14 @@ public class EquController {
 	@ResponseBody 
 	@PostMapping("fnishIn") // 비가동 관리 비가동 종료버튼(가동 등록) 
 	public EquOperVO fnishIn(EquOperVO data) { 
-		LocalDate now = LocalDate.now();
-		String date = now.toString();
-		data.setOperFinish(date);
-		System.out.println(data);
-		equService.fnishIn(data);
-		return data;
+		
+		 LocalDate now = LocalDate.now(); String date = now.toString();
+		 data.setOperFnish(date); System.out.println(data); equService.fnishIn(data);
+		 return data;
+		 
+		/*
+		 * equService.fnishIn(data); return data;
+		 */
 	}
 	
 
