@@ -16,6 +16,7 @@ public class ShipInspVO {
 	 
 	 public int cpShipQt; // 출고수량
 	 public String empId; // 사원코드
+	 public String empName; // 사원이름
 	 
 	 public String cpShipReqDate; // 출고요청일자
 	 public String inspDate; // 완료일자

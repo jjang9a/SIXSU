@@ -264,7 +264,7 @@
 	</select>
 
 	<!-- 입고 검사 완료 단건 삭제 -->
-	<delete id="delReqInsp" parameterType="String">
+	<delete id="delInsp" parameterType="String">
 		delete from qua_com where
 		insp_num = #{inspNum}
 	</delete>
@@ -275,7 +275,9 @@
 		         p.wk_deta_id, 
 		         p.pd_id, 
 		         p.pd_name, 
-		         p.deta_qt, 
+		         p.deta_qt,
+		         p.dmat_qt,
+		         p.good_qt,
 		         p.wk_end, 
 		         q.insp_num,
 		         b.proc_id,
@@ -297,16 +299,16 @@ LEFT 	JOIN  work_bom b
 	</select>
 
 	<!-- 공정 검사 (대기) 등록 -->
-<!-- 	<insert id="bpdAdd" parameterType="PrdInspVO">
+ 	<insert id="bpdAdd" parameterType="PrdInspVO">
 		insert into qua_com
 		(insp_num,
-		insp_item_id, insp_type, insp_qt, insp_std_id)
+		insp_item_id, insp_type, insp_qt, suit_qt, nsuit_qt, insp_std_id)
 		values
 		(#{inspNum},
-		#{pdId}, #{inspType}, #{detaQt}, #{prcsPfmcId})
-	</insert> -->
+		#{pdId}, 'INSP-B', #{detaQt}, #{goodQt}, #{dmatQt}, #{prcsPfmcId})
+	</insert> 
 	
-	<insert id="bpdAdd" parameterType="PrdInspVO">
+	<!-- <insert id="bpdAdd" parameterType="PrdInspVO">
 	  INSERT INTO qua_com
 	  (insp_num, insp_item_id, insp_type, insp_qt, insp_std_id)
 	  SELECT #{inspNum}, #{pdId}, 'INSP-B', #{detaQt}, p.PRCS_PFMC_ID
@@ -314,7 +316,7 @@ LEFT 	JOIN  work_bom b
 	  LEFT OUTER JOIN work_bom b ON p.wk_deta_id = b.wk_deta_id
 	  LEFT OUTER JOIN process r ON b.proc_id = r.proc_id
 	  WHERE r.proc_id = #{procId} AND p.pd_name = #{productName}
-</insert>
+</insert> -->
 
 	<!-- 공정 검사 대기 리스트 -->
 	<select id="prwList" resultType="PrdInspVO">
@@ -535,10 +537,10 @@ LEFT OUTER JOIN process_performance f
 	</update>
 	
 	<!-- 완제품 출고, 반품 수정 상세 -->
-	<update id="modReturnDet" parameterType="ReturnInspVO">
+ 	<update id="modReturnDet" parameterType="ReturnInspVO">
 		update qua_details
-		   set	res_val       = #{retQt},
-		   	    res_stat      = #{retStat}
+		   set	res_val       = #{suitQt},
+		   	    res_stat      = #{nsuitQt}
 		 where
 		        insp_num      = #{inspNum}
  

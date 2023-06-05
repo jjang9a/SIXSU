@@ -11,6 +11,7 @@ public class ReturnInspVO {
 	private String retNote; // 반품 사유
 	private String inspNum; // 검사번호
 	private String empId; // 사원코드
+	private String empName; // 사원 이름
 	private String retStat; // 반품 진행 상태
 	private String retDate; //반품 일자
 	
@@ -20,4 +21,5 @@ public class ReturnInspVO {
 	 public String resStat; // 적합여부
 	 public String inspId; // 검사 항목코드
 	 public String inspType; // 검사유형
+	 public String detInspNum; // 세부 검사 번호
 }
