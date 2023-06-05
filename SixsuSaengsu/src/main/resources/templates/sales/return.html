@@ -99,6 +99,7 @@
 				출고 총 수량<input type="text" name="ordTotal" id="ordTotal" /> <br />
 				반품 요청 수량<input type="text" name="returnReq" id="returnReq" /> <br />
 				반품 사유 
+				<input type="hidden" name="ordDetId" id="ordDetId">
 			<select id="returnRes">
 				<option value ="배송오류"> 배송오류 </option>
 				<option value ="주문오류"> 주문오류 </option>
@@ -244,11 +245,11 @@
 	orderCompleteGrid.on('click',ev=> {
 		let dataRow = orderCompleteGrid.getRow(ev.rowKey);
 		console.log(dataRow);
-		
 		$('#returnReadyModal').modal("show");
 		$('#busaName').val(dataRow.busName);
 		$('#ordTotal').val(dataRow.ordQt);
-		$.ajax({
+		$('#ordDetId').val(dataRow.ordDetId);
+	/* 	$.ajax({
 			url : "/sales/orderComplete",
 			method : "GET",
 			dataType : "JSON",
@@ -256,7 +257,7 @@
 				orderGrid.resetData(result);
 				
 			}
-		});
+		}); */
 	});	
 	
 	
@@ -266,7 +267,7 @@
 	
 	
 	
-	let orderData = '';
+	
 	$("#compReturn").on("click", function(e){
 		console.log($("#busaName").val())
 		console.log($("#ordTotal").val())
@@ -274,6 +275,7 @@
 		console.log($("#returnRes").val())
 		let check = $("#ordTotal").val()*1 - $("#returnReq").val()*1;
 		let returnRes = $("#returnReq").val()
+		
 		
 		if (check <0){
 			alert("반품 수량이 초과하였습니다.");
@@ -286,7 +288,7 @@
 		else {
 			console.log("통과")
 			$.ajax({
-				url: "/sales/returnCheck",
+				url: "/sales/returnRequest",
 				method: "POST",
 				data: $('#searchForm').serialize(),
 				success: function(result){

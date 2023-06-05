@@ -94,7 +94,7 @@
 			success : function(result){
 				gridp.resetData(result);
 				console.log ('거래처 모달');
-				setTimeout(()=>gridp.refreshLayout(),1000);
+				setTimeout(()=>gridp.refreshLayout(),400);
 			}
 		})
 	})
@@ -106,12 +106,15 @@
 		columns : [ {
 			header : '완제품 코드',
 			name : 'cpId',
+			align : 'center'
 		}, {
 			header : '완제품 이름',
-			name : 'cpName'
+			name : 'cpName',
+			align : 'center'
 		}, {
 			header : '완제품 규격',
-			name : 'cpSize'
+			name : 'cpSize',
+			align : 'center'
 		}
 		]
 	});		
@@ -147,31 +150,40 @@
 		columns : [ {
 			header : '출고코드',
 			name : 'cpShipId',
+			align : 'center'
 		},{
 			header : '출고날짜',
 			name : 'cpShipReqDate',
+			align : 'center'
 		},{
 			header : '주문상세코드',
 			name : 'ordDetId',
+			align : 'center'
 		},{
 			header : '거래처',
 			name : 'busName',
+			align : 'center'
 		},{
 			header : 'LOT',
 			name : 'cpLotId',
+			align : 'center'
 		},{
 			header : '제품번호',
 			name : 'cpId',
+			align : 'center'
 		},{
 			header : '제품명',
-			name : 'cpName'
+			name : 'cpName',
+			align : 'center'
 		},{
 			header : '출고수량',
-			name : 'cpShipQt'
+			name : 'cpShipQt',
+			align : 'center'
 			
 		},{
 			header : '진행상태',
-			name : 'cpShipStat'
+			name : 'cpShipStat',
+			align : 'center'
 			
 		}
 		]
@@ -202,7 +214,17 @@
 	         $('#endDate').val('');
 	         $("input:radio[name='cpShipStat']:radio[value='all']").prop('checked', true);
 		})
-           
+        gridp.setBodyHeight(400);
+			tui.Grid.applyTheme('default', {
+				cell: {
+				header: {
+				background: '#e5edf5'
+				},
+				normal: {
+				background: '#ffffff'
+				}
+			}
+		});   
 </script>		
 </div>
 </body>
