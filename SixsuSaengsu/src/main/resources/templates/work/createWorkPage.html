@@ -146,7 +146,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		</td>
 		<td>
 			<div class="input-group mb-3">
-			  <input type="text" class="form-control" placeholder="담당자" aria-label="Recipient's username" aria-describedby="button-addon2">
+			  <input type="hidden" name="empId" th:value='${#authentication.principal.empId}'>
+			  <input type="text" class="form-control" placeholder="담당자" aria-label="Recipient's username" aria-describedby="button-addon2" th:value='${#authentication.principal.empName}' readonly>
 			  <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
 			</div>
 		</td>

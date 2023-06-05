@@ -17,23 +17,23 @@ import co.sixsu.app.work.service.WorkService;
 		@GetMapping("/work/viewPlanPage")
 		public String viewPlanPage() {
 			System.out.println("viewPlanPage 들어옴");
-		return "/work/viewPlanPage";
+		return "work/viewPlanPage";
 		}
 		
 		@GetMapping("/work/createPlanPage")
 		public String createPlanPage() {
 			System.out.println("createPlanPage 들어옴");
-		return "/work/createPlanPage";
+		return "work/createPlanPage";
 		}
 		@GetMapping("/work/viewWorkPage")
 		public String viewWorkPage() {
 			System.out.println("viewWorkPage 들어옴");
-			return "/work/viewWorkPage";
+			return "work/viewWorkPage";
 		}
 		@GetMapping("/work/workControllPage")
 		public String workControllPage() {
 			System.out.println("workControllPage 들어옴");
-		return "/work/workControllPage";
+		return "work/workControllPage";
 		}
 		
 		@GetMapping("/work/createWorkPage")
@@ -41,7 +41,7 @@ import co.sixsu.app.work.service.WorkService;
 			System.out.println("createWorkPage 들어옴");
 			String orderCode = service.addWork();
 			model.addAttribute("orderCode", orderCode);
-		return "/work/createWorkPage";
+		return "work/createWorkPage";
 		}
 		
 		@GetMapping("/work/modifyWorkPage")
@@ -51,21 +51,21 @@ import co.sixsu.app.work.service.WorkService;
 			data = "20" + data.substring(0,9);
 			System.out.println("BEFORE DATA IS = " + data);
 			model.addAttribute("headCode",data);
-			return "/work/modifyWorkPage";
+			return "work/modifyWorkPage";
 		}
 		
+		@GetMapping("work/workKiosk")
+		public String xPage() {
+			System.out.println("workKiost 들어옴");
+			return "work/workKiosk";
+		}
 		
 		@GetMapping("/work/xPage")
 		public String xPage(Model model) {
 			System.out.println("xPage 들어옴");
-			return "/work/xPage";
+			return "work/xPage";
 		}
 		
-		@GetMapping("/work/workKiosk")
-		public String xPage() {
-			System.out.println("workKiost 들어옴");
-			return "/work/workKiosk";
-		}
 }
 
 
