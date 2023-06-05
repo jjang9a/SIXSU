@@ -42,5 +42,10 @@ public interface SalesMapper {
 	public List<OrdVO> secondOrderingList(String keyword); //진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 상세주문서가 화면에 나오도록 
 	
 	int productDel(String reqId);
+
+	
+	/*
+	 * public List<InvVO> searchOrder(InvVO vo); // 조회페이지
+	 */
 }
 

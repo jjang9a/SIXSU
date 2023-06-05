@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +32,17 @@ public List<RecVO> completeList(){
 	return list;
 }
 	
+//입고 조회 페이지 열어주기	
+	@GetMapping("/sales/receiveInquiry")
+	public void invoice(Model model) {
+		
 	
+}
+@RequestMapping("/sales/searchReceive")
+@ResponseBody
+public List<RecVO> searchOrder(RecVO vo) {
+	List<RecVO> list = service.searchReceive(vo);
+	return list;
+}
 	
 }

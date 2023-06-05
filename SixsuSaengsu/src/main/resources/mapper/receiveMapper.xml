@@ -15,4 +15,34 @@
 		WHERE W.CMPLT_ST ='C'
   		</select>
   
+  
+  
+ <sql id="criteria">
+   <where>
+      <if test="cpId != null and cpId != ''.toString()">
+         c.cp_id = #{cpId}
+      </if>
+      <if test="cpRecTp != null and cpRecTp != 'all'.toString() and cpRecTp != ''.toString()" >
+         and ( r.cp_rec_tp = #{cpRecTp})
+      </if>    
+      <if test="startDate != null and startDate != ''.toString() and endDate != null and endDate != ''.toString()">
+         and (r.cp_rec_date  between to_date(#{startDate}, 'YYYY-MM-DD') and
+                     to_date(#{endDate}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
+      </if>
+   </where>
+</sql>
+
+  
+  
+  <select id="searchReceive"
+  		resultType="RecVO">
+  	select *
+        from prod_rev r
+        left outer join prod_lot p
+        on p.cp_lot_id = r.cp_lot_id
+        left outer join COMPLETE_PROD c
+        on c.cp_id = p.cp_id
+  		<include refid="criteria"></include>
+  </select>
+  
  </mapper>
