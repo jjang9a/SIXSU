@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.service.BasicService;
 import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatDmgVO;
@@ -155,6 +156,13 @@ public class MaterialController {
 		service.updateMatReq(vo);
 	}
 	
+	//발주 거래처 리스트
+	@ResponseBody
+	@RequestMapping("matreqbuslist")
+	public List<BusVO> matReqBusList(){
+		List<BusVO> list = service.matReqBusList();
+		return list;
+	}
 	
 	//입고대기 리스트 모달
 	@ResponseBody

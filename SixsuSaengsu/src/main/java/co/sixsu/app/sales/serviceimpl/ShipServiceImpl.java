@@ -59,7 +59,7 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		
 		
 		list.get(i).setCpLotQtCk("LOT_ING");// 현재 lot가 출고 진행중인 상태로 셋팅
-		vo.setEmpId("test");
+		vo.setEmpId(ord.getEmpId());
 		vo.setCpShipStat("CP_SHIP_CHECK");
 		System.out.println(vo);
 		mapper.insertProShip(vo);
@@ -84,7 +84,7 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		
 		
 		list.get(i).setCpLotQtCk("LOT_ING");// 현재 lot가 출고 진행중인 상태로 셋팅
-		vo.setEmpId("test");
+		vo.setEmpId(ord.getEmpId());
 		vo.setCpShipStat("CP_SHIP_CHECK");
 		
 		mapper.insertProShip(vo);
