@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.sales.domain.LotVO;
 import co.sixsu.app.sales.domain.OrdVO;
+import co.sixsu.app.sales.domain.RetVO;
 import co.sixsu.app.sales.domain.ShipVO;
 import co.sixsu.app.sales.service.ShipService;
 
@@ -75,5 +76,14 @@ public class ShipController {
 		service.completeShip(vo);
 		return null;
 	}
-	
+	@GetMapping("shipInquiry")
+	public void shipInquiry() {
+		
+	}
+	@RequestMapping("searchShip")
+	@ResponseBody
+	public List<ShipVO> searchShip(ShipVO vo) {
+		List<ShipVO> list = service.searchShip(vo);
+		return list;
+	}
 }

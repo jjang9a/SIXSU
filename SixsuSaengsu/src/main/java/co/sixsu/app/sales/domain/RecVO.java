@@ -10,4 +10,18 @@ public class RecVO {
 	int goodQt;
 	String cmpltDate;
 	String cmpltSt;
+	
+	
+	String cpRecId;
+	String cpRecTp;
+	String prcsPfmcId;
+	String empId;
+	String cpRecDate;
+	int cpRecQt;
+	String cpLotId;
+	
+	String cpId;
+	String cpName;
+	String startDate;
+	String endDate;
 }

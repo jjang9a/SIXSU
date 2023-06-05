@@ -141,6 +141,12 @@ public int orderModDel(InvVO inv) {
 }
 
 
+/*
+ * @Override public List<InvVO> searchOrder(InvVO vo) { // TODO Auto-generated
+ * method stub return mapper.searchOrder(vo); }
+ */
+
+
 
 /*@Override
 public boolean ordDetModDel(List<OrdVO> list) {

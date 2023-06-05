@@ -143,4 +143,32 @@
 	</delete>
 	
 	
+<<<<<<< HEAD
+	
+	<sql id="criteria">
+
+      <if test="busId != null and busId != ''.toString()">
+         and( b.bus_id = #{busId})
+      </if>
+      <if test="ordStat != null and ordStat != 'all'.toString() and ordStat != ''.toString()" >
+         and ( s.ord_stat = #{ordStat})
+      </if>
+      <if test="ordDate != null and ordDate != ''.toString() and ordFDate != null and ordFDate != ''.toString()">
+         and ( s.ord_date between to_date(#{ordDate}, 'YYYY-MM-DD') and
+                     to_date(#{ordFDate}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
+      </if>
+   
+	</sql>
+	
+	
+	<select id="searchOrder" resultType="InvVO">
+	select s.ord_id, TO_CHAR(s.ord_date, 'yyyy-MM-dd') as ord_date, b.bus_name, b.bus_id, b.bus_num, get_com_name(s.ord_stat) ord_stat_name
+	from SORDER s, BUSINESS b
+	where s.bus_id = b.bus_id
+	<include refid="criteria"></include>
+ 	ORDER BY s.ord_id DESC
+	</select>
+	
+=======
+>>>>>>> branch 'main' of https://github.com/jjang9a/SIXSU.git
 </mapper>
