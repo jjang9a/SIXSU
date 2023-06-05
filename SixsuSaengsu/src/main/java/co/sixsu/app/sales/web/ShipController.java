@@ -1,5 +1,6 @@
 package co.sixsu.app.sales.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.sales.domain.LotVO;
 import co.sixsu.app.sales.domain.OrdVO;
-import co.sixsu.app.sales.domain.RetVO;
 import co.sixsu.app.sales.domain.ShipVO;
 import co.sixsu.app.sales.service.ShipService;
 
@@ -55,9 +55,10 @@ public class ShipController {
 		return service.totalQt(result) ;
 	}
 	
-	@ResponseBody
+	@ResponseBody//////출고등록
 	@PostMapping("shipPro")
-	public List<ShipVO> shipPro(@RequestBody OrdVO ord ){
+	public List<ShipVO> shipPro(@RequestBody OrdVO ord, Principal principal){
+		ord.setEmpId(principal.getName());
 		return service.shipPro(ord);
 	}
 	
