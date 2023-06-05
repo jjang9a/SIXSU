@@ -38,7 +38,7 @@
 				<div class="col-lg-7">
 
 					<!-- 발주 번호 검색 버튼 -->
-					<label>지시 세부 코드 조회</label>
+					<label style="font-family: 'MaruBuri';">지시 세부 코드 조회</label>
 					<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#detWorkModal">
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
 							class="bi bi-search" viewBox="0 2 16 16">
@@ -79,14 +79,14 @@
 					</div>
 
 					<!-- 검사 대기 리스트 그리드 부분 -->
-					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 결과 등록 전</h6>
+					<!-- <label style="font-family: 'MaruBuri';">지시 세부 코드 조회</label> -->
 					<div class="rightBtn">
 						<button class="sixBtn6" id="rpBtn">검사결과입력</button>
 					</div>
 					
 					<div id="beforeGrid"></div>
 
-					<!-- 검색 항목 -->
+<!-- 					검색 항목
 					<div id="topS">
 						생산지시번호 <input type="text"> 제품명 <input type="text">
 						검사일자 <input type="date">
@@ -95,14 +95,15 @@
 					<div id="topS">
 						<button class="sixBtn2" id="search">조회</button>
 						<button class="sixBtn3" id="reset">초기화</button>
-					</div>
+					</div> -->
 
 					<!-- 검사 완료 그리드 -->
 					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 등록 완료</h6>
 					<div id="afterGrid"></div>
 					
+					<div class="rightBtn">
 					<button class="sixBtn2" id="modBtn">수정</button>
-
+					</div>
 				</div>
 
 
@@ -141,7 +142,8 @@
 							<div class="col">
 
 								<label for="exampleFormControlInput1" class="form-label">검사자
-								</label> <input type="text" class="form-control" id="empId" name="empId">
+								</label> <input type="text" class="form-control" id="empId" name="empId"
+										  th:value='${#authentication.principal.empId}'>
 
 							</div>
 						</div>
@@ -181,10 +183,12 @@
 
 						<div id="detailGrid"></div>
 						<!-- 세부 검사 항목 끝나는 부분 -->
-
+						
 						<!-- 검사 등록 버튼 -->
+						<div class="rightBtn">
 						<button type="button" class="sixBtn2" id="inspBtn">등록</button>
-
+						<button type="button" class="sixBtn4" id="modifyBtn">수정하기</button>
+						</div>
 					</div>
 
 				</div>
@@ -416,7 +420,7 @@
 				// focus된 셀이 있는 row 전체 select 처리
 				afterGrid.setSelectionRange({
 					start: [ev.rowKey, 0],
-					end: [ev.rowKey, grid.getColumns().length - 1]
+					end: [ev.rowKey, afterGrid.getColumns().length - 1]
 				});
 				console.log(ev.rowKey)
 
@@ -439,12 +443,55 @@
 				afterEmpId = afterDataRow.empId;
 				afterStdId = afterDataRow.inspStdId;
 				afterProcId = afterDataRow.procId;
+				afterPrcsPfmcId = afterDataRow.prcsPfmcId;
 			});
 				
 				// 수정 버튼 클릭 이벤트
-				$('#modBtn').on('click', function(e){
-					
-				})
+				// 수정 버튼 클릭 시
+				$('#modBtn').on('click', function () {
+					if (aselKey === null) {
+						alert("수정할 검사를 선택하세요.");
+						return;
+					}
+
+					$('#prInspForm').css('display', 'block');
+					$(".detail").css('display', 'block');
+					$('#modifyBtn').css('display', 'block');
+					$('#inspBtn').css('display', 'none');
+					console.log("afterPdId: " + afterPdId);
+
+
+					// 선택된 결과 주입
+					$('#inspStdId').val(afterStdId);
+					$('#inspNum').val(afterInspNum);
+					$('#prcsPfmcId').val(afterPrcsPfmcId);
+					$('#pdId').val(afterPdId);
+					$('#pdName').val(afterPdName);
+					$('#inspQt').val(afterInspQt);
+					$('#suitQt').val(afterSuitQt);
+					$('#totNsuitQt').val(afterNsuitQt);
+
+
+					// 검사 항목 ajax 호출
+					$.ajax({
+						url: "/quality/modInspItem",
+						method: "GET",
+						data: {
+							'inspNum': afterInspNum
+						},
+						dataType: "JSON",
+						success: function (result) {
+							console.log(result);
+							detailGrid.resetData(result);
+							detailGrid.setColumnValues('inspNum', afterInspNum, false);
+							setTimeout(() => detailGrid.refreshLayout(), 700);
+
+						},
+						error: function (reject) {
+							console.log(reject);
+						}
+					});
+				});
 
 			} //window.onload 함수 종료
 
@@ -466,7 +513,8 @@
 				columns: [{
 					header: '공정실적코드',
 					name: 'prcsPfmcId',
-					align: 'center'
+					align: 'center',
+					sortable: true
 				}, {
 					header: '제품코드',
 					name: 'pdId',
@@ -491,7 +539,8 @@
 				}, {
 					header: '생산날짜',
 					name: 'wkEnd',
-					align: 'center'
+					align: 'center',
+					hidden : true
 				}]
 			});
 
@@ -512,7 +561,9 @@
 				}, {
 					header: '공정실적코드',
 					name: 'prcsPfmcId',
-					align: 'center'
+					align: 'center',
+					sortable: true
+					//width: 140
 				}, {
 					header: '제품코드',
 					name: 'pdId',
@@ -538,6 +589,7 @@
 					header: '생산날짜',
 					name: 'wkEnd',
 					align: 'center'
+
 				}]
 			});
 
@@ -556,7 +608,10 @@
 
 				columns: [{
 					header: '공정실적코드',
-					name: 'prcsPfmcId'
+					name: 'prcsPfmcId',
+					sortable: true,
+					width: 140,
+					align: 'center'
 				}, {
 					header: '제품코드',
 					name: 'pdId',
@@ -569,7 +624,8 @@
 				}, {
 					header: '공정',
 					name: 'procName',
-					align: 'center'
+					align: 'center',
+					filter: 'select'
 				}, {
 					header: '검사수량',
 					name: 'detaQt',
@@ -608,7 +664,7 @@
 						hidden: true
 					},{
 						header: '제품코드',
-						name: 'inspNum',
+						name: 'pdId',
 						hidden: true
 					},
 					{
@@ -652,6 +708,60 @@
 					}
 				]
 			});
+			
+			// 수정하기 버튼 클릭 이벤트
+			$('#modifyBtn').on('click', function () {
+
+				// 검사 공통 업데이트 ajax 실행
+				quaComUpdateAjax();
+
+				// 검사 상세 업데이트 ajax
+				$.ajax({
+					url: '/quality/updateQd',
+					type: 'post',
+					data: JSON.stringify(detailGrid.getData()),
+					contentType: 'application/json',
+					success: function (result) {
+
+						console.log(result);
+						alert('검사 결과값 수정이 완료되었습니다.');
+						// 등록 완료 후 폼과 그리드 숨기고 초기화
+						$('#prInspForm').css('display', 'none');
+						$('.detail').css('display', 'none');
+						$('#prInspForm input').val('');
+
+
+					},
+					error: function (reject) {
+						console.log(reject);
+						alert('검사 결과값 수정에 실패했습니다.')
+					}
+				});
+
+
+			})
+
+			// 검사 공통 아작스 호출 함수
+			function quaComUpdateAjax() {
+
+				//qua_com update
+				console.log($('#prInspForm').serialize());
+				$.ajax({
+					url: '/quality/priRegUpdate',
+					type: 'post',
+					data: $('#prInspForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						console.log('qua_com_update:' + result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+
+				})
+
+			}
+
 
 			// 세부 검사 항목 그리드에 스크롤 부여
 			detailGrid.setBodyHeight(400);

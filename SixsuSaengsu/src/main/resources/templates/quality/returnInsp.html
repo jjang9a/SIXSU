@@ -36,7 +36,7 @@ h1 {
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">완제품 출고 품질 관리</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">반품 품질 관리</h1>
 
 		<!-- 정보입력 폼 -->
 		<form action="" method="post" id="returnForm">
@@ -44,8 +44,8 @@ h1 {
 				<tr>
 					<td>반품 코드</td>
 					<td><input type="text" name="retId" id="retId" readonly></td>
-					<td>주문 상세 코드</td>
-					<td><input type="text" name="ordDetId" id="ordDetId" readonly></td>
+					<td>완제품 출고 코드</td>
+					<td><input type="text" name="cpShipId" id="cpShipId" readonly></td>
 					<td>LOT번호</td>
 					<td><input type="text" name="cpLotId" id="cpLotId" readonly></td>
 				</tr>
@@ -55,11 +55,11 @@ h1 {
 					<td>제품 코드</td>
 					<td><input type="text" name="cpId" id="cpId" readonly></td>
 					<td>반품 수량</td>
-					<td><input type="text" name="cpShipQt" id="cpShipQt" readonly></td>
+					<td><input type="text" name="retQt" id="retQt" readonly></td>
 				</tr>
 				<tr>
 					<td>제조 일자</td>
-					<td><input type="text" name="endDate" id="endDate" readonly></td>
+					<td><input type="text" name="wkEnd" id="wkEnd" readonly></td>
 					<td>유통 기한</td>
 					<td><input type="text" name="expDate" id="expDate" readonly></td>
 					<td>적합 여부</td>
@@ -75,12 +75,12 @@ h1 {
 					<td colspan="3"><input type="text" name="detailNote"
 						id="detailNote" class="empty" style="width: 660px;"></td>
 					<td>검수 상태</td>
-					<td><input type="text" name="cpShipStat" id="cpShipStat" readonly></td>
+					<td><input type="text" name="retStat" id="retStat" readonly></td>
 				</tr>
 				
 				<tr>
 					<!-- 요청일자 -->
-					<td><input type="hidden" name="cpShipReqDate" id="cpShipReqDate"></td>
+					<td><input type="hidden" name="retDate" id="retDate"></td>
 					<!-- 검사일자 -->
 					<td><input type="hidden" name="inspDate" id="inspDate"></td>
 				</tr>
@@ -88,7 +88,7 @@ h1 {
 			</table>
 		</form>
 		<div class="divBtn">
-			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
+			<!-- <button type="button" class="sixBtn2" id="searchBtn">검색</button> -->
 			<button type="button" class="sixBtn2" id="addBtn">등록</button>
 			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
 		</div>
@@ -102,7 +102,7 @@ h1 {
 				//let initData = '';
 				//let nowData = '';
 				$.ajax({
-					url : "/quality/shInspList",
+					url : "/quality/returnList",
 					method : "GET",
 					dataType : "JSON",
 					success : function(result) {
@@ -122,11 +122,12 @@ h1 {
 					},
 					columns : [ {
 						header : '반품 코드',
-						name : 'cpShipId',
-						align : 'center'
+						name : 'retId',
+						align : 'center',
+						sortable: true
 					}, {
-						header : '주문 상세 코드',
-						name : 'ordDetId',
+						header : '완제품 출고 코드',
+						name : 'cpShipId',
 						align : 'center',
 						hidden: true
 					}, {
@@ -151,19 +152,34 @@ h1 {
 						align : 'center'
 					}, {
 						header : '요청수량',
-						name : 'cpShipQt',
+						name : 'retQt',
 						align : 'center'
 					}, {
 						header : '검수상태',
-						name : 'cpShipStat',
+						name : 'retStat',
 						align : 'center'
 					}, {
 						header : '적합여부',
 						name : 'resStat',
-						align : 'center'
+						align : 'center',
+						filter : 'select',
+						editor : {
+							type : 'select',
+							options : {
+								listItems : [{
+									text : '적합',
+									value : '적합'
+								},
+								{
+									text : '부적합',
+									value : '부적합'
+								}
+								]	
+							}
+						}
 					},{
-						header : '요청일자',
-						name : 'cpShipReqDate',
+						header : '반품일자',
+						name : ' ret_date',
 						align : 'center'
 					}, {
 						header : '완료일자',
@@ -187,16 +203,16 @@ h1 {
 				// 등록 버튼 이벤트
 				$('#addBtn').on('click', function(e) {
 					$.ajax({
-						url : '/',
+						url : '/quality/returnInspAdd',
 						type : 'post',
 						data : $('#returnForm').serialize(),
 						success : function(result) {
-							alert('출고 검사 결과가 등록되었습니다.');
+							alert('반품 검사 결과가 등록되었습니다.');
 							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
 							grid.setRow(selRow, setData);
 						},
 						error : function() {
-							alert('출고 검사 결과 등록 중 오류가 발생했습니다.');
+							alert('반품 검사 결과 등록 중 오류가 발생했습니다.');
 						}
 					});
 					$('#cpqForm input').val('');
@@ -208,13 +224,13 @@ h1 {
 					// 열을 더블클릭하면 열 정보를 변수에 저장
 					selRow = e.rowKey;
 					let dataRow = grid.getRow(selRow);
+					$('#retId').val(dataRow.retId);
 					$('#cpShipId').val(dataRow.cpShipId);
-					$('#ordDetId').val(dataRow.ordDetId);
 					$('#cpLotId').val(dataRow.cpLotId);
 					$('#cpId').val(dataRow.cpId);
 					$('#cpName').val(dataRow.cpName);
 					$('#endDate').val(dataRow.endDate);
-					$('#cpShipQt').val(dataRow.cpShipQt);
+					$('#retQt').val(dataRow.retQt);
 					$('#expDate').val(dataRow.expDate);
 					$('#cpShipStat').val(dataRow.cpShipStat);
 					$('#cpShipReqDate').val(dataRow.cpShipReqDate);
@@ -234,28 +250,24 @@ h1 {
 									} else {
 										$
 												.ajax({
-													url : '/',
+													url : '/quality/returnInspMod',
 													type : 'post',
-													data : $('#cpqForm')
+													data : $('#returnForm')
 															.serialize(),
 													dataType : 'json',
 													success : function(result) {
-														alert('출고 검사가 성공적으로 수정되었습니다');
+														alert('반품 검사가 성공적으로 수정되었습니다');
 														//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
 														const setData = result
 														grid.setRow(selRow,
 																setData);
 														selRow = '';
 														$('.empty').val('');
-														$('#resStat')
-																.val('')
-																.prop(
-																		"selected",
-																		true);
+														$('#resStat').val('').prop("selected",true);
 														
 													},
 													error : function() {
-														alert('완제품 수정 중 오류가 발생했습니다!');
+														alert('반품 검사 수정 중 오류가 발생했습니다!');
 													}
 												});
 									}

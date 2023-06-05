@@ -11,6 +11,7 @@ public class PrdInspVO {
 	//private String endDate; // 종결 일자
 	private String procId; //공정 코드
 	private String procName; //공정 이름
+	private String productName; // 제품이름
 	private int detaQt; // 지시 수량
 	private String cmpltSt; // 종결 여부
 	private String empId; // 사원 번호 

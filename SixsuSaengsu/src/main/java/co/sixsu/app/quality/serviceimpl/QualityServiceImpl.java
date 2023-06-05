@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
+import co.sixsu.app.quality.domain.ReturnInspVO;
 import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.quality.mapper.QualityMapper;
 import co.sixsu.app.quality.service.QualityService;
@@ -167,12 +168,12 @@ public class QualityServiceImpl implements QualityService {
 
 	// 입고 검사 완료건 단건 삭제
 	@Override
-	public boolean delReqInsp(String inspNum) {
+	public boolean delInsp(String inspNum) {
 		QuaVO vo = new QuaVO();
 		vo.setInspStdId(inspNum);
 		vo.setMatReqStat("A");
 		quaMapper.mUpdate(vo);
-		return quaMapper.delReqInsp(inspNum) >= 1;
+		return quaMapper.delInsp(inspNum) >= 1;
 	}
 
 	// 수정시 검사 항목 리스트
@@ -183,7 +184,7 @@ public class QualityServiceImpl implements QualityService {
 
 	// 공정 검사 전 리스트 출력
 	@Override
-	public List<DetaWorkOrdrVO> bpAddList() {
+	public List<PrdInspVO> bpAddList() {
 		return quaMapper.bpAddList();
 	}
 
@@ -225,7 +226,8 @@ public class QualityServiceImpl implements QualityService {
 	public int prdComUpdate(List<PrdInspVO> list) {
 		int count = 0; // update 발생 횟수
 		System.out.println("qua_com 업데이트 vo" + list);
-		//count = quaMapper.qComUpdate(qua);
+		//count = quaMapper.qComUpdate(list);
+		//23.06.05 수정할것
 
 		return count ;
 	}
@@ -238,19 +240,22 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	// 수정시 검사 상세 업데이트
+
 	@Override
 	public List<QuaVO> updateQd(List<QuaVO> list) {
-		System.out.println("검사 상세 업데이트 서비스");
-		int count = 0;
-		for (int i = 0; i < list.size(); i++) {
-			QuaVO qua = list.get(i);
+	    System.out.println("검사 상세 업데이트 서비스");
+	    int count = 0;
+	    for (int i = 0; i < list.size(); i++) {
+	        QuaVO qua = list.get(i);
+	        System.out.println("수정시 상세 업데이트 vo: " + qua);
+	        int result = quaMapper.updateQd(qua);
+	        if (result == 1) {
+	            count++;
+	        }
+	    }
 
-			System.out.println("수정시 상세 업데이트 vo:" + qua);
-			count += quaMapper.updateQd(qua);
-
-		}
-
-		return list;
+	    System.out.println("총 " + count + "개의 항목이 업데이트되었습니다.");
+	    return list;
 	}
 
 	// 검사 결과 등록 완료 리스트
@@ -281,12 +286,12 @@ public class QualityServiceImpl implements QualityService {
 			ship.setSuitQt(amount);
 			ship.setNsuitQt(0);	
 			ship.setResVal(result);
-			ship.setCpShipStat("품질검사완료");
+			ship.setCpShipStat("CP_SHIP_COMP");
 		} else {
 			ship.setSuitQt(0);
 			ship.setNsuitQt(amount);
 			ship.setResVal(result);
-			ship.setCpShipStat("폐기");
+			ship.setCpShipStat("CP_SHIP_TRASH");
 		}
 
 		quaMapper.insertShipCom(ship);
@@ -296,7 +301,7 @@ public class QualityServiceImpl implements QualityService {
 		ship.setDetInspNum(detNum);
 
 		String inspId ="QR999";
-		String inspType = "완제품 출고 검사";
+		String inspType = "INSP-C";
 		ship.setInspId(inspId);
 		ship.setInspType(inspType);
 
@@ -320,18 +325,101 @@ public class QualityServiceImpl implements QualityService {
 			ship.setSuitQt(amount);
 			ship.setNsuitQt(0);	
 			ship.setResVal(result);
+			ship.setCpShipStat("CP_SHIP_COMP");
 		} else {
 			ship.setSuitQt(0);
 			ship.setNsuitQt(amount);
 			ship.setResVal(result);
+			ship.setCpShipStat("CP_SHIP_TRASH");
 		}
-		quaMapper.modShipCom(ship);
 		quaMapper.modShipDet(ship);
+		quaMapper.modShipCom(ship);
+		quaMapper.updateShip(ship);
 		
 		return true;
 
 	}
+	
+	
+	// 반품 리스트
+	@Override
+	public List<ReturnInspVO> returnList() {
+		return quaMapper.returnList();
+	}
+	
+	// 반품 검사 등록
+	@Transactional
+	@Override
+	public ReturnInspVO returnInspAdd(ReturnInspVO ret) {
+		
+		// 출고 검사 공통 등록
+		String inspNum = quaMapper.qrInspNum(); // 검사 번호 생성
+		ret.setInspNum(inspNum);
+		System.out.println("검사번호:"+inspNum);
+		
+		int amount = ret.getRetQt();
+		String result = Integer.toString(ret.getRetQt()) ;
+		if (ret.getResStat().equals("적합")) {
+			ret.setSuitQt(amount);
+			ret.setNsuitQt(0);	
+			ret.setResVal(result);
+			ret.setRetStat("RETR");
+		} else {
+			ret.setSuitQt(0);
+			ret.setNsuitQt(amount);
+			ret.setResVal(result);
+			ret.setRetStat("RETTRASH");
+		}
+		// 반품 검사 등록시 검사 공통 insert
+		quaMapper.isnertReturnCom(ret);
+		
+		//반품 검사 상세 등록
+			String detNum = inspNum + "-" + String.format("%03d", +1); // inspNum-001 형식으로 설정
+			ret.setDetInspNum(detNum);
 
+			String inspId ="QR999";
+			String inspType = "INSP-D";
+			ret.setInspId(inspId);
+			ret.setInspType(inspType);
+
+			System.out.println(ret);
+				
+			quaMapper.insertReturnDet(ret);
+				
+				// 완제품 출고 업데이트
+				quaMapper.updateReturn(ret);
+		
+		return ret;
+	}
+	
+	// 반품 검사 수정
+	@Transactional
+	@Override
+	public boolean returnInspMod(ReturnInspVO ret) {
+		
+		int amount = ret.getRetQt();
+		String result = Integer.toString(ret.getRetQt()) ;
+		if (ret.getResStat().equals("적합")) {
+			ret.setSuitQt(amount);
+			ret.setNsuitQt(0);	
+			ret.setResVal(result);
+			ret.setRetStat("RETR");
+		} else {
+			ret.setSuitQt(0);
+			ret.setNsuitQt(amount);
+			ret.setResVal(result);
+			ret.setRetStat("RETTRASH");
+		}
+		quaMapper.modReturnDet(ret);
+		quaMapper.modReturnCom(ret);
+		quaMapper.updateReturn(ret);
+		
+		return true;
+	}
+
+	
+	
+	
 
 	// 장가애
 	

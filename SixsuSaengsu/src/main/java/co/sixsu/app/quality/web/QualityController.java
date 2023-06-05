@@ -1,10 +1,10 @@
 package co.sixsu.app.quality.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
+import co.sixsu.app.quality.domain.ReturnInspVO;
 import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.quality.service.QualityService;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
@@ -51,13 +51,14 @@ public class QualityController {
 	public void returnInsp() {
 	}
 
+
 	// 검사 조회 페이지
 	@GetMapping("/quality/inspInfo")
 	public void recInspInq() {
 	}
 	
-	// 공정 검사 조회 페이지
 
+	
 	// 입고 검사 대기 등록 리스트
 	@ResponseBody
 	@RequestMapping("/quality/proRecList")
@@ -113,8 +114,10 @@ public class QualityController {
 	// 검사 결과 등록 시 검사 공통 업데이트
 	@ResponseBody
 	@PostMapping("/quality/priRegUpdate")
-	public boolean qComUpdate(QuaVO qua) {
+	public boolean qComUpdate(QuaVO qua, Principal principal) {
 		System.out.println(qua);
+		String id = principal.getName();
+		qua.setEmpId(id);
 		boolean result = quaService.priRegUpdate(qua);
 		return result;
 	}
@@ -128,11 +131,11 @@ public class QualityController {
 		return raList;
 	}
 
-	// 입고 검사 완료 삭제
+	// 검사 완료 삭제
 	@ResponseBody
-	@RequestMapping("/quality/delReqInsp")
+	@RequestMapping("/quality/delInsp")
 	public boolean delReqInsp(@RequestParam String inspNum) {
-		boolean result = quaService.delReqInsp(inspNum);
+		boolean result = quaService.delInsp(inspNum);
 		return result;
 	}
 
@@ -147,8 +150,8 @@ public class QualityController {
 	// 제품 품질 관리 - 검사 등록 리스트 출력
 	@ResponseBody
 	@GetMapping("/quality/bpAddList")
-	public List<DetaWorkOrdrVO> bpList() {
-		List<DetaWorkOrdrVO> list = quaService.bpAddList();
+	public List<PrdInspVO> bpList() {
+		List<PrdInspVO> list = quaService.bpAddList();
 		return list;
 	}
 
@@ -177,6 +180,9 @@ public class QualityController {
 	public List<PrdInspVO> prdComList() {
 		return quaService.prdComList();
 	}
+	
+	// 제품 품질 검사 삭제
+	
 
 	// 출고 검사 목록 리스트
 	@ResponseBody
@@ -188,8 +194,10 @@ public class QualityController {
 	// 출고 검사 결과 등록
 	@ResponseBody
 	@PostMapping("/quality/shipInspAdd")
-	public ShipInspVO shipInspAdd(ShipInspVO ship) {
+	public ShipInspVO shipInspAdd(ShipInspVO ship, Principal principal) {
 		System.out.println("출고 검사 등록");
+		String id = principal.getName();
+		ship.setEmpId(id);
 		quaService.shipInspAdd(ship);
 		System.out.println(ship);
 		return ship;
@@ -204,10 +212,30 @@ public class QualityController {
 	}
 	
 	// 반품 검사 목록 리스트
+	@ResponseBody
+	@GetMapping("/quality/returnList")
+	public List<ReturnInspVO> returnList() {
+		return quaService.returnList();
+	}
 	
 	// 반품 검사 결과 등록
+	@ResponseBody
+	@PostMapping("/quality/returnInspAdd")
+	public ReturnInspVO returnInspAdd(ReturnInspVO ret, Principal principal) {
+		System.out.println("반품 검사 등록");
+		String id = principal.getName();
+		ret.setEmpId(id);
+		quaService.returnInspAdd(ret);
+		return ret;
+	}
 	
 	// 반품 검사 결과 수정
+	@ResponseBody
+	@PostMapping("/quality/returnInspMod")
+	public ReturnInspVO returnInspMod(ReturnInspVO ret){
+		quaService.returnInspMod(ret);
+		return ret;
+	}
 	
 	// 조회 아작스
 	@ResponseBody

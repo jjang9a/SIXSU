@@ -127,37 +127,12 @@
 		)}	
 	</select>
 
-
-	<!-- 검사 항목 리스트 -->
-<!-- 	<select id="inspItem" resultType="QuaVO">
-		select * 
-		  from qua_insp_list
-
-		 where insp_item_id=#{inspItemId}
-		 
-	</select> -->
-	
 	<!-- 검사 항목 리스트 -->
 	<select id="inspItem" resultType="QuaVO">
-  	select *
-  	from qua_insp_list
-  <where>
-    <choose>
-      <!-- SP001인 경우 -->
-      <when test="inspItemId.equals('SP001')">
-        and insp_item_id = 'SP001'
-      </when>
-      <!-- SP002 ~ SP013인 경우 -->
-      <when test="inspItemId.startsWith('SP')">
-        and insp_item_id = 'PRO999'
-      </when>
-      <!-- 그 외의 경우 -->
-      <otherwise>
-        and insp_item_id = #{inspItemId}
-      </otherwise>
-    </choose>
-  </where>
-</select>
+		select *
+     	from qua_insp_list
+     	where insp_item_id like '%'||#{inspItemId}||'%'
+	</select>
 
 	<!-- 수정 버튼 클릭 시 검사 항목 불러오기 -->
 	<select id="modInspItem" resultType="QuaVO">
@@ -179,9 +154,6 @@
 		    on d.insp_id = l.insp_id
 		
 		where d.insp_num = #{inspNum}
-		
-		
-		
 		
 	</select>
 
@@ -233,6 +205,7 @@
 				emp_id        = #{empId},
 				suit_qt       = (#{inspQt}-#{totNsuitQt}),
 				nsuit_qt      = #{totNsuitQt}
+				insp_type	  = 'INSP-A'
 		where
 		        insp_num=#{inspNum}
 
@@ -272,7 +245,8 @@
 		    on r.bus_id = b.bus_id
 		
 		 WHERE r.mat_req_stat='C'
-		 <if test="inspDate == null">
+		 AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
+<!-- 		 <if test="inspDate == null">
   		 AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
 		 </if>
 		 <if test="inspDate != null">
@@ -283,14 +257,14 @@
 		 </if>
 		 <if test="empId != null">
 		  AND empId = #{empId}
-		 </if>
+		 </if> -->
 		 
 		 order by q.insp_date desc
 
 	</select>
 
 	<!-- 입고 검사 완료 단건 삭제 -->
-	<delete id="delReqInsp" parameterType="String">
+	<delete id="delInsp" parameterType="String">
 		delete from qua_com where
 		insp_num = #{inspNum}
 	</delete>
@@ -301,7 +275,9 @@
 		         p.wk_deta_id, 
 		         p.pd_id, 
 		         p.pd_name, 
-		         p.deta_qt, 
+		         p.deta_qt,
+		         p.dmat_qt,
+		         p.good_qt,
 		         p.wk_end, 
 		         q.insp_num,
 		         b.proc_id,
@@ -309,12 +285,12 @@
 		   from  process_performance p 
 LEFT OUTER JOIN  qua_com q 
              ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
-LEFT OUTER JOIN  work_bom b
-		     ON  p.wk_deta_id = b.wk_deta_id
+LEFT 	JOIN  work_bom b
+		     ON  p.wk_bom_id = b.wk_bom_id
 	  LEFT JOIN  process r
 	         ON  b.proc_id = r.proc_id
           WHERE  q.INSP_NUM IS NULL
-       ORDER BY  p.wk_end
+       ORDER BY  p.prcs_pfmc_id
 	</select>
 
 	<!-- 공정검사 전 검사 번호 자동 등록 -->
@@ -323,14 +299,24 @@ LEFT OUTER JOIN  work_bom b
 	</select>
 
 	<!-- 공정 검사 (대기) 등록 -->
-	<insert id="bpdAdd" parameterType="PrdInspVO">
+ 	<insert id="bpdAdd" parameterType="PrdInspVO">
 		insert into qua_com
 		(insp_num,
-		insp_item_id, insp_type, insp_qt, insp_std_id)
+		insp_item_id, insp_type, insp_qt, suit_qt, nsuit_qt, insp_std_id)
 		values
 		(#{inspNum},
-		#{pdId}, '공정검사', #{detaQt}, #{prcsPfmcId})
-	</insert>
+		#{pdId}, 'INSP-B', #{detaQt}, #{goodQt}, #{dmatQt}, #{prcsPfmcId})
+	</insert> 
+	
+	<!-- <insert id="bpdAdd" parameterType="PrdInspVO">
+	  INSERT INTO qua_com
+	  (insp_num, insp_item_id, insp_type, insp_qt, insp_std_id)
+	  SELECT #{inspNum}, #{pdId}, 'INSP-B', #{detaQt}, p.PRCS_PFMC_ID
+	  FROM process_performance p
+	  LEFT OUTER JOIN work_bom b ON p.wk_deta_id = b.wk_deta_id
+	  LEFT OUTER JOIN process r ON b.proc_id = r.proc_id
+	  WHERE r.proc_id = #{procId} AND p.pd_name = #{productName}
+</insert> -->
 
 	<!-- 공정 검사 대기 리스트 -->
 	<select id="prwList" resultType="PrdInspVO">
@@ -350,7 +336,7 @@ LEFT OUTER JOIN  work_bom b
 LEFT OUTER JOIN  qua_com q 
              ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
 LEFT OUTER JOIN  work_bom b
-		     ON  p.wk_deta_id = b.wk_deta_id
+		     ON  p.wk_bom_id = b.wk_bom_id
 	  LEFT JOIN  process r
 	         ON  b.proc_id = r.proc_id
           WHERE  q.INSP_NUM IS NOT NULL
@@ -376,13 +362,14 @@ LEFT OUTER JOIN  work_bom b
 LEFT OUTER JOIN  qua_com q 
              ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
 LEFT OUTER JOIN  work_bom b
-		     ON  p.wk_deta_id = b.wk_deta_id
+		     ON  p.wk_bom_id = b.wk_bom_id
 	  LEFT JOIN  process r
 	         ON  b.proc_id = r.proc_id
           WHERE  q.INSP_NUM IS NOT NULL
             AND  q.INSP_DATE IS NOT NULL
        ORDER BY  q.insp_num
 	</select>
+	
 	
 	<!-- 출고 검사 번호 자동 등록 -->
   	<select id="psInspNum" resultType="String">
@@ -392,7 +379,7 @@ LEFT OUTER JOIN  work_bom b
 	<!-- 출고 검사 결과 등록 시 검사 공통 등록 -->
   	<insert id="insertShipCom" parameterType="ShipInspVO">
 		INSERT INTO qua_com (insp_num, insp_std_id, insp_item_id, insp_type, insp_date, emp_id, insp_qt, nsuit_qt, suit_qt, qua_com_note) 
-    	values (#{inspNum}, #{cpShipId}, #{cpId}, #{inspType}, sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
+    	values (#{inspNum}, #{cpShipId}, #{cpId}, 'INSP-C', sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
 	</insert>  
 	
 	<!-- 출고 검사 결과 등록시 검사 세부 등록 -->
@@ -411,10 +398,10 @@ LEFT OUTER JOIN  work_bom b
 	</update>  
 
 	<!-- 완제품 출고 관리 리스트 -->
- 	<select id="shInspList" resultType="ShipInspVO">
-		select s.cp_ship_id, s.ord_det_id, s.cp_lot_id, p.cp_lot_id, c.cp_name,
+  	<select id="shInspList" resultType="ShipInspVO">
+select s.cp_ship_id, s.ord_det_id, s.cp_lot_id, c.cp_name,
 		p.cp_id, s.cp_ship_qt, s.cp_ship_stat, d.res_stat,
-		to_char(s.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, to_char(q.insp_date, 'yyyy-MM-dd') insp_date
+		to_char(q.insp_date, 'yyyy-MM-dd') insp_date, q.insp_num, f.wk_end, f.wk_end + (INTERVAL '2' YEAR) as exp_date
 		from
 		pro_ship s left join qua_com q
 		on s.cp_ship_id = q.insp_std_id
@@ -424,11 +411,24 @@ LEFT OUTER JOIN  work_bom b
 		on p.cp_id=c.cp_id
         left join qua_details d
         on q.insp_num = d.insp_num
+LEFT OUTER JOIN prod_rev r ON p.cp_lot_id = r.cp_lot_id
+LEFT OUTER JOIN process_performance f ON r.prcs_pfmc_id = f.prcs_pfmc_id
 		order by cp_ship_stat desc, cp_ship_id
-		
-	</select> 
+	</select>
 	
-	<!-- 완제품 출고 수정 공통 -->
+	<!-- 완제품 출고 관리 리스트 -->
+<!-- 		<select id="shInspList" resultType="ShipInspVO">
+			SELECT s.*, p.cp_name, q.suit_qt, q.insp_date, f.wk_end, f.wk_end + (INTERVAL '2' YEAR) as exp_date,
+				   q.insp_num
+			FROM pro_ship s
+		    LEFT OUTER JOIN prod_lot l ON s.cp_lot_id = l.cp_lot_id
+	        JOIN complete_prod p ON l.cp_id = p.cp_id
+			LEFT OUTER JOIN qua_com q on l.cp_id = q.insp_item_id
+			LEFT OUTER JOIN prod_rev r ON l.cp_lot_id = r.cp_lot_id
+			LEFT OUTER JOIN process_performance f ON r.prcs_pfmc_id = f.prcs_pfmc_id
+		</select> -->
+	
+	<!-- 완제품 출고, 반품 수정 공통 -->
 	<update id="modShipCom" parameterType="ShipInspVO">
 		update qua_com
 		  set  suit_qt       = #{suitQt},
@@ -438,7 +438,7 @@ LEFT OUTER JOIN  work_bom b
  
 	</update>
 	
-	<!-- 완제품 출고 수정 상세 -->
+	<!-- 완제품 출고, 반품 수정 상세 -->
 	<update id="modShipDet" parameterType="ShipInspVO">
 		update qua_details
 		   set	res_val       = #{cpShipQt},
@@ -447,6 +447,103 @@ LEFT OUTER JOIN  work_bom b
 		        insp_num      = #{inspNum}
  
 	</update>
-
+	
+	<!-- 반품 리스트 -->
+	<!-- <select id="returnList" resultType="ReturnInspVO">
+		 SELECT r.ret_id, 
+		        l.cp_lot_id,
+		        d.res_stat, 
+		        q.insp_date, 
+		        f.wk_end, 
+		        f.wk_end + (INTERVAL '2' YEAR) AS "exp_date"
+		   FROM ret_prod r
+LEFT OUTER JOIN pro_ship s 
+			 ON r.cp_ship_id = s.cp_ship_id
+LEFT OUTER JOIN prod_lot l 
+			 ON s.cp_ship_id = l.cp_lot_id
+		   JOIN complete_prod p 
+		     ON l.cp_id = p.cp_id
+LEFT OUTER JOIN qua_com q 
+			 ON l.cp_id = q.insp_item_id
+		   JOIN qua_details d 
+		     ON q.insp_num = d.insp_num
+LEFT OUTER JOIN prod_rev v 
+			 ON l.cp_lot_id = v.cp_lot_id
+LEFT OUTER JOIN process_performance f 
+			 ON v.prcs_pfmc_id = f.prcs_pfmc_id 
+	</select> -->
+	
+	<!-- 반품 리스트 가조회 -->
+	<select id="returnList" resultType="ReturnInspVO">
+		select r.* from ret_prod r
+		LEFT OUTER JOIN pro_ship s ON r.cp_ship_id = s.cp_ship_id
+		LEFT OUTER JOIN prod_lot l ON s.cp_ship_id = l.cp_lot_id
+		LEFT OUTER JOIN qua_com q ON r.insp_num = q.insp_num
+		LEFT OUTER JOIN qua_details d ON q.insp_num = d.insp_num
+	</select>
+	
+	<!-- 반품 검사 번호 자동 등록 -->
+	<select id="qrInspNum" resultType="String">
+		select get_qur_num from dual
+	</select>
+	
+	<!-- 반품 검사 등록 시 검사 공통 insert -->
+	<insert id="isnertReturnCom" parameterType="ReturnInspVO">
+		INSERT INTO qua_com (insp_num, 
+						     insp_std_id, 
+						     insp_item_id, 
+						     insp_type, 
+						     insp_date, 
+						     emp_id, 
+						     insp_qt, 
+						     nsuit_qt, 
+						     suit_qt, 
+						     qua_com_note) 
+    				values (#{inspNum}, 
+    				        #{retId}, 
+    				        #{cpId}, 
+    				        'INSP-D', 
+    				        sysdate, 
+    				        #{empId},
+    				        #{retQt},
+    				        #{nsuitQt}, 
+    				        #{suitQt}, 
+    				        #{note})
+	</insert>
+	
+	<!-- 반품 검사 등록 시 검사 상세 insert -->
+  	<insert id="insertReturnDet" parameterType="ReturnInspVO">
+		INSERT INTO qua_details (det_insp_num, insp_num, insp_id, res_val, res_stat)
+		values (#{detInspNum}, #{inspNum}, #{inspId}, #{resVal}, #{resStat})
+	</insert>  
+	
+	<!-- 반품 검사 등록시 반품 테이블 업데이트 -->
+	<update id="updateReturn" parameterType="ReturnInspVO">
+		 update ret_prod
+		    set 
+		        ret_stat=#{retStat},
+		        insp_num=#{inspNum}
+	      where ret_id=#{retId}
+	</update> 
+	
+		<!-- 완제품 출고, 반품 수정 공통 -->
+	<update id="modReturnCom" parameterType="ReturnInspVO">
+		update qua_com
+		  set  suit_qt       = #{suitQt},
+			   nsuit_qt      =  #{nsuitQt}
+		 where
+		        insp_num      = #{inspNum}
+ 
+	</update>
+	
+	<!-- 완제품 출고, 반품 수정 상세 -->
+ 	<update id="modReturnDet" parameterType="ReturnInspVO">
+		update qua_details
+		   set	res_val       = #{suitQt},
+		   	    res_stat      = #{nsuitQt}
+		 where
+		        insp_num      = #{inspNum}
+ 
+	</update>
 
 </mapper>
