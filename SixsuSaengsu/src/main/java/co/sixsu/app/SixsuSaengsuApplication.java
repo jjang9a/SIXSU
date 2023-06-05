@@ -18,5 +18,10 @@ public class SixsuSaengsuApplication {
 	@GetMapping("/top")
 	public void top() {
 	}
+	
+	@GetMapping("/")
+	public String index() {
+		return "login";
+	}
 
 }
