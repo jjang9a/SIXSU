@@ -46,10 +46,13 @@ public class QuaVO {
 	private String matId;// 자재 코드, 제품코드
 	private String busName;// 거래처
 	private String matName; // 자재 명
-	private String matReqStat; // 자재 발주 상태
-	
-	//거래처
+	private String matReqStat; // 자재 발주 상태	
 	private String busId; //거래처 아이디
+	
+	// 출고 검사, 반품 검사 관련
+	private int cpShipQt; // 출고 수량
+	private int retQt; // 반품 수량
+	
 	
 	
 	private String inspDate2; // 검사 일자 검색용

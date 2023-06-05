@@ -93,7 +93,7 @@
                   aria-label="Close"
                 ></button>
               </div>
-
+			<form id='searchForm'>
               <div class="btns"></div>
                 거래처명<input type="text" name="busaName" id="busaName" /> <br />
 				출고 총 수량<input type="text" name="ordTotal" id="ordTotal" /> <br />
@@ -104,6 +104,7 @@
 				<option value ="주문오류"> 주문오류 </option>
 				<option value ="상품오류"> 상품오류 </option>
 			</select>
+			</form>
 			  <div id="orderGrid"></div>
 			  <button class="sixBtn2" id="compReturn">반품 등록</button>
               <div class="modal-body">
@@ -218,6 +219,9 @@
 		columns : [ {
 			header : '주문상세코드',
 			name : 'ordDetId',
+		},{
+			header : '거래처명',
+			name : 'busName',
 		}, {
 			header : '주문날짜',
 			name : 'ordDate'
@@ -235,7 +239,7 @@
 			name : 'cpShipReqDate'
 		}
 		]
-	});	
+	});
 	
 	orderCompleteGrid.on('click',ev=> {
 		let dataRow = orderCompleteGrid.getRow(ev.rowKey);
@@ -249,25 +253,51 @@
 			method : "GET",
 			dataType : "JSON",
 			success : function(result) {
-				busGrid.resetData(result);
+				orderGrid.resetData(result);
 				
 			}
 		});
 	});	
 	
+	
+	
+	
+	
+	
+	
+	
+	let orderData = '';
 	$("#compReturn").on("click", function(e){
 		console.log($("#busaName").val())
 		console.log($("#ordTotal").val())
 		console.log($("#returnReq").val())
 		console.log($("#returnRes").val())
 		let check = $("#ordTotal").val()*1 - $("#returnReq").val()*1;
+		let returnRes = $("#returnReq").val()
 		
 		if (check <0){
 			alert("반품 수량이 초과하였습니다.");
 			($("#returnReq").val(''))
-		} else{
-			console.log("통과")
 			
+		} else if(returnRes == '' ){
+			alert("반품 수량을 입력하세요.");
+			
+		}
+		else {
+			console.log("통과")
+			$.ajax({
+				url: "/sales/returnCheck",
+				method: "POST",
+				data: $('#searchForm').serialize(),
+				success: function(result){
+					let appData = result;
+					
+				},
+				error: function (reject) {
+					console.log(reject)
+					alert('출고 과정에서 에러가 발생하였습니다.')
+				}
+        	})
 			
 		}
 		

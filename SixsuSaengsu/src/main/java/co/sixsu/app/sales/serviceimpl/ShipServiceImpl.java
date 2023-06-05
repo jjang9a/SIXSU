@@ -60,7 +60,7 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		
 		list.get(i).setCpLotQtCk("LOT_ING");// 현재 lot가 출고 진행중인 상태로 셋팅
 		vo.setEmpId("test");
-		vo.setCpShipStat("검사요청");
+		vo.setCpShipStat("CP_SHIP_CHECK");
 		System.out.println(vo);
 		mapper.insertProShip(vo);
 		mapper.updateCpLot(list.get(i));
@@ -85,7 +85,7 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		
 		list.get(i).setCpLotQtCk("LOT_ING");// 현재 lot가 출고 진행중인 상태로 셋팅
 		vo.setEmpId("test");
-		vo.setCpShipStat("검사요청");
+		vo.setCpShipStat("CP_SHIP_CHECK");
 		
 		mapper.insertProShip(vo);
 		mapper.updateCpLot(list.get(i));
@@ -110,6 +110,12 @@ public void completeShip(ShipVO vo) {
 		
 	
 	
+}
+
+@Override
+public List<ShipVO> searchShip(ShipVO vo) {
+	// TODO Auto-generated method stub
+	return mapper.searchShip(vo);
 }
 
 

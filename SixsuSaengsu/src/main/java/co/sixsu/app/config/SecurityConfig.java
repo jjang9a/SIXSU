@@ -31,7 +31,7 @@ public class SecurityConfig{
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> 
 		requests
-			.antMatchers("/top","/login", "/**").permitAll()
+			.antMatchers("/top","/login", "/**", "/").permitAll()
 			.antMatchers("/admin/**").hasAuthority("ROLE_A") // boot에서는 ROLE_ 생략하고 그냥 ADMIN으로 적는것도 가능
 			.antMatchers("/admin/**").hasAuthority("ROLE_B")
 			.antMatchers("/admin/**").hasAuthority("ROLE_C")

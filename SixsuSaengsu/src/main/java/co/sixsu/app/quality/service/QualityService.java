@@ -5,6 +5,7 @@ import java.util.List;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
+import co.sixsu.app.quality.domain.ReturnInspVO;
 import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
@@ -41,6 +42,7 @@ public interface QualityService {
 		List<PrdInspVO> prdComList(); // 공정 검사 완료 리스트
 		int prdComUpdate(List<PrdInspVO> list); // 공정 검사 등록시 검사 공통 업데이트
 		
+		
 		// 출고 검사 관련
 		List<ShipInspVO> shInspList(); //  출고 검사 목록 리스트
 		ShipInspVO shipInspAdd(ShipInspVO ship); // 출고 검사 등록
@@ -48,8 +50,9 @@ public interface QualityService {
 		
 		
 		// 반품 검사 관련
-		
-		
+		List<ReturnInspVO> returnList(); // 반품 검사 목록 리스트
+		ReturnInspVO returnInspAdd(ReturnInspVO ret);// 반품 검사 등록
+		boolean returnInspMod (ReturnInspVO ret); // 반품 검사 수정
 		
 		// 사용 보류
 		List<QuaVO> insertPri(List<QuaVO> list); // 자재 입고 검사 결과 등록

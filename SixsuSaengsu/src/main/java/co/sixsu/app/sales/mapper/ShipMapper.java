@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import co.sixsu.app.sales.domain.LotVO;
 import co.sixsu.app.sales.domain.OrdVO;
+import co.sixsu.app.sales.domain.RetVO;
 import co.sixsu.app.sales.domain.ShipVO;
 
 @Mapper
@@ -21,7 +22,7 @@ public interface ShipMapper {
 	
 	
 	public void completeShip(String ordDetId);
-	
+	public List<ShipVO> searchShip(ShipVO vo);
 	
 	
 }

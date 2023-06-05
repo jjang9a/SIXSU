@@ -33,6 +33,7 @@ build/
 .vscode/
 
 # Compiled class file
+/bin
 *.class
 
 # Log file

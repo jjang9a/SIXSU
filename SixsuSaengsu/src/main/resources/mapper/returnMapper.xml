@@ -8,7 +8,10 @@
 	select d.ord_det_id, 
 	s.ord_Date, c.cp_Name, c.cp_id, d.ord_qt ,s.bus_id, b.bus_name
 	, (select CP_SHIP_REQ_DATE from pro_ship where ord_det_id = d.ord_det_id and rownum= 1)  as  CP_SHIP_REQ_DATE
-	from det_ord d join sorder s
+	from det_ord d 
+    left outer join pro_ship p
+    on d.ord_det_id= p.ord_det_id
+    left outer join sorder s
 	on d.ord_id = s.ord_id
 	left outer join complete_prod c
 	on d.cp_id = c.cp_id
@@ -21,5 +24,45 @@
 </select>
 
 
+  
+ <sql id="criteria">
+   <where>
+      <if test="cpId != null and cpId != ''.toString()">
+         c.cp_id = #{cpId}
+      </if>
+      <if test="retStat != null and retStat != 'all'.toString() and retStat != ''.toString()" >
+         and ( r.ret_stat = #{retStat})
+         
+      </if>    
+      <if test="startDate != null and startDate != ''.toString() and endDate != null and endDate != ''.toString()">
+         and (r.cp_ret_date  between to_date(#{startDate}, 'YYYY-MM-DD') and
+                     to_date(#{endDate}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
+      </if>
+   </where>
+</sql>
+
+  
+  
+  <select id="searchReturn"
+  		resultType="RetVO">
+  	 	select *
+        from ret_prod r
+        left outer join pro_ship p
+        on p.CP_SHIP_ID = r.CP_SHIP_ID
+        left outer join det_ord d
+        on d.ord_det_id = p.ord_det_id
+        left outer join sorder s
+        on s.ord_id = d.ord_id
+        left outer join prod_lot t
+        on t.cp_lot_id = p.cp_lot_id
+        left outer join COMPLETE_PROD c
+        on c.cp_id = t.cp_id
+        left outer join business b
+        on b.bus_id = s.bus_id
+  		<include refid="criteria"></include>
+  </select>
+  
+  
+  
 
 </mapper>

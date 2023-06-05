@@ -15,4 +15,12 @@ public class RetVO {
  
  
  public String detOrdId;
+ public String busId;
+ public String cpLotId;
+ public String cpId;
+ public String cpName;
+ public String busName;
+ public String startDate;
+ public String endDate;
+
 }

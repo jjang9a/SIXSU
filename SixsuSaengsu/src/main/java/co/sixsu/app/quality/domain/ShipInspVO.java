@@ -11,7 +11,7 @@ public class ShipInspVO {
 	 public String cpId; // 완제품코드
 	 public String cpName; // 완제품 이름
 	 public String expDate;// 유통기한
-	 public String endDate; // 제조일자(작업지시세부정보종료날짜)
+	 public String wkEnd; // 제조일자(작업지시세부정보종료날짜)
 	 public String note; // 비고
 	 
 	 public int cpShipQt; // 출고수량

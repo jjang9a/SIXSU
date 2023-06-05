@@ -37,7 +37,15 @@ public class SalesController {
 	public void invoice(Model model) {
 	
 	}
-
+	/*
+	 * <<<<<<< HEAD
+	 * 
+	 * @RequestMapping("searchOrder")
+	 * 
+	 * @ResponseBody public List<InvVO> searchOrder(InvVO vo) { List<InvVO> list =
+	 * service.searchOrder(vo); return list; } ======= >>>>>>> branch 'main' of
+	 * https://github.com/jjang9a/SIXSU.git
+	 */
 
 
 //모달창 회원이름 조회
