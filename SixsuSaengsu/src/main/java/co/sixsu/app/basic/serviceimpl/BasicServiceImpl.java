@@ -58,8 +58,12 @@ public class BasicServiceImpl implements BasicService, UserDetailsService {
 	}
 
 	@Override // 사원정보 업데이트
-	public boolean updateEmp(EmpVO emp) {
-		return mapper.updateEmp(emp) == 1;
+	public boolean updateEmp(List<EmpVO> emp) {
+		int count = 0;
+		for(EmpVO vo : emp) {
+			count += mapper.updateEmp(vo);
+		}
+		return count > 0;
 	}
 
 	@Override // 사원 검색
@@ -207,8 +211,8 @@ public class BasicServiceImpl implements BasicService, UserDetailsService {
 	}
 
 	@Override // 거래처 검색
-	public List<BusVO> searchBus(SearchDTO dto) {
-		return mapper.searchBus(dto);
+	public List<BusVO> searchBus(BusVO bus) {
+		return mapper.searchBus(bus);
 	}
 
 	// 공정관리

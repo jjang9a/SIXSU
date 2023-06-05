@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.basic.service.BasicService;
@@ -53,13 +54,18 @@ public class MaterialController {
 	public void matrecList() {
 	}
 	
+	//자재입고조회 페이지 열어주기
+	@GetMapping("matRecInfo")
+	public void matRecInfo() {
+	}
+	
 	//자재Lot조회 페이지 열어주기
 	@GetMapping("mlot")
 	public void mlot() {
 	}
 	
 	//자재조회 페이지 열어주기
-	@GetMapping("materiallist")
+	@GetMapping("matInfo")
 	public void matList() {
 	}
 	
@@ -69,7 +75,7 @@ public class MaterialController {
 	}
 	
 	//자재 출고조회 페이지 열어주기
-	@GetMapping("matship")
+	@GetMapping("matShipInfo")
 	public void matShipList() {
 	}
 	
@@ -84,7 +90,7 @@ public class MaterialController {
 	}
 	
 	//반제품 리스트 페이지 열어주기
-	@GetMapping("spship")
+	@GetMapping("spShipInfo")
 	public void spShipList() {
 	}
 	
@@ -99,8 +105,9 @@ public class MaterialController {
 	}
 	
 	//발주조회 페이지 열어주기
-	@GetMapping("matreqlst")
-	public void matReqList() {
+	@GetMapping("matReqInfo")
+	public void matReqList(Model model) {
+		model.addAttribute("REQSTAT",bservice.commGroupList("REQ_STAT"));
 	}
 	
 	//불량품 페이지 열어주기
@@ -109,7 +116,7 @@ public class MaterialController {
 	}
 	
 	//반제품 리스트 페이지 열어주기
-	@GetMapping("splist")
+	@GetMapping("spInfo")
 	public void spList() {
 	}
 	
@@ -206,16 +213,17 @@ public class MaterialController {
 	//자재 출고 리스트
 	@ResponseBody
 	@RequestMapping("matshiplist")
-	public List<MatShipVO> getMatShipList(){
-		List<MatShipVO> list = service.getMatShipList();
+	public List<MatShipVO> getMatShipList(MatShipVO vo){
+		List<MatShipVO> list = service.getMatShipList(vo);
 		return list;
 	}
 	
 	//자재 조정 리스트
 	@ResponseBody
 	@RequestMapping("matadjlist")
-	public List<MatAdjVO> getMatAdjList(){
-		List<MatAdjVO> list = service.getMatAdjList();
+	public List<MatAdjVO> getMatAdjList(@RequestParam String matLotId){
+		List<MatAdjVO> list = service.getMatAdjList(matLotId);
+		System.out.println(list);
 		return list;
 	}
 	
@@ -239,8 +247,8 @@ public class MaterialController {
 	//반제품 재고조정 리스트
 	@ResponseBody
 	@RequestMapping("spadjlist")
-	public List<SpAdjVO> getSpAdjList(){
-		List<SpAdjVO> list = service.getSpAdjList();
+	public List<SpAdjVO> getSpAdjList(String spLotId){
+		List<SpAdjVO> list = service.getSpAdjList(spLotId);
 		return list;
 	}
 	
@@ -248,8 +256,8 @@ public class MaterialController {
 	//반제품 출고 리스트
 	@ResponseBody
 	@RequestMapping("spshiplist")
-	public List<SpShipVO> getSpShipList(){
-		List<SpShipVO> list = service.getSpShipList();
+	public List<SpShipVO> getSpShipList(SpShipVO vo){
+		List<SpShipVO> list = service.getSpShipList(vo);
 		return list;
 	}
 	
@@ -323,8 +331,8 @@ public class MaterialController {
 	//반제품 리스트
 	@ResponseBody
 	@RequestMapping("semiprodlist")
-	public List<SpVO> getSpList(){
-		List<SpVO> list = service.getSpList();
+	public List<SpVO> getSpList(@RequestParam String spName){
+		List<SpVO> list = service.getSpList(spName);
 		return list;
 	}
 	

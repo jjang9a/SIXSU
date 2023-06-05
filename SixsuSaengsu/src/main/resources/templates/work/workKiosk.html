@@ -189,9 +189,7 @@
 			        frozenBorderWidth: 2
 			     }
 			});
-			grid1.setBodyHeight(660);
-			
-			
+
 			window.onload = function() {
 				전체조회리스트();
 			}
@@ -343,31 +341,8 @@
 			$('#endBtn').on('click', function() {
 				console.log('endBtn is clicked');
 				
-				let selectedDetaId = grid1.getRow(selRowKey).wkDetaId
-				let selectedStat = grid1.getRow(selRowKey).cmpltSt
-				if(confirm("  선택된 작업지시 : " + selectedDetaId + "\n  종료하시겠습니까?") == true){
-					if(selectedStat != "진행중"){
-						alert("상태가 \"진행중\"인 작업지시 만 종료할 수 있습니다.");
-						return;
-					}
-		    		}else{
-		    		return;
-		    	}
 				
-				$.ajax({
-					url : "/ajax/endWorkOrder",
-					method : "POST",
-					contentType: "application/json",
-					data : JSON.stringify({wkDetaId : selectedDetaId}),
-					success : function(result){
-						console.log(result)
-						alert(result);
-						전체조회리스트();
-					},
-					error : function(reject){
-						console.err(reject)
-					}
-				});
+				
 				
 				
 				

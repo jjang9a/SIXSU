@@ -118,6 +118,79 @@
 	SET cp_lot_qt=#{cpLotQt}, cp_lot_qt_ck=#{cpLotQtCk}
 	WHERE cp_lot_id=#{cpLotId}
 </update>
+<!-- 완제품 입고관리 종료 -->
 
+<!-- 공정실적 조회 시작 -->
+<select id="performanceList" resultType="PfmcVO">
+	select prcs_pfmc_id, r.proc_name, wk_deta_id, p.pd_id, pd_name, equ_code, to_char(wk_start, 'yyyy/MM/dd') wk_start, to_char(wk_end, 'yyyy/MM/dd') wk_end, deta_qt, dmat_qt, good_qt, nvl(nvl(c.cp_unit , s.sp_unit), m.mat_unit) pd_unit, emp_name
+	from PROCESS_PERFORMANCE p
+    natural join work_bom b
+    left outer join complete_prod c on p.pd_id = c.cp_id
+    left outer join semi_prod s on p.pd_id = s.sp_id
+    left outer join material m on p.pd_id = m.mat_id
+    left outer join employee e on p.emp_id = e.emp_id
+    left outer join process r on b.proc_id = r.proc_id
+    order by prcs_pfmc_id desc
+</select>
 
+<sql id="criteria">
+	<where>
+		<if test="pdId != null and pdId != ''.toString()">
+			pd_id = #{pdId}
+		</if>
+		<if test="pdType != null and pdType != ''.toString()">
+			or ( substr(pd_id, 1, 1) = #{pdType} )
+		</if>
+		<if test="procType != null and procType != ''.toString()">
+			or ( wk_bom_id IN ( select wk_bom_id
+                            from work_bom b
+                            join process p on b.proc_id = p.proc_id
+                            where proc_type = #{procType} ) )
+		</if>
+		<if test="wkStart != null and wkStart != ''.toString() and wkEnd != null and wkEnd != ''.toString()">
+			or ( wk_start between to_date(#{wkStart}, 'YYYY-MM-DD') and
+							to_date(#{wkEnd}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
+		</if>
+		<if test="prcsPfmcId != null and prcsPfmcId != ''.toString()">
+			or ( prcs_pfmc_id like '%'||#{prcsPfmcId}||'%' )
+		</if>
+	</where>
+</sql>
+
+<select id="searchPerformance" resultType="PfmcVO">
+	select prcs_pfmc_id, r.proc_name, wk_deta_id, p.pd_id, pd_name, equ_code, to_char(wk_start, 'yyyy/MM/dd') wk_start, to_char(wk_end, 'yyyy/MM/dd') wk_end, deta_qt, dmat_qt, good_qt, nvl(nvl(c.cp_unit , s.sp_unit), m.mat_unit) pd_unit, emp_name
+	from PROCESS_PERFORMANCE p
+    natural join work_bom b
+    left outer join complete_prod c on p.pd_id = c.cp_id
+    left outer join semi_prod s on p.pd_id = s.sp_id
+    left outer join material m on p.pd_id = m.mat_id
+    left outer join employee e on p.emp_id = e.emp_id
+    left outer join process r on b.proc_id = r.proc_id
+    <include refid="criteria"></include>
+    order by prcs_pfmc_id desc
+</select>
+
+<!-- 공정실적 조회 종료 -->
+
+<!-- 품질겅사 목록 관리 시작 -->
+
+<select id="getInspList" resultType="QilVO">
+	SELECT * FROM QUA_INSP_LIST
+</select>
+
+<insert id="addInsp" parameterType="QilVO">
+	<selectKey keyProperty="inspId" resultType="String" order="BEFORE">
+		SELECT insp_list_seq.nextval
+		FROM dual
+	</selectKey>
+	INSERT INTO QUA_INSP_LIST VALUES ( #{inspId}, #{inspSep}, #{inspName}, #{inspExp}, #{stdVal}, #{inspItemId}, null )
+</insert>
+
+<update id="updateInsp" parameterType="QilVO">
+	UPDATE QUA_INSP_LIST
+	SET insp_sep = #{inspSep}, insp_name = #{inspName}, insp_exp = #{inspExp}, std_val = #{stdVal}, insp_item_id = #{inspItemId}
+	WHERE insp_id = #{inspId}
+</update>
+
+<!-- 품질겅사 목록 관리 종료 -->
 </mapper>

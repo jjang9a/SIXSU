@@ -21,14 +21,7 @@
 			<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품조회</h1>
 	
 			<div id="left">
-				반제품명 <input type="number" id="spId" name="spId">
-				<button class="sixBtn1">
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
-						viewBox="0 2 16 16">
-						<path
-							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-					</svg>
-				</button>
+				반제품명 <input type="text" id="spName" name="spName">
 			</div>
 			<div id="left">
 				<button class="sixBtn2" id="check">조회</button>
@@ -38,22 +31,32 @@
 			<div id="gridm"></div>
 			
 		<script>
+		
+		function spList(spName){
+			$.ajax({
+				url : "/materials/semiprodlist",
+				method : "GET",
+				data : {spName : spName},
+				success : function(result) {
+					gridm.resetData(result);
+				},
+				error: function(reject) {
+					console.log(reject);
+				}
+			});
+		}
+		
+		
+		let spName = null;
+		spList(spName);
+		
+		
 		const gridData = [
 
 			];
 			window.onload = function () {
 				
-				$.ajax({
-					url : "/materials/semiprodlist",
-					method : "GET",
-					dataType : "JSON",
-					success : function(result) {
-						gridm.resetData(result);
-					},
- 					error: function(reject) {
-						console.log(reject);
-					}
-				});
+				spList(spName);
 			}
 			
 			const gridm = new tui.Grid({
@@ -101,6 +104,19 @@
 					}
 				}
 			});
+ 			
+ 			
+ 			
+ 			$('#check').on('click', function(){
+ 				spName = $('#spName').val();
+ 				spList(spName);
+ 			})
+ 			
+ 			$('#reset').on('click', function() {
+ 				$('#spName').val('');
+ 				spName = '';
+ 				spList(spName);
+ 			})
 		</script>
 	</div>
 </body>

@@ -14,4 +14,6 @@ public class SpShipVO {
 	String spShipNote;
 	String empName;
 	
+	String sDate;
+	String eDate;
 }

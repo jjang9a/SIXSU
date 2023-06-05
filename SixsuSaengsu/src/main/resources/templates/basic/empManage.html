@@ -439,16 +439,17 @@
 
 			// 수정 버튼 이벤트
 			$('#modiBtn').on('click', function () {
+				console.log(grid.getModifiedRows());
 				$.ajax({
 					url: '/basic/empModify',
 					type: 'post',
-					// 선택된 열의 key값으로 row정보를 받아오고 그것을 JSON타입으로 변환해서 보냄
-					data: JSON.stringify(grid.getRow(selKey)),
+					data: JSON.stringify(grid.getModifiedRows().updatedRows),
 					contentType: 'application/json',
 					success: function () {
 						alert('성공적으로 업데이트 되었습니다');
 					},
-					error: function () {
+					error: function (r) {
+						console.log(r)
 						alert('사원 정보 변경 중 오류가 발생했습니다!');
 					}
 				});

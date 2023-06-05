@@ -277,15 +277,6 @@ public class WorkAjaxController {
 		return result;
 	}
 	
-	@RequestMapping("endWorkOrder")
-	public String endWorkOrder(@RequestBody DetaWorkOrdrVO detaCode) {
-		System.out.println("preparing endWorkOrder");
-		System.out.println("detaCode is " + detaCode.getWkDetaId());
-		String result = service.endWorkOrder(detaCode.getWkDetaId());
-		System.out.println(result);
-		return result;
-	}
-	
 	
 	
 } 

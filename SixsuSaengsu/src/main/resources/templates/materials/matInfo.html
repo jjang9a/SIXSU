@@ -22,13 +22,7 @@
 	
 			<div id="left">
 				자재명 <input type="text" id="matName" name="matName">
-				<button class="sixBtn1">
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
-						viewBox="0 2 16 16">
-						<path
-							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-					</svg>
-				</button>
+				
 			</div>
 			<div id="left">
 				<button class="sixBtn2" id="check">조회</button>
@@ -45,7 +39,7 @@
 		function matList(matName){
 			$.ajax({
 				url : "/materials/matlist",
-				method : "GET",
+				method : "POST",
 				dataType : "JSON",
 				data: {matName : matName},
 				success : function(result) {
@@ -116,7 +110,12 @@
  				console.log(matName);
  				matList(matName);
  			})
-			
+			$('#reset').on('click', function() {
+ 				$('#matName').val('');
+ 				matName = '';
+ 				matList(matName);
+ 			})
+ 			
 			const gridm = new tui.Grid({
 				el : document.getElementById('gridm'),
 				//data : gridData,

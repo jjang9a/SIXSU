@@ -19,7 +19,7 @@ public interface BasicService {
 	List<EmpVO> getEmpList(); // 사원 전체목록 조회
 	boolean updatePw(EmpVO emp); // 비밀번호 변경
 	EmpVO addEmp(EmpVO emp); // 사원 등록
-	boolean updateEmp(EmpVO emp); // 사원 정보 수정
+	boolean updateEmp(List<EmpVO> emp); // 사원 정보 수정
 	List<EmpVO> searchEmp(SearchDTO dto); // 사원 검색
 	
 	List<CodeVO> groupList(); // 그룹 코드 조회
@@ -48,7 +48,7 @@ public interface BasicService {
 	List<BusVO> busList(); // 거래처 목록 조회
 	boolean addBus(BusVO bus); // 거래처 등록
 	boolean updateBus(BusVO bus); // 거래처 수정
-	List<BusVO> searchBus(SearchDTO dto); // 거래처 검색
+	List<BusVO> searchBus(BusVO bus); // 거래처 검색
 	
 	List<ProcessVO> procList(); // 공정 목록 조회
 	boolean addProc(ProcessVO mat); // 공정 등록

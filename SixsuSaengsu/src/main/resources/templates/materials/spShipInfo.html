@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>반제품출고조회</title>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품출고조회</h1>
+		<form action="" method="post" id="spShipForm">
+				<table id="spShipTable">
+					<tr>
+						<td>공정실적코드</td>
+						<td><input type="text" name="pNum" id="pNum" class="empty" placeholder="검색"></td>
+					</tr>				
+					<tr>
+						<td>반제품LOT번호</td>
+						<td><input type="text" name="spLotId" id="spLotId" class="empty" placeholder="검색"></td>
+					</tr>
+					<tr>
+						<td>반제품명</td>
+						<td><input type="text" name="spName" id="spName" class="empty" placeholder="검색"></td>
+						
+					</tr>
+					<tr>
+						<td>출고유형</td>
+						<td>
+							<div id="divRadio">
+								<input type="radio" id="spShipType1" name="spShipType" value="정상출고">
+								<label for="spShipType1">정상출고</label>
+								<input type="radio" id="spShipType2" name="spShipType" value="조정출고">
+								<label for="spShipType2">조정출고</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>출고일자</td>
+						<td>
+							<input type="date" id="spShipDate"> ~ <input type="date" id="spShipDatee">
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div id="left">
+				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn4" id="reset">초기화</button>
+			</div>
+			
+			<div id="gridm"></div>
+			
+		<script>
+			const gridData = [
+	
+			];
+			function spShipList(prcsPfmcId, spLotId, spName, spShipType, sDate, eDate){
+				
+				$.ajax({
+					url : "/materials/spshiplist",
+					method : "GET",
+					data : {prcsPfmcId : prcsPfmcId, spLotId : spLotId, spName : spName, spShipType : spShipType, sDate : sDate, eDate : eDate},
+					success : function(result) {
+						gridm.resetData(result);
+					},
+ 					error: function(reject) {
+						console.log(reject);
+					}
+				});
+			}
+			
+			let prcsPfmcId =null;
+			let spLotId =null;
+			let spName = null;
+			let spShipType = null;
+			let sDate = null;
+			let eDate = null;
+			spShipList(prcsPfmcId, spLotId, spName, spShipType, sDate, eDate);
+			
+			$('#check').click(function(){
+				prcsPfmcId = $('#pNum').val();
+				spLotId = $('#spLotId').val();
+				spName = $('#spName').val();
+				spShipType = $("input[name='spShipType']:checked").val();
+				sDate = $('#spShipDate').val();
+				eDate = $('#spShipDatee').val();
+				spShipList(prcsPfmcId, spLotId, spName, spShipType, sDate, eDate);
+			})
+			
+			$('#reset').click(function(){
+				$('#pNum').val('');
+				$('#spLotId').val('');
+				$('#spName').val('');
+				$("input[name='spShipType']:checked").val('');
+				$('#spShipDate').val('');
+				$('#spShipDatee').val('');
+				prcsPfmcId = $('#pNum').val();
+				spLotId = $('#spLotId').val();
+				spName = $('#spName').val();
+				spShipType = $("input[name='spShipType']:checked").val();
+				sDate = $('#spShipDate').val();
+				eDate = $('#spShipDatee').val();
+				$('input[type="radio"]').prop('checked', false);
+				spShipList(prcsPfmcId, spLotId, spName, spShipType, sDate, eDate);
+			})
+			
+			const gridm = new tui.Grid({
+				el : document.getElementById('gridm'),
+				//data : gridData,
+				scrollX : false,
+				scrollY : false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				rowHeaders: ['rowNum'],
+				columns : [ 
+					{
+					header : '공정실적코드',
+					name : 'prcsPfmcId',
+				}, {
+					header : '반제품LOT번호',
+					name : 'spLotId'
+				}, {
+					header : '반제품명',
+					name : 'spName'
+				}, {
+					header : '출고량',
+					name : 'spShipQt'
+				}, {
+					header : '출고일자',
+					name : 'spShipDate'
+				}, {
+					header : '출고유형',
+					name : 'spShipType'
+				}, {
+					header : '담당자',
+					name : 'empName'
+				}, {
+					header : '비고',
+					name : 'spShipNote'
+				}]
+			});
+			
+ 			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+		</script>
+	</div>
+</body>
+
+</html>

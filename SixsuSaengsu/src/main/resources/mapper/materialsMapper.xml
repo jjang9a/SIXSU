@@ -4,17 +4,101 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="co.sixsu.app.material.mapper.MaterialsMapper">
+
+<!-- LOT조회 SQL 조건구문 -->
 <sql id="criteria">
  	<where>
 		 	<if test="matLotId != null and matLotId != ''.toString()">
 		 		m.mat_lot_id = #{matLotId}
 		 	</if>
-		 	<if test="matId != null and matId != ''.toString()">
-		 		l.mat_id = #{matId}
+		 	<if test="matLotId == null and matLotId == ''.toString()">
+		 	</if>
+		 	<if test="matName != null and matName != ''.toString()">
+		 		and l.mat_name = #{matName}
+		 	</if>
+		 	<if test="matName == null and matName == ''.toString()">
+		 	</if>
+		 	<if test="matHoldStat != null and matHoldStat != ''.toString()">
+		 		and m.mat_hold_stat = #{matHoldStat}
+		 	</if>
+		 	<if test="matHoldStat == null and matHoldStat == ''.toString()">
 		 	</if>
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		c.mat_rec_date  between #{sDate} and #{eDate}
+		 		and c.mat_rec_date  between #{sDate} and #{eDate}
+		 	</if>
+		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if> 
+	</where>
+</sql>
+
+<!-- 자재입고조회 SQL조건 구문 -->
+<sql id="criteria2">
+	<where>
+		<if test="matLotId != null and matLotId != ''.toString()">
+			c.mat_lot_id = #{matLotId}
+		</if>	
+	</where>
+</sql> 
+
+<!-- 자재출고조회 SQL 조건구문 -->
+<sql id="criteria3">
+ 	<where>
+		 	<if test="prcsPfmcId != null and prcsPfmcId != ''.toString()">
+		 		s.prcs_pfmc_id = #{prcsPfmcId}
+		 	</if>
+		 	<if test="prcsPfmcId == null and prcsPfmcId == ''.toString()">
+		 	</if>
+		 	<if test="matLotId != null and matLotId != ''.toString()">
+		 		and s.mat_lot_id = #{matLotId}
+		 	</if>
+		 	<if test="matLotId == null and matLotId == ''.toString()">
+		 	</if>
+		 	<if test="matName != null and matName != ''.toString()">
+		 		and m.mat_name = #{matName}
+		 	</if>
+		 	<if test="matName == null and matName == ''.toString()">
+		 	</if>
+		 	<if test="matShipType != null and matShipType != ''.toString()">
+		 		and s.mat_ship_type = #{matShipType}
+		 	</if>
+		 	<if test="matShipType == null and matShipType == ''.toString()">
+		 	</if>		 	
+		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
+		 		and s.mat_ship_date  between #{sDate} and #{eDate}
+		 	</if>
+		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
+		 	</if> 
+	</where>
+</sql>
+
+<!-- 반제품출고조회 SQL 조건구문 -->
+<sql id="criteria4">
+ 	<where>
+		 	<if test="prcsPfmcId != null and prcsPfmcId != ''.toString()">
+		 		s.prcs_pfmc_id = #{prcsPfmcId}
+		 	</if>
+		 	<if test="prcsPfmcId == null and prcsPfmcId == ''.toString()">
+		 	</if>
+		 	<if test="spLotId != null and spLotId != ''.toString()">
+		 		and s.sp_lot_id = #{spLotId}
+		 	</if>
+		 	<if test="spLotId == null and spLotId == ''.toString()">
+		 	</if>
+		 	<if test="spName != null and spName != ''.toString()">
+		 		and p.sp_name = #{spName}
+		 	</if>
+		 	<if test="spName == null and spName == ''.toString()">
+		 	</if>
+		 	<if test="spShipType != null and spShipType != ''.toString()">
+		 		and s.sp_ship_type = #{spShipType}
+		 	</if>
+		 	<if test="spShipType == null and spShipType == ''.toString()">
+		 	</if>		 	
+		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
+		 		and s.sp_ship_date  between #{sDate} and #{eDate}
+		 	</if>
+		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
+		 	</if>
 	</where>
 </sql>
 	<!-- 발주리스트 -->
@@ -31,6 +115,7 @@
 		       to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, 
 		       m.emp_id, 
 		       e.emp_name
+		
 		  from mat_req m 
 		  left join business b
 		    on m.bus_id = b.bus_id
@@ -85,7 +170,7 @@
 	</select>
 	
 	<!-- 입고 목록-->
-	<select id="selectMatRecList" resultType="MatrecVO">
+	<select id="selectMatRecList" resultType="MatrecVO" parameterType="MatrecVO">
 		select c.mat_rec_id, 
 	       c.mat_req_id, 
 	       c.insp_num, 
@@ -109,6 +194,8 @@
 		 on c.mat_lot_id = t.mat_lot_id 
 		left join material l
 		 on t.mat_id = l.mat_id
+		<!-- 조건 -->
+		<include refid="criteria2"></include>
 		order by c.mat_rec_date desc
 	</select>
 	
@@ -131,6 +218,9 @@
 		where m.mat_stat = 'Y'
 		<if test="matName != null and matName != ''.toString()">
 			and m.mat_name = #{matName}
+		</if>
+		<if test="matName == null and matName == ''.toString()">
+		
 		</if>
 		order by m.mat_id
   	</select>
@@ -163,8 +253,8 @@
 		
 		left join material l
 		 on m.mat_id = l.mat_id
-		 <!-- 조건 -->
-		  	<include refid="criteria"></include>
+		<!-- 조건 -->
+		<include refid="criteria"></include>
 		
 		<!-- 로트역순으로 -->
 		order by substr(mat_lot_id, 5,6) desc, TO_NUMBER(SUBSTR(mat_lot_id, INSTR(mat_lot_id, '-') + 1)) desc
@@ -172,7 +262,7 @@
   	</select>
 	
 	<!-- 자재 출고 리스트-->
-	<select id="getMatShipList" resultType="MatShipVO">
+	<select id="getMatShipList" resultType="MatShipVO" parameterType="MatShipVO">
 		select s.prcs_pfmc_id, 
 			   s.mat_lot_id, 
 			   m.mat_name, 
@@ -192,18 +282,27 @@
 		
 		left join employee e
 		 on s.emp_id = e.emp_id
+
+		<!-- 조건 -->
+		<include refid="criteria3"></include>		 
+		
 	</select>
 	
 	<!-- 자재 재고조정 페이지 -->
-	<select id="getMatAdjList" resultType="MatAdjVO">
+	<select id="getMatAdjList" resultType="MatAdjVO" parameterType="String">
 		select l.mat_lot_id, 
 		       l.mat_id, 
 		       m.mat_name, 
 		       m.mat_size, 
 		       l.mat_qt
-		  from mat_lot l 
-		  left join material m
-		    on l.mat_id = m.mat_id
+		from mat_lot l 
+		left join material m
+		  on l.mat_id = m.mat_id
+	 	<if test= "matLotId != ''.toString() and matLotId != ''.toString()">
+	 		where l.mat_lot_id = #{matLotId}
+	 	</if>
+	 	<if test= "matLotId == ''.toString() and matLotId == ''.toString()">
+	 	</if> 		   
 		order by l.mat_lot_id desc
 	</select>
 	
@@ -239,10 +338,15 @@
 		  from sp_lot l 
 		  left join semi_prod s
 		    on l.sp_id = s.sp_id
+	 	<if test= "spLotId != ''.toString() and spLotId != ''.toString()">
+	 		where l.sp_lot_id = #{spLotId}
+	 	</if>
+	 	<if test= "spLotId == ''.toString() and spLotId == ''.toString()">
+	 	</if> 			    
   	</select>
   	
   	<!-- 반제품 출고 리스트 -->
-  	<select id="getSpShipList" resultType="SpShipVO">
+  	<select id="getSpShipList" resultType="SpShipVO" parameterType="SpShipVO">
   		select s.prcs_pfmc_id, 
   			   s.sp_lot_id, 
   			   p.sp_name, 
@@ -261,6 +365,9 @@
 		 
 		left join employee e
 		 on s.emp_id = e.emp_id
+		 
+		 <!-- 반제품 출고 조회 조건 -->
+		<include refid="criteria4"></include>
   	</select>
   	
   	<!-- 반제품 조정입고 프로시저 -->
@@ -412,10 +519,18 @@
   	</insert>
 	
 	<!-- 반제품 리스트 -->
-	<select id="getSpList" resultType="SpVO">
+	<select id="getSpList" resultType="SpVO" parameterType="String">
+		
 		with splotsum as (select sp_id, sum(sp_qt) as sp_qt_sum from sp_lot group by sp_id)
 		select p.*, s.sp_qt_sum from semi_prod p left join splotsum s on p.sp_id = s.sp_id
-		where p.sp_stat = 'Y' order by p.sp_id
+		where p.sp_stat = 'Y' 
+		<if test="spName != null and spName != ''.toString()">
+			and p.sp_name = #{spName}
+		</if>
+		<if test="spName == null and spName == ''.toString()">
+		</if>
+		order by p.sp_id
+		
 	</select>
 </mapper>
 
