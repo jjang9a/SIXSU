@@ -17,5 +17,11 @@ public List<RecVO> completeList() {
 	// TODO Auto-generated method stub
 	return mapper.completeList();
 }
+
+@Override
+public List<RecVO> searchReceive(RecVO vo) {
+	// TODO Auto-generated method stub
+	return mapper.searchReceive(vo);
+}
 	
 }

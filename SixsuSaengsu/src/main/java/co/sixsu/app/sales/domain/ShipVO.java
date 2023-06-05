@@ -18,9 +18,14 @@ public class ShipVO {
  public int cpHold;
  long total;
  
+ public String cpId;
+ public String cpName;
+ 
  public String busId;
  public String busName;
  public String busNum;
  public String busTell;
  public String busAddr;
+ String startDate;
+ String endDate;
 }

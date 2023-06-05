@@ -84,4 +84,38 @@ order by r.cp_rec_date
 	 )}
 	</select>	
 	
+	
+	<sql id="criteria">
+   <where>
+      <if test="cpId != null and cpId != ''.toString()">
+         c.cp_id = #{cpId}
+      </if>
+      <if test="cpShipStat != null and cpShipStat != 'all'.toString() and cpShipStat != ''.toString()" >
+         and ( t.cp_ship_stat = #{cpShipStat})
+      </if>    
+      <if test="startDate != null and startDate != ''.toString() and endDate != null and endDate != ''.toString()">
+         and (t.cp_ship_req_date  between to_date(#{startDate}, 'YYYY-MM-DD') and
+                     to_date(#{endDate}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
+      </if>
+   </where>
+</sql>
+
+  
+  
+  <select id="searchShip"
+  		resultType="ShipVO">
+  	 	select *
+        from pro_ship t
+        left outer join prod_lot p
+        on t.CP_LOT_ID = p.CP_LOT_ID
+        left outer join COMPLETE_PROD c
+        on c.cp_id = p.cp_id
+        left outer join det_ord d
+        on d.ord_det_id = t.ord_det_id
+        left outer join sorder s
+        on s.ord_id = d.ord_id
+        left outer join business b
+        on s.bus_id = b.bus_id
+  		<include refid="criteria"></include>
+  </select>
  </mapper>
