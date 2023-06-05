@@ -105,25 +105,32 @@
 				columns: [{
 					header: '입고코드',
 					name: 'cpRecId',
+					align:'center'
 				}, {
 					header: '입고날짜',
 					name: 'cpRecDate',
+					align:'center'
 				}, {
 					header: 'LOT',
 					name: 'cpLotId',
+					align:'center'
 				}, {
 					header: '제품번호',
 					name: 'cpId',
+					align:'center'
 				}, {
 					header: '제품명',
-					name: 'cpName'
+					name: 'cpName',
+					align:'center'
 				}, {
 					header: '입고수량',
-					name: 'cpRecQt'
+					name: 'cpRecQt',
+					align:'center'
 
 				}, {
 					header: '입고유형',
-					name: 'cpRecTp'
+					name: 'cpRecTp',
+					align:'center'
 
 				}, ]
 			});
@@ -153,12 +160,15 @@
 				columns: [{
 					header: '완제품 코드',
 					name: 'cpId',
+					align:'center'
 				}, {
 					header: '완제품 이름',
-					name: 'cpName'
+					name: 'cpName',
+					align:'center'
 				}, {
 					header: '완제품 규격',
-					name: 'cpSize'
+					name: 'cpSize',
+					align:'center'
 				}]
 			});
 			//모달 사원리스트 행 클릭시 자동으로 생산완료현황 페이지로 값이 이동
@@ -197,6 +207,17 @@
 				$('#endDate').val('');
 				$("input:radio[name='cpRecTp']:radio[value='all']").prop('checked', true);
 			})
+		gridp.setBodyHeight(400);
+			tui.Grid.applyTheme('default', {
+				cell: {
+				header: {
+				background: '#e5edf5'
+				},
+				normal: {
+				background: '#ffffff'
+				}
+			}
+		});
 		</script>
 
 	</div>

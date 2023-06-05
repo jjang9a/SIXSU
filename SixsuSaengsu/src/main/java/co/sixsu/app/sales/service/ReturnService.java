@@ -11,5 +11,5 @@ public interface ReturnService {
 
 		boolean returnRequest(RetVO vo);
 		
-		List<RetVO> searchReturn(RetVO vo);
+		List<RetVO> searchReturn(RetVO vo);// 반품요청 준비상태
 }

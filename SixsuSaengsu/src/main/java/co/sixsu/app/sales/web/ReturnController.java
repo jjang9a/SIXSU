@@ -1,17 +1,18 @@
 package co.sixsu.app.sales.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.sales.domain.RetVO;
 import co.sixsu.app.sales.domain.ShipCompVO;
-import co.sixsu.app.sales.domain.ShipVO;
 import co.sixsu.app.sales.service.ReturnService;
 
 @Controller
@@ -33,12 +34,14 @@ public class ReturnController {
 		return list;
 	}
 	
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping("shipList") public List<ShipVO> lotProducts(@RequestParam String
-	 * result){ List<ShipVO> list =service.shipList(result); return list; }
-	 */
+	
+	//반품 준비등록
+	@RequestMapping("returnRequest")
+	@ResponseBody
+	public boolean returnRequest(@RequestBody RetVO ret, Principal principal){
+		ret.setEmpId(principal.getName());
+		return service.returnRequest(ret);
+	}
 	
 	
 	

@@ -31,7 +31,7 @@
 		<if test="keyword != null and keyword !=''">	
 		where upper (bus_name) like '%'|| upper(#{keyword}) || '%'
 		</if> 
-		where bus_type= 'SELL'
+		and bus_type= 'SELL'
 	</select>
 	<!-- 대소문자 구별 및 값이 비슷한 경우도 나오게 하는기능 -->
 	
@@ -63,7 +63,7 @@
 		select get_order_num() from dual
 	</selectKey>
 	insert into SORDER values(
-	#{ordId}, TO_DATE(#{ordDate}, 'yyyy-MM-dd hh24:mi:ss'),#{ordStat}, #{empId} , #{busId})
+	#{ordId}, TO_DATE(#{ordDate}, 'yyyy-MM-dd'),#{ordStat}, #{empId} , #{busId})
 	</insert>
 	
 	<!-- 상세주문등록 -->
@@ -78,7 +78,7 @@
 	        #{cpId}, 
 	        #{ordId}, 
 	        #{ordDetPrice} , 
-	        TO_DATE(#{ordEndDate}, 'yyyy-MM-dd hh24:mi:ss'), 
+	        TO_DATE(#{ordEndDate}, 'yyyy-MM-dd'), 
 	        #{ordSalePrice} 
 	)
 	</insert>
@@ -105,7 +105,7 @@
 
 	<!--  진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 상세 주문서가 화면에 나오도록 -->
 	<select id="secondOrderingList" resultType='OrdVO'>
-	select d.ORD_DET_ID, d.ORD_QT, get_com_name(d.ORD_STAT_DET) ord_stat_det_name, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, d.ORD_END_DATE, c.CP_SIZE
+	select d.ORD_DET_ID, d.ORD_QT, get_com_name(d.ORD_STAT_DET) ord_stat_det_name, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, TO_CHAR(d.ORD_END_DATE, 'yyyy-MM-dd') as ord_end_date, c.CP_SIZE
 	from SORDER s , DET_ORD d, COMPLETE_PROD c
 	where s.ORD_ID = d.ORD_ID
 	and c.CP_ID = d.CP_ID
@@ -168,6 +168,8 @@
 	<include refid="criteria"></include>
  	ORDER BY s.ord_id DESC
 	</select>
+	
+	
 	
 
 </mapper>

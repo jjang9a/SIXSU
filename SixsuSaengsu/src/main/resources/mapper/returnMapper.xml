@@ -38,6 +38,9 @@
          and (r.cp_ret_date  between to_date(#{startDate}, 'YYYY-MM-DD') and
                      to_date(#{endDate}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
       </if>
+       <if test="ordDetId != null and ordDetId != ''.toString()">
+         p.ord_det_id = #{ordDetId}
+      </if>
    </where>
 </sql>
 
@@ -45,7 +48,7 @@
   
   <select id="searchReturn"
   		resultType="RetVO">
-  	 	select *
+  	 	select r.ret_id, TO_CHAR(r.ret_date, 'yyyy-MM-dd') ret_date, r.ret_stat, b.bus_id, t.cp_lot_id, c.cp_id,c.cp_name,r.ret_qt, get_com_name(r.ret_stat) ret_stat
         from ret_prod r
         left outer join pro_ship p
         on p.CP_SHIP_ID = r.CP_SHIP_ID
@@ -62,6 +65,17 @@
   		<include refid="criteria"></include>
   </select>
   
+  
+  <select id="returnCode" resultType='String'>
+  	select get_pro_Ret_num() from dual
+  </select>
+  
+  <insert id="insertReturn" parameterType="RetVO">
+  <selectKey resultType="RetVO" keyProperty ="RetId, RetDate" order="BEFORE">
+  select get_pro_Ret_num ret_id, to_char(sysdate,'yyyy//MM/dd') ret_date from dual
+  </selectKey>
+  insert into ret_prod values(#{retId},#{cpShipId},#{retQt},#{retNote},#{retStat},To_Date(#{retDate}, 'yyyy/MM/dd',null,#{empId})
+  </insert>
   
   
 

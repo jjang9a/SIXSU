@@ -64,7 +64,7 @@
 			<!-- 모달창 거래조회  -->
 			<div class="modal fade" id="search1Modal" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
+				<div class="modal-dialog modal-xl">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -131,25 +131,42 @@
 		columns : [ {
 			header : '주문코드',
 			name : 'ordId',
+			align: 'center'
 		}, {
 			header : '주문날짜',
 			name : 'ordDate',
+			align: 'center'
 		}, {
 			header : '거래처명',
 			name : 'busName',
+			align: 'center'
 		},{
 			header : '거래처코드',
 			name : 'busId',
+			align: 'center'
 		},{
 			header : '사업자번호',
-			name : 'busNum'
+			name : 'busNum',
+			align: 'center'
 		},{
 			header : '진행상태',
-			name : 'ordStatName'
+			name : 'ordStatName',
+			align: 'center'
 			
 		},
 		]
-	    });		
+	    });
+        orderingGrid.setBodyHeight(400);
+		tui.Grid.applyTheme('default', {
+			cell: {
+				header: {
+					background: '#e5edf5'
+				},
+				normal: {
+					background: '#ffffff'
+				}
+			}
+		});		
 	/*--------------------------------
 	// 모달거래처조회 기능	
 	---------------------------------*/	    
@@ -162,18 +179,23 @@
 				{
 				header : '거래처번호',
 				name : 'busId',
+				align: 'center'
 			}, {
 				header : '거래처명',
-				name : 'busName'
+				name : 'busName',
+				align: 'center'
 			}, {
 				header : '사업자번호',
-				name : 'busNum'
+				name : 'busNum',
+				align: 'center'
 			}, {
 				header : '전화번호',
-				name : 'busTell'
+				name : 'busTell',
+				align: 'center'
 			}, {
 				header : '주소',
-				name : 'busAddr'
+				name : 'busAddr',
+				align: 'center'
 			}]
 		});
 	 
@@ -189,6 +211,11 @@
 		   }) 
 		 
 	//모달창 전체 거래처 리스트
+		$("#search1-text").on('keydown', function(e){
+    	if(e.keyCode == 13){
+    		$("#search1-btn").click();
+    	}
+    	}) 
 		
 		$('#search1Modal').on('show.bs.modal',function(e){
 			console.log ('거래처 모달');
@@ -293,36 +320,45 @@
 		 columns : [ 
 			{header : '주문코드',
 			 name : 'ordId',
+			 align: 'center',
 			 hidden : true
 			},			 		 
 			{header : '주문상세코드',
-			 name : 'ordDetId' 
+			 name : 'ordDetId',
+			 align: 'center' 
 			},
 			{
 			header : '완제품코드',
 	        name : 'cpId',
+			align: 'center'
 	        },
 			{header : '상품이름',
-			name : 'cpName' 
+			name : 'cpName',
+			align: 'center' 
 			},{
 			header : '규격',
-			name : 'cpSize' 
+			name : 'cpSize',
+			align: 'center' 
 			},
 			{
 			header : '주문수량',
-			name : 'ordQt', 
+			name : 'ordQt',
+			align: 'center' 
 			},
 		    {
 			header : '상품가격',
 			name : 'ordDetPrice',
+			align: 'center'
 		  	},
 			{
 			header : '납기일자',
 			name : 'ordEndDate',
+			align: 'center'
 			},
 			{
 			header : '출고여부',
-			name : 'ordStatDetName'								
+			name : 'ordStatDetName',
+			align: 'center'								
 			}
 			]
 	});

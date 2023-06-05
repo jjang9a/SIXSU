@@ -222,8 +222,8 @@
   	        c.equ_code,
   	        c.equ_name, 
   	        o.oper_type, 
-  	        to_char(o.oper_start, 'yyyy-MM-dd / hh:mm') as oper_start , 
-  	        to_char(o.oper_fnish, 'yyyy-MM-dd / hh:mm') as oper_fnish, 
+  	        to_char(o.oper_start, 'yyyy-MM-dd / hh:mm') as oper_start, 
+  	        oper_fnish, 
   	        c.emp_id, 
   	        o.oper_note, 
   	        c.equ_stat
