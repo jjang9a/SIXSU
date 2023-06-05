@@ -17,8 +17,11 @@ public interface ProductMapper {
 	public int insertSpLot(ReceiveVO vo); // 반제품 LOT 새로 부여
 	public int updateSpLot(ReceiveVO vo); // 반제품 LOT 업데이트
 	public String getSpLotId(String spId); // 반제품 LOT번호 생성
+	
+	// 반제품 입고 조회
+	public List<ReceiveVO> spRecSearch(ReceiveVO vo); // 반제품 입고 검색
 
-	//완제품 입고관리
+	// 완제품 입고관리
 	public List<ReceiveVO> readyCpList(); // 완제품 입고대기목록
 	public List<ReceiveVO> cpRecList(); // 완제품 입고목록
 	

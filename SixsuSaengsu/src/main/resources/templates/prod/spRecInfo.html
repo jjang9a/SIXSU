@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>반제품입고조회</title>
+	<style>
+		h1 {
+			margin-bottom: 40px;
+		}
+
+		#infoTable {
+			margin: auto;
+		}
+
+		.inputR {
+			width: 190px;
+			padding-left: 5px;
+		}
+
+		.inputS {
+			width: 120px;
+			padding-left: 5px;
+		}
+
+		#infoTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}
+
+		.divBtn {
+			text-align: center;
+			padding: 25px 0 60px 0;
+		}
+
+		.modal-body {
+			background: #e5edf5;
+		}
+	</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 입고조회</h1>
+
+		<!-- 정보입력 폼 -->
+		<form action="" method="post" id="searchForm">
+			<input type="hidden" name="searchType" id="searchType">
+			<table id="infoTable">
+				<tr>
+					<td>제품코드</td>
+					<td><input type="text" name="spId" id="spId" class="inputR">
+						<button type="button" class="sixBtn1" id="pdBtn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
+								class="bi bi-search" viewBox="0 2 16 16">
+								<path
+									d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+							</svg>
+						</button>
+					</td>
+					<td>입고일자</td>
+					<td><input type="date" name="spRecDate" id="spRecDate" class="inputS"> ~
+						<input type="date" name="spRecDate2" id="spRecDate2" class="inputS">
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div class="divBtn">
+			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
+			<button type="button" class="sixBtn2" id="initBtn">초기화</button>
+		</div>
+		<div id="grid"></div>
+
+		<!-- 제품 선택 Modal 시작 -->
+		<div class="modal fade" id="pdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="pdModal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="pdModalLabel" style="font-family: 'MaruBuri';">반제품</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<!-- 모달 바디 -->
+					<div class="modal-body">
+						<div id="pdGrid"></div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 제품 선택 Modal 끝 -->
+
+		<script>
+			$.ajax({
+				url: "/prod/spRecList",
+				method: "GET",
+				success: function (result) {
+					grid.resetData(result);
+				},
+				error: function (reject) {
+					console.log(reject)
+				}
+			})
+
+			// 입고 목록
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				scrollX: false,
+				scrollY: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 12
+				},
+				minBodyHeight: 480,
+				rowHeaders: ['rowNum'],
+				columns: [{
+					header: '입고번호',
+					name: 'spRecId',
+					align: 'center'
+				}, {
+					header: '반제품코드',
+					name: 'spId',
+					align: 'center'
+				}, {
+					header: '제품명',
+					name: 'spName',
+					align: 'center'
+				}, {
+					header: '입고량',
+					name: 'spRecQt',
+					align: 'center'
+				}, {
+					header: '입고유형',
+					name: 'spRecType',
+					align: 'center'
+				}, {
+					header: 'LOT번호',
+					name: 'spLotId',
+					align: 'center'
+				}, {
+					header: '입고일자',
+					name: 'spRecDate',
+					align: 'center',
+					sortable: true
+				}, {
+					header: '담당자',
+					name: 'empName',
+					align: 'center'
+				}, {
+					header: '공정실적코드',
+					name: 'prcsPfmcId',
+					align: 'center'
+				}]
+			});
+
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+
+			const pdGrid = new tui.Grid({
+				el: document.getElementById('pdGrid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 400,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				columns: [{
+					header: '제품코드',
+					name: 'cpId',
+					align: 'center'
+				}, {
+					header: '제품명',
+					name: 'cpName',
+					align: 'center'
+				}, {
+					header: '규격',
+					name: 'cpSize',
+					align: 'center'
+				}]
+			});
+
+			$('#pdBtn').on('click', function (e) {
+				$.ajax({
+					url: "/basic/activeSpList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+				setTimeout(() => pdGrid.refreshLayout(), 500);
+				$('#pdModal').modal('show');
+			})
+
+			// 모달창 제품 선택 이벤트
+			pdGrid.on('click', function (e) {
+				rowData = pdGrid.getRow(e.rowKey);
+				$('#spId').val(rowData.cpId);
+				$('#pdModal').modal('hide');
+			})
+
+			// 검색 버튼 이벤트
+			$('#searchBtn').on('click', (e) => {
+				$.ajax({
+					url: '/prod/spRecSearch',
+					type: 'post',
+					data: $('#searchForm').serialize(),
+					dataType: 'json',
+					success: function (result) {
+						const searchData = result
+						grid.resetData(searchData);
+					},
+					error: function () {
+						alert('검색 중 오류가 발생했습니다!');
+					}
+				});
+			})
+
+			// 초기화 버튼 이벤트
+			$('#initBtn').on('click', (e) => {
+				$.ajax({
+					url: "/prod/spRecList",
+					method: "GET",
+					success: function (result) {
+						grid.resetData(result);
+						$('#infoTable input').val('');
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				})
+			})
+		</script>
+	</div>
+
+</body>
+
+</html>

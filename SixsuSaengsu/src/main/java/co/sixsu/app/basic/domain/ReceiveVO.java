@@ -34,4 +34,6 @@ public class ReceiveVO {
 	String cpRecDate; // 완제품 입고일
 	String cpRecTp; // 완제품 입고 유형
 	
+	String spRecDate2; // 날짜 검색용
+	
 }

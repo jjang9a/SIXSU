@@ -75,7 +75,7 @@ public class ProductServiceImpl implements ProductService{
 						vo.setSpLotId(lotInfo.getSpLotId()); // 마지막 LOT번호를 LOT번호로 세팅
 						mapper.updateSpLot(vo); // LOT번호 부여
 						vo.setSpRecQt(qt); // 입고수량을 현재수량으로 설정
-						vo.setEmpId("test"); // 입고담당자 입력
+						//vo.setEmpId("test"); // 입고담당자 입력
 						mapper.insertSpRec(vo); // 입고
 						System.out.println("중간점검 : " + list);
 					} else if(qt > ableQt) {
@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService{
 						vo.setSpLotId(lotInfo.getSpLotId()); // 마지막 LOT번호를 LOT번호로 세팅
 						mapper.updateSpLot(vo); // LOT번호 부여
 						vo.setSpRecQt(ableQt); // 입고수량을 LOT남은 수량으로
-						vo.setEmpId("test"); // 입고담당자 입력
+						//vo.setEmpId("test"); // 입고담당자 입력
 						mapper.insertSpRec(vo); // 입고
 						qt -= ableQt;
 						spRecLarge(lot, ableQt, qt, lotInfo, vo); // 적재수량이 LOT규격과 같아졌으므로 Large함수 실행
@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService{
 		vo.setSpLotId(mapper.getSpLotId(vo.getSpId())); // 새로운 LOT번호 생성
 		mapper.insertSpLot(vo); // LOT번호 부여
 		vo.setSpRecQt(qt); // 입고수량을 현재수량으로 설정
-		vo.setEmpId("test"); // 입고담당자 입력
+		//vo.setEmpId("test"); // 입고담당자 입력
 		mapper.insertSpRec(vo); // 입고
 		qt = 0;
 	}
@@ -122,7 +122,7 @@ public class ProductServiceImpl implements ProductService{
 				vo.setSpLotId(mapper.getSpLotId(vo.getSpId())); // 새로운 LOT번호 생성
 				mapper.insertSpLot(vo); // LOT번호 부여
 				vo.setSpRecQt(lot); // 입고수량을 현재수량으로 설정
-				vo.setEmpId("test"); // 입고담당자 입력
+				//vo.setEmpId("test"); // 입고담당자 입력
 				mapper.insertSpRec(vo); // 입고
 				qt -= lot;
 			}
@@ -188,7 +188,7 @@ public class ProductServiceImpl implements ProductService{
 						vo.setCpLotId(lotInfo.getCpLotId()); // 마지막 LOT번호를 LOT번호로 세팅
 						mapper.updateCpLot(vo); // LOT 수량 업데이트
 						vo.setCpRecQt(qt); // 입고수량을 현재수량으로 설정
-						vo.setEmpId("test"); // 입고담당자 입력
+						//vo.setEmpId("test"); // 입고담당자 입력
 						mapper.insertCpRec(vo); // 입고
 						System.out.println("중간점검 : " + list);
 					} else if(qt > ableQt) {
@@ -197,7 +197,7 @@ public class ProductServiceImpl implements ProductService{
 						vo.setCpLotId(lotInfo.getCpLotId()); // 마지막 LOT번호를 LOT번호로 세팅
 						mapper.updateCpLot(vo); // LOT 수량, 상태 업데이트
 						vo.setCpRecQt(ableQt); // 입고수량을 LOT남은 수량으로
-						vo.setEmpId("test"); // 입고담당자 입력
+						//vo.setEmpId("test"); // 입고담당자 입력
 						mapper.insertCpRec(vo); // 입고
 						qt -= ableQt;
 						cpRecLarge(lot, ableQt, qt, lotInfo, vo); // 적재수량이 LOT규격과 같아졌으므로 Large함수 실행
@@ -220,7 +220,7 @@ public class ProductServiceImpl implements ProductService{
 		vo.setCpLotId(mapper.getCpLotId(vo.getCpId())); // 새로운 LOT번호 생성
 		mapper.insertCpLot(vo); // LOT번호 부여
 		vo.setCpRecQt(qt); // 입고수량을 현재수량으로 설정
-		vo.setEmpId("test"); // 입고담당자 입력
+		//vo.setEmpId("test"); // 입고담당자 입력
 		mapper.insertCpRec(vo); // 입고
 		qt = 0;
 	}
@@ -235,7 +235,7 @@ public class ProductServiceImpl implements ProductService{
 				vo.setCpLotId(mapper.getCpLotId(vo.getCpId())); // 새로운 LOT번호 생성
 				mapper.insertCpLot(vo); // LOT번호 부여
 				vo.setCpRecQt(lot); // 입고수량을 최대 LOT수량으로 설정
-				vo.setEmpId("test"); // 입고담당자 입력
+				//vo.setEmpId("test"); // 입고담당자 입력
 				mapper.insertCpRec(vo); // 입고
 				qt -= lot;
 			}
@@ -273,6 +273,14 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public boolean updateInsp(QilVO vo) {
 		return mapper.updateInsp(vo) == 1;
+	}
+
+	
+	// 반제품 입고 조회
+	
+	@Override
+	public List<ReceiveVO> spRecSearch(ReceiveVO vo) {
+		return mapper.spRecSearch(vo);
 	}
 
 	
