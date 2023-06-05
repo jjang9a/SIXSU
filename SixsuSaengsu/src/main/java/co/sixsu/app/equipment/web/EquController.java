@@ -1,5 +1,6 @@
 package co.sixsu.app.equipment.web;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,23 @@ public class EquController {
 	// 설비 관리 페이지 - 관리페이지 기능은 /equCon - 수행.
 	@GetMapping("equConpage") 
 	public void equCon() {
+		
 	}
 	
 	@GetMapping("equSearch") // 설비 조회 페이지
-	public void equSearch() {
+	public void equSearch(Model model) {
+		String key = "EQU_STAT";
+		String key2 = "EQU_SUIT";
+		model.addAttribute("equStat", basicService.commGroupList(key));
+		model.addAttribute("equSuit", basicService.commGroupList(key2));
 	}
 	
 	@GetMapping("equCheckSP") // 점검 조회 페이지
-	public void equCheckSP() {
+	public void equCheckSP(Model model) {
+		String key = "EQU_SUIT";
+		String key2 = "CHECK_TYPE";
+		model.addAttribute("equSuit", basicService.commGroupList(key));
+		model.addAttribute("checkType", basicService.commGroupList(key2));
 	}
 	
 	@GetMapping("equCheckCP") // 점검관리 페이지
@@ -54,8 +64,11 @@ public class EquController {
 	}
 	
 	@GetMapping("equOperSP") // 비가동 조회 페이지
-	public void equOperSP() {
-		
+	public void equOperSP(Model model) {
+		String key = "OPER_TYPE";
+		String key2 = "EQU_STAT";
+		model.addAttribute("operType", basicService.commGroupList(key));
+		model.addAttribute("equStat", basicService.commGroupList(key2));
 	}
 	
 	@GetMapping("equOperCP") // 비가동 관리 페이지
@@ -128,6 +141,7 @@ public class EquController {
 	@ResponseBody 
 	@PostMapping("checkAdd") // 점검관리(등록) 
 	public EquInspVO checkAdd(EquInspVO data) { 
+		System.out.println(data);
 		equService.checkAdd(data);
 		return data;
 	} 
@@ -135,7 +149,7 @@ public class EquController {
 	@ResponseBody 
 	@PostMapping("cUpdate") // 점검관리(수정) 
 	public EquInspVO cUpdate(EquInspVO data) {
-	//	System.out.println("컨트롤러 : "+ data);
+		System.out.println("컨트롤러 : "+ data);
 		equService.cUpdate(data);
 		return data;
 	}
@@ -156,16 +170,17 @@ public class EquController {
 	
 	@ResponseBody // 비가동 검색 기능 / 아작스로 데이터를 요청 리스트로 받음
 	@RequestMapping("equOperSearch")
-	public List<EquOperVO> equOperSearch(EquSearchDTO dto) {
+	public List<EquOperVO> equOperSearch(EquOperVO vo) {
 		System.out.println("데이터");
-		System.out.println(dto);
-		List<EquOperVO> list = equService.equOperSearch(dto);
+		System.out.println(vo);
+		List<EquOperVO> list = equService.equOperSearch(vo);
 		return list;
 	}
 	
 	@ResponseBody 
 	@PostMapping("oUpdate") // 비가동 관리(수정) 
 	public EquOperVO oUpdate(EquOperVO data) {
+		System.out.println(data);
 		equService.oUpdate(data);
 		return data;
 	}
@@ -178,18 +193,24 @@ public class EquController {
 	} 
 	
 	@ResponseBody 
-	@PostMapping("startIn") // 비가동 관리 비가동 시작버튼(등록) 
+	@PostMapping("startIn") // 비가동 관리 비가동 시작버튼(비가동 등록) 
 	public EquOperVO startIn(EquOperVO data) { 
+		System.out.println(data);
 		equService.startIn(data);
 		return data;
 	} 
-	
+
 	@ResponseBody 
-	@PostMapping("startUp") // 비가동 관리 비가동 시작버튼(수정/설비상태) 
-	public EquOperVO startUp(EquOperVO data) { 
-		equService.startUp(data);
+	@PostMapping("fnishIn") // 비가동 관리 비가동 종료버튼(가동 등록) 
+	public EquOperVO fnishIn(EquOperVO data) { 
+		LocalDate now = LocalDate.now();
+		String date = now.toString();
+		data.setOperFinish(date);
+		System.out.println(data);
+		equService.fnishIn(data);
 		return data;
-	} 
+	}
+	
 
 	
 	

@@ -63,7 +63,6 @@
 		<td><input type="text" name="cname" id="cname" class="empty"></td>
 	</tr>
 	
-	
 	<tr>
 		<td>점검일자<span class="needStar"> * </span></td>
 		<td>
@@ -71,19 +70,7 @@
 		</td>
 		<td>
 		
-		
-		
-		<!-- 달력(점검일자 달력 검색) -->
-		<!-- <div class="container" style="min-height:500px">
-		    <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-		        <input type="text" id="datepicker-input" aria-label="Date-Time">
-		        <span class="tui-ico-date"></span>
-		    </div>
-		    <div id="wrapper" style="margin-top: -1px;"></div>
-		</div>
-		</td> -->
-	
-	
+
 	</table>
 	
 		<br>
@@ -151,8 +138,10 @@
 		<!-- 그리드 시작 -->
 		<div id="grid"></div>
 
-		<script>
-			
+		<script th:inline="javascript">
+
+		let equSuit = [[${equSuit}]];	
+		let checkType = [[${checkType}]];
 	    
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
@@ -207,19 +196,25 @@
 			 name: 'equSuit',
 			 filter: 'select',
 			 align: 'center',
-			//  formatter: 'listItemText',
-			//  editor: {
-			//  	type: 'select',
-			// 	options: {
-			// 	listItems: equSuit
-			//	}
-		    //   }
-			
+			 formatter: 'listItemText',
+			 editor: {
+			 	type: 'select',
+				options: {
+				listItems: equSuit
+				}
+		      }
     	  },
           {
              header: '점검구분',
              name: 'checkType',
-             align: 'center'
+             align: 'center',
+			 formatter: 'listItemText',
+			 editor: {
+			 	type: 'select',
+				options: {
+				listItems: checkType
+				}
+		      }
           },
           {
               header: '비고',
@@ -250,11 +245,11 @@
         ]
      });
 
-	 
+	 // 페이지가 열리면 기능작동 - 리스트 띄워주기. 
 	 window.onload = function(){
 	    	
 	    	$.ajax({
-	    		url : "/equipment/equCheckList",
+	    		url : "equCheckList",
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
@@ -304,21 +299,7 @@
       });
 
 	
-	$(document).ready(function () {
-        var datepicker = new tui.DatePicker('#wrapper',
-            {
-            language: 'ko',
-            date: new Date(),
-            input: {
-                element: '#datepicker-input',
-                format: 'yyyy-MM-dd'
-            }
-        });
-        
-    });
-
 	
-	// 조회 검색버튼 기능     && $('#cdate').val() == '' searchType = 'date'; searchKey = $('#cdate').val()
 					
     let searchType = '';
     let searchKey = '';

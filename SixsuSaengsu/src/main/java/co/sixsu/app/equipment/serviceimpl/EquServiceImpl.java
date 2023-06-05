@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.sixsu.app.basic.domain.ProductVO;
 import co.sixsu.app.equipment.domain.EquConVO;
@@ -85,8 +86,8 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public List<EquOperVO> equOperSearch(EquSearchDTO dto) { // 비가동 조회(검색)
-		return mapper.equOperSearch(dto);
+	public List<EquOperVO> equOperSearch(EquOperVO vo) { // 비가동 조회(검색)
+		return mapper.equOperSearch(vo);
 	}
 
 	@Override
@@ -100,14 +101,23 @@ public class EquServiceImpl implements EquService{
 	}
 
 	@Override
-	public boolean startIn(EquOperVO data) { // 비가동 관리 시작버튼(등록)
-		return mapper.startIn(data) == 1;
+	@Transactional // 
+	public boolean startIn(EquOperVO data) { // 비가동 관리 비가동 시작버튼(비가동 등록)
+		int count = 0;
+		count += mapper.startUp(data);
+		count += mapper.startIn(data);
+		return count > 0; 
 	}
 
 	@Override
-	public boolean startUp(EquOperVO data) { // 비가동 관리 시작버튼(수정/설비상태)
-		return mapper.startUp(data) == 1;
+	@Transactional // 
+	public boolean fnishIn(EquOperVO data) { // 비가동 관리 비가동 종료버튼(가동 등록)
+		int count = 0;
+		count += mapper.fnishIn(data);
+		count += mapper.fnishUp(data);
+		return count > 0; 
 	}
+	
 
 	
 

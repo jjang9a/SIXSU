@@ -36,14 +36,14 @@ public interface EquService {
 
 	List<EquOperVO> equOperList(); // 비가동 리스트
 	
-	List<EquOperVO> equOperSearch(EquSearchDTO dto); // 비가동 조회(검색)
+	List<EquOperVO> equOperSearch(EquOperVO vo); // 비가동 조회(검색)
 	
 	boolean oUpdate(EquOperVO data); // 비가동 관리(수정)
 
 	boolean oDel(EquOperVO operCode); // 비가동 관리(삭제)
 
-	boolean startIn(EquOperVO data); // 비가동 관리 시작버튼(등록)
-
-	boolean startUp(EquOperVO data); // 비가동 관리 시작버튼(수정)
+	boolean startIn(EquOperVO data); // 비가동 관리 비가동 시작버튼(비가동 등록)
+	
+	boolean fnishIn(EquOperVO data); // // 비가동 관리 비가동 종료버튼(가동 등록)
 	
 }

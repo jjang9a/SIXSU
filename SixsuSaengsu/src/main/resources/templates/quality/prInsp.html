@@ -142,7 +142,8 @@
 							<div class="col">
 
 								<label for="exampleFormControlInput1" class="form-label">검사자
-								</label> <input type="text" class="form-control" id="empId" name="empId">
+								</label> <input type="text" class="form-control" id="empId" name="empId"
+										  th:value='${#authentication.principal.empId}'>
 
 							</div>
 						</div>
@@ -182,11 +183,12 @@
 
 						<div id="detailGrid"></div>
 						<!-- 세부 검사 항목 끝나는 부분 -->
-
+						
 						<!-- 검사 등록 버튼 -->
+						<div class="rightBtn">
 						<button type="button" class="sixBtn2" id="inspBtn">등록</button>
 						<button type="button" class="sixBtn4" id="modifyBtn">수정하기</button>
-
+						</div>
 					</div>
 
 				</div>

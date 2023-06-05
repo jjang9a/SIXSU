@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.basic.domain.EmpVO;
 import co.sixsu.app.basic.domain.ProductVO;
-import co.sixsu.app.basic.service.BasicService;
 import co.sixsu.app.sales.domain.GridDataVO;
 import co.sixsu.app.sales.domain.InvVO;
 import co.sixsu.app.sales.domain.OrdVO;
@@ -37,15 +36,18 @@ public class SalesController {
 	public void invoice(Model model) {
 	
 	}
-	/*
-	 * <<<<<<< HEAD
-	 * 
-	 * @RequestMapping("searchOrder")
-	 * 
-	 * @ResponseBody public List<InvVO> searchOrder(InvVO vo) { List<InvVO> list =
-	 * service.searchOrder(vo); return list; } ======= >>>>>>> branch 'main' of
-	 * https://github.com/jjang9a/SIXSU.git
-	 */
+	@GetMapping("invoiceInquiry")
+	public void invoiceInquiry(Model model) {
+	
+	}
+	
+	
+	@RequestMapping("searchOrder")
+	@ResponseBody 
+	public List<InvVO> searchOrder(InvVO vo) { 
+		List<InvVO> list = service.searchOrder(vo); 
+		return list; 
+		}
 
 
 //모달창 회원이름 조회
@@ -188,9 +190,9 @@ public class SalesController {
 		return "result";
 	}
 
+	
+	//상세주문서 수정
 	/*
-	 * //상세주문서 수정
-	 * 
 	 * @ResponseBody
 	 * 
 	 * @PostMapping("ordDetModDel") //상세 주문서 등록 public boolean
@@ -198,6 +200,7 @@ public class SalesController {
 	 * System.out.println("---------------------------------------------");
 	 * System.out.println(list); return service.ordDetModDel(list); }
 	 */
+	 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //주문서 관리 페이지 열어주기	
