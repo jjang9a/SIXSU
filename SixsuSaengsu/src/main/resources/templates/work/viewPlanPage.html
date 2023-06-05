@@ -20,77 +20,102 @@
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 <style>
-.workContainer {
-	width: 1200px;
-}
 </style>
 </head>
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">생산계획</h1>
 		<hr>
-		<h2>검색창이 들어옵니다</h2>
 		<div class="workContainer">
-			<div class="container filter">
-				<div class="row">
-					<div class="col-5">
-						생성일자 <input type="date"> ~ <input type="date">
-						[미완]
-					</div>
-					<div class="col">
-						제품명 <input type="text" name="제품명">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-5">
-						작업일 <input type="date"> ~ <input type="date"> [미완]
-					</div>
-					<div class="col">
-						계획No. <input type="text" name="계획">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-5">
-						작업지시 <label><input type="checkbox" name="지시여부" value='생성'>생성</label>
-						<label><input type="checkbox" name="지시여부" value='미생성'>미생성</label>
-						[미완]
-					</div>
-					<div class="col">
-						작성자 <input type="text" name="작성자">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-5">
-						종결여부 <label><input type="checkbox" name="상태" value='완료'>완료</label>
-						<label><input type="checkbox" name="상태" value='진행중'>진행중</label>
-						<label><input type="checkbox" name="상태" value='취소'>취소</label>
-						<label><input type="checkbox" name="상태" value='대기'>대기</label>
-					</div>
-					<div class="col"></div>
-				</div>
-				<div class="row text-center">
-					<div class="col-4">
-						<button class="sixBtn2 filter_submit">검색</button>
-					</div>
-				</div>
-			</div>
 
-			<br>
-			<br>
-			<br>
-
+		<button class="workFilterBtn sixBtn4">검색</button>
 			<div id="grid"></div>
 
-			<div id="grid1"></div>
 		</div>
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-offset-0 col-sm-1"
-					style="background-color: blue;">dddd</div>
-				<div class="col-sm-1 blue">dddd</div>
-				<div class="col-sm-1">ddddd</div>
+		
+		
+		<!-- 제품 선택 Modal 시작 -->
+		<div class="modal fade" id="workFilter_modal"
+			data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="pdModal" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
+					<div class="modal-header">
+						<h5 class="modal-title" id="pdModalLabel"
+							style="font-family: 'MaruBuri';">검색</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<!-- 모달 바디 -->
+					<br>
+					<div class="modal-body">
+						<div class="container text-center">
+
+							<div class="row">
+								<div class="col" style="text-align: right;">
+									생성일자 <input type="date" name="makeFrom"> ~ <input
+										type="date" name="makeTo">
+								</div>
+
+								<div class="col" style="text-align: right;">
+									제품명 <input type="text" name="제품명">
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col" style="text-align: right;">
+									착수일 <input type="date" name="planFrom"> ~ <input
+										type="date" name="planTo">
+								</div>
+								<div class="col" style="text-align: right;">
+									계획No. <input type="text" name="계획">
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col" style="text-align: right;">
+									지시상태 <label><input type="checkbox" name="상태" value='완료'>완료</label>
+									<label><input type="checkbox" name="상태" value='진행중'>진행중</label>
+									<label><input type="checkbox" name="상태" value='취소'>취소</label>
+									<label><input type="checkbox" name="상태" value='대기'>대기</label>
+								</div>
+								<div class="col" style="text-align: right;">
+									작성자 <input type="text" name="작성자">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col" style="text-align: right;">
+									작업지시 <label><input type="checkbox" name="지시여부" value='생성'>생성</label>
+									<label><input type="checkbox" name="지시여부" value='미생성'>미생성</label>
+								</div>
+								<div class="col"></div>
+							</div>
+							
+
+							<br> <br>
+
+							<div class="row">
+								<div class="col" style="text-align: center;">
+									<button class="sixBtn2 filter_submit">검색</button>
+									<button class="sixBtn2 filter_reset">초기화</button>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer" style="text-align: center;"></div>
+				</div>
 			</div>
 		</div>
+		<!-- 제품 선택 Modal 끝 -->
+		
+		
+		
+		
+		
+		
 
 		<script>
 	//filter submit 버튼관리 시작
@@ -235,6 +260,15 @@
 		})
 	})
 	
+	//////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
+	//검색기능관련//
+	
+	//검색 모달창 켜기
+	$('.workFilterBtn').on('click', function() {
+				$('#workFilter_modal').modal('show');
+			})
 	
 	
 </script>
