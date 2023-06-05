@@ -16,7 +16,7 @@
 			padding: 20px 20px 0px 20px;
 		}
 
-		button{
+		button {
 			margin: 8px;
 		}
 	</style>
@@ -47,15 +47,15 @@
 				});
 
 				$.ajax({
-						url: "/prod/spRecList",
-						method: "GET",
-						success: function(result){
-							grid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					})
+					url: "/prod/spRecList",
+					method: "GET",
+					success: function (result) {
+						grid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				})
 			};
 
 			//입고대기 리스트
@@ -100,15 +100,15 @@
 					position: 'bottom', // or 'top'
 					columnContent: {
 						prcsPfmcId: {
-						template: function(valueMap) {
-						return `COUNT : ${valueMap.cnt}`;
-						}
-					},
+							template: function (valueMap) {
+								return `COUNT : ${valueMap.cnt}`;
+							}
+						},
 						goodQt: {
-						template: function(valueMap) {
-						return `TOTAL : ${valueMap.sum}`;
+							template: function (valueMap) {
+								return `TOTAL : ${valueMap.sum}`;
+							}
 						}
-					}
 					}
 				}
 			});
@@ -127,46 +127,45 @@
 				minBodyHeight: 320,
 				rowHeaders: ['rowNum'],
 				columns: [{
-						header: '입고번호',
-						name: 'spRecId',
-						align: 'center'
-					},{
-						header: '반제품코드',
-						name: 'spId',
-						filter: 'select',
-						align: 'center'
-					},{
-						header: '제품명',
-						name: 'spName',
-						align: 'center'
-					},{
-						header: '입고량',
-						name: 'spRecQt',
-						align: 'center'
-					},{
-						header: '입고유형',
-						name: 'spRecType',
-						filter: 'select',
-						align: 'center'
-					},{
-						header: 'LOT번호',
-						name: 'spLotId',
-						align: 'center'
-					},{
-						header: '입고일자',
-						name: 'spRecDate',
-						align: 'center',
-						sortable : true
-					},{
-						header: '담당자',
-						name: 'empName',
-						align: 'center'
-					},{
-						header: '공정실적코드',
-						name: 'prcsPfmcId',
-						align: 'center'
-					}
-				]
+					header: '입고번호',
+					name: 'spRecId',
+					align: 'center'
+				}, {
+					header: '반제품코드',
+					name: 'spId',
+					filter: 'select',
+					align: 'center'
+				}, {
+					header: '제품명',
+					name: 'spName',
+					align: 'center'
+				}, {
+					header: '입고량',
+					name: 'spRecQt',
+					align: 'center'
+				}, {
+					header: '입고유형',
+					name: 'spRecType',
+					filter: 'select',
+					align: 'center'
+				}, {
+					header: 'LOT번호',
+					name: 'spLotId',
+					align: 'center'
+				}, {
+					header: '입고일자',
+					name: 'spRecDate',
+					align: 'center',
+					sortable: true
+				}, {
+					header: '담당자',
+					name: 'empName',
+					align: 'center'
+				}, {
+					header: '공정실적코드',
+					name: 'prcsPfmcId',
+					align: 'center'
+				}]
 			});
 
 			tui.Grid.applyTheme('default', {
@@ -184,7 +183,7 @@
 			});
 
 			// 입고버튼 클릭 이벤트
-			$('#recBtn').on('click', (e) =>{
+			$('#recBtn').on('click', (e) => {
 				if (readyGrid.getCheckedRows().length == 0) {
 					alert('입고할 제품을 선택해주세요.')
 				} else {
@@ -194,10 +193,11 @@
 						dataType: "JSON",
 						contentType: "application/json",
 						data: JSON.stringify(readyGrid.getCheckedRows()),
-						success: function(result){
+						success: function (result) {
 							let appData = result;
 							grid.appendRows(appData);
 							readyGrid.removeCheckedRows(false);
+							alert('입고가 완료되었습니다.')
 						},
 						error: function (reject) {
 							console.log(reject)

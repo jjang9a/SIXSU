@@ -13,6 +13,9 @@ public interface ProductService {
 	List<ReceiveVO> spRecList(); // 반제품 입고목록
 	List<ReceiveVO> spRec(List<ReceiveVO> list); // 반제품 입고
 	
+	// 반제품 입고 조회
+	List<ReceiveVO> spRecSearch(ReceiveVO vo);
+	
 	// 완제품 입고 관리
 	List<ReceiveVO> readyCpList(); // 반제품 입고대기 목록
 	List<ReceiveVO> cpRecList(); // 반제품 입고목록

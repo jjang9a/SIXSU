@@ -29,8 +29,8 @@
     }
 </select>
 
-<select id="getSpLotId" parameterType="String" resultType="ReceiveVO">
-	select GET_SP_LOT_ID(#{spId})
+<select id="getSpLotId" parameterType="String" resultType="String">
+	select GET_SP_LOT_ID(#{spId}) sp_lot_id
 	from dual
 </select>
 
@@ -193,4 +193,14 @@
 </update>
 
 <!-- 품질겅사 목록 관리 종료 -->
+
+<!-- 반제품 입고 조회 시작 -->
+<select id="spRecSearch" resultType="ReceiveVO">
+	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, to_char(r.sp_rec_date, 'yyyy/MM/dd') sp_rec_date, e.emp_name, r.sp_lot_id, s.sp_name, r.sp_rec_qt
+	from sp_rec r join semi_prod s 
+	on r.sp_id = s.sp_id
+	LEFT OUTER join employee e
+	on r.emp_id = e.emp_id
+</select>
+<!-- 반제품 입고 조회 종료 -->
 </mapper>

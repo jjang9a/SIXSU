@@ -1,10 +1,10 @@
 package co.sixsu.app.basic.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,8 +46,23 @@ public class ProductController {
 	
 	@ResponseBody
 	@PostMapping("/prod/spRec") // 반제품 입고
-	public List<ReceiveVO> spRec(@RequestBody List<ReceiveVO> list){
+	public List<ReceiveVO> spRec(@RequestBody List<ReceiveVO> list, Principal principal){
+		String id = principal.getName();
+		for(ReceiveVO vo : list) {
+			vo.setEmpId(id);
+		}
 		return service.spRec(list);
+	}
+	
+	// 반제품 입고 조회
+	@GetMapping("prod/spRecInfo")
+	public void spRecInfo() {
+	}
+	
+	@ResponseBody
+	@PostMapping("/prod/spRecSearch") // 공정실적 검색
+	public List<ReceiveVO> spRecSearch(ReceiveVO vo){
+		return service.spRecSearch(vo);
 	}
 	
 	
@@ -70,6 +85,16 @@ public class ProductController {
 	public List<ReceiveVO> cpRecList(){
 		List<ReceiveVO> list = service.cpRecList();
 		return list;
+	}
+	
+	@ResponseBody
+	@PostMapping("/prod/cpRec") // 완제품 입고
+	public List<ReceiveVO> cpRec(@RequestBody List<ReceiveVO> list, Principal principal){
+		String id = principal.getName();
+		for(ReceiveVO vo : list) {
+			vo.setEmpId(id);
+		}
+		return service.cpRec(list);
 	}
 	
 	
