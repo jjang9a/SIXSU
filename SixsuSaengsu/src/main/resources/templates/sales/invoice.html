@@ -7,6 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>주문서관리</title>
+<style>
+.modal-body {
+			background: #e5edf5;
+		}
+</style>
 
 </head>
 
@@ -21,17 +26,10 @@
 					
 					<br> 주문날짜 <input type="text" name="ordDate"
 						id="ordDate"><br> 주문자 <input type="text"
-						id="orderName">
+						id="orderName" readonly th:value='${#authentication.principal.empName}'>
 
-					<button type="button" data-bs-toggle="modal" id="searchBtn"
-						class="sixBtn1" data-bs-target="#searchModal">
-						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-                <path
-								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                </svg>
-					</button>
-					<br> 사원번호 <input type="text" name="empId" id="orderNum"><br>
+					
+					<br> 사원번호 <input type="text" name="empId" id="orderNum" readonly th:value='${#authentication.principal.empId}'><br>
 				</div>
 
 				<div id="right">
@@ -93,7 +91,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="searchModalLabel">거래처 조회</h1>
+							<h1 class="modal-title fs-5" id="searchModalLabel" style="font-family: 'MaruBuri';">거래처 조회</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
@@ -116,7 +114,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="searchModalLabel">상품 목록 조회</h1>
+							<h1 class="modal-title fs-5" id="searchModalLabel" style="font-family: 'MaruBuri';">상품 목록 조회</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
@@ -350,17 +348,20 @@ window.onload = function() {
 			 
 			 {header : '주문코드',
 			  name : 'ordId',
+			  align: 'center',
 			  hidden : true
 				},
 			 		 
 			 {
 					header : '주문상세코드',
-					name : 'ordDetId' 
+					name : 'ordDetId', 
+					align: 'center'
 				},
 		  {
 			  /// 완제품코드, 상품이름, 규격의 값이 있을때 ordqt, ordDetPrice, ordEndDate 값을 넣을수 잇도록 한다
 			header : '완제품코드',
 	        name : 'cpId',
+	        align: 'center',
 	        relations:[
 	        	{targetNames:['ordQt', 'ordDetPrice','ordEndDate'],
 	        	editable({value}){
@@ -373,30 +374,36 @@ window.onload = function() {
 		
 		{
 			header : '상품이름',
-			name : 'cpName' 
+			name : 'cpName',
+			align: 'center'
 		},{
 			header : '규격',
-			name : 'cpSize' 
+			name : 'cpSize',
+			align: 'center'
 		},
 		
 		{
 			header : '주문수량',
 			name : 'ordQt', 
-			editor: 'text'
+			editor: 'text',
+			align: 'center'
 		},
 		  {
 			header : '상품가격',
 			name : 'ordDetPrice',
-		    editor: 'text'
+		    editor: 'text',
+		    align: 'center'
 		},
 		 {
 			header : '총가격',
-			name : 'ordSalePrice'
+			name : 'ordSalePrice',
+			align: 'center'
 		   
 		 },
 		{
 			header : '납기일자',
 			name : 'ordEndDate',
+			align: 'center',
 			editor: {
 			      type: 'datePicker',
 			      options: {
@@ -408,11 +415,22 @@ window.onload = function() {
 		
 		{
 			header : '출고여부',
-			name : 'ordStatDetName'								
+			name : 'ordStatDetName',
+			align: 'center'
 		}
 		]
 	});
-	
+	gridy.setBodyHeight(400);
+	tui.Grid.applyTheme('default', {
+		cell: {
+			header: {
+				background: '#e5edf5'
+			},
+			normal: {
+				background: '#ffffff'
+			}
+		}
+	});
 	
     /////총가격을 자동으로 입력을 할수 있도록 하는 기능!!!!
  	gridy.on('editingFinish', ev=>{
@@ -436,16 +454,29 @@ window.onload = function() {
 		columns : [ {
 			header : '완제품 코드',
 			name : 'cpId',
+			align: 'center'
 		}, {
 			header : '완제품 이름',
-			name : 'cpName'
+			name : 'cpName',
+			align: 'center'
 		}, {
 			header : '완제품 규격',
-			name : 'cpSize'
+			name : 'cpSize',
+			align: 'center'
 		}
 		]
 	});		
-	
+ 	gridp.setBodyHeight(400);
+	tui.Grid.applyTheme('default', {
+		cell: {
+			header: {
+				background: '#e5edf5'
+			},
+			normal: {
+				background: '#ffffff'
+			}
+		}
+	});
 	//상품 조회 페이지에서 클릭시 상세주문서 등록으로 데이터 전송
 	gridp.on('click', ev=> {
 	      {const focusCell = gridp.getFocusedCell() // 찍은 셀의 열정보를 다 들고 오겠다는 의미 컬럽도 들고온다
@@ -468,12 +499,15 @@ window.onload = function() {
 		columns : [ {
 			header : '사원번호',
 			name : 'empId',
+			align: 'center'
 		}, {
 			header : '사원이름',
-			name : 'empName'
+			name : 'empName',
+			align: 'center'
 		}, {
 			header : '사원직책',
-			name : 'empRk'
+			name : 'empRk',
+			align: 'center'
 		}
 		]
 	});

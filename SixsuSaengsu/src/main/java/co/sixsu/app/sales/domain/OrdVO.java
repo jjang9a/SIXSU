@@ -20,4 +20,6 @@ public class OrdVO {
 	private String ordStatDetName;
 	private String busName;
 	
+	private String empId;
+	
 }
