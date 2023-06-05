@@ -204,10 +204,11 @@
 				insp_date     = sysdate,
 				emp_id        = #{empId},
 				suit_qt       = (#{inspQt}-#{totNsuitQt}),
-				nsuit_qt      = #{totNsuitQt}
+				nsuit_qt      = #{totNsuitQt},
 				insp_type	  = 'INSP-A'
 		where
 		        insp_num=#{inspNum}
+		 <!--  and   insp_item_id LIKE '%'||#{insp_item_id}||'%' -->
 
 
 	</update>
@@ -245,6 +246,7 @@
 		    on r.bus_id = b.bus_id
 		
 		 WHERE r.mat_req_stat='C'
+		 OR r.mat_req_stat='D'
 		 AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
 <!-- 		 <if test="inspDate == null">
   		 AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
@@ -264,7 +266,7 @@
 	</select>
 
 	<!-- 입고 검사 완료 단건 삭제 -->
-	<delete id="delInsp" parameterType="String">
+	<delete id="delInsp" parameterType="QuaVO">
 		delete from qua_com where
 		insp_num = #{inspNum}
 	</delete>
@@ -343,6 +345,22 @@ LEFT OUTER JOIN  work_bom b
             AND  q.INSP_DATE IS NULL
        ORDER BY  p.wk_end
 	</select>
+	
+	<!-- 공정 검사 결과 등록 -->
+	<update id="prdComUpdate" parameterType="PrdInspVO">
+		update   qua_com
+		   set
+				 insp_num      = #{inspNum},
+				 insp_item_id  = #{pdId},
+				 insp_qt       = #{detaQt},
+				 insp_date     = sysdate,
+				 emp_id        = #{empId},
+				 suit_qt       = #{goodQt},
+				 nsuit_qt      = #{dmatQt},
+				 insp_type	  = 'INSP-B'
+		where
+		        insp_num=#{inspNum}
+	</update>
 	
 	<!-- 공정 검사 완료 리스트 -->
 		<select id="prdComList" resultType="PrdInspVO">

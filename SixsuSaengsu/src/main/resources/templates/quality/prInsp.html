@@ -21,6 +21,10 @@
 		#topS {
 			margin: 10px;
 		}
+		
+		#modifyBtn {
+			display : none;
+		}
 	</style>
 
 
@@ -377,7 +381,7 @@
 					console.log( $('#prInspForm').serialize());
 
 					$.ajax({
-						url: '/quality/priRegUpdate',
+						url: '/quality/prdComUpdate',
 						type: 'post',
 						data: $('#prInspForm').serialize(),
 						dataType: 'json',
@@ -444,6 +448,7 @@
 				afterStdId = afterDataRow.inspStdId;
 				afterProcId = afterDataRow.procId;
 				afterPrcsPfmcId = afterDataRow.prcsPfmcId;
+				afterProcName = afterDataRow.procName;
 			});
 				
 				// 수정 버튼 클릭 이벤트
@@ -470,6 +475,7 @@
 					$('#inspQt').val(afterInspQt);
 					$('#suitQt').val(afterSuitQt);
 					$('#totNsuitQt').val(afterNsuitQt);
+					$('#procName').val(afterProcName);
 
 
 					// 검사 항목 ajax 호출

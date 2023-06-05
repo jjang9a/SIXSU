@@ -23,7 +23,7 @@ public class PrdInspVO {
 	private String wkEnd; // 종료일
 	
 	private String newPdId;// 검사용 제품 코드
-	
+	private String inspDate; //검사일자
 	
 	
 	

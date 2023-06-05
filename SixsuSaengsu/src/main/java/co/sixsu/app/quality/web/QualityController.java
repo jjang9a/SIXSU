@@ -133,9 +133,9 @@ public class QualityController {
 
 	// 검사 완료 삭제
 	@ResponseBody
-	@RequestMapping("/quality/delInsp")
-	public boolean delReqInsp(@RequestParam String inspNum) {
-		boolean result = quaService.delInsp(inspNum);
+	@PostMapping("/quality/delInsp")
+	public boolean delReqInsp(QuaVO qua) {
+		boolean result = quaService.delInsp(qua);
 		return result;
 	}
 
@@ -147,7 +147,7 @@ public class QualityController {
 		return quaService.updateQd(list);
 	}
 
-	// 제품 품질 관리 - 검사 등록 리스트 출력
+	// 공정 검사 관리 - 검사 등록 리스트 출력
 	@ResponseBody
 	@GetMapping("/quality/bpAddList")
 	public List<PrdInspVO> bpList() {
@@ -164,7 +164,7 @@ public class QualityController {
 		return quaService.bpdAdd(list);
 	}
 
-	// 제품 품질 관리 검사 대기 리스트
+	// 공정 검사 관리 검사 대기 리스트
 	@ResponseBody
 	@GetMapping("/quality/prwList")
 	public List<PrdInspVO> prwList() {
@@ -172,6 +172,17 @@ public class QualityController {
 
 		return list;
 
+	}
+	
+	// 공정 검사 결과 등록
+	@ResponseBody
+	@PostMapping("/quality/prdComUpdate")
+	public boolean prdComUpdate(PrdInspVO prd, Principal principal) {
+		System.out.println(prd);
+		String id = principal.getName();
+		prd.setEmpId(id);
+		boolean result = quaService.prdComUpdate(prd);
+		return result;
 	}
 
 	// 제품 품질 검사 완료 리스트
@@ -181,7 +192,6 @@ public class QualityController {
 		return quaService.prdComList();
 	}
 	
-	// 제품 품질 검사 삭제
 	
 
 	// 출고 검사 목록 리스트
@@ -209,6 +219,14 @@ public class QualityController {
 	public ShipInspVO shipInspMod(ShipInspVO ship) {
 		quaService.shipInspMod(ship);
 		return ship;
+	}
+	
+	// 출고 검사 결과 삭제
+	@ResponseBody
+	@PostMapping("/quality/shipInspDel")
+	public boolean shipInspDel (QuaVO qua) {
+		boolean result = quaService.delShipInsp(qua);
+		return result;
 	}
 	
 	// 반품 검사 목록 리스트

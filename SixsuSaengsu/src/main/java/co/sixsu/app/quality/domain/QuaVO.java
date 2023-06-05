@@ -52,6 +52,8 @@ public class QuaVO {
 	// 출고 검사, 반품 검사 관련
 	private int cpShipQt; // 출고 수량
 	private int retQt; // 반품 수량
+	private String cpShipId; // 완제품 출고 코드
+	private String retId; // 반품 코드
 	
 	
 	
