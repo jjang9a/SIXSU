@@ -7,7 +7,11 @@
 <select id="getDate" resultType="java.util.Date">
 	select sysdate from dual
 </select>
-
+	<!--재고현황 페이지 총 재고 조회 -->
+	<select id="inventorySearch" resultType="OrdVO">
+		select cp_name, cp_id, get_total_product_num(cp_id) total_prod
+		from complete_prod
+	</select>
 	<!--모달창 이름별 사원조회 -->
 	<select id="emp1List"
 		resultType='EmpVO'>
@@ -22,6 +26,7 @@
 		resultType='BusVO'>
 		Select* from business
 		where bus_type= 'SELL'
+		and bus_stat = 'Y'
 	</select>
 	
 	<!-- 모달창 거래이름별 거래처별조회   '%${keyword}%' -->
@@ -32,6 +37,8 @@
 		where upper (bus_name) like '%'|| upper(#{keyword}) || '%'
 		</if> 
 		and bus_type= 'SELL'
+		and and bus_stat = 'Y'
+		
 	</select>
 	<!-- 대소문자 구별 및 값이 비슷한 경우도 나오게 하는기능 -->
 	

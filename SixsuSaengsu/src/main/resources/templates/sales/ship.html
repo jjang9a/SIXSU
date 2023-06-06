@@ -1,183 +1,165 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layout/template}"
->
-  <head>
-    <meta charset="UTF-8" />
-    <title>완제품출고관리</title>
-  </head>
-  <body>
-    <div layout:fragment="content">
-    <form id="searchForm">
-      <h1 class="mt-4" style="font-family: 'MaruBuri'">완제품출고관리</h1>
-      <h3 class="mt-4" style="font-family: 'MaruBuri'">주문현황</h3>
-      상품명 <input type="text" name="cpName" id="cpName" />
-      <button
-        type="button"
-        data-bs-toggle="modal"
-        id="searchProductBtn"
-        class="sixBtn1"
-        target="#searchModal"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="18"
-          fill="currentColor"
-          class="bi bi-search"
-          viewBox="0 2 16 16"
-        >
-          <path
-            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-          />
-        </svg></button
-      ><br />
-      상품코드 <input type="text" name="cpId" id="cpId" /> <br />
-      주문일자 <input type="date" name="startDate" id="startDate"/>
-      <input type="date" name="endDate" id="endDate"/> <br />
-      </form>
-      
-      <div class="divBtn">
-				<button type="button" class="sixBtn2 filter_submit" id="search">검색</button>
-				<button type="button" class="sixBtn2 filter_reset" id="clear">초기화</button>				
-				</div>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+<head>
+<meta charset="UTF-8" />
+<title>완제품출고관리</title>
+<style>
+h1 {
+			margin-bottom: 40px;
+		}
+
+		#cpTable {
+			margin: auto;
+		}
+
+		#cpTable input,
+		select {
+			padding-left: 10px;
+			width: 230px;
+		}
+
+		#divRadio input {
+			padding-left: 7px;
+			width: 20px;
+		}
+
+		#cpTable td {
+			padding: 4px 20px;
+			
+		}
 	
-      <div id="orderListGrid"></div>
+		
+		.divBtn {
+			text-align: center;
+			padding: 15px 0 30px 0;
+		}
+.modal-body {
+			background: #e5edf5;
+		}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<form id="searchForm">
+		<h1 class="mt-4" style="font-family: 'MaruBuri'">완제품출고관리</h1>
+		<table id="cpTable">
+					<tr>
+						<td>상품명</td><td> <input type="text" name="cpName" id="cpName" style="width : 199px;"/>
+			<button type="button" data-bs-toggle="modal" id="searchProductBtn"
+				class="sixBtn1" target="#searchModal">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+					fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+          <path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+        </svg>
+			</button></td>
+			
+			<td>주문일자</td><td><input type="date" name="startDate" id="startDate" style="width : 120px;"/> <input
+				type="date" name="endDate" id="endDate" style="width : 120px;"/></td>
+</tr>
+<tr>
+        <td>상품코드</td><td> <input type="text" name="cpId" id="cpId" /></td>
+	
+</tr>
+</table>
+		<div class="divBtn">
+			<button type="button" class="sixBtn2 filter_submit" id="search">검색</button>
+			<button type="button" class="sixBtn2 filter_reset" id="clear">초기화</button>
+		</div>
+	</form>
+		<div id="orderListGrid"></div>
 
-      <!-- 상품목록 모달창 -->
-      <div
-        class="modal fade"
-        id="productModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="searchModalLabel">
-                  상품 목록 조회
-                </h1>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
+		<!-- 상품목록 모달창 -->
+		<div class="modal fade" id="productModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="searchModalLabel">상품 목록 조회
+							</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
 
-              <div class="btns"></div>
+						<div class="btns"></div>
 
-              <div class="modal-body">
-                <div id="gridp"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-      <h3 class="mt-4" style="font-family: 'MaruBuri'">출고대기</h3>
-     
-       <div id="orderReadyGrid"></div>
-      </div>
-      <!-- lot별 품목 모달창 -->
-      <div
-        class="modal fade"
-        id="lotModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="searchModalLabel">
-                  LOT별 재고 현황
-                </h1>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
+						<div class="modal-body">
+							<div id="gridp"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<h3 class="mt-4" style="font-family: 'MaruBuri'">출고대기</h3>
 
-              <div class="btns">
-                상품명:
-                <input type="text" name="cpOrdNameBox" id="cpOrdNameBox" readonly />
-                <br />
-                상품코드:
-                <input type="text" name="cpOrdCode" id="cpOrdCode" readonly />
-                <br />
-                주문수량:
-                <input type="text" name="ordQt" id="cpOrdQt" readonly /><br />
-                총재고량:
-                <input type="text" name="totalQt" id="totalQt" readonly />
-                <br />
-              </div>
+			<div id="orderReadyGrid"></div>
+		</div>
+		<!-- lot별 품목 모달창 -->
+		<div class="modal fade" id="lotModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="searchModalLabel">LOT별 재고
+								현황</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
 
-              <div class="modal-body">
-                <div id="lotProductGrid"></div>
-                <button class="sixBtn4" id="readyShip">출고시작</button>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
-      <!-- 출고대기 검사가완료된 품목 모달창 -->
-      <div
-        class="modal fade"
-        id="shipReadyModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="searchModalLabel">
-                 검사완료 및 출고
-                </h1>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-                
-              </div>
+						<div class="btns">
+							상품명: <input type="text" name="cpOrdNameBox" id="cpOrdNameBox"
+								readonly /> <br /> 상품코드: <input type="text" name="cpOrdCode"
+								id="cpOrdCode" readonly /> <br /> 주문수량: <input type="text"
+								name="ordQt" id="cpOrdQt" readonly /><br /> 총재고량: <input
+								type="text" name="totalQt" id="totalQt" readonly /> <br />
+						</div>
 
-              <div class="btns"></div>
- 				거래처코드:
-                <input type="text" name="busId" id="busId" readonly />
-                <br />
- 				거래처명:
-                <input type="text" name="busName" id="busName" readonly />
-                <br />
-               	사업자번호:
-                <input type="text" name="busNum" id="busNum" readonly />
-                <br />
-                거래처주소:
-                <input type="text" name="busAddr" id="busAddr" readonly /><br />
-                거래처전화번호:
-                <input type="text" name="busTell" id="busTell" readonly />
-              <div class="modal-body">
- 				<div id="completeShipGrid"></div>
- 				<button class="sixBtn4" id="completeShip">출고완료</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <script>
+						<div class="modal-body">
+							<div id="lotProductGrid"></div>
+							<button class="sixBtn4" id="readyShip">출고시작</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- 출고대기 검사가완료된 품목 모달창 -->
+		<div class="modal fade" id="shipReadyModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="searchModalLabel">검사완료 및 출고
+							</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+
+						</div>
+
+						<div class="btns"></div>
+						거래처코드: <input type="text" name="busId" id="busId" readonly /> <br />
+						거래처명: <input type="text" name="busName" id="busName" readonly />
+						<br /> 사업자번호: <input type="text" name="busNum" id="busNum"
+							readonly /> <br /> 거래처주소: <input type="text" name="busAddr"
+							id="busAddr" readonly /><br /> 거래처전화번호: <input type="text"
+							name="busTell" id="busTell" readonly />
+						<div class="modal-body">
+							<div id="completeShipGrid"></div>
+							<button class="sixBtn4" id="completeShip">출고완료</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
       $("#search").on("click",(e) =>{
 			 $.ajax({
 	             url: '/sales/orderedList',
@@ -481,9 +463,9 @@
           	if(ev.columnName == 'ordDetId'){	
           	 	const focusCell = orderReadyGrid.getFocusedCell()
                	let dataRow = orderReadyGrid.getRow(ev.rowKey);
-          	 	if(dataRow.cpShipStat == "검사요청"){
+          	 	if(dataRow.cpShipStat == "출고검사전"){
           	 		alert("아직 모든 물품이 출고검사가 끝나지 않았습니다.")
-          	 	} else if(dataRow.cpShipStat == "검사완료"){
+          	 	} else if(dataRow.cpShipStat == "출고검사완료"){
           	 		
          	 		$("#shipReadyModal").modal("show");
          	 		
@@ -568,6 +550,6 @@
         
 		        
       </script>
-    </div>
-  </body>
+	</div>
+</body>
 </html>

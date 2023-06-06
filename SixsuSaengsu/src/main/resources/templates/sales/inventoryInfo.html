@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+<meta charset="UTF-8">
+<title>재고현황</title>
+</head>
+<body>
+    <div layout:fragment="content">
+	<h1 class="mt-4" style="font-family: 'MaruBuri'">재고현황</h1>
+	<h3 class="mt-4" style="font-family: 'MaruBuri'">상품별 총 재고</h3>
+	
+	<div id="allProductGrid"></div>
+	<h3 class="mt-4" style="font-family: 'MaruBuri'">LOT별 총 재고</h3>
+	<div id="lotProductGrid"></div>
+
+<script>
+	$.ajax({
+	    url: '/sales/inventorySearch',
+	    type: 'get',
+	    success: function (result) {
+	    	allProductGrid.resetData(result);
+	      
+	       
+	    },
+	    error: function (reject) {
+	       console.log(reject);
+	       alert('검색 중 오류가 발생했습니다!');
+	    }
+	 });
+	const allProductGrid = new tui.Grid({
+		el : document.getElementById('allProductGrid'),
+		//data : gridData,
+		scrollX : false,
+		scrollY : false,
+		minBodyHeight: 400,
+		
+		
+		columns : [ {
+			header : '제품명',
+			name : 'cpName',
+			align : 'center'
+		},{
+			header : '제품번호',
+			name : 'cpId',
+			align : 'center'
+		},{
+			header : '제품총수량',
+			name : 'totalProd',
+			align : 'center'
+		}
+		]
+		});
+		
+		tui.Grid.applyTheme('default', {
+			cell: {
+				header: {
+					background: '#e5edf5'
+				},
+				rowHeader: {
+					background: '#e5edf5'
+				},
+				normal: {
+					background: '#ffffff'
+				}
+			}
+		});
+		
+		allProductGrid.on('click', ev=> {
+			  let dataRow = allProductGrid.getRow(ev.rowKey);
+			  console.log(dataRow);
+			  $.ajax({
+		            url: "/sales/lotProducts",
+		            method: "GET",
+		            data: { result: dataRow.cpId },
+		            success: function (result) {
+		            	 lotProductGrid.resetData(result);
+		            	 setTimeout(() => lotProductGrid.refreshLayout(), 400);
+		            },
+		            error: function (reject) {
+		     	       console.log(reject);
+		     	       alert('검색 중 오류가 발생했습니다!');
+		     	    }
+		     	 
+		          });
+		        
+		})
+		const lotProductGrid = new tui.Grid({
+          el: document.getElementById("lotProductGrid"),
+          //data : gridData,
+          scrollX: false,
+          scrollY: false,
+
+          pageOptions: {
+            useClient: true,
+            perPage: 10,
+          },
+          columns: [
+            {
+              header: "완제품 LOT",
+              name: "cpLotId",
+              align:"center"
+            },
+            {
+              header: "완제품 코드",
+              name: "cpId",
+              align:"center"
+            },
+            {
+              header: "완제품 이름",
+              name: "cpName",
+              align:"center"
+            },
+            {
+              header: "완제품 수량",
+              name: "cpLotQt",
+              align:"center"
+            },
+          ],
+        });
+</script>	
+	
+	</div>
+</body>
+</html>

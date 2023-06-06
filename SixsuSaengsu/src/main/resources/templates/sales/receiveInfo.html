@@ -6,17 +6,38 @@
 	<meta charset="UTF-8">
 	<title>입고조회</title>
 	<style>
-#cpTable input, select {
-	padding-left: 10px;
-}
+h1 {
+			margin-bottom: 40px;
+		}
 
-.divBtn {
-	padding: 10px 0 10px 0;
-}
+		#cpTable {
+			margin: auto;
+		}
 
-#cpName{
-	width : 162px;
-}
+		#cpTable input,
+		select {
+			padding-left: 10px;
+			width: 230px;
+		}
+
+		#divRadio input {
+			padding-left: 7px;
+			width: 20px;
+		}
+
+		#cpTable td {
+			padding: 4px 20px;
+			
+		}
+	
+		
+		.divBtn {
+			text-align: center;
+			padding: 15px 0 30px 0;
+		}
+.modal-body {
+			background: #e5edf5;
+		}
 </style>
 </head>
 
@@ -27,11 +48,7 @@
 			<form id="searchForm">
 				<table id="cpTable">
 					<tr>
-						<td>입고일자</td><td><input type="date" name="startDate" id="startDate" /> ~
-							<input type="date" name="endDate" id="endDate" /></td>
-					</tr>
-					<tr>
-						<td>상품명</td><td><input type="text" name="cpName" id="cpName">
+						<td>상품명</td><td><input type="text" name="cpName" id="cpName" style="width : 199px;">
 							<button type="button" data-bs-toggle="modal" id="search1Btn" class="sixBtn1"
 								data-bs-target="#search1Modal">
 								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
@@ -39,16 +56,18 @@
 									<path
 										d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
 								</svg></button></td>
+								<td>입고일자</td>
+								<td><input type="date" name="startDate" id="startDate" style="width : 120px;"/> ~
+							<input type="date" name="endDate" id="endDate" style="width : 120px;"/></td>
 					</tr>
 					<tr>
 						<td>상품코드</td>
 						<td> <input type="text" name="cpId" id="cpId"></td>
-					</tr>
-					<tr>	
+						
 						<td>진행구분</td>
-						<td><input type="radio" name="cpRecTp" value="all" checked="checked" /> 전체
-							<input type="radio" name="cpRecTp" value="CPF" /> 입고
-							<input type="radio" name="cpRecTp" value="CPR" /> 재입고</td>
+						<td><input type="radio" name="cpRecTp" value="all" checked="checked" style="width : 35px;" /> 전체
+							<input type="radio" name="cpRecTp" value="CPF" style="width : 35px;" /> 입고
+							<input type="radio" name="cpRecTp" value="CPR" style="width : 35px;" /> 재입고</td>
 					</tr>
 				</table>
 			

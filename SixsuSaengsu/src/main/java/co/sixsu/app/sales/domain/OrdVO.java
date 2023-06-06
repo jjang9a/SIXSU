@@ -21,5 +21,5 @@ public class OrdVO {
 	private String busName;
 	
 	private String empId;
-	
+	private int totalProd;
 }
