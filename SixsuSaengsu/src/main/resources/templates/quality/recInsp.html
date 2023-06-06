@@ -10,14 +10,14 @@
 	<title>자재 입고 검사</title>
 
 	<style>
-		.detail {
+/* 		.detail {
 			display: none;
 		}
-
+ 
 		#prInspForm {
 			display: none;
 		}
-
+*/
 		#modifyBtn {
 			display: none;
 		}
@@ -308,7 +308,7 @@
 					dataType: "JSON",
 					success: function (result) {
 						aiGrid.resetData(result);
-						setTimeout(() => aiGrid.refreshLayout(), 700);
+						setTimeout(() => aiGrid.refreshLayout(), 200);
 					},
 					error: function (reject) {
 						console.log(reject);
@@ -638,9 +638,62 @@
 
 				console.log('등록 수량 : ' + dataRow.inspQt);
 			})
-
+			
 			// 모달 등록
 			$('#regBtn').on('click', function (e) {
+			    // 등록할 데이터
+			    let data = grid2.getModifiedRows().updatedRows;
+			
+			    if (data.length === 0) {
+			        alert('검사를 등록해주세요.');
+			        return false;
+			    } else {
+			        // Ajax를 통해 데이터를 서버로 전송하고 등록 성공 후 처리
+			        $.ajax({
+			            url: "/quality/prRegister",
+			            method: "POST",
+			            contentType: 'application/json',
+			            data: JSON.stringify(grid2.getModifiedRows().updatedRows),
+			            success: function (result) {
+			                // 결과 데이터를 확인하여 검사 수량이 발주 수량보다 많은지 검사
+			                const appendedData = result;
+			                for (let i = 0; i < appendedData.length; i++) {
+			                    if (appendedData[i].inspQt > appendedData[i].matReqQt) {
+			                        alert('검사 수량이 발주 수량보다 많습니다.');
+			                        return;
+			                    }
+			                }
+			
+			                alert('입고 검사가 등록되었습니다.');
+			                console.log(result);
+			                grid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
+			                $('#regModal').modal('hide');
+			                grid2.removeCheckedRows(false);
+			
+			                // 업데이트 된 데이터 출력
+			                $.ajax({
+			                    url: "/quality/prInspList",
+			                    method: "GET",
+			                    dataType: "JSON",
+			                    success: function (result) {
+			                        grid.resetData(result);
+			                    },
+			                    error: function (reject) {
+			                        console.log(reject);
+			                    }
+			                });
+			            },
+			            error: function (reject) {
+			                alert('입고 검사 등록 중 에러가 발생하였습니다.');
+			            }
+			        });
+			    }
+			});
+			
+
+
+			// 모달 등록
+			/* $('#regBtn').on('click', function (e) {
 				// 등록할 데이터
 				let data = grid2.getModifiedRows().updatedRows;
 
@@ -680,7 +733,7 @@
 						}
 					});
 				}
-			});
+			}); */
 
 			//after insp grid
 			// 검사 완료 그리드
@@ -760,6 +813,7 @@
 				aselEmpName = aDataRow.empName;
 				aselStdId = aDataRow.inspStdId;
 				aselBusName = aDataRow.busName;
+				//aselNsuitQt = aDataRow.nsuitQt;
 
 			});
 
@@ -837,9 +891,11 @@
 					dataType: "JSON",
 					success: function (result) {
 						console.log(result);
+						
 						detailGrid.resetData(result);
 						detailGrid.setColumnValues('inspNum', aselInspNum, false);
-						setTimeout(() => detailGrid.refreshLayout(), 700);
+						detailGrid.setColumnValues('nsuitQt',aselNsuitQt,false);
+						setTimeout(() => detailGrid.refreshLayout(), 300);
 
 						// 적합 수량과 부적합 수량 자동 계산 함수
 						calSuitQt();
@@ -865,16 +921,58 @@
 					}
 				}
 			});
-
-
+			
 			// 검사 결과 등록 클릭 이벤트
+			$('#inspBtn').on('click', function () {
+			    console.log(detailGrid.getData())
+			    console.log('확인')
+			    let formData = $('#prInspForm').serialize();
+
+			    // 검사 공통 업데이트 ajax 실행
+			    quaComUpdateAjax();
+
+			    // 등록&update
+			    $.ajax({
+			        url: '/quality/priRegister',
+			        type: 'post',
+			        data: JSON.stringify(detailGrid.getData()),
+			        contentType: 'application/json',
+			        success: function (result) {
+			            console.log(result);
+			            alert('검사 결과값 등록이 완료되었습니다.');
+
+			            // aiGrid에 등록된 값 표시
+			            $.ajax({
+			                url: "/quality/rAfterList",
+			                method: "GET",
+			                dataType: "JSON",
+			                success: function (result) {
+			                    aiGrid.resetData(result);
+			                    setTimeout(() => aiGrid.refreshLayout(), 200);
+			                },
+			                error: function (reject) {
+			                    console.log(reject);
+			                }
+			            });
+
+			            // 등록 완료 후 폼과 그리드 숨기고 초기화
+			            $('#prInspForm').css('display', 'none');
+			            $('.detail').css('display', 'none');
+			            $('#prInspForm input').val('');
+			        },
+			        error: function (reject) {
+			            console.log(reject);
+			            alert('검사 결과값 등록에 실패했습니다.')
+			        }
+			    });
+			});
+
+
+			/* // 검사 결과 등록 클릭 이벤트
 			$('#inspBtn').on('click', function () {
 				console.log(detailGrid.getData())
 				console.log('확인')
 				let formData = $('#prInspForm').serialize();
-				//formData += '&detailData=' + JSON.stringify(detailGrid.getData());
-				//console.log(formData);
-				//formData += JSON.stringify(detailGrid.getData());
 
 				// 검사 공통 업데이트 ajax 실행
 				quaComUpdateAjax();
@@ -905,7 +1003,7 @@
 
 
 			} // on click event 끝
-			)
+			) */
 
 			// 수정하기 버튼 클릭 이벤트
 			$('#modifyBtn').on('click', function () {
@@ -998,6 +1096,8 @@
 				}
 
 			});
+			
+			
 
 			let btnType = req;
 			// 입고검색 탭 기능
