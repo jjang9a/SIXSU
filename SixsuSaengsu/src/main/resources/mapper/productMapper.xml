@@ -44,7 +44,7 @@
 		from dual
 	</selectKey>
 	 
-	INSERT INTO sp_rec VALUES (#{spRecId}, #{prcsPfmcId}, #{spId}, '정상입고', #{spRecDate}, #{spRecQt}, null, #{empId}, #{spLotId})
+	INSERT INTO sp_rec VALUES (#{spRecId}, #{prcsPfmcId}, #{spId}, '정상입고', to_date(#{spRecDate}, 'yyyy/MM/dd'), #{spRecQt}, null, #{empId}, #{spLotId})
 </insert>
 
 <update id="updateSpLot" parameterType="ReceiveVO">
@@ -110,7 +110,7 @@
 		from dual
 	</selectKey>
 	
-	INSERT INTO prod_rev VALUES (#{cpRecId}, '정상입고', #{prcsPfmcId}, #{empId}, #{cpRecDate}, #{cpRecQt}, #{cpLotId})
+	INSERT INTO prod_rev VALUES (#{cpRecId}, '정상입고', #{prcsPfmcId}, #{empId}, to_date(#{cpRecDate},'yyyy/MM/dd', #{cpRecQt}, #{cpLotId})
 </insert>
 
 <update id="updateCpLot" parameterType="ReceiveVO">
