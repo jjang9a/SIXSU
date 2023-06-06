@@ -65,8 +65,8 @@ h1 {
 					<td>적합 여부</td>
 					<td><select name="resStat" id="resStat">
 						<option value="">선택</option>
-						<option value="적합">적합</option>
-						<option value="부적합">부적합</option>
+						<option value="STAT-A">적합</option>
+						<option value="STAT-B">부적합</option>
 					</select></td>
 				</tr>
 
@@ -97,7 +97,9 @@ h1 {
 		<!-- 완제품 출고 검사 그리드 -->
 		<div id="grid"></div>
 
-		<script>
+		<script th:inline="javascript">
+		let inspResStat = [[${inspResStat}]];
+		
 			window.onload = function() {
 				//let initData = '';
 				//let nowData = '';
@@ -163,20 +165,13 @@ h1 {
 						name : 'resStat',
 						align : 'center',
 						filter : 'select',
-						editor : {
-							type : 'select',
-							options : {
-								listItems : [{
-									text : '적합',
-									value : '적합'
-								},
-								{
-									text : '부적합',
-									value : '부적합'
-								}
-								]	
-							}
-						}
+				        editor: 
+				          {
+				            type: 'select',
+				            options: {
+				              listItems:inspResStat
+				            }
+				          }
 					},{
 						header : '반품일자',
 						name : ' ret_date',

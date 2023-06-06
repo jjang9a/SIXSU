@@ -41,7 +41,7 @@ public interface QualityMapper {
 	List<PrdInspVO> prwList(); // 공정 검사 대기 리스트
 	int prdComUpdate(PrdInspVO prd); // 공정 검사 결과 등록 검사 공통 업데이트
 	List<PrdInspVO> prdComList(); // 공정 검사 완료 리스트
-	int delPrdInsp(String inspNum); // 공정 검사 완료 단건 삭제
+	//int delPrdInsp(String inspNum); // 공정 검사 완료 단건 삭제
 	
 	
 	// 출고 검사 관련
@@ -62,6 +62,7 @@ public interface QualityMapper {
 	int updateReturn(ReturnInspVO ret); // 반품 검사 등록 시 반품 테이블 업데이트
 	int modReturnCom(ReturnInspVO com); // 반품 검사 공통 수정
 	int modReturnDet(ReturnInspVO det); // 반품 검사 상세 수정
+	
 	
 	// 사용 보류
 
