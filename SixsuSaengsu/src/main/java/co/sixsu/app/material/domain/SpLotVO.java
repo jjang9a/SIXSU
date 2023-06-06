@@ -1,7 +1,9 @@
 package co.sixsu.app.material.domain;
 
+import lombok.Data;
+
+@Data
 public class SpLotVO {
-	
 	String spLotId;
 	String spId;
 	String spName;
@@ -9,4 +11,5 @@ public class SpLotVO {
 	int spQt;
 	String spHoldStat;
 	String spLotQtCk;
+	String spRecDate;
 }

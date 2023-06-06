@@ -262,10 +262,11 @@ public class WorkAjaxController {
 	
 	//미완성
 	@RequestMapping("getBomMatList")
-	public List<Object> getBomMatList(@RequestBody DetaWorkOrdrVO detaCode) {
-		System.out.println(detaCode);
-		//List<DetaWorkOrdrVO> list = service.getBomMatList(detaCode);
-		return null;
+	public List<bomMatVO> getBomMatList(@RequestBody DetaWorkOrdrVO detaCode) {
+		System.out.println("preparing getBomMatList");
+		System.out.println("detaCode is " + detaCode.getWkDetaId());
+		List<bomMatVO> list = service.getBomMatList(detaCode.getWkDetaId());
+		return list;
 	}
 	
 	@RequestMapping("startWorkOrder")

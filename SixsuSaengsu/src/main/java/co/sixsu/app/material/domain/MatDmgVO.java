@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MatDmgVO {
-
+	
 	String dmatId;
 	String dmatDate;
 	String dmatStat;
@@ -18,5 +18,6 @@ public class MatDmgVO {
 	String matName;
 	String matSize;
 	int resVal;
+	String empId;
 	String empName;
 }

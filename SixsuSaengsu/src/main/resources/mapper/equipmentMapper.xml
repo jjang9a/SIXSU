@@ -93,7 +93,6 @@
 	        ON c.equ_code = i.equ_code
 		  LEFT OUTER JOIN oper o
 		    ON c.equ_code = o.equ_code 
-		   
 	   <where>
 		
 		<if test='code != null and code != ""'>

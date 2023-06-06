@@ -80,5 +80,7 @@ public interface WorkService {
 
 	public List<DetaWorkOrdrVO> getWorkListForProcess();
 
+	public List<bomMatVO> getBomMatList(String detaCode);
+
 
 }

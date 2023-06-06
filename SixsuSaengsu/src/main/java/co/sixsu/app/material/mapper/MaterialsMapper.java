@@ -12,7 +12,7 @@ import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.domain.SpAdjVO;
-import co.sixsu.app.material.domain.SpDmgVO;
+import co.sixsu.app.material.domain.SpLotVO;
 import co.sixsu.app.material.domain.SpShipVO;
 import co.sixsu.app.material.domain.SpVO;
 
@@ -76,34 +76,19 @@ public interface MaterialsMapper {
 	//반제품 조정출고
 	int spShipAdj(SpAdjVO vo);
 	
-	//반제품 불량처리대기 리스트
-	List<SpDmgVO> getSpDmgWaitList();
-	
-	//반제품 불량처리 리스트
-	List<SpDmgVO> getSpDmgList();
-	
-	//반제품 불량 처리
-	int insertSpDmg(SpDmgVO vo);
-	
-	//자재 불량처리대기 리스트
-	List<MatDmgVO> getMatDmgWaitList();
-	
-	//자재 불량처리 리스트
-	List<MatDmgVO> getMatDmgList();
-	
-	//자재 불량 처리
-	int insertMatDmg(MatDmgVO vo);
-	
 	//반제품 리스트
 	List<SpVO> getSpList(String spName);
 	
-	//불량품 처리대기 리스트
-	List<MatDmgVO> getMatDamageWaitList2();
+	//불량자재 처리대기 리스트
+	List<MatDmgVO> getMatDmgWaitList();
 	
-	//불량품 리스트
-	List<MatDmgVO> getMatDmgList2();
+	//불량자재 리스트
+	List<MatDmgVO> getMatDmgList();
 	
-	//불량품 처리
-	int insertMatDmg2(MatDmgVO vo);
+	//불량자재 처리
+	int insertMatDmg(MatDmgVO vo);
+	
+	//반제품 LOT 리스트
+	List<SpLotVO> getSpLotList();
 	
 }

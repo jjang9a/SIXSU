@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.sixsu.app.basic.service.BasicService;
 import co.sixsu.app.quality.domain.PrdInspVO;
 import co.sixsu.app.quality.domain.QuaVO;
 import co.sixsu.app.quality.domain.ReturnInspVO;
 import co.sixsu.app.quality.domain.ShipInspVO;
 import co.sixsu.app.quality.service.QualityService;
-import co.sixsu.app.work.domain.DetaWorkOrdrVO;
 
 //조민경 - 품질 관리 컨트롤러
 @Controller
@@ -25,6 +26,7 @@ public class QualityController {
 
 	@Autowired
 	QualityService quaService;
+	@Autowired BasicService bservice;
 
 	// 도착 자재 관리 페이지
 	@GetMapping("/quality/arr")
@@ -33,22 +35,26 @@ public class QualityController {
 
 	// 자재 입고 검사 페이지
 	@GetMapping("/quality/recInsp")
-	public void recInsp() {
+	public void recInsp(Model model) {
+		model.addAttribute("inspResStat",bservice.commGroupList("INSP_RES_STAT"));
 	}
 
 	// 공정 검사 페이지
 	@GetMapping("/quality/prInsp")
-	public void prInsp() {
+	public void prInsp(Model model) {
+		model.addAttribute("inspResStat",bservice.commGroupList("INSP_RES_STAT"));
 	}
 
 	// 완제품 출고 검사 페이지
 	@GetMapping("/quality/psInsp")
-	public void psInsp() {
+	public void psInsp(Model model) {
+		model.addAttribute("inspResStat",bservice.commGroupList("INSP_RES_STAT"));
 	}
 
 	// 반품 검사 페이지
 	@GetMapping("/quality/returnInsp")
-	public void returnInsp() {
+	public void returnInsp(Model model) {
+		model.addAttribute("inspResStat",bservice.commGroupList("INSP_RES_STAT"));
 	}
 
 
@@ -254,6 +260,9 @@ public class QualityController {
 		quaService.returnInspMod(ret);
 		return ret;
 	}
+	
+	// 반품 검사 결과 삭제
+	
 	
 	// 조회 아작스
 	@ResponseBody

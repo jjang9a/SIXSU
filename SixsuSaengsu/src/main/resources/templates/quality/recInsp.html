@@ -212,7 +212,7 @@
 							<div class="col">
 
 								<label for="exampleFormControlInput1" class="form-label">검사자
-								</label> <input type="text" class="form-control" id="empName" name="empName">
+								</label> <input th:value='${#authentication.principal.empName}'type="text" class="form-control" id="empName" name="empName">
 
 							</div>
 						</div>
@@ -267,7 +267,9 @@
 		</div>
 
 
-		<script>
+		<script th:inline="javascript">
+		let inspResStat = [[${inspResStat}]];
+		
 			$('#regModal').on('shown.bs.modal', function (e) {
 				$.ajax({
 					url: "/quality/proRecList",
@@ -505,7 +507,15 @@
 				{
 					header: '적합여부',
 					name: 'resStat',
-					align: 'center'
+					align: 'center',
+					formatter: 'listItemText',
+			          editor: 
+			          {
+			            type: 'select',
+			            options: {
+			              listItems:inspResStat
+			            }
+			          }
 				}
 				]
 			});
@@ -975,15 +985,15 @@
 			detailGrid.on('editingFinish', function (e) {
 				if (e.columnName === 'nsuitQt') {
 					calSuitQt(); // 값 계산
-					detailGrid.setValue(e.rowKey, 'resStat', '해당없음');
+					detailGrid.setValue(e.rowKey, 'resStat', 'STAT-C');
 				} else if (e.columnName === 'resVal') {
 					let compareData = detailGrid.getRow(e.rowKey);
 					let standard = compareData.stdVal;
 					let myVal = compareData.resVal;
 					if (myVal <= standard) {
-						detailGrid.setValue(e.rowKey, 'resStat', '적합');
+						detailGrid.setValue(e.rowKey, 'resStat', 'STAT-A');
 					} else {
-						detailGrid.setValue(e.rowKey, 'resStat', '부적합');
+						detailGrid.setValue(e.rowKey, 'resStat', 'STAT-B');
 					}
 				}
 

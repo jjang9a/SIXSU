@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/template}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>반제품 LOT 조회</title>
+
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 LOT 조회</h1>
+		<form action="" method="post" id="matLotForm">
+				<table id="matLotTable">
+					<tr>
+						<td>반제품LOT번호</td>
+						<td><input type="text" name="mlot" id="mlot" class="empty" placeholder="검색"></td>
+					</tr>
+					<tr>
+						<td>반제품명</td>
+						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색">
+						</td>
+					</tr>
+					<tr>
+						<td>홀드상태</td>
+						<td>
+							<div id="divRadio">
+								<input type="radio" id="spHoldStat0" name="spHoldStat" value="">
+								<label for="spHoldStat0">전체</label>
+								<input type="radio" id="spHoldStat1" name="spHoldStat" value="Y">
+								<label for="spHoldStat1">Y</label>
+								<input type="radio" id="spHoldStat2" name="spHoldStat" value="N">
+								<label for="spHoldStat2">N</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>입고일자</td>
+						<td>
+							<input type="date" id="spRecDate"> ~ <input type="date" id="spRecDatee">
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div id="left">
+				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn4" id="reset">초기화</button>
+			</div>
+		
+		<div id="grid"></div>
+		<script>
+			const gridData = [
+
+			];
+
+
+			
+				function mLotList(lot, mat, holdStat, sDate, eDate){
+					
+					$.ajax({
+						url: "/materials/splotlist",
+						method: "GET",
+						data:{matLotId : lot, matName : mat, matHoldStat : holdStat, sDate: sDate, eDate:eDate},
+						success: function (result) {
+							grid.resetData(result);
+						},
+	 					error: function(reject){
+							console.log(reject);
+						}
+					
+					});
+
+				}
+				
+			let lot =null;
+			let mat = null;
+			let holdStat = null;
+			let sDate = null;
+			let eDate = null;
+			mLotList(lot, mat, sDate, eDate);
+			
+			$('#check').click(function(){
+				lot = $('#mlot').val();
+				mat = $('#mname').val();
+				holdStat = $("input[name='matHoldStat']:checked").val();
+				sDate = $('#matRecDate').val();
+				eDate = $('#matRecDatee').val();
+				mLotList(lot, mat, holdStat, sDate, eDate);
+
+			})
+			
+			$('#reset').click(function(){
+				$('#mlot').val('');
+				$('#mname').val('');
+				$("input[name='matHoldStat']:checked").val('');
+				$('#matRecDatee').val('');
+				$('#matRecDate').val('');
+				lot = $('#mlot').val();
+				mat = $('#mname').val();
+				holdStat = $("input[name='matHoldStat']:checked").val();
+				sDate = $('#matRecDate').val();
+				eDate = $('#matRecDatee').val();
+				$('input[type="radio"]').prop('checked', false);
+				mLotList(lot, mat, holdStat, sDate, eDate);
+
+			})
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			const grid = new tui.Grid({
+				el: document.getElementById('grid'),
+				
+				scrollX: false,
+				scrollY: false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+
+
+				
+				rowHeaders: ['rowNum'],
+
+
+				columns: [{
+						header: '반제품LOT번호',
+						name: 'spLotId'
+					},
+					{
+						header: '반제품코드',
+						name: 'spId'
+					},
+					{
+						header: '반제품명',
+						name: 'spName'
+					},
+					{
+						header: '규격',
+						name: 'spSize'
+					},
+					{
+						header: '재고량',
+						name: 'spQt'
+					},
+					{
+						header: '홀드상태',
+						name: 'spHoldStat'
+					},
+					{
+						header: '입고일자',
+						name: 'spRecDate'
+					}
+				]
+				
+			});
+			
+			
+ 			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
+					},
+					rowHeader: {
+						background: '#e5edf5'
+					},
+					normal: {
+						background: '#ffffff'
+					}
+				}
+			});
+		</script>
+	</div>
+</body>
+
+</html>
