@@ -36,11 +36,22 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		}
 		#grid1{
 			border: 1px solid black;
-			height: 361px
+			height: 361px;
+			padding: 80px;
+			padding-left: 130px;
 		}
 		#grid_product{
 			width: 750px;
 		}
+	  .form-row {
+	    display: flex;
+	    align-items: center;
+	    margin-bottom: 20px;
+	  }
+	
+	  .form-row label {
+	    margin-right: 10px;
+	  }
 	</style>
 </head>
 	
@@ -51,11 +62,27 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <hr>
 
 	<div id="gridContainer1">
-		<div id="grid1"><h2>검색공간이 도래</h2>
-			분류 <input type="text" class="reg_type"><br>
-			등록일 <input type="date" class="reg_regDate"><br>
-			계획기간 <input type="date" class="reg_startDate"> ~ <input type="date" class="reg_endDate"><br>
-			작성자 <input type="text" class="reg_empName">
+		<div id="grid1">
+		
+			 <div class="form-row">
+			  <label>계획기간</label>
+			  <input type="date" class="reg_startDate">~
+			  <input type="date" class="reg_endDate">
+			</div>
+			
+			<div class="form-row">
+			  <label>분류</label>
+			  <input type="text" class="reg_type">
+			  <label>등록일</label>
+			  <input type="date" class="reg_regDate">
+			</div>
+			
+			<div class="form-row">
+			  <label>작성자</label>
+			  <input type="text" th:value='${#authentication.principal.empName}' readonly>
+			  <input type="hidden" class="reg_empName" name="empId" th:value='${#authentication.principal.empId}'>
+			</div>
+			
 			<button class="sixBtn2 regSubmit">저장</button>
 		</div>
 		<button class="searchBtn sixBtn4">검색예정</button>
@@ -174,10 +201,10 @@ while (defaultData.length < 8){
 	$('.regSubmit').on('click', function(){
 		let dataArr = grid3.getData()
 		let data = {}
-		data.type = $('.reg_type').val();
-		data.regDate = ($('.reg_regDate').val()).replace(/-/g, '');
 		data.startDate = $('.reg_startDate').val();
 		data.endDate = $('.reg_endDate').val();
+		data.type = $('.reg_type').val();
+		data.regDate = ($('.reg_regDate').val()).replace(/-/g, '');
 		data.empName = $('.reg_empName').val();
 		dataArr.unshift(data);
 		
