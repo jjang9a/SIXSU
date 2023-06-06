@@ -22,6 +22,9 @@ public interface MaterialsMapper {
 	//발주 리스트
 	List<MatreqVO> getMatReqList();
 	
+	//발주 조회
+	List<MatreqVO> getMatReqSearch(MatreqVO vo);
+	
 	//발주 리스트에서 삭제
 	int deleteMatReq(MatreqVO vo);
 	
@@ -39,6 +42,9 @@ public interface MaterialsMapper {
 	
 	//입고 리스트
 	List<MatrecVO> selectMatRecList();
+	
+	//입고 조회 리스트
+	List<MatrecVO> getMatRecSearch(MatrecVO vo);
 	
 	//자재 입고
 	int insertMatRec(MatrecVO vo);
@@ -89,6 +95,6 @@ public interface MaterialsMapper {
 	int insertMatDmg(MatDmgVO vo);
 	
 	//반제품 LOT 리스트
-	List<SpLotVO> getSpLotList();
+	List<SpLotVO> getSpLotList(SpLotVO vo);
 	
 }

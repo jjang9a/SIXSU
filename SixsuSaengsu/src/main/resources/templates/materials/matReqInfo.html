@@ -12,92 +12,47 @@
 				<table id="reqTable">
 					<tr>
 						<td>발주번호</td>
-						<td><input type="text" name="mreq" id="mreq" class="empty" placeholder="검색"></td>
+						<td><input type="text" name="matReqId" id="matReqId" class="empty" placeholder="검색"></td>
 					</tr>
 					<tr>
 						<td>자재명</td>
-						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색">
+						<td><input type="text" name="matName" id="matName" class="empty" placeholder="검색">
 						</td>
 					</tr>
 					<tr>
 						<td>거래처명</td>
-						<td><input type="text" name="bname" id="bname" class="empty" placeholder="검색">
+						<td><input type="text" name="busName" id="busName" class="empty" placeholder="검색">
 						</td>
 					</tr>
 					<tr>
 						<td>발주등록일자</td>
 						<td>
-							<input type="date" id="matStartDate"> ~ <input type="date" id="matStartDatee">
+							<input type="date" id="matInSDate"> ~ <input type="date" id="matInEDate">
 						</td>
 					</tr>
 					<tr>
 						<td>발주상태</td> 
-						<td><input type="radio" th:each="req: ${REQSTAT}" th:value="${req.value}" th:text="${req.text}" name="req"></td> 
+						<td>
+						<input type="radio" id="matReqStat1" name="matReqStat" value="">
+								<label for="matHoldStat1">전체</label>
+						<input type="radio" th:each="req: ${REQSTAT}" th:value="${req.value}" th:text="${req.text}" name="matReqStat" id="matReqStat"></td> 
 					</tr>
 					<tr>
 						<td>납기일자</td>
 						<td>
-							<input type="date" id="matEndDate"> ~ <input type="date" id="matEndDatee">
+							<input type="date" id="matEndSDate"> ~ <input type="date" id="matEndEDate">
 						</td>
 					</tr>
 				</table>
 			</form>
 			<div class="divBtn">
-				<button type="button" class="sixBtn2" id="check" onclick="getList();">조회</button>
+				<button type="button" class="sixBtn2" id="check">조회</button>
 				<button type="button" class="sixBtn3" id="reset">초기화</button>
 			</div>
 
-		
 		<!-- 발주 목록 그리드 -->
 		<div id="grid"></div>
-		
-		<!-- 모달창 자재조회  -->
-		<div class="modal fade" id="msearchModal" tabindex="-1"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="msearchModalLabel">자재명 조회</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="btns">
-							자재명 <input id="msearch-text" />
-							<button class="sixBtn2" id="msearch-btn">조회</button>
-							<button class="sixBtn2" id="mreset-btn">초기화</button>
-						</div>
-						<div class="modal-body">
-							<div id="gridm"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<!-- 모달창 거래조회  -->
-		<div class="modal fade" id="search1Modal" tabindex="-1"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="searchModalLabel">거래처 조회</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="btns">
-							거래처명: <input id="search1-text" />
-							<button class="sixBtn2" id="search1-btn">조회</button>
-							<button class="sixBtn2" id="reset1-btn">초기화</button>
-						</div>
-						<div class="modal-body">
-							<div id="gridt"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+				
 		<script th:inline="javascript">
 		let reqStat = [[${REQSTAT}]];
 		let transPro='';
@@ -105,77 +60,51 @@
 			const gridData = [
 
 			];
-
-
-			window.onload = function () {
-				
-				
-				
-				$.ajax({
-					url: "/materials/matreqlist",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-						grid.resetData(result);
-					},
-					error: function(reject){
-						console.log(reject);
-					}
-					
-				});
-
-
-
-				
-				//모달창 전체 거래처 리스트
-				$.ajax({
-					url : "/sales/busList",
-					method : "GET",
-					dataType : "JSON",
-					success : function(result) {
-						gridt.resetData(result);
-					},
- 					error: function(reject) {
-						console.log(reject);
-					}
-				});
-				$('#search1Modal').on('show.bs.modal',function(e){
-					console.log ('거래처 모달');
-					setTimeout(()=>gridt.refreshLayout(),200);
-					// 모달거래처행 클릭시 자동으로 조회 거래처명에 값이 입력이됨
-					gridt.on('click', ev=> {
-					      const focusCell = gridt.getFocusedCell()
-					      let dataRow = gridt.getRow(ev.rowKey);
-					      $('#bname').val(dataRow.busName);
-					      $('#search1Modal').modal('hide');
+				function matReqList(){
+					$.ajax({
+						url: "/materials/matreqlist",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							grid.resetData(result);
+							grid.disable();
+						},
+						error: function(reject){
+							console.log(reject);
+						}
+						
 					});
-				})	
+				}
+
+				function matReqSearch(matReqId, matName, busName, matReqStat, matInSDate, matInEDate, matEndSDate, matEndSDate, matEndEDate){
+					$.ajax({
+						url: "/materials/matreqsearch",
+						method: "GET",
+						data : {matReqId : matReqId, matName : matName, busName : busName, matReqStat : matReqStat, matInSDate : matInSDate,
+								matInEDate : matInEDate, matEndSDate : matEndSDate, matEndSDate : matEndSDate, matEndEDate : matEndEDate},
+						success: function (result) {
+							grid.resetData(result);
+							grid.disable();
+						},
+						error: function(reject){
+							console.log(reject);
+						}
+						
+					});
+				}
 				
-				//모달창 전체 자재명 리스트
-				$.ajax({
-					url : "/materials/matlist",
-					method : "GET",
-					dataType : "JSON",
-					success : function(result) {
-						gridm.resetData(result);
-					},
- 					error: function(reject) {
-						console.log(reject);
-					}
-				});
-				$('#msearchModal').on('show.bs.modal', function(e){
-					console.log ('자재 모달');
-					setTimeout(()=>gridm.refreshLayout(),200);
-					// 모달자재행 클릭시 자동으로 조회 자재명에 값이 입력이됨
-					gridm.on('click', ev=> {
-				      const focusCell = gridm.getFocusedCell()
-				      let dataRow = gridm.getRow(ev.rowKey);
-				      $('#mname').val(dataRow.matName);
-				      $('#msearchModal').modal('hide');
-				    });
-					
-				})
-			};
+				
+				let matReqId = null;
+				let matName = null;
+				let busName = null;
+				let matReqStat = null;
+				let matInSDate = null;
+				let matInEDate = null;
+				let matEndSDate = null;
+				let matEndEDate = null;
+				
+				
+				matReqList();
 			
 			//테이블에 들어갈 데이터 설정(조회)
 			const grid = new tui.Grid({
@@ -232,7 +161,7 @@
 						formatter: 'listItemText',
 				          editor: 
 				          {
-				            type: 'select',
+				            type: 'text',
 				            options: {
 				              listItems:reqStat
 				            }
@@ -252,48 +181,6 @@
 				
 			});
 
-		    // 거래처조회 기능
-			const gridt = new tui.Grid({
-				el : document.getElementById('gridt'),
-				scrollX : false,
-				scrollY : false,
-				columns : [ 
-					{
-					header : '거래처번호',
-					name : 'busId',
-				}, {
-					header : '거래처명',
-					name : 'busName'
-				}, {
-					header : '사업자번호',
-					name : 'busNum'
-				}, {
-					header : '전화번호',
-					name : 'busTell'
-				}, {
-					header : '주소',
-					name : 'busAddr'
-				}]
-			});
-		    
-			// 모달자재조회 기능
-			const gridm = new tui.Grid({
-				el : document.getElementById('gridm'),
-				scrollX : false,
-				scrollY : false,
-				columns : [ 
-					{
-					header : '자재코드',
-					name : 'matId',
-				}, {
-					header : '자재명',
-					name : 'matName'
-				}, {
-					header : '자재규격',
-					name : 'matSize'
-				}]
-			});
-	
 
 
   			tui.Grid.applyTheme('default', {
@@ -312,54 +199,32 @@
 			
 			//조회하기
 			$('#check').on("click", function () {
-
-				const reqNum = $('#reqNum').val();
-				console.log(reqNum);
-				const matEndDate = $('#matEndDate').val();
-				console.log(matEndDate);
+				matReqId = $('#matReqId').val();
+				matName = $('#matName').val();
+				busName = $('#busName').val();
+				matReqStat = $("input[name='matReqStat']:checked").val();
+				matInSDate = $('#matInSDate').val();
+				matInEDate = $('#matInEDate').val();
+				matEndSDate = $('#matEndSDate').val();
+				matEndEDate = $('#matEndEDate').val();
+				matReqSearch(matReqId, matName, busName, matReqStat, matInSDate, matInEDate, matEndSDate, matEndSDate, matEndEDate);
+				
 			});
 
 			//초기화 버튼 설정
 			$('#reset').on("click", function (e) {
-				$('#reqNum').val('');
-				$('#mname').val('');
-				$('#bname').val('');
-				$('#matStartDate').val('');
-				$('#matStartDatee').val('');
-				$('#matEndDate').val('');
-				$('#matEndDatee').val('');
-
-				//location.reload();
-
-				$.ajax({
-					url: "/materials/mms",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-						grid.resetData(result);
-						gridInsertRow();
-					},
- 					error: function(reject){
-						console.log(reject);
-					}
-				});
+				$('#matReqId').val('');
+				$('#matName').val('');
+				$('#busName').val('');
+				$("input[name='matReqStat']:checked").val();
+				$('#matInSDate').val('');
+				$('#matInEDate').val('');
+				$('#matEndSDate').val('');
+				$('#matEndEDate').val('');
+				$('input[type="radio"]').prop('checked', false);
+				matReqList();
 				
 			});
-
-	    	grid.on('click', ev=> {
-	    		abc = ev.rowKey;
-	    		const focusCell = grid.getFocusedCell();
-	    		//console.log(focusCell);
-	    		const dataRow = grid.getRow(ev.rowKey);
-	    		//console.log(dataRow.matReqStat);
-	    		if(dataRow.matReqStat == 'A' && focusCell.columnName == 'matId'){
-			    	   	$('#msearchModal').modal('show');
-			    	   	
-			    }else if (dataRow.matReqStat == 'A' && focusCell.columnName == 'busId'){
-			    		$('#search1Modal').modal('show');
-			    		
-			    }				
-	    	});
 	    	
 		</script>
 	</div>

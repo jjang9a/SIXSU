@@ -5,7 +5,7 @@
   
 <mapper namespace="co.sixsu.app.material.mapper.MaterialsMapper">
 
-<!-- LOT조회 SQL 조건구문 -->
+<!-- 자재 LOT조회 SQL 조건구문 -->
 <sql id="criteria">
  	<where>
 		 	<if test="matLotId != null and matLotId != ''.toString()">
@@ -31,12 +31,36 @@
 	</where>
 </sql>
 
+
+
 <!-- 자재입고조회 SQL조건 구문 -->
 <sql id="criteria2">
-	<where>
-		<if test="matLotId != null and matLotId != ''.toString()">
-			c.mat_lot_id like '%'|| upper(#{matLotId}) || '%'
-		</if>	
+ 	<where>
+ 			<if test="matLotId != null and matLotId != ''.toString()">
+		 		and c.mat_lot_id like '%'|| upper(#{matLotId}) || '%'
+		 	</if>
+		 	<if test="matLotId == null and matLotId == ''.toString()">
+		 	</if>
+		 	<if test="matName != null and matName != ''.toString()">
+		 		and l.mat_name like '%'|| upper(#{matName}) || '%'
+		 	</if>
+		 	<if test="matName == null and matName == ''.toString()">
+		 	</if>
+		 	<if test="busName != null and busName != ''.toString()">
+		 		and b.bus_name like '%'|| upper(#{busName}) || '%'
+		 	</if>
+		 	<if test="busName == null and busName == ''.toString()">
+		 	</if>
+		 	<if test="matRecType != null and matRecType != ''.toString()">
+		 		and c.mat_rec_type = #{matRecType}
+		 	</if>
+		 	<if test="matRecType == null and matRecType == ''.toString()">
+		 	</if>		 	
+		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
+		 		and c.mat_rec_date  between #{sDate} and #{eDate}
+		 	</if>
+		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
+		 	</if>
 	</where>
 </sql> 
 
@@ -101,6 +125,68 @@
 		 	</if>
 	</where>
 </sql>
+
+<!-- 반제품 LOT조회 SQL 조건구문 -->
+<sql id="criteria5">
+		 	<if test="spLotId != null and spLotId != ''.toString()">
+		 		and l.sp_lot_id like '%'|| upper(#{spLotId}) || '%'
+		 	</if>
+		 	<if test="spLotId == null and spLotId == ''.toString()">
+		 	</if>
+		 	<if test="spName != null and spName != ''.toString()">
+		 		and s.sp_name like '%'|| upper(#{spName}) || '%'
+		 	</if>
+		 	<if test="spName == null and spName == ''.toString()">
+		 	</if>
+		 	<if test="spHoldStat != null and spHoldStat != ''.toString()">
+		 		and l.sp_hold_stat = #{spHoldStat}
+		 	</if>
+		 	<if test="spHoldStat == null and spHoldStat == ''.toString()">
+		 	</if>
+		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
+		 		and c.sp_rec_date  between #{sDate} and #{eDate}
+		 	</if>
+		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
+		 	</if>
+</sql>
+
+<!-- 발주 조회 조건 -->
+<sql id="criteria6">
+	<where>
+			<if test="matReqId != null and matReqId != ''.toString()">
+		 		m.mat_req_id like '%'|| upper(#{matReqId}) || '%'
+		 	</if>
+		 	<if test="matReqId == null and matReqId == ''.toString()">
+		 	</if>
+		 	<if test="busName != null and busName != ''.toString()">
+		 		and b.bus_name like '%'|| upper(#{busName}) || '%'
+		 	</if>
+		 	<if test="busName == null and busName == ''.toString()">
+		 	</if>
+		 	<if test="matName != null and matName != ''.toString()">
+		 		and t.mat_name like '%'|| upper(#{matName}) || '%'
+		 	</if>
+		 	<if test="matName == null and matName == ''.toString()">
+		 	</if>
+		 	<if test="matReqStat != null and matReqStat != ''.toString()">
+		 		and m.mat_req_stat = #{matReqStat}
+		 	</if>
+		 	<if test="matReqStat == null and matReqStat == ''.toString()">
+		 	</if>
+		 	<if test= "matInSDate != ''.toString() and matInEDate != ''.toString()">
+		 		and mat_req_date  between #{matInSDate} and #{matInEDate}
+		 	</if>
+		 	<if test= "matInSDate == ''.toString() and matInEDate == ''.toString()">
+		 	</if>
+		 	<if test= "matEndSDate != ''.toString() and matEndEDate != ''.toString()">
+		 		and mat_end_date  between #{matEndSDate} and #{matEndEDate}
+		 	</if>
+		 	<if test= "matEndSDate == ''.toString() and matEndEDate == ''.toString()">
+		 	</if>
+	
+	</where>
+</sql>
+
 	<!-- 발주리스트 -->
 	<select id="getMatReqList" resultType="MatreqVO">
 		select m.mat_req_id, 
@@ -127,6 +213,34 @@
 		          TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1)) desc
 	</select>
 	
+	<!-- 발주 조회 -->
+	<select id="getMatReqSearch" resultType="MatreqVO" parameterType="MatreqVO">
+		select m.mat_req_id, 
+		       m.bus_id, 
+		       b.bus_name, 
+		       m.mat_id, 
+		       t.mat_name, 
+		       t.mat_size, 
+		       m.mat_req_qt, 
+		       to_char(mat_req_date,'yyyy-mm-dd') as mat_req_date, 
+		       m.mat_req_stat, 
+		       to_char(mat_end_date,'yyyy-mm-dd') as mat_end_date, 
+		       m.emp_id, 
+		       e.emp_name
+		
+		  from mat_req m 
+		  left join business b
+		    on m.bus_id = b.bus_id
+		  left join employee e
+		    on m.emp_id = e.emp_id
+		  left join material t
+		    on m.mat_id = t.mat_id
+ 		<!-- 조건 -->
+		<include refid="criteria6"></include>
+		 order by TO_DATE(SUBSTR(mat_req_id, 4, 6), 'YYMMDD') desc, 
+		          TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1)) desc
+	</select>	
+	
 	<!-- 발주제거 -->
 	<delete id="deleteMatReq" parameterType="MatreqVO">
 		delete from mat_req 
@@ -146,7 +260,7 @@
 		        #{busId}, 
 		        #{matId}, 
 		        #{matReqQt}, 
-		        #{matEndDate}, 
+		        to_date(#{matEndDate}), 
 		        #{empId})
 	</insert>
 	
@@ -161,7 +275,7 @@
 	<!-- 자재 발주 수정 -->
   	<update id="updateMatReq" parameterType="MatreqVO">
 	  	update mat_req
-	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = #{matEndDate} 
+	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = to_date(#{matEndDate})
 	  	where mat_req_id = #{matReqId}
   	</update>
   	
@@ -182,10 +296,38 @@
 		select c.mat_rec_id, 
 	       c.mat_req_id, 
 	       c.insp_num, 
-	       to_char(u.insp_date, 'yyyy-mm-dd') as insp_date, 
+	       to_char(u.insp_date, 'yyyy-MM-dd') as insp_date, 
 	       c.mat_rec_qt, 
 	       c.mat_rec_type, 
-	       to_char(c.mat_rec_date, 'yyyy-mm-dd') as mat_rec_date, 
+	       to_char(c.mat_rec_date, 'yyyy-MM-dd') as mat_rec_date, 
+	       c.mat_rec_note, 
+	       c.mat_lot_id,
+	       l.mat_name, 
+	       b.bus_name, 
+	       GET_EMP_NAME(emp_id) as emp_name
+		from mat_rec c 
+		left join mat_req q
+		 on c.mat_req_id = q.mat_req_id
+		left join qua_com u
+		 on c.insp_num = u.insp_num
+		left join business b
+		 on q.bus_id = b.bus_id 
+		left join mat_lot t
+		 on c.mat_lot_id = t.mat_lot_id 
+		left join material l
+		 on t.mat_id = l.mat_id
+		order by c.mat_rec_date desc
+	</select>
+	
+	<!-- 자재 입고 조회-->
+	<select id="getMatRecSearch" resultType="MatrecVO" parameterType="MatrecVO">
+		select c.mat_rec_id, 
+	       c.mat_req_id, 
+	       c.insp_num, 
+	       to_char(u.insp_date, 'yyyy-MM-dd') as insp_date, 
+	       c.mat_rec_qt, 
+	       c.mat_rec_type, 
+	       to_char(c.mat_rec_date, 'yyyy-MM-dd') as mat_rec_date, 
 	       c.mat_rec_note, 
 	       c.mat_lot_id,
 	       l.mat_name, 
@@ -307,7 +449,7 @@
 		left join material m
 		  on l.mat_id = m.mat_id
 	 	<if test= "matLotId != ''.toString() and matLotId != ''.toString()">
-	 		where l.mat_lot_id = #{matLotId}
+	 		where l.mat_lot_id like '%'|| upper(#{matLotId}) || '%'
 	 	</if>
 	 	<if test= "matLotId == ''.toString() and matLotId == ''.toString()">
 	 	</if> 		   
@@ -347,7 +489,7 @@
 		  left join semi_prod s
 		    on l.sp_id = s.sp_id
 	 	<if test= "spLotId != ''.toString() and spLotId != ''.toString()">
-	 		where l.sp_lot_id = #{spLotId}
+	 		where l.sp_lot_id like '%'|| upper(#{spLotId}) || '%'
 	 	</if>
 	 	<if test= "spLotId == ''.toString() and spLotId == ''.toString()">
 	 	</if> 			    
@@ -463,13 +605,15 @@
 	</select>
 	
 	<!-- 반제품 LOT 리스트 -->
-	<select id="getSpLotList" resultType="SpLotVO">
+	<select id="getSpLotList" resultType="SpLotVO" parameterType="SpLotVO">
         select l.sp_lot_id, l.sp_id, s.sp_name, s.sp_size, l.sp_qt, l.sp_hold_stat, l.sp_lot_qt_ck, to_char(c.sp_rec_date, 'yyyy-MM-dd') sp_rec_date
 		from sp_lot l left join semi_prod s
 		on l.sp_id = s.sp_id
         left join sp_rec c
         on l.sp_lot_id = c.sp_lot_id
         where l.sp_lot_qt_ck = 'Y'
+        <!-- 조회 조건 -->
+        <include refid="criteria5"></include>	
         order by sp_rec_date desc
 	</select>
 	

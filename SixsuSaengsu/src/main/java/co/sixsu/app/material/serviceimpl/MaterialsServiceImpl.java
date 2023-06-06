@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.SpLotVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.material.domain.MatAdjVO;
@@ -31,6 +30,12 @@ public class MaterialsServiceImpl implements MaterialsService{
 		@Override
 		public List<MatreqVO> getMatReqList() {
 			return mapper.getMatReqList();
+		}
+		
+		//발주 조회
+		@Override
+		public List<MatreqVO> getMatReqSearch(MatreqVO vo) {
+			return mapper.getMatReqSearch(vo);
 		}
 		
 		//발주 삭제
@@ -61,19 +66,25 @@ public class MaterialsServiceImpl implements MaterialsService{
 			return mapper.matReqBusList();
 		}
 		
-		//입고대기 리스트
+		//자재 입고대기 리스트
 		@Override
 		public List<MatrecWaitVO> getMatRecWaitList() {
 			return mapper.selectMatRecWaitList();
 		}
 		
-		//입고 리스트
+		//자재 입고 리스트
 		@Override
 		public List<MatrecVO> getMatRecList() {
 			return mapper.selectMatRecList();
 		}
 		
-		//입고 등록
+		//자재 입고 조회 리스트
+		@Override
+		public List<MatrecVO> getMatRecSearch(MatrecVO vo) {
+			return mapper.getMatRecSearch(vo);
+		}
+		
+		//자재 입고 등록
 		@Override
 		public void insertMatRec(List<MatrecVO> vo) {
 			for(MatrecVO i : vo) {
@@ -194,11 +205,16 @@ public class MaterialsServiceImpl implements MaterialsService{
 			}
 			
 		}
-
+		
+		//반제품 LOT 리스트
 		@Override
-		public List<SpLotVO> getSpLotList() {
-			return mapper.getSpLotList();
+		public List<SpLotVO> getSpLotList(SpLotVO vo) {
+			return mapper.getSpLotList(vo);
 		}
+		
+
+
+
 
 
 		

@@ -14,7 +14,6 @@ import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.domain.SpAdjVO;
-import co.sixsu.app.material.domain.SpDmgVO;
 import co.sixsu.app.material.domain.SpLotVO;
 import co.sixsu.app.material.domain.SpShipVO;
 import co.sixsu.app.material.domain.SpVO;
@@ -24,6 +23,9 @@ public interface MaterialsService {
 
 	//발주 리스트
 	List<MatreqVO> getMatReqList();
+	
+	//발주 조회
+	List<MatreqVO> getMatReqSearch(MatreqVO vo);
 	
 	//발주 행 삭제
 	void deleteMatReq(List<MatreqVO> vo);
@@ -43,10 +45,11 @@ public interface MaterialsService {
 	//입고 리스트
 	List<MatrecVO> getMatRecList();
 	
+	//입고 조회 리스트
+	List<MatrecVO> getMatRecSearch(MatrecVO vo);
+	
 	//입고등록
 	void insertMatRec(List<MatrecVO> vo);
-	
-	
 	
 	//자재 리스트
 	List<MatVO> selectMatList(MatVO vo);
@@ -94,5 +97,5 @@ public interface MaterialsService {
 	void insertMatDmg(List<MatDmgVO> vo);
 	
 	//반제품 LOT 리스트
-	List<SpLotVO> getSpLotList();
+	List<SpLotVO> getSpLotList(SpLotVO vo);
 }

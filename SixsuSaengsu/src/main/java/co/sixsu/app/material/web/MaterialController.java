@@ -125,6 +125,13 @@ public class MaterialController {
 		return list;
 	}
 	
+	//발주조회 컨트롤
+	@ResponseBody
+	@RequestMapping("matreqsearch")
+	public List<MatreqVO> getMatReqSearch(MatreqVO vo){
+		List<MatreqVO> list = service.getMatReqSearch(vo);
+		return list;
+	}
 	
 	//발주제거 컨트롤
 	@ResponseBody
@@ -175,6 +182,14 @@ public class MaterialController {
 	public List<MatrecVO> selectMatRecList(){
 		List<MatrecVO> list = service.getMatRecList();
 		System.out.println(list);
+		return list;
+	}
+	
+	//입고 리스트
+	@ResponseBody
+	@RequestMapping("matrecsearch")
+	public List<MatrecVO> getMatRecSearch(MatrecVO vo){
+		List<MatrecVO> list = service.getMatRecSearch(vo);
 		return list;
 	}
 	
@@ -319,8 +334,8 @@ public class MaterialController {
 	//반제품 LOT 리스트
 	@ResponseBody
 	@RequestMapping("splotlist")
-	public List<SpLotVO> getSpLotList(){
-		List<SpLotVO> list = service.getSpLotList();
+	public List<SpLotVO> getSpLotList(SpLotVO vo){
+		List<SpLotVO> list = service.getSpLotList(vo);
 		return list;
 	}
 	 
