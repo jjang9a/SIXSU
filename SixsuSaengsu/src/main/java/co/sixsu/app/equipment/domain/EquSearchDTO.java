@@ -7,4 +7,6 @@ public class EquSearchDTO {
 
 	String searchType;
 	String searchKey;
+	String code;
+	String name;
 }

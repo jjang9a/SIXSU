@@ -65,8 +65,17 @@
 				<td><input type="text" name="equName" id="oname" class="empty"></td>
 			</tr>
 			<tr>
-				<td>비가동 구분<span class="needStar"> * </span></td>
-				<td><input type="text" name="operType" id="otype" class="empty"></td>
+				<!-- <td>비가동 구분<span class="needStar"> * </span></td>
+				<td><input type="text" name="operType" id="otype" class="empty"></td> -->
+
+				<td>비가동 구분<span class="needStar"> *</span></td>
+					<td>
+						<select id="operType" name="operType">
+							<option value='' selected>===== 선택 =====</option>
+							<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}">
+							</option>
+						</select>
+					</td>
 
 				<td>비가동 시작일<span class="needStar"> * </span></td>
 				<td><input type="date" name="operStart" id="oname" class="empty"></td>
@@ -81,7 +90,11 @@
 		<!-- 그리드 시작 -->
 		<div id="grid"></div>
 
-		<script>
+		<script th:inline="javascript">
+
+			let operType = [[${operType}]];
+	
+			let equStat = [[${equStat}]];
 	    
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
@@ -123,14 +136,25 @@
 			align: 'center',
 			formatter: 'listItemText',
 			editor: {
-			type: 'select',
-			options: {
-					listItems: [
-						{text: '가동', value: 'STAT-1'},
-						{text: '비가동', value: 'STAT-2'},	
-					]
+				type: 'select',
+				options: {
+				listItems: equStat
 				}
 			}
+			// header: '설비상태',
+			// name: 'equStat',
+			// filter: 'select',
+			// align: 'center',
+			// formatter: 'listItemText',
+			// editor: {
+			// type: 'select',
+			// options: {
+			// 		listItems: [
+			// 			{text: '가동', value: 'STAT-1'},
+			// 			{text: '비가동', value: 'STAT-2'},	
+			// 		]
+			// 	}
+			// }
           },
           {
             header: '설비코드',
@@ -143,20 +167,32 @@
             align: 'center'
           },
           {
-            header: '비가동 구분',
-            name: 'operType',
-            align: 'center',
+			
+			header: '비가동 구분',
+			name: 'operType',
+			filter: 'select',
+			align: 'center',
 			formatter: 'listItemText',
-			type: 'select',
 			editor: {
-			options: {
-					listItems: [
-						{text: '중지', value: 'OTYPE-1'},
-						{text: '점검', value: 'OTYPE-2'},
-						{text: '세척', value: 'OTYPE-3'},	
-					]
+				type: 'select',
+				options: {
+				listItems: operType
 				}
 			}
+            // header: '비가동 구분',
+            // name: 'operType',
+            // align: 'center',
+			// formatter: 'listItemText',
+			// type: 'select',
+			// editor: {
+			// options: {
+			// 		listItems: [
+			// 			{text: '중지', value: 'OTYPE-1'},
+			// 			{text: '점검', value: 'OTYPE-2'},
+			// 			{text: '세척', value: 'OTYPE-3'},	
+			// 		]
+			// 	}
+			// }
           },
           {
             header: '비가동 시작',
@@ -186,7 +222,7 @@
 	 window.onload = function(){
 	    	
 	    	$.ajax({
-	    		url : "/equipment/equOperList",
+	    		url : "equOperList",
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
@@ -217,11 +253,11 @@
     let searchKey = '';
     
     $('#searchBtn').on('click', function(){
-    	if($('#ocode').val() === '' && $('#oname').val() === '' && $('#otype').val() === '') {
-    			alert('검색 항목을 입력해 주세요 !')	
-    	 } else {
+    	// if($('#ocode').val() === '' && $('#oname').val() === '' && $('#otype').val() === '') {
+    	// 		alert('검색 항목을 입력해 주세요 !')	
+    	//  } else {
 				$.ajax({
-					url: '/equipment/equOperSearch',
+					url: 'equOperSearch',
 					type: 'get',
 					data: 
 						$('#searchForm').serialize(),
@@ -234,7 +270,7 @@
 						alert('오류가 발생했습니다!');
 					}
 				})
-			}
+		//	}
 
 		})
 

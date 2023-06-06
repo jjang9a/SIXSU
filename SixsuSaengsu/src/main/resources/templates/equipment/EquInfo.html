@@ -56,10 +56,10 @@
 	<table id="eTable">
 	<tr>	
 		<td>설비코드<span class="needStar"> * </span></td>
-		<td><input type="text" name="ecode" id="ecode" class="empty"></td>
+		<td><input type="text" name="ecode" id="code" class="empty"></td>
 		
 		<td>설비명<span class="needStar"> * </span></td>
-		<td><input type="text" name="ename" id="ename" class="empty"></td>
+		<td><input type="text" name="ename" id="name" class="empty"></td>
 	</tr>
 	</table>	
 	 
@@ -362,7 +362,7 @@
 	    window.onload = function(){
 	    	
 	    	$.ajax({
-	    		url : "/equipment/equCon",
+	    		url : "equCon",
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
@@ -429,23 +429,13 @@
     let searchKey = '';
     
     $('#searchBtn').on('click', function(){
-    	if($('#ecode').val() == '' && $('#ename').val() == '') {
-    			alert('설비코드, 설비명을 입력해 주세요 !')	
-    	 } else {
-    		 if ($('#ecode').val() != '') {
-					searchType = 'code';
-					searchKey = $('#ecode').val()
-				} else {
-					searchType = 'name';
-					searchKey = $('#ename').val()
-				}
-				
-				$.ajax({
-					url: '/equipment/equFilterAjax',
+    
+			$.ajax({
+					url: 'equFilterAjax',
 					type: 'get',
 					data: {
-						"searchType": searchType,
-						"searchKey": searchKey
+						"code": $("#code").val(),
+						"name": $("#name").val(),
 					},
 					dataType: 'json',
 					success: function (result) {
@@ -456,18 +446,16 @@
 						alert('오류가 발생했습니다!');
 					}
 				})
-			}
-
 		})
     		
     
     //초기화 버튼 기능
 			$('#reset').on("click", function (e) {
-				$('#ecode').val('');
-				$('#ename').val('');
+				$('#code').val('');
+				$('#name').val('');
 				
 				$.ajax({
-					url: "/equipment/equCon",
+					url: "equCon",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {

@@ -57,19 +57,19 @@
     <table id="eTable">
 	<tr>	
 		<td>설비코드<span class="needStar"> * </span></td>
-		<td><input type="text" name="ccode" id="ccode" class="empty"></td>
+		<td><input type="text" name="code" id="code" class="empty"></td>
 		
 		<td>설비명<span class="needStar"> * </span></td>
-		<td><input type="text" name="cname" id="cname" class="empty"></td>
+		<td><input type="text" name="name" id="name" class="empty"></td>
 	</tr>
 	
-	<tr>
+	<!-- <tr>
 		<td>점검일자<span class="needStar"> * </span></td>
 		<td>
-			<input type="date" name="cdate" id="cdate">
+			<input type="date" name="date" id="date">
 		</td>
 		<td>
-		
+	</tr>	 -->
 
 	</table>
 	
@@ -303,26 +303,16 @@
 					
     let searchType = '';
     let searchKey = '';
-    
+    // 검색기능
     $('#searchBtn').on('click', function(){
-    	if($('#ccode').val() == '' && $('#cname').val() == '') {
-    			alert('검색 항목을 입력해 주세요 !')	
-    	 } else {
-    		 if ($('#ccode').val() != '') {
-					searchType = 'code';
-					searchKey = $('#ccode').val()
-				} else {
-					searchType = 'name';
-					searchKey = $('#cname').val()
-				} 
+    	
 					
-				
 				$.ajax({
-					url: '/equipment/equCheckSearch',
+					url: 'equCheckSearch',
 					type: 'get',
 					data: {
-						"searchType": searchType,
-						"searchKey": searchKey
+						"code": $("#code").val(),
+						"name": $("#name").val(),
 					},
 					dataType: 'json',
 					success: function (result) {
@@ -333,7 +323,6 @@
 						alert('오류가 발생했습니다!');
 					}
 				})
-			}
 
 		})
 		
@@ -341,11 +330,11 @@
 
 	   //초기화 버튼 기능
 	   $('#reset').on("click", function (e) {
-		  		$('#ccode').val('');
-				$('#cname').val('');
+		  		$('#code').val('');
+				$('#name').val('');
 				
 				$.ajax({
-					url: "/equipment/equCheckList",
+					url: "equCheckList",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
