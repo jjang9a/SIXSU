@@ -164,78 +164,31 @@ public class MaterialsServiceImpl implements MaterialsService{
 			
 		}
 		
-		//반제품 불량처리대기 리스트
-		@Override
-		public List<SpDmgVO> getSpDmgWaitList() {
-			return mapper.getSpDmgWaitList();
-		}
-		
-		//반제품 불량처리 리스트
-		@Override
-		public List<SpDmgVO> getSpDmgList() {
-			return mapper.getSpDmgList();
-		}
-		
-		//반제품 불량처리
-		@Override
-		public void insertSpDmg(List<SpDmgVO> vo) {
-			String stat = vo.get(0).getDspStat();
-			for(SpDmgVO i : vo) {
-				i.setDspStat(stat);
-				mapper.insertSpDmg(i);
-				System.out.println("abcd");
-				System.out.println(i);
-			}
-			
-		}
-		
-		//자재 불량처리대기 리스트
-		@Override
-		public List<MatDmgVO> getMatDmgWaitList() {
-			return mapper.getMatDmgWaitList();
-		}
-
-		//자재 불량처리 리스트
-		@Override
-		public List<MatDmgVO> getMatDmgList() {
-			return mapper.getMatDmgList();
-		}
-
-		//자재 불량처리
-		@Override
-		public void insertMatDmg(List<MatDmgVO> vo) {
-			String stat = vo.get(0).getDmatStat();
-			for(MatDmgVO i : vo) {
-				i.setDmatStat(stat);
-				mapper.insertMatDmg(i);
-			}
-			
-		}
-		
 		//반제품 리스트
 		@Override
 		public List<SpVO> getSpList(String spName) {
 			return mapper.getSpList(spName);
 		}
 
-		//불량품 처리대기 리스트
+		//불량자재 처리대기 리스트
 		@Override
-		public List<MatDmgVO> getMatDamageWaitList2() {
-			return mapper.getMatDamageWaitList2();
+		public List<MatDmgVO> getMatDmgWaitList() {
+			return mapper.getMatDmgWaitList();
 		}
 		
-		//불량품 리스트
+		//불량자재 리스트
 		@Override
-		public List<MatDmgVO> getMatDmgList2() {
-			return mapper.getMatDmgList2();
+		public List<MatDmgVO> getMatDmgList() {
+			return mapper.getMatDmgList();
 		}
 		
-		//불량품 불량처리
+		//불량자재 불량처리
 		@Override
-		public void insertMatDmg2(List<MatDmgVO> vo) {
-			String stat = vo.get(0).getDmatStat();
+		public void insertMatDmg(List<MatDmgVO> vo) {
+			String stat = vo.get(0).getDmatResult();
 			for(MatDmgVO i : vo) {
 				i.setDmatStat(stat);
+				i.setEmpId("1003");
 				mapper.insertMatDmg(i);
 			}
 			
