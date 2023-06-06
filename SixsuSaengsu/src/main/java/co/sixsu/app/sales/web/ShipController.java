@@ -77,8 +77,8 @@ public class ShipController {
 		service.completeShip(vo);
 		return null;
 	}
-	@GetMapping("shipInquiry")
-	public void shipInquiry() {
+	@GetMapping("shipInfo")
+	public void shipInfo() {
 		
 	}
 	@RequestMapping("searchShip")

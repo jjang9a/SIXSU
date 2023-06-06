@@ -36,10 +36,24 @@ public class SalesController {
 	public void invoice(Model model) {
 	
 	}
-	@GetMapping("invoiceInquiry")
-	public void invoiceInquiry(Model model) {
+// 주문서 조회 페이지 열어주기	
+	@GetMapping("invoiceInfo")
+	public void invoiceInfo(Model model) {
 	
 	}
+// 재고 현황 페이지 열어주기
+	@GetMapping("inventoryInfo")
+	public void inventoryInfo(Model model) {
+	
+	}
+	@ResponseBody
+	@RequestMapping("inventorySearch")
+	public List<OrdVO> inventorySearch() {
+		List<OrdVO> list = service.inventorySearch();
+		return list;
+	}
+		
+	
 	
 	
 	@RequestMapping("searchOrder")

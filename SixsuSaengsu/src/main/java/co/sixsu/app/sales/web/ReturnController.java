@@ -47,8 +47,8 @@ public class ReturnController {
 	
 	
 	//
-	@GetMapping("returnInquiry")
-	public void returnInquiry() {
+	@GetMapping("returnInfo")
+	public void returnInfo() {
 		
 	}
 	
