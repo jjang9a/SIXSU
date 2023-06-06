@@ -12,4 +12,7 @@ public class SpLotVO {
 	String spHoldStat;
 	String spLotQtCk;
 	String spRecDate;
+	
+	String sDate;
+	String eDate;
 }
