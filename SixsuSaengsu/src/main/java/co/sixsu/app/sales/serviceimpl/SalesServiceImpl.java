@@ -147,6 +147,14 @@ public int orderModDel(InvVO inv) {
 	 return mapper.searchOrder(vo);
 	 }
 
+ 
+ //재고현황에 총재고량 조회
+@Override
+public List<OrdVO> inventorySearch() {
+	// TODO Auto-generated method stub
+	return mapper.inventorySearch();
+}
+
 
  
 

@@ -12,6 +12,10 @@ import co.sixsu.app.sales.domain.OrdVO;
 
 @Mapper
 public interface SalesMapper {
+	public List<OrdVO> inventorySearch(); //재고현황의 총재고량 조회
+	
+	
+	
 	
 	public List<EmpVO> empList(); // 모달 창의 사원목록
 	

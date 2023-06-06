@@ -10,6 +10,11 @@ import co.sixsu.app.sales.domain.InvVO;
 import co.sixsu.app.sales.domain.OrdVO;
 
 public interface SalesService {
+	List<OrdVO> inventorySearch();//재고현황에 총재고량 조회
+	
+	
+	
+	
 	
 	List<EmpVO> getEmp1List(String keyword); //모달창 회원이름 조회
 	
