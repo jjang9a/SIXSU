@@ -62,7 +62,14 @@
 	
 	<!-- 검사 상세 조회 -->
 	<select id="getDetail" resultType="QuaVO">
-		SELECT D.*, L.INSP_NAME, STD_VAL
+		SELECT D.DET_INSP_NUM,
+				D.INSP_NUM,
+				D.INSP_ID,
+				D.RES_VAL,
+				GET_COM_CODE(D.RES_STAT) RES_STAT,
+				D.DETAIL_NOTE, 
+				L.INSP_NAME, 
+				STD_VAL
 		FROM QUA_DETAILS D
 		JOIN QUA_INSP_LIST L ON D.INSP_ID = L.INSP_ID
 		WHERE INSP_NUM = #{inspNum}
@@ -201,7 +208,7 @@
 				insp_num      = #{inspNum},
 				insp_item_id  = #{inspItemId},
 				insp_qt       = #{inspQt},
-				insp_date     = sysdate,
+				insp_date     = to_date(sysdate, 'yyyy-MM-dd'),
 				emp_id        = #{empId},
 				suit_qt       = (#{inspQt}-#{totNsuitQt}),
 				nsuit_qt      = #{totNsuitQt},
@@ -231,7 +238,7 @@
 			   r.mat_id, 
 			   q.insp_qt, 
 			   q.nsuit_qt, 
-			   e.emp_id,
+			   get_emp_name(e.emp_id) emp_name,
 			   b.bus_id,
 			   TO_CHAR(q.insp_date, 'YYYY-MM-DD') AS insp_date
 		  FROM qua_com q
@@ -292,6 +299,7 @@ LEFT 	JOIN  work_bom b
 	  LEFT JOIN  process r
 	         ON  b.proc_id = r.proc_id
           WHERE  q.INSP_NUM IS NULL
+            AND  p.deta_qt>0
        ORDER BY  p.prcs_pfmc_id
 	</select>
 
@@ -353,7 +361,7 @@ LEFT OUTER JOIN  work_bom b
 				 insp_num      = #{inspNum},
 				 insp_item_id  = #{pdId},
 				 insp_qt       = #{detaQt},
-				 insp_date     = sysdate,
+				 insp_date     = to_date(sysdate, 'yyyy-MM-dd'),
 				 emp_id        = #{empId},
 				 suit_qt       = #{goodQt},
 				 nsuit_qt      = #{dmatQt},
@@ -375,7 +383,7 @@ LEFT OUTER JOIN  work_bom b
 		         to_char(p.wk_end, 'yyyy-MM-dd') wk_end,
 		         b.proc_id,
 		         r.proc_name,
-                 q.emp_id
+                 get_emp_name(q.emp_id) emp_name
 		   from  process_performance p 
 LEFT OUTER JOIN  qua_com q 
              ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
@@ -397,7 +405,7 @@ LEFT OUTER JOIN  work_bom b
 	<!-- 출고 검사 결과 등록 시 검사 공통 등록 -->
   	<insert id="insertShipCom" parameterType="ShipInspVO">
 		INSERT INTO qua_com (insp_num, insp_std_id, insp_item_id, insp_type, insp_date, emp_id, insp_qt, nsuit_qt, suit_qt, qua_com_note) 
-    	values (#{inspNum}, #{cpShipId}, #{cpId}, 'INSP-C', sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
+    	values (#{inspNum}, #{cpShipId}, #{cpId}, 'INSP-C', to_date(sysdate, 'yyyy-MM-dd'), #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
 	</insert>  
 	
 	<!-- 출고 검사 결과 등록시 검사 세부 등록 -->
@@ -417,20 +425,32 @@ LEFT OUTER JOIN  work_bom b
 
 	<!-- 완제품 출고 관리 리스트 -->
   	<select id="shInspList" resultType="ShipInspVO">
-select s.cp_ship_id, s.ord_det_id, s.cp_lot_id, c.cp_name,
-		p.cp_id, s.cp_ship_qt, s.cp_ship_stat, d.res_stat,
-		to_char(q.insp_date, 'yyyy-MM-dd') insp_date, q.insp_num, f.wk_end, f.wk_end + (INTERVAL '2' YEAR) as exp_date
+		select s.cp_ship_id, 
+			   s.ord_det_id, 
+			   s.cp_lot_id, 
+			   c.cp_name,
+			   p.cp_id, 
+			   s.cp_ship_qt, 
+			   get_com_code(s.cp_ship_stat) cp_ship_stat,
+			   get_com_code(d.res_stat) res_stat,
+			   to_char(q.insp_date, 'yyyy-MM-dd') insp_date, 
+			   q.insp_num, 
+			   f.wk_end, 
+			   f.wk_end + (INTERVAL '2' YEAR) as exp_date,
+			   get_emp_name(q.emp_id) emp_name
 		from
-		pro_ship s left join qua_com q
-		on s.cp_ship_id = q.insp_std_id
-		left join prod_lot p
-		on s.cp_lot_id = p.cp_lot_id
-		left join complete_prod c
-		on p.cp_id=c.cp_id
-        left join qua_details d
-        on q.insp_num = d.insp_num
-LEFT OUTER JOIN prod_rev r ON p.cp_lot_id = r.cp_lot_id
-LEFT OUTER JOIN process_performance f ON r.prcs_pfmc_id = f.prcs_pfmc_id
+				pro_ship s left join qua_com q
+				on s.cp_ship_id = q.insp_std_id
+				left join prod_lot p
+				on s.cp_lot_id = p.cp_lot_id
+				left join complete_prod c
+				on p.cp_id=c.cp_id
+        		left join qua_details d
+        		on q.insp_num = d.insp_num
+LEFT OUTER JOIN prod_rev r 
+             ON p.cp_lot_id = r.cp_lot_id
+LEFT OUTER JOIN process_performance f 
+             ON r.prcs_pfmc_id = f.prcs_pfmc_id
 		order by cp_ship_stat desc, cp_ship_id
 	</select>
 	
@@ -521,7 +541,7 @@ LEFT OUTER JOIN process_performance f
     				        #{retId}, 
     				        #{cpId}, 
     				        'INSP-D', 
-    				        sysdate, 
+    				        to_date(sysdate, 'yyyy-MM-dd'), 
     				        #{empId},
     				        #{retQt},
     				        #{nsuitQt}, 

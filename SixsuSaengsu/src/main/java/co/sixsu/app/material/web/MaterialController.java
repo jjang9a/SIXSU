@@ -23,7 +23,7 @@ import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.domain.SpAdjVO;
-import co.sixsu.app.material.domain.SpDmgVO;
+import co.sixsu.app.material.domain.SpLotVO;
 import co.sixsu.app.material.domain.SpShipVO;
 import co.sixsu.app.material.domain.SpVO;
 import co.sixsu.app.material.service.MaterialsService;
@@ -95,12 +95,7 @@ public class MaterialController {
 	public void spShipList() {
 	}
 	
-	//반제품 반품/페기관리 페이지 열어주기
-	@GetMapping("spdmg")
-	public void spDmgList() {
-	}
-	
-	//자재 반품/페기관리 페이지 열어주기
+	//자재 불량 페이지 열어주기
 	@GetMapping("matdmg")
 	public void matDmgList() {
 	}
@@ -111,15 +106,16 @@ public class MaterialController {
 		model.addAttribute("REQSTAT",bservice.commGroupList("REQ_STAT"));
 	}
 	
-	//불량품 페이지 열어주기
-	@GetMapping("matdmg2")
-	public void matDmgList2() {
-	}
-	
 	//반제품 리스트 페이지 열어주기
 	@GetMapping("spInfo")
 	public void spList() {
 	}
+	
+	//반제품 LOT 리스트 페이지 열어주기
+	@GetMapping("spLotInfo")
+	public void spLotList() {
+	}
+	
 	
 	//발주내역 리스트
 	@ResponseBody
@@ -286,56 +282,6 @@ public class MaterialController {
 		service.spShipAdj(vo);
 	}
 	
-	//반제품 불량처리대기 리스트
-	@ResponseBody
-	@RequestMapping("spdmgwaitlist")
-	public List<SpDmgVO> getSpDmgWaitList(){
-		List<SpDmgVO> list = service.getSpDmgWaitList();
-		return list;
-	}
-	
-	//반제품 처리 리스트 
-	@ResponseBody
-	@RequestMapping("spdmglist")
-	public List<SpDmgVO> getSpDmgList(){
-		List<SpDmgVO> list = service.getSpDmgList();
-		return list;
-	}
-	
-	//반제품 불량처리
-	@PostMapping("insertspdmg")
-    @ResponseBody
-    public void insertSpDmg(@RequestBody List<SpDmgVO> vo) {
-		System.out.println("abc");
-		System.out.println(vo);
-		service.insertSpDmg(vo);
-    }
-	
-	//자재 불량처리대기 리스트
-	@ResponseBody
-	@RequestMapping("matdmgwaitlist")
-	public List<MatDmgVO> getMatDmgWaitList(){
-		List<MatDmgVO> list = service.getMatDmgWaitList();
-		return list;
-	}
-	
-	//반제품 처리 리스트 
-	@ResponseBody
-	@RequestMapping("matdmglist")
-	public List<MatDmgVO> getMatDmgList(){
-		List<MatDmgVO> list = service.getMatDmgList();
-		return list;
-	}
-	
-	//자재 불량처리
-	@PostMapping("insertmatdmg")
-    @ResponseBody
-    public void insertMatDmg(@RequestBody List<MatDmgVO> vo) {
-		System.out.println("abc");
-		System.out.println(vo);
-		service.insertMatDmg(vo);
-    }
-	
 	//반제품 리스트
 	@ResponseBody
 	@RequestMapping("semiprodlist")
@@ -346,28 +292,37 @@ public class MaterialController {
 	
 	//불량품 처리대기 리스트
 	@ResponseBody
-	@RequestMapping("matdmgwaitlist2")
-	public List<MatDmgVO> getMatDamageWaitList2(){
-		List<MatDmgVO> list = service.getMatDamageWaitList2();
+	@RequestMapping("matdmgwaitlist")
+	public List<MatDmgVO> getMatDmgWaitList(){
+		List<MatDmgVO> list = service.getMatDmgWaitList();
 		return list;
 	}
 	
 	//불량품 리스트
 	@ResponseBody
-	@RequestMapping("matdmglist2")
-	public List<MatDmgVO> getMatDmgList2(){
-		List<MatDmgVO> list = service.getMatDmgList2();
+	@RequestMapping("matdmglist")
+	public List<MatDmgVO> getMatDmgList(){
+		List<MatDmgVO> list = service.getMatDmgList();
 		return list;
 	}
 	
 
 	 //자재 불량처리
-	 @PostMapping("insertmatdmg2")
-	 @ResponseBody public void insertMatDmg2(@RequestBody List<MatDmgVO> vo) {
+	 @PostMapping("insertMatDmg")
+	 @ResponseBody 
+	 public void insertMatDmg2(@RequestBody List<MatDmgVO> vo) {
 		 System.out.println("abc");
-		 System.out.println(vo); 
-		 //service.insertMatDmg(vo); 
+		 System.out.println(vo);
+		 service.insertMatDmg(vo); 
 	 }
+	 
+	//반제품 LOT 리스트
+	@ResponseBody
+	@RequestMapping("splotlist")
+	public List<SpLotVO> getSpLotList(){
+		List<SpLotVO> list = service.getSpLotList();
+		return list;
+	}
 	 
 }
 

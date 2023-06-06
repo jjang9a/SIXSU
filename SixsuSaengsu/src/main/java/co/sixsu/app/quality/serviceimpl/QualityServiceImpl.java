@@ -169,8 +169,9 @@ public class QualityServiceImpl implements QualityService {
 	// 입고 검사 완료건 단건 삭제
 	@Override
 	public boolean delInsp(QuaVO qua) {
-		qua.setMatReqStat("A");
-		quaMapper.mUpdate(qua);
+		QuaVO vo = new QuaVO();
+		vo.setMatReqStat("A");
+		quaMapper.mUpdate(vo);
 		return quaMapper.delInsp(qua) >= 1;
 	}
 	
@@ -281,7 +282,7 @@ public class QualityServiceImpl implements QualityService {
 		
 		int amount = ship.getCpShipQt();
 		String result = Integer.toString(ship.getCpShipQt()) ;
-		if (ship.getResStat().equals("적합")) {
+		if (ship.getResStat().equals("STAT-A")) {
 			ship.setSuitQt(amount);
 			ship.setNsuitQt(0);	
 			ship.setResVal(result);
@@ -320,12 +321,14 @@ public class QualityServiceImpl implements QualityService {
 	public boolean shipInspMod(ShipInspVO ship) {
 		int amount = ship.getCpShipQt();
 		String result = Integer.toString(ship.getCpShipQt()) ;
-		if (ship.getResStat().equals("적합")) {
+		if (ship.getResStat().equals("STAT-A")) {
+			ship.setResStat("STAT-A");
 			ship.setSuitQt(amount);
 			ship.setNsuitQt(0);	
 			ship.setResVal(result);
 			ship.setCpShipStat("CP_SHIP_COMP");
 		} else {
+			ship.setResStat("STAT-B");
 			ship.setSuitQt(0);
 			ship.setNsuitQt(amount);
 			ship.setResVal(result);
@@ -344,6 +347,8 @@ public class QualityServiceImpl implements QualityService {
 	public boolean delShipInsp(QuaVO qua) {
 		ShipInspVO vo = new ShipInspVO();
 		String stdId = qua.getInspStdId();
+		System.out.println("삭제할QuaVO:"+qua);
+		System.out.println("업데이트ship:"+vo);
 		vo.setCpShipId(stdId);
 		vo.setCpShipStat("CP_SHIP_CHECK");
 		quaMapper.updateShip(vo);
@@ -362,14 +367,14 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public ReturnInspVO returnInspAdd(ReturnInspVO ret) {
 		
-		// 출고 검사 공통 등록
+		// 품질 검사 공통 등록
 		String inspNum = quaMapper.qrInspNum(); // 검사 번호 생성
 		ret.setInspNum(inspNum);
 		System.out.println("검사번호:"+inspNum);
 		
 		int amount = ret.getRetQt();
 		String result = Integer.toString(ret.getRetQt()) ;
-		if (ret.getResStat().equals("적합")) {
+		if (ret.getResStat().equals("STAT-A")) {
 			ret.setSuitQt(amount);
 			ret.setNsuitQt(0);	
 			ret.setResVal(result);
@@ -409,7 +414,7 @@ public class QualityServiceImpl implements QualityService {
 		
 		int amount = ret.getRetQt();
 		String result = Integer.toString(ret.getRetQt()) ;
-		if (ret.getResStat().equals("적합")) {
+		if (ret.getResStat().equals("STAT-A")) {
 			ret.setSuitQt(amount);
 			ret.setNsuitQt(0);	
 			ret.setResVal(result);
@@ -427,14 +432,17 @@ public class QualityServiceImpl implements QualityService {
 		return true;
 	}
 
-
+	// 반품 검사 단건 삭제
 	@Override
-	public boolean delReturnInsp(String inspNum) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delReturnInsp(QuaVO qua) {
+		ReturnInspVO vo = new ReturnInspVO();
+		String stdId = qua.getInspStdId();
+		vo.setRetId(stdId);
+		vo.setRetStat("RETREQ");
+		quaMapper.updateReturn(vo);
+		return quaMapper.delInsp(qua) >= 1;
 	}
 
-	
 	
 	
 

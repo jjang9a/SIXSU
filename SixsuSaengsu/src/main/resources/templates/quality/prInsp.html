@@ -147,7 +147,7 @@
 
 								<label for="exampleFormControlInput1" class="form-label">검사자
 								</label> <input type="text" class="form-control" id="empId" name="empId"
-										  th:value='${#authentication.principal.empId}'>
+										  th:value='${#authentication.principal.empName}'>
 
 							</div>
 						</div>
@@ -201,7 +201,9 @@
 
 
 
-		<script>
+		<script th:inline="javascript">
+		let inspResStat = [[${inspResStat}]];
+		
 			window.onload = function () {
 				//검사 결과 등록 전 리스트
 				$.ajax({
@@ -710,7 +712,16 @@
 					{
 						header: '적합여부',
 						name: 'resStat',
-						align: 'center'
+						align: 'center',
+						formatter: 'listItemText',
+				          editor: 
+				          {
+				            type: 'select',
+				            options: {
+				              listItems:inspResStat
+				            }
+				          }
+						
 					}
 				]
 			});
@@ -775,15 +786,15 @@
 			// Toast Grid의 값이 변경될 때마다 호출되는 이벤트 핸들러 등록
 			detailGrid.on('editingFinish', function (e) {
 				if (e.columnName === 'nsuitQt') {
-					detailGrid.setValue(e.rowKey, 'resStat', '해당없음');
+					detailGrid.setValue(e.rowKey, 'resStat', 'STAT-C');
 				} else if (e.columnName === 'resVal') {
 					let compareData = detailGrid.getRow(e.rowKey);
 					let standard = compareData.stdVal;
 					let myVal = compareData.resVal;
 					if (myVal <= standard) {
-						detailGrid.setValue(e.rowKey, 'resStat', '적합');
+						detailGrid.setValue(e.rowKey, 'resStat', 'STAT-A');
 					} else {
-						detailGrid.setValue(e.rowKey, 'resStat', '부적합');
+						detailGrid.setValue(e.rowKey, 'resStat', 'STAT-B');
 					}
 				}
 

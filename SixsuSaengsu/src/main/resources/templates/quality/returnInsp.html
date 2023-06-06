@@ -65,17 +65,19 @@ h1 {
 					<td>적합 여부</td>
 					<td><select name="resStat" id="resStat">
 						<option value="">선택</option>
-						<option value="적합">적합</option>
-						<option value="부적합">부적합</option>
+						<option value="STAT-A">적합</option>
+						<option value="STAT-B">부적합</option>
 					</select></td>
 				</tr>
 
 				<tr>
 					<td>부적합 사유</td>
-					<td colspan="3"><input type="text" name="detailNote"
-						id="detailNote" class="empty" style="width: 660px;"></td>
+					<td><input type="text" name="detailNote"
+						id="detailNote" class="empty"></td>
+					<td>검사자</td>
+					<td><input type="text" name="empName" id="empName" readonly>
 					<td>검수 상태</td>
-					<td><input type="text" name="retStat" id="retStat" readonly></td>
+					<td><input type="text" name="cpShipStat" id="cpShipStat" readonly></td>
 				</tr>
 				
 				<tr>
@@ -97,7 +99,9 @@ h1 {
 		<!-- 완제품 출고 검사 그리드 -->
 		<div id="grid"></div>
 
-		<script>
+		<script th:inline="javascript">
+		let inspResStat = [[${inspResStat}]];
+		
 			window.onload = function() {
 				//let initData = '';
 				//let nowData = '';
@@ -163,20 +167,13 @@ h1 {
 						name : 'resStat',
 						align : 'center',
 						filter : 'select',
-						editor : {
-							type : 'select',
-							options : {
-								listItems : [{
-									text : '적합',
-									value : '적합'
-								},
-								{
-									text : '부적합',
-									value : '부적합'
-								}
-								]	
-							}
-						}
+				        editor: 
+				          {
+				            type: 'select',
+				            options: {
+				              listItems:inspResStat
+				            }
+				          }
 					},{
 						header : '반품일자',
 						name : ' ret_date',

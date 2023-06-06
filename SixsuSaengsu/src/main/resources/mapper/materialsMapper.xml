@@ -14,7 +14,7 @@
 		 	<if test="matLotId == null and matLotId == ''.toString()">
 		 	</if>
 		 	<if test="matName != null and matName != ''.toString()">
-		 		and upper(l.mat_name) like '%'|| upper(#{matName}) || '%'
+		 		and l.mat_name like '%'|| upper(#{matName}) || '%'
 		 	</if>
 		 	<if test="matName == null and matName == ''.toString()">
 		 	</if>
@@ -225,7 +225,7 @@
 		 on m.mat_id = l.mat_id
 		where m.mat_stat = 'Y'
 		<if test="matName != null and matName != ''.toString()">
-			and m.mat_name = #{matName}
+			and m.mat_name like '%'|| upper(#{matName}) || '%'
 		</if>
 		<if test="matName == null and matName == ''.toString()">
 		
@@ -400,88 +400,9 @@
 	    ]]>
   	</insert>
   	
-  	<!-- 반제품 불량처리 대기 페이지 -->
-  	<select id="getSpDmgWaitList" resultType="SpDmgVO">
-		select p.prcs_pfmc_id, p.wk_deta_id, p.pd_id, s.sp_name, s.sp_size, p.dmat_qt, i.sp_ship_id, i.sp_lot_id, to_char(p.wk_end, 'yyyy-mm-dd') as wk_end, e.emp_name,d.dsp_res
-		from process_performance p 
-		
-		left join semi_prod s
-		 on p.pd_id = s.sp_id
-		 
-		join sp_ship i
-		 on p.prcs_pfmc_id = i.prcs_pfmc_id
-		 
-        left join employee e
-		 on p.emp_id = e.emp_id
-		 
-		left join damaged_sp d
-		 on d.sp_ship_id = i.sp_ship_id
-		 
-		where p.pd_id like 'SP%'
-		 and d.dsp_stat is null
-  	</select>
-  	
-  	<!-- 반제품 불량처리 리스트 -->
-  	<select id="getSpDmgList" resultType="SpDmgVO">
-		select d.dsp_id, c.prcs_pfmc_id, c.dmat_qt, d.sp_ship_id, c.pd_id, p.sp_name, p.sp_size, to_char(d.dsp_date, 'yyyy-mm-dd') as dsp_date, d.dsp_res, d.dsp_stat, e.emp_name, d.dsp_note
-		from damaged_sp d left join employee e
-		on d.emp_id = e.emp_id
-		join sp_ship s
-		on d.sp_ship_id = s.sp_ship_id
-		join sp_lot l
-		on s.sp_lot_id = l.sp_lot_id
-		join process_performance c
-		on c.prcs_pfmc_id = s.prcs_pfmc_id
-		join semi_prod p
-		on l.sp_id = p.sp_id
-  	</select>
-  	
-  	<!-- 반제품 불량처리 -->
-  	<insert id="insertSpDmg" parameterType="SpDmgVO">
-		insert into damaged_sp (dsp_id, dsp_res, dsp_stat, sp_ship_id)
-		values (seq_dsp_id.nextval, #{dspNote}, #{dspStat}, #{spShipId})
-  	</insert>
-  	
-  	<!-- 자재 불량처리 대기 리스트 -->
-  	<select id="getMatDmgWaitList" resultType="MatDmgVO">
-		select p.prcs_pfmc_id, p.wk_deta_id, p.pd_id, m.mat_name, m.mat_size, p.dmat_qt, i.mat_ship_id, i.mat_lot_id, to_char(p.wk_end, 'yyyy-mm-dd') as wk_end, e.emp_name,d.dmat_res
-		from process_performance p 
-		left join material m
-		 on p.pd_id = m.mat_id
-		join mat_ship i
-		 on p.prcs_pfmc_id = i.prcs_pfmc_id
-		left join employee e
-		 on p.emp_id = e.emp_id
-		left join damaged_mat d
-		 on d.mat_ship_id = i.mat_ship_id
-		where p.pd_id like 'M%'
-		 and d.dmat_stat is null
-	</select>
-	
-	<!-- 자재 불량처리 리스트 -->
-  	<select id="getMatDmgList" resultType="MatDmgVO">
-		select d.dmat_id, c.prcs_pfmc_id, c.dmat_qt, d.mat_ship_id, c.pd_id, m.mat_name, m.mat_size, to_char(d.dmat_date, 'yyyy-mm-dd') as dmat_date, d.dmat_res, d.dmat_stat, e.emp_name, d.dmat_note
-		from damaged_mat d left join employee e
-		on d.emp_id = e.emp_id
-		left join mat_ship s
-		on d.mat_ship_id = s.mat_ship_id
-		left join mat_lot l
-		on s.mat_lot_id = l.mat_lot_id
-		left join process_performance c
-		on c.prcs_pfmc_id = s.prcs_pfmc_id
-		left join material m
-		on c.pd_id = m.mat_id
-  	</select>
-  	
-	<!-- 자재 불량처리 -->
-  	<insert id="insertMatDmg" parameterType="MatDmgVO">
-		insert into damaged_mat (dmat_id, dmat_res, dmat_stat, mat_ship_id)
-		values (seq_dmat_id.nextval, #{dmatNote}, #{dmatStat}, #{matShipId})
-  	</insert>
-  	
-  	<!-- 불량품 처리대기 리스트 -->
-	<select id="getMatDamageWaitList2" resultType="MatDmgVO">
-		SELECT d.insp_num, to_char(c.insp_date, 'yyyy-mm-dd') as insp_date, m.mat_id, m.mat_name, m.mat_size, to_number(d.res_val), e.emp_name
+  	<!-- 불량자재 처리대기 리스트 -->
+	<select id="getMatDmgWaitList" resultType="MatDmgVO">
+		SELECT d.insp_num, to_char(c.insp_date, 'yyyy-mm-dd') as insp_date, m.mat_id, m.mat_name, m.mat_size, to_number(d.res_val) as res_val, get_emp_name(c.emp_id) as emp_name
 		FROM qua_details d
 		JOIN qua_com c 
 		 ON d.insp_num = c.insp_num
@@ -489,39 +410,41 @@
 		 ON c.insp_std_id=p.PRCS_PFMC_ID
 		JOIN work_bom_mat b 
 		 ON p.wk_bom_id = b.wk_bom_id
-		JOIN employee e 
-		 ON c.emp_id = e.emp_id
 		JOIN material m 
 		 ON b.mat_id = m.mat_id
 		LEFT JOIN damaged_mat g 
 		 ON c.insp_num = g.insp_num
-		WHERE c.insp_type = '공정검사'
+		WHERE c.insp_type = 'INSP-B'
 		 AND d.insp_id = ( SELECT insp_id
 		                FROM QUA_INSP_LIST
 		                WHERE insp_name = '자재불량')
 		 AND g.insp_num is null
 	</select>
 	
-	<!-- 불량품 처리 리스트 -->
-	<select id="getMatDmgList2" resultType="MatDmgVO">
-		select a.* ,m.mat_id, m.mat_name, m.mat_size, get_emp_name(c.emp_name)
+	<!-- 불량자재 처리 리스트 -->
+	<select id="getMatDmgList" resultType="MatDmgVO">
+        select a.dmat_id, a.insp_num, a.dmat_stat, to_char(a.dmat_date, 'yyyy-MM-dd') as dmat_date, to_number(d.res_val) as res_val, a.dmat_note ,m.mat_id, m.mat_name, m.mat_size, get_emp_name(a.emp_id) as emp_name
 		from damaged_mat a 
-		JOIN qua_details d
+		left JOIN qua_details d
 		 ON a.insp_num = d.insp_num
-		JOIN qua_com c 
+		left JOIN qua_com c 
 		 ON d.insp_num = c.insp_num
-		JOIN PROCESS_PERFORMANCE p 
+		left JOIN PROCESS_PERFORMANCE p 
 		 ON c.insp_std_id=p.PRCS_PFMC_ID
-		JOIN work_bom_mat b 
+		left JOIN work_bom_mat b 
 		 ON p.wk_bom_id = b.wk_bom_id
-		JOIN material m 
+		left JOIN material m 
 		 ON b.mat_id = m.mat_id
+    	WHERE c.insp_type = 'INSP-B'
+		 AND d.insp_id = (SELECT insp_id
+		                  FROM QUA_INSP_LIST
+		                  WHERE insp_name = '자재불량')
 	</select>
 	
 	<!-- 자재 불량처리 -->
-  	<insert id="insertMatDmg2" parameterType="MatDmgVO">
-		insert into damaged_mat (dmat_id, dmat_stat, dmat_note, emp_Id, insp_num)
-		values (GET_MAT_DMG_ID(), #{dmatResult}, #{dmatNote}, #{empId}, #{inspNum})
+  	<insert id="insertMatDmg" parameterType="MatDmgVO">
+		insert into damaged_mat (dmat_id, dmat_stat, emp_Id, insp_num)
+		values (GET_MAT_DMG_ID(), #{dmatResult}, #{empId}, #{inspNum})
   	</insert>
 	
 	<!-- 반제품 리스트 -->
@@ -540,10 +463,14 @@
 	</select>
 	
 	<!-- 반제품 LOT 리스트 -->
-	<select id="getSpLotList" resultType="SpAdjVO">
-		select l.sp_lot_id, l.sp_id, s.sp_name, s.sp_size, l.sp_qt, l.sp_hold_stat, l.sp_lot_qt_ck
+	<select id="getSpLotList" resultType="SpLotVO">
+        select l.sp_lot_id, l.sp_id, s.sp_name, s.sp_size, l.sp_qt, l.sp_hold_stat, l.sp_lot_qt_ck, to_char(c.sp_rec_date, 'yyyy-MM-dd') sp_rec_date
 		from sp_lot l left join semi_prod s
 		on l.sp_id = s.sp_id
+        left join sp_rec c
+        on l.sp_lot_id = c.sp_lot_id
+        where l.sp_lot_qt_ck = 'Y'
+        order by sp_rec_date desc
 	</select>
 	
 </mapper>
