@@ -299,6 +299,7 @@ LEFT 	JOIN  work_bom b
 	  LEFT JOIN  process r
 	         ON  b.proc_id = r.proc_id
           WHERE  q.INSP_NUM IS NULL
+            AND  p.deta_qt>0
        ORDER BY  p.prcs_pfmc_id
 	</select>
 
