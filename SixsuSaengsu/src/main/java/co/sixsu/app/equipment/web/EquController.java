@@ -39,8 +39,8 @@ public class EquController {
 		
 	}
 	
-	@GetMapping("equSearch") // 설비 조회 페이지
-	public void equSearch(Model model) {
+	@GetMapping("EquInfo") // 설비 조회 페이지
+	public void EquInfo(Model model) {
 		String key = "EQU_STAT";
 		String key2 = "EQU_SUIT";
 		String key3 = "CHECK_TYPE";
@@ -51,8 +51,8 @@ public class EquController {
 		model.addAttribute("operType", basicService.commGroupList(key4));
 	}
 	
-	@GetMapping("equCheckSP") // 점검 조회 페이지
-	public void equCheckSP(Model model) {
+	@GetMapping("CheckInfo") // 점검 조회 페이지
+	public void CheckInfo(Model model) {
 		String key = "EQU_SUIT";
 		String key2 = "CHECK_TYPE";
 		model.addAttribute("equSuit", basicService.commGroupList(key));
@@ -67,7 +67,7 @@ public class EquController {
 		model.addAttribute("checkType", basicService.commGroupList(key2));
 	}
 	
-	@GetMapping("equOperSP") // 비가동 조회 페이지
+	@GetMapping("OperInfo") // 비가동 조회 페이지
 	public void equOperSP(Model model) {
 		String key = "OPER_TYPE";
 		String key2 = "EQU_STAT";

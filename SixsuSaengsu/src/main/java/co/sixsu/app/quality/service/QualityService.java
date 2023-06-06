@@ -53,7 +53,7 @@ public interface QualityService {
 		List<ReturnInspVO> returnList(); // 반품 검사 목록 리스트
 		ReturnInspVO returnInspAdd(ReturnInspVO ret);// 반품 검사 등록
 		boolean returnInspMod (ReturnInspVO ret); // 반품 검사 수정
-		boolean delReturnInsp(String inspNum); // 반품 검사 단건 삭제
+		boolean delReturnInsp(QuaVO qua); // 반품 검사 단건 삭제
 		
 		// 사용 보류
 		List<QuaVO> insertPri(List<QuaVO> list); // 자재 입고 검사 결과 등록
