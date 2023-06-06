@@ -5,12 +5,29 @@
     <meta charset="utf-8">
     <title>설비 점검 조회</title>
     <style>
+    	h1 {
+			margin-bottom: 40px;
+		}
+		#eTable {
+			margin: auto;
+		}
+		#eTable input {
+			padding-left: 10px;
+			width: 230px;
+		}
     	#eTable td {
 			padding: 4px 10px;
 			text-align: left;
 		}
 		#Btn { /* 버튼 */
-			float: right;
+			padding: 0.5em;
+			text-align: right;
+			height: 50px;
+			margin-top: 65px;
+			margin-bottom: 3px;
+		}
+		.center {
+			text-align: center;
 		}
 		#cdate {
 			width: 185px;
@@ -35,12 +52,22 @@
 <body>
     <div layout:fragment="content">
     
-    <br>
+   
     <h1 class="mt-4" style="font-family: 'MaruBuri';">설비 점검 조회</h1>
-    <br>
-	<hr>
-	<br>
-    <!-- 검색 버튼 -->
+    
+    
+    <!-- 검색 인풋 창 -->
+    <table id="eTable">
+		<tr>	
+			<td class="center">설비코드<span class="needStar"> * </span></td>
+			<td><input type="text" name="code" id="code" class="empty"></td>
+			
+			<td class="center">설비명<span class="needStar"> * </span></td>
+			<td><input type="text" name="name" id="name" class="empty"></td>
+		</tr>
+	</table>
+	
+	<!-- 검색 버튼 -->
     <div id="Btn">
 		<button class="sixBtn1" id="searchBtn">
 			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
@@ -51,31 +78,10 @@
 		</button>
 		<button class="sixBtn2" id="reset">초기화</button>
 	</div>
-    
-    
-    <!-- 검색 인풋 창 -->
-    <table id="eTable">
-	<tr>	
-		<td>설비코드<span class="needStar"> * </span></td>
-		<td><input type="text" name="ccode" id="ccode" class="empty"></td>
-		
-		<td>설비명<span class="needStar"> * </span></td>
-		<td><input type="text" name="cname" id="cname" class="empty"></td>
-	</tr>
-	
-	<tr>
-		<td>점검일자<span class="needStar"> * </span></td>
-		<td>
-			<input type="date" name="cdate" id="cdate">
-		</td>
-		<td>
-		
 
-	</table>
 	
-		<br>
-		<hr>
-		<br>
+	
+		
 
 		<!-- 점검조회 상세정보 모달창 -->
 
@@ -303,26 +309,16 @@
 					
     let searchType = '';
     let searchKey = '';
-    
+    // 검색기능
     $('#searchBtn').on('click', function(){
-    	if($('#ccode').val() == '' && $('#cname').val() == '') {
-    			alert('검색 항목을 입력해 주세요 !')	
-    	 } else {
-    		 if ($('#ccode').val() != '') {
-					searchType = 'code';
-					searchKey = $('#ccode').val()
-				} else {
-					searchType = 'name';
-					searchKey = $('#cname').val()
-				} 
+    	
 					
-				
 				$.ajax({
-					url: '/equipment/equCheckSearch',
+					url: 'equCheckSearch',
 					type: 'get',
 					data: {
-						"searchType": searchType,
-						"searchKey": searchKey
+						"code": $("#code").val(),
+						"name": $("#name").val(),
 					},
 					dataType: 'json',
 					success: function (result) {
@@ -333,7 +329,6 @@
 						alert('오류가 발생했습니다!');
 					}
 				})
-			}
 
 		})
 		
@@ -341,11 +336,11 @@
 
 	   //초기화 버튼 기능
 	   $('#reset').on("click", function (e) {
-		  		$('#ccode').val('');
-				$('#cname').val('');
+		  		$('#code').val('');
+				$('#name').val('');
 				
 				$.ajax({
-					url: "/equipment/equCheckList",
+					url: "equCheckList",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {

@@ -215,22 +215,18 @@
 					align : 'center'
 				}, {
 					header : '자재코드',
-					name : '1',
+					name : 'matId',
 					align : 'center'
 				}, {
 					header : '자재명',
-					name : '2',
+					name : 'matName',
 					align : 'center'
 				}, {
 					header : '개수',
-					name : '3',
+					name : 'cpQt',
 					align : 'center'
 				}
-				],
-				columnOptions: {
-			        frozenCount: 1,
-			        frozenBorderWidth: 2
-			     }
+				]
 			});
 			workBomList.setBodyHeight(270);
 			
@@ -274,31 +270,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			let selRowKey = '';
-			grid1.on('click', function (ev) {
-				// 열을 더블클릭하면 제품 정보를 변수에 저장
-				if (selRowKey != ev.rowKey) { // 제품 선택 정보가 달라졌다면
-					grid1.removeRowClassName(selRowKey, 'cell-pink'); // 지난 제품 열에서 음영 제거
-				}
-				grid1.addRowClassName(ev.rowKey, 'cell-pink'); // 새로운 제품 열에 음영 넣기
-				selRowKey = ev.rowKey
-				let dataRow = grid1.getRow(ev.rowKey); //필요하니?
-				
-				/*$.ajax({
-					url : "/ajax/getBomMatList",
-					method : "POST",
-					dataType : "JSON",
-					contentType: "application/json",
-					data :  JSON.stringify(selRowKey.wkDetaId),
-					success : function(result){
-						console.dir(result);
-						workBomList.resetData(result[0]);
-						},
-						error : function(reject){
-							console.log(reject)
-						}
-					});*/
-			});
+			
 			
 			
 			
@@ -370,10 +342,39 @@
 				});
 				
 			});
+
 			
 			
+			//workBomList 출력
+			let selRowKey = '';
+			grid1.on('click',function(ev){
+				console.log('선택된 DetaId : ' + grid1.getRow(ev.rowKey).wkDetaId)
+				
+				// 열을 더블클릭하면 제품 정보를 변수에 저장
+				if (selRowKey != ev.rowKey) { // 제품 선택 정보가 달라졌다면
+					grid1.removeRowClassName(selRowKey, 'cell-pink'); // 지난 제품 열에서 음영 제거
+				}
+				grid1.addRowClassName(ev.rowKey, 'cell-pink'); // 새로운 제품 열에 음영 넣기
+				selRowKey = ev.rowKey
+				let dataRow = grid1.getRow(ev.rowKey); //필요하니?
+						
+				$.ajax({
+					url : "/ajax/getBomMatList",
+					method : "POST",
+					contentType: "application/json",
+					data : JSON.stringify({wkDetaId : dataRow.wkDetaId}),
+					success : function(result){
+						workBomList.resetData(result)
+					},
+					error : function(reject){
+						console.err(reject)
+					}
+				});
+			})
 			
-			
+			workBomList.on('click', function(ev){
+				console.log(workBomList.getRow(ev.rowKey))
+			})
 			
 			
 			function 전체조회리스트(){

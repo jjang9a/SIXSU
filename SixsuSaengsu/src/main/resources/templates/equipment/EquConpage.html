@@ -7,30 +7,39 @@
 <meta charset="UTF-8">
 <title>설비 관리</title>
 	<style>
+		h1 {
+			margin-bottom: 40px;
+		}
+		#equaddTbl {
+			margin: auto;
+		}
+		#equaddTbl input {
+			padding-left: 10px;
+			width: 230px;
+		}
+		.divBtn {
+			text-align: center;
+			padding: 15px 0 30px 0;
+		}
 		.sixBtn2 {
 			margin-right: 7px;
 		}
 		#addForm td {
-			padding: 4px 10px;
+			padding: 4px 20px;
 			text-align: left;
 		}
 		#addDate{
 			width: 185px;
-			height: 28.18px;
-		}
-		.modalTbl {
-			margin: auto;
-			text-align: center;
-			height: 330px;
+			height: 30px;
 		}
 		.modal-body {
+			margin: auto;
+			text-align: center;
+			/* height: 400px; */
+			width: 400px;
 			background: #e5edf5;
-		}
-
-		.modalTbl td {
 			padding-right: 20px;
-		}
-
+		}	
 		.modal-footer {
 			text-align: center;
 		}
@@ -41,26 +50,22 @@
 <body>
 	<div layout:fragment="content">
 	
-		<br> 
+		 
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비관리</h1>
 		
-		<br>
-		<hr>
-		<br>
+		
 		<!-- 인풋창 -->
 		<form action="" method="post" id="addForm">
-			<table>
+			<table id="equaddTbl">
 				<tr>
 					<td>설비코드<span class="needStar"> * </span></td>
 					<td><input type="text" name="equCode" id="equCode"
 						style="background: #ccdceb;" class="empty"></td>
-				</tr>
-				<tr>
+				
 					<td>설비명<span class="needStar"> * </span></td>
 					<td><input type="text" name="equName" id="equName"
 						class="empty"></td>
-				</tr>
-				<tr>
+				
 					<td>모델<span class="needStar"> * </span></td>
 					<td><input type="text" name="equModel" id="equModel"
 						class="empty"></td>
@@ -70,12 +75,10 @@
 					<td>설비라인<span class="needStar"> *</span></td>
 					<td><input type="text" name="equLine" id="equLine"
 						class="empty"></td>
-				</tr>
-				<tr>
+				
 					<td>표준온도<span class="needStar"> *</span></td>
 					<td><input type="text" name="ctemp" id="ctemp" class="empty" placeholder=" * 숫자만 입력하시오 * "></td>
-				</tr>
-				<tr>
+				
 					<td>공정코드<span class="needStar"> * </span></td>
 					<td colspan="2"><input type="text" name="procId" id="procId"
 						class="empty" readonly style="background: #ccdceb;">
@@ -86,18 +89,18 @@
 					<td>점검주기<span class="needStar"> *</span></td>
 					<td><input type="text" name="equCheck" id="equCheck"
 						class="empty"></td>
-				</tr>
-				<tr>
+				
 					<td>등록일자<span class="needStar"> *</span></td>
 					<td><input type="date" name="addDate" id="addDate" class="empty"></td>
-				</tr>
-				<tr>
+				
 					<td>담당자<span class="needStar"> *</span></td>
-					<td><input type="text" name="empId" id="empId" class="empty"></td>
+					<!-- <td><input type="text" name="empId" id="empId" class="empty"></td>  -->
+					<td><input type="text" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empName}'></td> .
+					<input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'>
 				</tr>
 			</table>
 
-			<div>
+			<div class="divBtn">
 				<button type="button" class="sixBtn2" style="float: right;"
 					id="delBtn">삭제</button>
 				<button type="button" class="sixBtn2" style="float: right;"
@@ -122,7 +125,6 @@
 						</div>
 						<!-- 모달 바디 -->
 						<div class="modal-body">
-							<div class="sel sel1 sel3">공정코드</div>
 							<div id="pdGrid"></div>
 						</div>
 						<!-- 모달 푸터(버튼부분) -->
@@ -135,7 +137,7 @@
 			
 		</form>
 
-
+		
 		<div id="grid"></div>
 
 		<script>
@@ -231,9 +233,10 @@
 			// 공정코드 리스트
 			const pdGrid = new tui.Grid({
 				el: document.getElementById('pdGrid'),
-				scrollX: false,
+				scrollX: true,
 				scrollY: true,
-				minBodyHeight: 400,
+				setBodyHeight:400,
+				minBodyHeight: 500,
 				columns: [{
 					header: '공정분류',
 					name: 'comName',
@@ -252,7 +255,7 @@
 				}]
 			});
 			// 그리드 높이 & 색 변경 테마 적용
-			grid.setBodyHeight(400);
+			pdGrid.setBodyHeight(400);
 			tui.Grid.applyTheme('default', {
 				cell: {
 					header: {

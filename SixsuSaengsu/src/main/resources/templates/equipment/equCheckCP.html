@@ -7,6 +7,9 @@
 <meta charset="utf-8">
 <title>설비 점검 관리</title>
 	<style>
+		h1 {
+			margin-bottom: 40px;
+		}
 		.sixBtn2 {
 			margin-right: 7px;
 		}
@@ -14,11 +17,19 @@
 			padding: 4px 10px;
 			text-align: left;
 		}
-		#select,#checkDate,#checkNext{
-			width: 185pxpx;
-			height: 28.18px;
+		#equaddTbl input, select {
+			/* width: 188pxpx;
+			height: 34px; */
+			padding-left: 10px;
+			width: 230px;
+		} 
+		#equaddTbl select {
+			height: 30px; 
+		} 
+		.divBtn {
+			text-align: center;
+			padding: 15px 0 30px 0;
 		}
-		
 		.modalTbl {
 			margin: auto;
 			text-align: center;
@@ -42,87 +53,64 @@
 <body>
 	<div layout:fragment="content">
 		
-		<br>
+		
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비 점검 관리</h1>
 		
-		<br>
-		<hr>
-		<br>
+		
 		<!-- 인풋창 -->
 		<form action="mt-4" method="post" id="addForm">
-			<table>
-				<tr>
+			<table id="equaddTbl">
+			   <tr>
 					<td>점검코드<span class="needStar"> * </span></td>
-					<td><input type="text" name="checkCode" id="checkCode"
-						style="background: #ccdceb;" class="empty"></td>
-				</tr>
-				<tr>
+					<td><input type="text" name="checkCode" id="checkCode" style="background: #ccdceb;" class="empty"></td>
+						
+				
 					<td>설비코드<span class="needStar"> * </span></td>
-					<td colspan="2"><input type="text" name="equCode" id="equCode"
-						class="empty" readonly style="background: #ccdceb;">
-						<button type="button" id="eqBtn" class="sixBtn2"
-							style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
+					<td colspan="2"><input type="text" name="equCode" id="equCode" class="empty" readonly style="background: #ccdceb;">
+					<button type="button" id="eqBtn" class="sixBtn2" style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
+
 				</tr>
 				<tr>
+					<td>점검일자<span class="needStar"> *</span></td> 
+					<td><input type="text" name="checkDate" id="checkDate" class="empty" readonly></td>
+					
+					
 					<td>설비명<span class="needStar"> * </span></td>
-					<td><input type="text" name="equName" id="equName"
-						class="empty"></td>
+					<td><input type="text" name="equName" id="equName" class="empty"></td>		
 				</tr>
 				<tr>
-					<td>점검일자<span class="needStar"> *</span></td>
-					<td><input type="date" name="checkDate" id="checkDate"
-						class="empty"></td>
-				</tr>
-				<tr>
-					<td>차기점검일<span class="needStar"> *</span></td>
-					<td><input type="date" name="checkNext" id="checkNext"
-						class="empty"></td>
-				</tr>
-				<tr>
-					<td>점검주기<span class="needStar"> *</span></td>
-					<td><input type="text" name="equCheck" id="equCheck"
-						class="empty"></td>
-				</tr>
-				<tr>
-					<td>판정<span class="needStar"> *</span></td>
+					<td id="select">판정<span class="needStar"> *</span></td>
 					<td>
 						<select id="equSuit" name="equSuit">
-							<option value=''>===== 선택 =====</option>
-							<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}">
-							</option>
-					</td>  	
+						<option value=''>===== 선택 =====</option>
+						<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}"></option>
+					</td>
+					 
 				</tr>
+				</tr>	 	
 				<tr>
-					<td>점검구분<span class="needStar"> *</span></td>
+					<td id="select">점검구분<span class="needStar"> *</span></td>
 					<td>
 						<select id="checkType" name="checkType">
-							<option value=''>===== 선택 =====</option>
-							<option th:each="type : ${checkType}" th:value="${type.value}" th:text="${type.text}">
-							</option>
+						<option value=''>===== 선택 =====</option>
+						<option th:each="type : ${checkType}" th:value="${type.value}" th:text="${type.text}"></option>
 					</td>
 				</tr>
-				<tr>
-					<td>점검사유<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkInfo" id="checkInfo"
-						class="empty"></td>
-				</tr>
-				<tr>
-					<td>조치내역<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkCom" id="checkCom"
-						class="empty"></td>
-				</tr>
-				<tr>
+				<tr>	
 					<td>비고<span class="needStar"> *</span></td>
-					<td><input type="text" name="checkNote" id="checkNote"
-						class="empty"></td>
-				</tr>
-				<tr>
+					<td><input type="text" name="checkNote" id="checkNote" class="empty"></td>
+						
+						
 					<td>담당자<span class="needStar"> *</span></td>
-					<td><input type="text" name="empId" id="empId" class="empty"></td>
+					<td><input type="text" name="empName" id="empName" class="empty" th:value='${#authentication.principal.empName}'></td> 
+					<input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'>
 				</tr>
+					<!-- 점검주기 -->
+					<td><input type="hidden" name="equCheck" id="equCheck" class="empty"></td>
+				
 			</table>
 
-			<div>
+			<div class="divBtn">
 				<button type="button" class="sixBtn2" style="float: right;"
 					id="delBtn">삭제</button>
 				<button type="button" class="sixBtn2" style="float: right;"
@@ -230,8 +218,12 @@
 					},
 					{
 						header: '담당자',
-						name: 'empId',
+						name: 'empName',
 						align: 'center'
+					},{
+						header: '담당사원',
+						name: 'empId',
+						hidden : true,
 					},
 					{
 						header: '점검코드',
@@ -267,17 +259,20 @@
 				scrollX: true,
 				scrollY: true,
 				minBodyHeight: 400,
+				setBodyHeight:400,
 				columns: [{
-					header: '설비코드',
-					name: 'equCode',
-					align: 'center',
-				},
-				{
-					header: '설비명',
-					name: 'equName',
-					align: 'center'
-				}
-			   ]
+						header: '설비코드',
+						name: 'equCode',
+						align: 'center'
+					},{
+						header: '설비명',
+						name: 'equName',
+						align: 'center'
+					},{
+						header: '점검주기',
+						name: 'equCheck',
+						align: 'center'
+					}]
 			});
 			// 그리드 높이 & 색 변경 테마 적용
 			grid.setBodyHeight(400);
@@ -317,6 +312,12 @@
 				let dataRow = eqGrid.getRow(ev.rowKey);
 				
 				$('#equCode').val(dataRow.equCode);
+				$('#equName').val(dataRow.equName);
+				console.log(dataRow.equCheck)
+				let check = dataRow.equCheck;
+				let temp = dataRow.equCheck.substring(0, check.length-2);
+				console.log(temp)
+				$('#equCheck').val(temp);
 				$('#eqModal').modal('hide');
 			})
 			
@@ -384,9 +385,9 @@
 			
 			// 등록버튼 기능 구현
 			$('#addBtn').on('click', function (e) {
-				if (selRow == 999) {
-					alert('등록 정보를 입력하시오.')
-				} else {
+				// if (selRow == 999) {
+				// 	alert('등록 정보를 입력하시오.')
+				// } else {
 				
 				console.log($('#addForm').serialize())
 				$.ajax({
@@ -416,7 +417,7 @@
 				// 셀렉트 리셋해줌
 				$('#equSuit').val('').prop("selected", true);
 				$('#checkType').val('').prop("selected", true);
-			}
+		//	}
 			});
 			
 			// 점검 수정 
@@ -489,7 +490,6 @@
 				});
 				}
 			});
-			
 					
 		</script>
 	</div>

@@ -10,6 +10,14 @@
 <style>
 		
 
+		h1 {
+			margin-bottom: 40px;
+		}
+
+		#cpTable {
+			margin: auto;
+		}
+
 		#cpTable input,
 		select {
 			padding-left: 10px;
@@ -22,12 +30,12 @@
 		}
 
 		#cpTable td {
-			
+			padding: 4px 20px;
 			text-align: center;
 		}
 
 		.divBtn {
-			text-align: right;
+			text-align: center;
 			padding: 15px 0 30px 0;
 		}
 .modal-body {
@@ -41,14 +49,16 @@
 <body>
 	<div layout:fragment="content">
 		<div>
-			<form action="" method="post" id="allOrderList" name="allOrderList">
-				<h1 class="mt-4" style="font-family: 'MaruBuri';">주문서등록</h1>
+			
+				<h1 class="mt-4" style="font-family: 'MaruBuri';">주문서관리</h1>
+				<form action="" method="post" id="allOrderList" name="allOrderList">
 				<table id="cpTable">
 				<tr>
 					<td>주문번호</td><td><input type="text" name="ordId" id="codeBox"></td>
 					
 					<td>주문날짜</td><td><input type="text" name="ordDate" id="ordDate"></td>
-				
+				</tr>
+				<tr>
 					<td>주문자</td><td><input type="text"
 						id="orderName" readonly th:value='${#authentication.principal.empName}'></td>
 				
@@ -66,11 +76,13 @@
 					</button></td>
 					
 					<td>거래처코드</td><td><input type="text" name="busId" id="busCode"></td>
-				
+				</tr>
+				<tr>
 				 	<td>사업자번호</td><td><input type="text" id="busNum"></td>
 					
 					<td>주소</td><td><input type="text" id="busAddr"></td>
-				
+				</tr>
+				<tr>
 					<td>전화번호</td><td><input type="text" id="busTel"></td>
 				</tr>
 				</table>
@@ -778,7 +790,14 @@ window.onload = function() {
     	date = new Date();
     	year = date.getFullYear();
     	month = date.getMonth() + 1;
+    	if (month <10){
+    	month ='0'+month;}
+    	
     	day = date.getDate();
+    	if (day <10){
+    		day = '0' +day;
+    	}
+ 
     	$('#ordDate').val(year + "-" + month + "-" + day);
     }
     
