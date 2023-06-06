@@ -366,7 +366,7 @@
 							console.log(result);
 							detailGrid.resetData(result);
 							detailGrid.setColumnValues('inspNum', selInspNum, false);
-							setTimeout(() => detailGrid.refreshLayout(), 700);
+							setTimeout(() => detailGrid.refreshLayout(), 300);
 
 						},
 						error: function (reject) {
@@ -703,12 +703,12 @@
 						editor: 'text',
 						align: 'center'
 					},
-					{
+					 {
 						header: '부적합 수량',
 						name: 'nsuitQt',
 						editor: 'text',
 						align: 'center'
-					},
+					}, 
 					{
 						header: '적합여부',
 						name: 'resStat',
@@ -724,6 +724,20 @@
 						
 					}
 				]
+			});
+			
+			// 검사 세부 항목 그리드의 nsuitQt 값 변경 이벤트
+			detailGrid.on('editingStart', (ev) => {
+			  if (ev.columnName === 'nsuitQt') {
+			    const row = ev.instance.getRow(ev.rowKey);
+			    const totNsuitQt = Number($('#totNsuitQt').val());
+			    let totalNsuitQt = 0;
+			    totalNsuitQt += Number(row.nsuitQt || 0);
+			    if (totalNsuitQt > totNsuitQt) {
+			      alert('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.');
+			      ev.stop();
+			    }
+			  }
 			});
 			
 			// 수정하기 버튼 클릭 이벤트
@@ -786,6 +800,7 @@
 			// Toast Grid의 값이 변경될 때마다 호출되는 이벤트 핸들러 등록
 			detailGrid.on('editingFinish', function (e) {
 				if (e.columnName === 'nsuitQt') {
+					checkNsuitQt(); // 수량 초과 여부 확인
 					detailGrid.setValue(e.rowKey, 'resStat', 'STAT-C');
 				} else if (e.columnName === 'resVal') {
 					let compareData = detailGrid.getRow(e.rowKey);
@@ -799,6 +814,31 @@
 				}
 
 			});
+			
+			// 총 수량 초과 여부 확인
+			function checkNsuitQt() {
+		  	const rows = detailGrid.getData();
+		  	let totalNsuitQt = 0;
+		  	rows.forEach(function (row) {
+		    const nsuitQt = parseInt(row.nsuitQt);
+		    if (!isNaN(nsuitQt)) {
+		      totalNsuitQt += nsuitQt;
+		    }
+		  	});
+		  
+		  	const totNsuitQt = parseInt($('#totNsuitQt').val());
+		  	if (totalNsuitQt > totNsuitQt) {
+		    alert('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.');
+		    
+		    let rowKey = detailGrid.getModifiedRows()[0].rowKey;
+		    let prevNsuitQt = detailGrid.getValue(rowKey, 'nsuitQt');
+		    detailGrid.setValue(rowKey, 'nsuitQt', '');
+		    
+		    return false; // 등록을 중지하기 위해 false 반환
+		  	}
+		  
+		  	return true; // 등록을 진행하기 위해 true 반환
+		}
 			 
 			 
 		</script>
