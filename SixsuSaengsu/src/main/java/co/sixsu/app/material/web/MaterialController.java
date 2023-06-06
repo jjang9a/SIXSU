@@ -23,7 +23,7 @@ import co.sixsu.app.material.domain.MatrecVO;
 import co.sixsu.app.material.domain.MatrecWaitVO;
 import co.sixsu.app.material.domain.MatreqVO;
 import co.sixsu.app.material.domain.SpAdjVO;
-import co.sixsu.app.material.domain.SpDmgVO;
+import co.sixsu.app.material.domain.SpLotVO;
 import co.sixsu.app.material.domain.SpShipVO;
 import co.sixsu.app.material.domain.SpVO;
 import co.sixsu.app.material.service.MaterialsService;
@@ -110,6 +110,12 @@ public class MaterialController {
 	@GetMapping("spInfo")
 	public void spList() {
 	}
+	
+	//반제품 LOT 리스트 페이지 열어주기
+	@GetMapping("spLotInfo")
+	public void spLotList() {
+	}
+	
 	
 	//발주내역 리스트
 	@ResponseBody
@@ -309,6 +315,14 @@ public class MaterialController {
 		 System.out.println(vo);
 		 service.insertMatDmg(vo); 
 	 }
+	 
+	//반제품 LOT 리스트
+	@ResponseBody
+	@RequestMapping("splotlist")
+	public List<SpLotVO> getSpLotList(){
+		List<SpLotVO> list = service.getSpLotList();
+		return list;
+	}
 	 
 }
 
