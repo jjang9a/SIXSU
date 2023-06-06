@@ -76,7 +76,7 @@ h1 {
 						id="detailNote" class="empty"></td>
 						<!-- <td colspan="3">  style="width: 660px;"-->
 					<td>검사자</td>
-					<td><input type="text" name="empName" id="empName" readonly>
+					<td><input th:value='${#authentication.principal.empName}' type="text" name="empName" id="empName" readonly>
 					<td>검수 상태</td>
 					<td><input type="text" name="cpShipStat" id="cpShipStat" readonly></td>
 				</tr>
