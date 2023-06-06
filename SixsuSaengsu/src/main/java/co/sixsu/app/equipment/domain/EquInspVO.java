@@ -11,6 +11,7 @@ public class EquInspVO {
 	String equCode; // 설비코드
 	String operCode; // 비가동코드
 	String empId; // 사원코드
+	String empName;
 	String equName; // 설비명
 	String equCheck; // 점검주기
 	String checkDate; // 점검일자 Date
