@@ -5,13 +5,48 @@
 <head>
 <meta charset="UTF-8" />
 <title>완제품출고관리</title>
+<style>
+h1 {
+			margin-bottom: 40px;
+		}
+
+		#cpTable {
+			margin: auto;
+		}
+
+		#cpTable input,
+		select {
+			padding-left: 10px;
+			width: 230px;
+		}
+
+		#divRadio input {
+			padding-left: 7px;
+			width: 20px;
+		}
+
+		#cpTable td {
+			padding: 4px 20px;
+			
+		}
+	
+		
+		.divBtn {
+			text-align: center;
+			padding: 15px 0 30px 0;
+		}
+.modal-body {
+			background: #e5edf5;
+		}
+</style>
 </head>
 <body>
 	<div layout:fragment="content">
 		<form id="searchForm">
-			<h1 class="mt-4" style="font-family: 'MaruBuri'">완제품출고관리</h1>
-			<h3 class="mt-4" style="font-family: 'MaruBuri'">주문현황</h3>
-			상품명 <input type="text" name="cpName" id="cpName" />
+		<h1 class="mt-4" style="font-family: 'MaruBuri'">완제품출고관리</h1>
+		<table id="cpTable">
+					<tr>
+						<td>상품명</td><td> <input type="text" name="cpName" id="cpName" style="width : 199px;"/>
 			<button type="button" data-bs-toggle="modal" id="searchProductBtn"
 				class="sixBtn1" target="#searchModal">
 				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
@@ -19,17 +54,21 @@
           <path
 						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
         </svg>
-			</button>
-			<br /> 상품코드 <input type="text" name="cpId" id="cpId" /> <br />
-			주문일자 <input type="date" name="startDate" id="startDate" /> <input
-				type="date" name="endDate" id="endDate" /> <br />
-		</form>
-
+			</button></td>
+			
+			<td>주문일자</td><td><input type="date" name="startDate" id="startDate" style="width : 120px;"/> <input
+				type="date" name="endDate" id="endDate" style="width : 120px;"/></td>
+</tr>
+<tr>
+        <td>상품코드</td><td> <input type="text" name="cpId" id="cpId" /></td>
+	
+</tr>
+</table>
 		<div class="divBtn">
 			<button type="button" class="sixBtn2 filter_submit" id="search">검색</button>
 			<button type="button" class="sixBtn2 filter_reset" id="clear">초기화</button>
 		</div>
-
+	</form>
 		<div id="orderListGrid"></div>
 
 		<!-- 상품목록 모달창 -->
@@ -424,9 +463,9 @@
           	if(ev.columnName == 'ordDetId'){	
           	 	const focusCell = orderReadyGrid.getFocusedCell()
                	let dataRow = orderReadyGrid.getRow(ev.rowKey);
-          	 	if(dataRow.cpShipStat == "검사요청"){
+          	 	if(dataRow.cpShipStat == "출고검사전"){
           	 		alert("아직 모든 물품이 출고검사가 끝나지 않았습니다.")
-          	 	} else if(dataRow.cpShipStat == "검사완료"){
+          	 	} else if(dataRow.cpShipStat == "출고검사완료"){
           	 		
          	 		$("#shipReadyModal").modal("show");
          	 		
