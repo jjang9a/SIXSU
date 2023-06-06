@@ -382,7 +382,7 @@ LEFT OUTER JOIN  work_bom b
 		         to_char(p.wk_end, 'yyyy-MM-dd') wk_end,
 		         b.proc_id,
 		         r.proc_name,
-                 get_emp_name(q.emp_id) emp_name,
+                 get_emp_name(q.emp_id) emp_name
 		   from  process_performance p 
 LEFT OUTER JOIN  qua_com q 
              ON  p.PRCS_PFMC_ID = q.INSP_STD_ID

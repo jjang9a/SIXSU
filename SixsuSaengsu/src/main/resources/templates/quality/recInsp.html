@@ -212,7 +212,7 @@
 							<div class="col">
 
 								<label for="exampleFormControlInput1" class="form-label">검사자
-								</label> <input type="text" class="form-control" id="empName" name="empName">
+								</label> <input th:value='${#authentication.principal.empName}'type="text" class="form-control" id="empName" name="empName">
 
 							</div>
 						</div>
