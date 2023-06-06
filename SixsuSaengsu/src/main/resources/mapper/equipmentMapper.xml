@@ -95,15 +95,14 @@
 		  LEFT OUTER JOIN oper o
 		    ON c.equ_code = o.equ_code 
 		  ORDER BY c.equ_code 
-	   WHERE
-		
-		<if test='searchType.equals("ecode")'>
+	   <where>
+		<if test='searchType.equals("code")'>
 			c.equ_code like '%'||#{searchKey}||'%' OR lower(c.equ_code) like '%'||#{searchKey}||'%'
 		</if>
-		<if test='searchType.equals("ename")'>
+		<if test='searchType.equals("name")'>
 			c.equ_name like '%'||#{searchKey}||'%' OR lower(c.equ_name) like '%'||#{searchKey}||'%'
 		</if>
-		
+		</where>
   	</select>
 
   	<!-- 설비관리 공정코드(조회) ajax -->
