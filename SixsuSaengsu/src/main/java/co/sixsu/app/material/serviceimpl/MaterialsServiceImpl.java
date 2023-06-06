@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.sixsu.app.material.domain.SpDmgVO;
+import co.sixsu.app.material.domain.SpLotVO;
 import co.sixsu.app.basic.domain.BusVO;
 import co.sixsu.app.material.domain.MatAdjVO;
 import co.sixsu.app.material.domain.MatDmgVO;
@@ -192,6 +193,11 @@ public class MaterialsServiceImpl implements MaterialsService{
 				mapper.insertMatDmg(i);
 			}
 			
+		}
+
+		@Override
+		public List<SpLotVO> getSpLotList() {
+			return mapper.getSpLotList();
 		}
 
 
