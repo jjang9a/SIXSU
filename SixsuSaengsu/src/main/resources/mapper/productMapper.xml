@@ -169,11 +169,9 @@
     <include refid="criteria"></include>
     order by prcs_pfmc_id desc
 </select>
-
 <!-- 공정실적 조회 종료 -->
 
 <!-- 품질겅사 목록 관리 시작 -->
-
 <select id="getInspList" resultType="QilVO">
 	SELECT * FROM QUA_INSP_LIST
 </select>
@@ -191,16 +189,27 @@
 	SET insp_sep = #{inspSep}, insp_name = #{inspName}, insp_exp = #{inspExp}, std_val = #{stdVal}, insp_item_id = #{inspItemId}
 	WHERE insp_id = #{inspId}
 </update>
-
 <!-- 품질겅사 목록 관리 종료 -->
 
 <!-- 반제품 입고 조회 시작 -->
+<sql id="spResSql">
+	<where>
+		<if test="spId != null and spId != ''.toString()">
+			r.sp_id = #{spId}
+		</if>
+		<if test="spRecDate != null and spRecDate != ''.toString() and spRecDate2 != null and spRecDate2 != ''.toString()">
+			and ( sp_rec_date between to_date(#{spRecDate}, 'YYYY-MM-DD') and
+							to_date(#{spRecDate2}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
+		</if>
+	</where>
+</sql>
 <select id="spRecSearch" resultType="ReceiveVO">
-	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, to_char(r.sp_rec_date, 'yyyy/MM/dd') sp_rec_date, e.emp_name, r.sp_lot_id, s.sp_name, r.sp_rec_qt
+	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, to_char(r.sp_rec_date, 'yyyy/MM/dd') sp_rec_date, get_emp_name(emp_id) emp_name, r.sp_lot_id, s.sp_name, r.sp_rec_qt
 	from sp_rec r join semi_prod s 
 	on r.sp_id = s.sp_id
-	LEFT OUTER join employee e
-	on r.emp_id = e.emp_id
+	<include refid="spResSql"></include>
+	order by sp_rec_date desc
 </select>
 <!-- 반제품 입고 조회 종료 -->
+
 </mapper>
