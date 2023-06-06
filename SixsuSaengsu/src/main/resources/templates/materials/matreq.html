@@ -5,6 +5,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>자재발주관리</title>
+	<style>
+		#gridm .redcolor{
+			background-color : #ffe4e4
+		}
+		#gridm .yellowcolor{
+			background-color : #e8f71c63
+		}
+	
+	</style>
 </head>
 
 <body>
@@ -14,38 +23,41 @@
 				<table id="reqTable">
 					<tr>
 						<td>발주번호</td>
-						<td><input type="text" name="mreq" id="mreq" class="empty" placeholder="검색"></td>
+						<td><input type="text" name="matReqId" id="matReqId" class="empty" placeholder="검색"></td>
 					</tr>
 					<tr>
 						<td>자재명</td>
-						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색">
+						<td><input type="text" name="matName" id="matName" class="empty" placeholder="검색">
 						</td>
 					</tr>
 					<tr>
 						<td>거래처명</td>
-						<td><input type="text" name="bname" id="bname" class="empty" placeholder="검색">
+						<td><input type="text" name="busName" id="busName" class="empty" placeholder="검색">
 						</td>
 					</tr>
 					<tr>
 						<td>발주등록일자</td>
 						<td>
-							<input type="date" id="matStartDate"> ~ <input type="date" id="matStartDatee">
+							<input type="date" id="matInSDate"> ~ <input type="date" id="matInEDate">
 						</td>
 					</tr>
 					<tr>
 						<td>발주상태</td> 
-						<td><input type="radio" th:each="req: ${REQSTAT}" th:value="${req.value}" th:text="${req.text}" name="req"></td> 
+						<td>
+						<input type="radio" id="matReqStat1" name="matReqStat" value="">
+								<label for="matHoldStat1">전체</label>
+						<input type="radio" th:each="req: ${REQSTAT}" th:value="${req.value}" th:text="${req.text}" name="matReqStat"></td> 
 					</tr>
 					<tr>
 						<td>납기일자</td>
 						<td>
-							<input type="date" id="matEndDate"> ~ <input type="date" id="matEndDatee">
+							<input type="date" id="matEndSDate"> ~ <input type="date" id="matEndEDate">
 						</td>
 					</tr>
 				</table>
 			</form>
 			<div class="divBtn">
-				<button type="button" class="sixBtn2" id="check" onclick="getList();">조회</button>
+				<button type="button" class="sixBtn2" id="check">조회</button>
 				<button type="button" class="sixBtn3" id="reset">초기화</button>
 			</div>
 		
@@ -66,16 +78,6 @@
 			<div class="modal-dialog modal-lg">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="msearchModalLabel">자재명 조회</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="btns">
-							자재명 <input id="msearch-text" />
-							<button class="sixBtn2" id="msearch-btn">조회</button>
-							<button class="sixBtn2" id="mreset-btn">초기화</button>
-						</div>
 						<div class="modal-body">
 							<div id="gridm"></div>
 						</div>
@@ -90,16 +92,6 @@
 			<div class="modal-dialog modal-lg">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="searchModalLabel">거래처 조회</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="btns">
-							거래처명: <input id="search1-text" />
-							<button class="sixBtn2" id="search1-btn">조회</button>
-							<button class="sixBtn2" id="reset1-btn">초기화</button>
-						</div>
 						<div class="modal-body">
 							<div id="gridt"></div>
 						</div>
@@ -108,40 +100,72 @@
 			</div>
 		</div>
 		<script th:inline="javascript">
-		let reqStat = [[${REQSTAT}]];
-		let transPro='';
+			let reqStat = [[${REQSTAT}]];
+			let transPro='';
 		
 			const gridData = [
 
 			];
 
 
-			window.onload = function () {
+			
 				
 				function setRowDisabled(grid) {
 					let rowList = grid.getData();
 					rowList.forEach((obj) => {
 						if(obj.matReqStat != 'A'){ 
-							grid.disableRow(obj.rowKey, false);
+							grid.disableRow(obj.rowKey, true);
 						}
 					});
 				}
 				
-				$.ajax({
-					url: "/materials/matreqlist",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-						grid.resetData(result);
-						gridInsertRow();
-						grid.setValue(0, 'matReqStat', "A", false);
-						setRowDisabled(grid);
-					},
-					error: function(reject){
-						console.log(reject);
-					}
-					
-				});
+				function matReqList(){
+					$.ajax({
+						url: "/materials/matreqlist",
+						method: "GET",
+						dataType: "JSON",
+						success: function (result) {
+							grid.resetData(result);
+							gridInsertRow();
+							grid.setValue(0, 'matReqStat', "A", false);
+							setRowDisabled(grid);
+						},
+						error: function(reject){
+							console.log(reject);
+						}
+						
+					});
+				}
+				
+				function matReqSearch(matReqId, matName, busName, matReqStat, matInSDate, matInEDate, matEndSDate, matEndSDate, matEndEDate){
+					$.ajax({
+						url: "/materials/matreqsearch",
+						method: "GET",
+						data : {matReqId : matReqId, matName : matName, busName : busName, matReqStat : matReqStat, matInSDate : matInSDate,
+								matInEDate : matInEDate, matEndSDate : matEndSDate, matEndSDate : matEndSDate, matEndEDate : matEndEDate},
+						success: function (result) {
+							grid.resetData(result);
+							setRowDisabled(grid);
+						},
+						error: function(reject){
+							console.log(reject);
+						}
+						
+					});
+				}
+				
+				
+				let matReqId = null;
+				let matName = null;
+				let busName = null;
+				let matReqStat = null;
+				let matInSDate = null;
+				let matInEDate = null;
+				let matEndSDate = null;
+				let matEndEDate = null;
+				
+				
+				matReqList();
 
 
 
@@ -176,6 +200,24 @@
 					dataType : "JSON",
 					success : function(result) {
 						gridm.resetData(result);
+						gridm.getData().forEach(ele=>{
+							if(ele.matSafe/2>ele.matQtSum){
+								gridm.addCellClassName(ele.rowKey, 'matId','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matName','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matSize','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matUnit','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matSafe','redcolor');
+								gridm.addCellClassName(ele.rowKey, 'matQtSum','redcolor');
+							}else if((ele.matSafe)>ele.matQtSum){
+								//gridm.addRowClassName(ele.rowKey,'yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matId','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matName','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matSize','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matUnit','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matSafe','yellowcolor');
+								gridm.addCellClassName(ele.rowKey, 'matQtSum','yellowcolor');
+							}
+						});
 					},
  					error: function(reject) {
 						console.log(reject);
@@ -192,7 +234,7 @@
 				    });
 					
 				})
-			};
+			
 			
 			//테이블에 들어갈 데이터 설정(조회)
 			const grid = new tui.Grid({
@@ -204,9 +246,6 @@
 					useClient: true,
 					perPage: 10
 				},
-
-
-				
 				rowHeaders: ['checkbox'],
 
 
@@ -282,6 +321,11 @@
 				el : document.getElementById('gridt'),
 				scrollX : false,
 				scrollY : false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				minBodyHeight: 400,
 				columns : [ 
 					{
 					header : '거래처번호',
@@ -304,8 +348,15 @@
 			// 모달자재조회 기능
 			const gridm = new tui.Grid({
 				el : document.getElementById('gridm'),
+				//data : gridData,
 				scrollX : false,
 				scrollY : false,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				minBodyHeight: 400,
+				rowHeaders: ['rowNum'],
 				columns : [ 
 					{
 					header : '자재코드',
@@ -316,6 +367,15 @@
 				}, {
 					header : '자재규격',
 					name : 'matSize'
+				}, {
+					header : '단위',
+					name : 'matUnit'
+				}, {
+					header : '안전재고',
+					name : 'matSafe'
+				}, {
+					header : '현재고',
+					name : 'matQtSum'
 				}]
 			});
 	
@@ -332,9 +392,7 @@
 				}
 			});
 
-			
-			//등록버튼을 누르면 추가
-					
+			//발주 등록
 			$('#appendBtn').on("click", function () {
 				
 				$.ajax({
@@ -349,8 +407,7 @@
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {
-								grid.resetData(result);
-								gridInsertRow();
+								grid.setValue(0, 'matReqStat', "A", false);
 								grid.setValue(0, 'busId', grid.getRow(1).busId , false);
 								grid.setValue(0, 'busName', grid.getRow(1).busName , false);
 							},
@@ -387,36 +444,9 @@
 				
  				
  			});
- 			
-			
-			//그리드 안의 내용 콘솔 찍어보기
-/* 			grid.on('click', ev=> {
-				grid.on('click', ev=> {
-		               console.log(ev.rowKey)
-		               console.log(ev.columns)
-		               //grid.addSelectionOnly(ev.rowKey);
-		               const focusCell = grid.getFocusedCell()
-		               console.log(focusCell)
-		               
-		               let dataRow = grid.getRow(ev.rowKey);
-		               console.log(dataRow);
-		               console.log('발주번호 : ' + dataRow.matReqId);
-		            })
-			})  */
-
-
 
 			//체크된 항목 삭제	    
 			$('#delete').on("click", function () {
-				console.log(grid.getCheckedRows());
-				console.log(grid.getCheckedRows().length);
-				var matReqIds = [];
-				console.log("abcd");
-				for (var i = 0; i < grid.getCheckedRows().length; i++) {
-					console.log(grid.getCheckedRows()[i].matReqId);
-					matReqIds.push(grid.getCheckedRows()[i].matReqId);
-
-				}
 
 				$.ajax({
 					url: "/materials/delmatreq",
@@ -439,6 +469,7 @@
 				
 			});
 			
+			//체크된 항목 수정
  			$('#updateBtn').on('click', function () {
  				console.log(JSON.stringify(grid.getCheckedRows()));
 				$.ajax({
@@ -474,37 +505,30 @@
 			
 			//조회하기
 			$('#check').on("click", function () {
-
-				const reqNum = $('#reqNum').val();
-				console.log(reqNum);
-				const matEndDate = $('#matEndDate').val();
-				console.log(matEndDate);
+				matReqId = $('#matReqId').val();
+				matName = $('#matName').val();
+				busName = $('#busName').val();
+				matReqStat = $("input[name='matReqStat']:checked").val();
+				matInSDate = $('#matInSDate').val();
+				matInEDate = $('#matInEDate').val();
+				matEndSDate = $('#matEndSDate').val();
+				matEndEDate = $('#matEndEDate').val();
+				matReqSearch(matReqId, matName, busName, matReqStat, matInSDate, matInEDate, matEndSDate, matEndSDate, matEndEDate);
+				
 			});
 
 			//초기화 버튼 설정
 			$('#reset').on("click", function (e) {
-				$('#reqNum').val('');
-				$('#mname').val('');
-				$('#bname').val('');
-				$('#matStartDate').val('');
-				$('#matStartDatee').val('');
-				$('#matEndDate').val('');
-				$('#matEndDatee').val('');
-
-				//location.reload();
-
-				$.ajax({
-					url: "/materials/mms",
-					method: "GET",
-					dataType: "JSON",
-					success: function (result) {
-						grid.resetData(result);
-						gridInsertRow();
-					},
- 					error: function(reject){
-						console.log(reject);
-					}
-				});
+				$('#matReqId').val('');
+				$('#matName').val('');
+				$('#busName').val('');
+				$("input[name='matReqStat']:checked").val();
+				$('#matInSDate').val('');
+				$('#matInEDate').val('');
+				$('#matEndSDate').val('');
+				$('#matEndEDate').val('');
+				$('input[type="radio"]').prop('checked', false);
+				matReqList();
 				
 			});
 			
@@ -522,7 +546,7 @@
 			
 	    	let selectRow = '';
 	    	grid.on('click', ev=> {
-	    		abc = ev.rowKey;
+	    		selectRow = ev.rowKey;
 	    		const focusCell = grid.getFocusedCell();
 	    		//console.log(focusCell);
 	    		const dataRow = grid.getRow(ev.rowKey);
@@ -539,10 +563,10 @@
     	   		{
 	    	   		let dataRow = gridm.getRow(evm.rowKey);
 	    	   		console.log(dataRow);
-	    	   		grid.setValue(abc, 'matId', dataRow.matId, false);
-	    	   		grid.setValue(abc, 'matName', dataRow.matName, false);
-	    	   		grid.setValue(abc, 'matSize', dataRow.matSize, false);
-	    	   		abc='';
+	    	   		grid.setValue(selectRow, 'matId', dataRow.matId, false);
+	    	   		grid.setValue(selectRow, 'matName', dataRow.matName, false);
+	    	   		grid.setValue(selectRow, 'matSize', dataRow.matSize, false);
+	    	   		selectRow='';
 	    	   		$('#msearchModal').modal('hide');
 			    	grid.blur();
     	   		}
@@ -551,9 +575,9 @@
 	    	gridt.on('click', evt=> {
     			{
     				let dataRow = gridt.getRow(evt.rowKey);
-    				grid.setValue(abc, 'busId', dataRow.busId, false)
-    				grid.setValue(abc, 'busName', dataRow.busName, false)
-    				abc='';
+    				grid.setValue(selectRow, 'busId', dataRow.busId, false)
+    				grid.setValue(selectRow, 'busName', dataRow.busName, false)
+    				selectRow='';
     				$('#search1Modal').modal('hide');
     		    	grid.blur();
     			}

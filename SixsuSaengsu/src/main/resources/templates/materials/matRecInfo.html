@@ -14,40 +14,28 @@
 				<table id="recTable">
 					<tr>
 						<td>자재LOT번호</td>
-						<td><input type="text" name="mlot" id="mlot" class="empty" placeholder="검색"></td>
+						<td><input type="text" name="matLotId" id="matLotId" class="empty" placeholder="검색"></td>
 					</tr>
 					<tr>
 						<td>자재명</td>
-						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색">
-							<!-- <button type="button" data-bs-toggle="modal" id="msearch"
-										class="sixBtn2" data-bs-target="#msearchModal">
-								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
-									viewBox="0 2 16 16">
-									<path
-										d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-								</svg>
-							</button> -->
-						</td>
+						<td><input type="text" name="matName" id="matName" class="empty" placeholder="검색"></td>
+						
 					</tr>
 					<tr>
 						<td>거래처명</td>
-						<td><input type="text" name="bname" id="bname" class="empty" placeholder="검색"><button type="button" data-bs-toggle="modal" id="search1Btn"
-							class="sixBtn2" data-bs-target="#search1Modal">
-							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor" class="bi bi-search"
-								viewBox="0 2 16 16">
-								<path
-									d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-							</svg></button>
-						</td>
+						<td><input type="text" name="busName" id="busName" class="empty" placeholder="검색"></td>
+						
 					</tr>
 					<tr>
 						<td>입고유형</td>
 						<td>
 							<div id="divRadio">
-								<input type="radio" id="matRecStat1" name="matRecStat" value="정상입고">
-								<label for="matRecStat1">정상입고</label>
-								<input type="radio" id="matRecStat2" name="matRecStat" value="조정입고">
-								<label for="matRecStatt2">조정입고</label>
+								<input type="radio" id="matRecType0" name="matRecType" value="">
+								<label for="matRecType0">전체</label>
+								<input type="radio" id="matRecType1" name="matRecType" value="정상입고">
+								<label for="matRecType1">정상입고</label>
+								<input type="radio" id="matRecType2" name="matRecType" value="조정입고">
+								<label for="matRecType2">조정입고</label>
 							</div>
 						</td>
 					</tr>
@@ -58,10 +46,9 @@
 						</td>
 					</tr>
 				</table>
-				<button type="button" class="sixBtn2" id="search">조회</button>
+				<button type="button" class="sixBtn2" id="check">조회</button>
 				<button type="button" class="sixBtn2" id="reset">초기화</button>
 			</form>
-		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 목록</h3>
 		<div id="grids"></div>
 		
 		<script>
@@ -69,12 +56,12 @@
 			const gridData = [
 
 			];
-			window.onload = function () {
-			
+			function matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate){
+				
 				$.ajax({
-					url: "/materials/matreclist",
+					url: "/materials/matrecsearch",
 					method: "GET",
-					dataType: "JSON",
+					data : {matLotId : matLotId, matName : matName, busName : busName, matRecType : matRecType, sDate : sDate, eDate : eDate},
 					success: function (result) {
 						grids.resetData(result);
 						//console.log(result);
@@ -84,18 +71,43 @@
 					}
 					
 				});
-				
-				
-				
-
-				
-				
-				
-			};
-
-
-
+			}
 			
+			let matLotId = null;
+			let matName = null;
+			let busName = null;
+			let matRecType = null;
+			let sDate = null;
+			let eDate = null;
+			
+			matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate);	
+			
+			$('#check').click(function(){
+				matLotId = $('#matLotId').val();
+				matName = $('#matName').val();
+				busName = $('#busName').val();
+				matRecType = $("input[name='matRecType']:checked").val();
+				sDate = $('#matRecDate').val();
+				eDate = $('#matRecDatee').val();
+				matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate);
+			})
+			
+			$('#reset').click(function(){
+				$('#matLotId').val('');
+				$('#matName').val('');
+				$('#busName').val('');
+				$("input[name='matRecType']:checked").val('');
+				$('#matRecDate').val('');
+				$('#matRecDatee').val('');
+				matLotId = $('#matLotId').val();
+				matName = $('#matName').val();
+				busName = $('#busName').val();
+				matRecType = $("input[name='matRecType']:checked").val();
+				sDate = $('#matRecDate').val();
+				eDate = $('#matRecDatee').val();
+				$('input[type="radio"]').prop('checked', false);
+				matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate);
+			})
 			
 			// 입고목록 리스트
  			const gridDataa = [

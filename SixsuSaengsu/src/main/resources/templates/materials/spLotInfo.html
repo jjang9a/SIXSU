@@ -11,15 +11,15 @@
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 LOT 조회</h1>
-		<form action="" method="post" id="matLotForm">
-				<table id="matLotTable">
+		<form action="" method="post" id="spLotForm">
+				<table id="spLotTable">
 					<tr>
 						<td>반제품LOT번호</td>
-						<td><input type="text" name="mlot" id="mlot" class="empty" placeholder="검색"></td>
+						<td><input type="text" name="spLot" id="spLot" class="empty" placeholder="검색"></td>
 					</tr>
 					<tr>
 						<td>반제품명</td>
-						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색">
+						<td><input type="text" name="spName" id="spName" class="empty" placeholder="검색">
 						</td>
 					</tr>
 					<tr>
@@ -56,12 +56,12 @@
 
 
 			
-				function mLotList(lot, mat, holdStat, sDate, eDate){
+				function spLotList(spLotId, spName, spholdStat, sDate, eDate){
 					
 					$.ajax({
 						url: "/materials/splotlist",
 						method: "GET",
-						data:{matLotId : lot, matName : mat, matHoldStat : holdStat, sDate: sDate, eDate:eDate},
+						data:{spLotId : spLotId, spName : spName, spHoldStat : spHoldStat, sDate: sDate, eDate:eDate},
 						success: function (result) {
 							grid.resetData(result);
 						},
@@ -73,36 +73,36 @@
 
 				}
 				
-			let lot =null;
-			let mat = null;
-			let holdStat = null;
+			let spLotId =null;
+			let spName = null;
+			let spHoldStat = null;
 			let sDate = null;
 			let eDate = null;
-			mLotList(lot, mat, sDate, eDate);
+			spLotList(spLotId, spName, spHoldStat, sDate, eDate);
 			
 			$('#check').click(function(){
-				lot = $('#mlot').val();
-				mat = $('#mname').val();
-				holdStat = $("input[name='matHoldStat']:checked").val();
-				sDate = $('#matRecDate').val();
-				eDate = $('#matRecDatee').val();
-				mLotList(lot, mat, holdStat, sDate, eDate);
+				spLotId = $('#spLot').val();
+				spName = $('#spName').val();
+				spHoldStat = $("input[name='spHoldStat']:checked").val();
+				sDate = $('#spRecDate').val();
+				eDate = $('#spRecDatee').val();
+				spLotList(spLotId, spName, spHoldStat, sDate, eDate);
 
 			})
 			
 			$('#reset').click(function(){
-				$('#mlot').val('');
-				$('#mname').val('');
-				$("input[name='matHoldStat']:checked").val('');
-				$('#matRecDatee').val('');
-				$('#matRecDate').val('');
-				lot = $('#mlot').val();
-				mat = $('#mname').val();
-				holdStat = $("input[name='matHoldStat']:checked").val();
-				sDate = $('#matRecDate').val();
-				eDate = $('#matRecDatee').val();
+				$('#spLot').val('');
+				$('#spName').val('');
+				$("input[name='spHoldStat']:checked").val('');
+				$('#spRecDate').val('');
+				$('#spRecDatee').val('');
+				spLotId = $('#spLot').val();
+				spName = $('#spName').val();
+				spHoldStat = $("input[name='spHoldStat']:checked").val();
+				sDate = $('#spRecDate').val();
+				eDate = $('#spRecDatee').val();
 				$('input[type="radio"]').prop('checked', false);
-				mLotList(lot, mat, holdStat, sDate, eDate);
+				spLotList(spLotId, spName, spHoldStat, sDate, eDate);
 
 			})
 			
