@@ -119,7 +119,7 @@ public class ProductController {
 	}
 	
 	// 품질 검사항목 관리
-	@GetMapping("/quality/inspList")
+	@GetMapping("/quality/InspList")
 	public void inspList() { // 화면 띄우기
 	}
 	

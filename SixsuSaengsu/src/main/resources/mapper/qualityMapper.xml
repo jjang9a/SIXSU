@@ -208,7 +208,7 @@
 				insp_num      = #{inspNum},
 				insp_item_id  = #{inspItemId},
 				insp_qt       = #{inspQt},
-				insp_date     = sysdate,
+				insp_date     = to_date(sysdate, 'yyyy-MM-dd'),
 				emp_id        = #{empId},
 				suit_qt       = (#{inspQt}-#{totNsuitQt}),
 				nsuit_qt      = #{totNsuitQt},
@@ -360,7 +360,7 @@ LEFT OUTER JOIN  work_bom b
 				 insp_num      = #{inspNum},
 				 insp_item_id  = #{pdId},
 				 insp_qt       = #{detaQt},
-				 insp_date     = sysdate,
+				 insp_date     = to_date(sysdate, 'yyyy-MM-dd'),
 				 emp_id        = #{empId},
 				 suit_qt       = #{goodQt},
 				 nsuit_qt      = #{dmatQt},
@@ -382,7 +382,7 @@ LEFT OUTER JOIN  work_bom b
 		         to_char(p.wk_end, 'yyyy-MM-dd') wk_end,
 		         b.proc_id,
 		         r.proc_name,
-                 get_emp_name(q.emp_id) emp_name,
+                 get_emp_name(q.emp_id) emp_name
 		   from  process_performance p 
 LEFT OUTER JOIN  qua_com q 
              ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
@@ -404,7 +404,7 @@ LEFT OUTER JOIN  work_bom b
 	<!-- 출고 검사 결과 등록 시 검사 공통 등록 -->
   	<insert id="insertShipCom" parameterType="ShipInspVO">
 		INSERT INTO qua_com (insp_num, insp_std_id, insp_item_id, insp_type, insp_date, emp_id, insp_qt, nsuit_qt, suit_qt, qua_com_note) 
-    	values (#{inspNum}, #{cpShipId}, #{cpId}, 'INSP-C', sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
+    	values (#{inspNum}, #{cpShipId}, #{cpId}, 'INSP-C', to_date(sysdate, 'yyyy-MM-dd'), #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
 	</insert>  
 	
 	<!-- 출고 검사 결과 등록시 검사 세부 등록 -->
@@ -540,7 +540,7 @@ LEFT OUTER JOIN process_performance f
     				        #{retId}, 
     				        #{cpId}, 
     				        'INSP-D', 
-    				        sysdate, 
+    				        to_date(sysdate, 'yyyy-MM-dd'), 
     				        #{empId},
     				        #{retQt},
     				        #{nsuitQt}, 
