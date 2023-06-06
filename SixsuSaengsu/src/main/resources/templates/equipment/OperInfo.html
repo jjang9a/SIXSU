@@ -7,12 +7,36 @@
 	<meta charset="utf-8">
 	<title>비가동 조회 페이지</title>
 	<style>
-		#oTable td {
+		h1 {
+			margin-bottom: 40px;
+		}
+		#oTable {
+			margin: auto;
+			
+		}
+		#oTable input, select, date {
+			padding-left: 10px;
+			width: 230px;
+			height: 30px;
+		}
+		
+		#searchForm td {
 			padding: 4px 10px;
 			text-align: left;
 		}
+		#oTable td {
+			text-align: left;
+			padding: 4px 10px;
+		}
 		#Btn { /* 버튼 */
-			float: right;
+			padding: 0.5em;
+			text-align: right;
+			height: 50px;
+			margin-top: 65px;
+			margin-bottom: 3px;
+		}
+		.center {
+			text-align: center;
 		}
 		.modalTbl {
 			margin: auto;
@@ -35,13 +59,37 @@
 
 	<div layout:fragment="content">
 		
-		<br>
+		
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">비가동 조회</h1>
 		
-		<br>
-		<hr>
-		<br>
-		<!-- 검색 버튼 -->
+		
+		<!-- 검색 인풋 창 -->
+		<Form id="searchForm">
+			<table id="oTable">
+			<tr>
+				<td class="center">설비 코드<span class="needStar"> * </span></td>
+				<td><input type="text" name="equCode" id="ocode" class="empty"></td>
+			
+				<td class="center">설비명<span class="needStar"> * </span></td>
+				<td><input type="text" name="equName" id="oname" class="empty"></td>
+			</tr>
+			<tr>
+				<td id="select">비가동 구분<span class="needStar"> *</span></td>
+				<td id="select">
+					<select id="operType" name="operType">
+						<option value='' selected>===== 선택 =====</option>
+						<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}">
+						</option>
+					</select>
+				</td>
+
+				<td id="date">비가동 시작일<span class="needStar"> * </span></td>
+				<td id="date"><input type="date" name="operStart" id="oname" class="empty"></td>
+				<td id="date"><input type="date" name="operFnish" id="oname" class="empty"></td>
+			</tr>
+			</table>
+			
+			<!-- 검색 버튼 -->
 		<div id="Btn">
 		<button class="sixBtn1" id="searchBtn">
 			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
@@ -49,43 +97,11 @@
                 <path
 					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                 </svg>
-		</button>
-		<button class="sixBtn2" id="reset">초기화</button>
+			</button>
+			<button class="sixBtn2" id="reset">초기화</button>
 		</div>
-		
-		
-		<!-- 검색 인풋 창 -->
-		<Form id="searchForm">
-			<table id="oTable">
-			<tr>
-				<td>설비 코드<span class="needStar"> * </span></td>
-				<td><input type="text" name="equCode" id="ocode" class="empty"></td>
-			
-				<td>설비명<span class="needStar"> * </span></td>
-				<td><input type="text" name="equName" id="oname" class="empty"></td>
-			</tr>
-			<tr>
-				<!-- <td>비가동 구분<span class="needStar"> * </span></td>
-				<td><input type="text" name="operType" id="otype" class="empty"></td> -->
-
-				<td>비가동 구분<span class="needStar"> *</span></td>
-					<td>
-						<select id="operType" name="operType">
-							<option value='' selected>===== 선택 =====</option>
-							<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}">
-							</option>
-						</select>
-					</td>
-
-				<td>비가동 시작일<span class="needStar"> * </span></td>
-				<td><input type="date" name="operStart" id="oname" class="empty"></td>
-				<td><input type="date" name="operFnish" id="oname" class="empty"></td>
-			</tr>
-			</table>
 		</Form>
-		<br>
-		<hr>
-		<br>
+
 
 		<!-- 그리드 시작 -->
 		<div id="grid"></div>
