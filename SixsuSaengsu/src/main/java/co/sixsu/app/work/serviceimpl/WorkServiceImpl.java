@@ -335,6 +335,11 @@ public class WorkServiceImpl implements WorkService{
 		return (String) paramMap.get("resultParam");
 	}
 
+	@Override
+	public List<bomMatVO> getBomMatList(String detaCode) {
+		return mapper.getBomMatList(detaCode);
+	}
+
 	
 	
 }

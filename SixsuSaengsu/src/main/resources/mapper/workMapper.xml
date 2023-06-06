@@ -383,10 +383,23 @@ with work as (
   	<if test="makeFrom != ''">
   		AND TO_DATE(SUBSTR(a.WK_HEAD_ID,1,8),'yyyyMMdd') BETWEEN TO_DATE(#{makeFrom}, 'yyyy-MM-dd') AND TO_DATE(#{makeTo}, 'yyyy-MM-dd')
   	</if>
-    ORDER BY WK_HEAD_ID DESC
-    
+    ORDER BY WK_HEAD_ID DESC    
 </select>
 
+<select id="getBomMatList" resultType="bomMatVO">
+	SELECT a.BOM_MAT_ID, d.COM_NAME ,b.PROC_ID, c.PROC_NAME, a.MAT_ID, e.MAT_NAME, a.CP_QT
+		FROM WORK_BOM_MAT a LEFT JOIN WORK_BOM b ON a.WK_BOM_ID = b. WK_BOM_ID
+		                    LEFT OUTER JOIN PROCESS c ON b.PROC_ID = c.PROC_ID
+		                    LEFT OUTER JOIN COMMON_CODE d ON c.PROC_TYPE = d.COM_ID
+		                    LEFT OUTER JOIN (SELECT MAT_ID,MAT_NAME,MAT_SIZE
+		                                        FROM MATERIAL
+		                                        UNION ALL
+		                                        SELECT SP_ID,SP_NAME,SP_SIZE
+		                                        FROM SEMI_PROD) e ON a.MAT_ID = e.MAT_ID 
+		    WHERE a.WK_BOM_ID IN (SELECT WK_BOM_ID
+		                        FROM WORK_BOM
+		                        WHERE WK_DETA_ID = #{detaCode})
+</select>
 
 
 
