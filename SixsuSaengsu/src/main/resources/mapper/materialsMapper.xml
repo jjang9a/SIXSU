@@ -14,7 +14,7 @@
 		 	<if test="matLotId == null and matLotId == ''.toString()">
 		 	</if>
 		 	<if test="matName != null and matName != ''.toString()">
-		 		and upper(l.mat_name) like '%'|| upper(#{matName}) || '%'
+		 		and l.mat_name like '%'|| upper(#{matName}) || '%'
 		 	</if>
 		 	<if test="matName == null and matName == ''.toString()">
 		 	</if>
@@ -225,7 +225,7 @@
 		 on m.mat_id = l.mat_id
 		where m.mat_stat = 'Y'
 		<if test="matName != null and matName != ''.toString()">
-			and m.mat_name like '%'|| #{matName} || '%'
+			and m.mat_name like '%'|| upper(#{matName}) || '%'
 		</if>
 		<if test="matName == null and matName == ''.toString()">
 		
@@ -463,10 +463,14 @@
 	</select>
 	
 	<!-- 반제품 LOT 리스트 -->
-	<select id="getSpLotList" resultType="SpAdjVO">
-		select l.sp_lot_id, l.sp_id, s.sp_name, s.sp_size, l.sp_qt, l.sp_hold_stat, l.sp_lot_qt_ck
+	<select id="getSpLotList" resultType="SpLotVO">
+        select l.sp_lot_id, l.sp_id, s.sp_name, s.sp_size, l.sp_qt, l.sp_hold_stat, l.sp_lot_qt_ck, to_char(c.sp_rec_date, 'yyyy-MM-dd') sp_rec_date
 		from sp_lot l left join semi_prod s
 		on l.sp_id = s.sp_id
+        left join sp_rec c
+        on l.sp_lot_id = c.sp_lot_id
+        where l.sp_lot_qt_ck = 'Y'
+        order by sp_rec_date desc
 	</select>
 	
 </mapper>
