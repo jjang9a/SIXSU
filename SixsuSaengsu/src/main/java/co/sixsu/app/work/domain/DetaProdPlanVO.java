@@ -31,7 +31,7 @@ public class DetaProdPlanVO {
 	String ordId;
 	int ordDetPrice;
 	int ordSalePrice;
-	Date ordEndDate;
+	String ordEndDate;
 	String cpSize;
 
 }
