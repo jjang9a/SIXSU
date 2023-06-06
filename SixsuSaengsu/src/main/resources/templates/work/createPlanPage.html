@@ -233,7 +233,10 @@ while (defaultData.length < 8){
 				data: JSON.stringify(dataArr), 
 				success : function(result){
 					console.dir(result);
-					//gridP.resetData(result);
+					location.href = '/work/workControllPage';
+					},
+				error(reject){
+						console.err(reject)
 					}
 				})
 			

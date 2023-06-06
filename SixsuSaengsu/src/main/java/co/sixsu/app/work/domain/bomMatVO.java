@@ -8,8 +8,12 @@ public class bomMatVO {
 	String bomMatId;
 	String wkBomId;
 	String matId;
-	int cpQt;
 	String matName;
+	int cpQt;
 	String matSize;
 	String type;
+	
+	String comName;
+	String procId;
+	String procName;
 }
