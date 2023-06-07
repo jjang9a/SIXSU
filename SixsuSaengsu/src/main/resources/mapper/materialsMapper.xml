@@ -57,7 +57,7 @@
 		 	<if test="matRecType == null and matRecType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.mat_rec_date  between #{sDate} and #{eDate}
+		 		and c.mat_rec_date  between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -88,7 +88,7 @@
 		 	<if test="matShipType == null and matShipType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and s.mat_ship_date  between #{sDate} and #{eDate}
+		 		and s.mat_ship_date  between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if> 
@@ -119,7 +119,7 @@
 		 	<if test="spShipType == null and spShipType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and s.sp_ship_date  between #{sDate} and #{eDate}
+		 		and s.sp_ship_date  between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -144,7 +144,7 @@
 		 	<if test="spHoldStat == null and spHoldStat == ''.toString()">
 		 	</if>
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.sp_rec_date  between #{sDate} and #{eDate}
+		 		and c.sp_rec_date  between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -174,12 +174,12 @@
 		 	<if test="matReqStat == null and matReqStat == ''.toString()">
 		 	</if>
 		 	<if test= "matInSDate != ''.toString() and matInEDate != ''.toString()">
-		 		and mat_req_date  between #{matInSDate} and #{matInEDate}
+		 		and mat_req_date  between #{matInSDate} and to_date(#{matInEDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "matInSDate == ''.toString() and matInEDate == ''.toString()">
 		 	</if>
 		 	<if test= "matEndSDate != ''.toString() and matEndEDate != ''.toString()">
-		 		and mat_end_date  between #{matEndSDate} and #{matEndEDate}
+		 		and mat_end_date  between #{matEndSDate} and to_date(#{matEndEDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "matEndSDate == ''.toString() and matEndEDate == ''.toString()">
 		 	</if>
@@ -418,7 +418,7 @@
 			   s.mat_lot_id, 
 			   m.mat_name, 
 			   s.mat_ship_type, 
-			   s.mat_ship_date, 
+			   to_char(s.mat_ship_date, 'yyyy-MM-dd') as mat_ship_date,
 			   s.mat_ship_qt, 
 			   s.mat_ship_note, 
 			   e.emp_name
@@ -433,7 +433,7 @@
 		
 		left join employee e
 		 on s.emp_id = e.emp_id
-
+		order by mat_ship_date desc
 		<!-- 조건 -->
 		<include refid="criteria3"></include>		 
 		
@@ -449,8 +449,9 @@
 		from mat_lot l 
 		left join material m
 		  on l.mat_id = m.mat_id
+		where l.mat_hold_stat = 'N'
 	 	<if test= "matLotId != ''.toString() and matLotId != ''.toString()">
-	 		where l.mat_lot_id like '%'|| upper(#{matLotId}) || '%'
+	 		and l.mat_lot_id like '%'|| upper(#{matLotId}) || '%'
 	 	</if>
 	 	<if test= "matLotId == ''.toString() and matLotId == ''.toString()">
 	 	</if> 		   
@@ -460,9 +461,10 @@
 	<!-- 자재 조정입고 프로시저-->
 	<insert id="matRecAdj" parameterType="MatAdjVO">
     <![CDATA[
-	    call  mat_adj_insert(
+	    call mat_adj_insert(
 	      #{matLotId, mode=IN, jdbcType=VARCHAR},
-	      #{matAdjQt, mode=IN, jdbcType=INTEGER}
+	      #{matAdjQt, mode=IN, jdbcType=INTEGER},
+	      #{empId, mode=IN, jdbcType=VARCHAR}
 	    )
 	    
 	    ]]>
@@ -473,7 +475,8 @@
     <![CDATA[
 	    call  mat_adj_del(
 	      #{matLotId, mode=IN, jdbcType=VARCHAR},
-	      #{matAdjQt, mode=IN, jdbcType=INTEGER}
+	      #{matAdjQt, mode=IN, jdbcType=INTEGER},
+	      #{empId, mode=IN, jdbcType=VARCHAR}
 	    )
 	    
 	    ]]>
@@ -489,8 +492,9 @@
 		  from sp_lot l 
 		  left join semi_prod s
 		    on l.sp_id = s.sp_id
+		  where l.sp_hold_stat = 'N'
 	 	<if test= "spLotId != ''.toString() and spLotId != ''.toString()">
-	 		where l.sp_lot_id like '%'|| upper(#{spLotId}) || '%'
+	 		and l.sp_lot_id like '%'|| upper(#{spLotId}) || '%'
 	 	</if>
 	 	<if test= "spLotId == ''.toString() and spLotId == ''.toString()">
 	 	</if> 			    
@@ -519,6 +523,8 @@
 		 
 		 <!-- 반제품 출고 조회 조건 -->
 		<include refid="criteria4"></include>
+		
+		order by sp_ship_date desc
   	</select>
   	
   	<!-- 반제품 조정입고 프로시저 -->
@@ -526,7 +532,8 @@
     <![CDATA[
 	    call  sp_adj_insert(
 	      #{spLotId, mode=IN, jdbcType=VARCHAR},
-	      #{spAdjQt, mode=IN, jdbcType=INTEGER}
+	      #{spAdjQt, mode=IN, jdbcType=INTEGER},
+	      #{empId}
 	    )
 	    
 	    ]]>
@@ -537,7 +544,8 @@
     <![CDATA[
 	    call  sp_adj_del(
 	      #{spLotId, mode=IN, jdbcType=VARCHAR},
-	      #{spAdjQt, mode=IN, jdbcType=INTEGER}
+	      #{spAdjQt, mode=IN, jdbcType=INTEGER},
+	      #{empId}
 	    )
 	    
 	    ]]>
@@ -587,7 +595,7 @@
 	<!-- 자재 불량처리 -->
   	<insert id="insertMatDmg" parameterType="MatDmgVO">
 		insert into damaged_mat (dmat_id, dmat_stat, emp_Id, insp_num)
-		values (GET_MAT_DMG_ID(), #{dmatResult}, #{empId}, #{inspNum})
+		values (GET_MAT_DMG_ID(), #{dmatStat}, #{empId}, #{inspNum})
   	</insert>
 	
 	<!-- 반제품 리스트 -->

@@ -201,7 +201,7 @@ public class MaterialController {
     @ResponseBody
     public void insertMatRec(@RequestBody List<MatrecVO> vo, Principal principal) {
 		System.out.println(vo);
-		vo.get(0).setEmpId(principal.getName());
+		vo.get(0).setEmpId(principal.getName()); // 로그인 아이디 가져오기
 		service.insertMatRec(vo);
     }
 	
@@ -253,7 +253,8 @@ public class MaterialController {
 	//자재 조정 입고 컨트롤
 	@PostMapping("matrecadj")
     @ResponseBody
-    public void matRecAdj(@RequestBody List<MatAdjVO> vo) {
+    public void matRecAdj(@RequestBody List<MatAdjVO> vo, Principal principal) {
+		vo.get(0).setEmpId(principal.getName());
 		System.out.println(vo);
 		service.matRecAdj(vo);
 		
@@ -262,7 +263,8 @@ public class MaterialController {
 	//자재 조정 출고 컨트롤
 	@PostMapping("matshipadj")
     @ResponseBody
-    public void matShipAdj(@RequestBody List<MatAdjVO> vo) {
+    public void matShipAdj(@RequestBody List<MatAdjVO> vo, Principal principal) {
+		vo.get(0).setEmpId(principal.getName());
 		System.out.println(vo);
 		service.matShipAdj(vo);
 	}
@@ -287,7 +289,8 @@ public class MaterialController {
 	//반제품 조정 입고 컨트롤
 	@PostMapping("sprecadj")
     @ResponseBody
-    public void spRecAdj(@RequestBody List<SpAdjVO> vo) {
+    public void spRecAdj(@RequestBody List<SpAdjVO> vo, Principal principal) {
+		vo.get(0).setEmpId(principal.getName());
 		System.out.println(vo);
 		service.spRecAdj(vo);
 		
@@ -296,7 +299,8 @@ public class MaterialController {
 	//반제품 조정 출고 컨트롤
 	@PostMapping("spshipadj")
     @ResponseBody
-    public void spShipAdj(@RequestBody List<SpAdjVO> vo) {
+    public void spShipAdj(@RequestBody List<SpAdjVO> vo, Principal principal) {
+		vo.get(0).setEmpId(principal.getName());
 		System.out.println(vo);
 		service.spShipAdj(vo);
 	}
@@ -329,10 +333,9 @@ public class MaterialController {
 	 //자재 불량처리
 	 @PostMapping("insertMatDmg")
 	 @ResponseBody 
-	 public void insertMatDmg2(@RequestBody List<MatDmgVO> vo) {
-		 System.out.println("abc");
-		 System.out.println(vo);
-		 service.insertMatDmg(vo); 
+	 public void insertMatDmg2(@RequestBody List<MatDmgVO> vo, Principal principal) {
+		 vo.get(0).setEmpId(principal.getName()); // 로그인 아이디 가져오기
+		 service.insertMatDmg(vo);
 	 }
 	 
 	//반제품 LOT 리스트

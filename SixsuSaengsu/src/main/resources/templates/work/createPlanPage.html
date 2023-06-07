@@ -53,10 +53,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	    margin-right: 10px;
 	  }
 	  #grid2{
-	  	margin-bottom: 40px; 
+	  	margin-bottom: 60px; 
 	  }
 	  #grid4{
-	  	margin-bottom: 60px; 
+	  	margin-bottom: 30px; 
 	  }
 	</style>
 </head>
@@ -65,13 +65,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <div layout:fragment="content">
 
 <h1 class="mt-4" style="font-family: 'MaruBuri';">생산계획 등록</h1>
-<hr>
 
 	<div id="gridContainer1">
 		<div id="grid2"></div>
-		<button class="moveBtn sixBtn4">선택</button>
-		<button class="removeBtn sixBtn4">삭제</button>
-
 		<div id="grid1">
 		
 			 <div class="form-row">
@@ -101,6 +97,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	</div>
 	<div id="gridContainer2">
 		<div id="grid4"></div>
+		<button class="moveBtn sixBtn4">선택</button>
+		<button class="removeBtn sixBtn4">삭제</button>
 		<div id="grid3"></div>
 	</div>
 	
