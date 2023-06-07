@@ -24,7 +24,7 @@
 		 	<if test="matHoldStat == null and matHoldStat == ''.toString()">
 		 	</if>
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and mat_rec_date between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
+		 		and mat_rec_date between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if> 
@@ -57,7 +57,7 @@
 		 	<if test="matRecType == null and matRecType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.mat_rec_date  between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
+		 		and c.mat_rec_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -88,7 +88,7 @@
 		 	<if test="matShipType == null and matShipType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and s.mat_ship_date  between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
+		 		and s.mat_ship_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if> 
@@ -119,7 +119,7 @@
 		 	<if test="spShipType == null and spShipType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and s.sp_ship_date  between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
+		 		and s.sp_ship_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -144,7 +144,7 @@
 		 	<if test="spHoldStat == null and spHoldStat == ''.toString()">
 		 	</if>
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.sp_rec_date  between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
+		 		and c.sp_rec_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -174,12 +174,12 @@
 		 	<if test="matReqStat == null and matReqStat == ''.toString()">
 		 	</if>
 		 	<if test= "matInSDate != ''.toString() and matInEDate != ''.toString()">
-		 		and mat_req_date  between #{matInSDate} and to_date(#{matInEDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
+		 		and mat_req_date  between to_date(#{matInSDate}, 'yyyy-MM-dd') and to_date(#{matInEDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "matInSDate == ''.toString() and matInEDate == ''.toString()">
 		 	</if>
 		 	<if test= "matEndSDate != ''.toString() and matEndEDate != ''.toString()">
-		 		and mat_end_date  between #{matEndSDate} and to_date(#{matEndEDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
+		 		and mat_end_date  between to_date(#{matEndSDate}, 'yyyy-MM-dd') and to_date(#{matEndEDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "matEndSDate == ''.toString() and matEndEDate == ''.toString()">
 		 	</if>
@@ -260,7 +260,7 @@
 		        #{busId}, 
 		        #{matId}, 
 		        #{matReqQt}, 
-		        to_date(#{matEndDate},'yyyy-mm-dd'),
+		        to_date(#{matEndDate},'yyyy-MM-dd'),
 		        #{empId})
 	</insert>
 	
@@ -275,7 +275,7 @@
 	<!-- 자재 발주 수정 -->
   	<update id="updateMatReq" parameterType="MatreqVO">
 	  	update mat_req
-	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = to_date(#{matEndDate},'yyyy-mm-dd')
+	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = to_date(#{matEndDate},'yyyy-MM-dd')
 	  	where mat_req_id = #{matReqId}
   	</update>
   	
@@ -433,10 +433,10 @@
 		
 		left join employee e
 		 on s.emp_id = e.emp_id
-		order by mat_ship_date desc
+		
 		<!-- 조건 -->
 		<include refid="criteria3"></include>		 
-		
+		order by mat_ship_date desc
 	</select>
 	
 	<!-- 자재 재고조정 페이지 -->
@@ -506,7 +506,7 @@
   			   s.sp_lot_id, 
   			   p.sp_name, 
   			   s.sp_ship_type, 
-  			   to_char(s.sp_ship_date, 'yyyy-mm-dd') as sp_ship_date, 
+  			   to_char(s.sp_ship_date, 'yyyy-MM-dd') as sp_ship_date, 
   			   s.sp_ship_qt, 
   			   s.sp_ship_note, 
   			   e.emp_name
@@ -553,7 +553,7 @@
   	
   	<!-- 불량자재 처리대기 리스트 -->
 	<select id="getMatDmgWaitList" resultType="MatDmgVO">
-		SELECT d.insp_num, to_char(c.insp_date, 'yyyy-mm-dd') as insp_date, m.mat_id, m.mat_name, m.mat_size, to_number(d.res_val) as res_val, get_emp_name(c.emp_id) as emp_name
+		SELECT d.insp_num, to_char(c.insp_date, 'yyyy-MM-dd') as insp_date, m.mat_id, m.mat_name, m.mat_size, to_number(d.res_val) as res_val, get_emp_name(c.emp_id) as emp_name
 		FROM qua_details d
 		JOIN qua_com c 
 		 ON d.insp_num = c.insp_num
