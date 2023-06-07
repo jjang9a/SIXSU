@@ -1,5 +1,6 @@
 package co.sixsu.app.material.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,9 +145,11 @@ public class MaterialController {
 	//발주등록 컨트롤
 	@ResponseBody
 	@PostMapping("insertmatreq")
-	public MatreqVO insertMatReq(@RequestBody MatreqVO vo) {		
+	public MatreqVO insertMatReq(@RequestBody MatreqVO vo, Principal principal) {		
 		System.out.println(vo);
-		vo.setEmpId("12345");
+		String id = principal.getName();
+		vo.setEmpId(id);
+		System.out.println(id);
 		service.insertMatReq(vo);
 		return vo;
 		
@@ -196,8 +199,9 @@ public class MaterialController {
 	//입고등록
 	@PostMapping("insertmatrec")
     @ResponseBody
-    public void insertMatRec(@RequestBody List<MatrecVO> vo) {
+    public void insertMatRec(@RequestBody List<MatrecVO> vo, Principal principal) {
 		System.out.println(vo);
+		vo.get(0).setEmpId(principal.getName());
 		service.insertMatRec(vo);
     }
 	

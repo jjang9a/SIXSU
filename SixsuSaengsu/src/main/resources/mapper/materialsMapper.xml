@@ -24,7 +24,7 @@
 		 	<if test="matHoldStat == null and matHoldStat == ''.toString()">
 		 	</if>
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.mat_rec_date  between #{sDate} and #{eDate}
+		 		and mat_rec_date between #{sDate} and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if> 
@@ -260,7 +260,7 @@
 		        #{busId}, 
 		        #{matId}, 
 		        #{matReqQt}, 
-		        to_date(#{matEndDate}), 
+		        to_date(#{matEndDate},'yyyy-mm-dd'),
 		        #{empId})
 	</insert>
 	
@@ -275,13 +275,13 @@
 	<!-- 자재 발주 수정 -->
   	<update id="updateMatReq" parameterType="MatreqVO">
 	  	update mat_req
-	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = to_date(#{matEndDate})
+	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = to_date(#{matEndDate},'yyyy-mm-dd')
 	  	where mat_req_id = #{matReqId}
   	</update>
   	
 	<!-- 입고대기 목록 -->
 	<select id="selectMatRecWaitList" resultType="MatrecWaitVO">
-		select q.insp_num, m.mat_req_id, q.insp_item_id, t.mat_name, q.suit_qt, to_char(q.insp_date, 'yyyy-mm-dd') as insp_date
+		select q.insp_num, m.mat_req_id, q.insp_item_id, t.mat_name, q.suit_qt, to_char(q.insp_date, 'yyyy-mm-dd') as insp_date, get_emp_name(q.emp_id) emp_name
 		  from qua_com q 
 		  left join mat_req m
 		    on q.insp_std_id = m.mat_req_id
@@ -304,7 +304,7 @@
 	       c.mat_lot_id,
 	       l.mat_name, 
 	       b.bus_name, 
-	       GET_EMP_NAME(emp_id) as emp_name
+	       GET_EMP_NAME(c.emp_id) as emp_name
 		from mat_rec c 
 		left join mat_req q
 		 on c.mat_req_id = q.mat_req_id
@@ -332,7 +332,7 @@
 	       c.mat_lot_id,
 	       l.mat_name, 
 	       b.bus_name, 
-	       GET_EMP_NAME(emp_id) as emp_name
+	       GET_EMP_NAME(c.emp_id) as emp_name
 		from mat_rec c 
 		left join mat_req q
 		 on c.mat_req_id = q.mat_req_id
@@ -353,7 +353,8 @@
 	<insert id="insertMatRec" parameterType="MatrecVO">
     <![CDATA[
 	    CALL IN_MAT_REC(
-	      #{matReqId}
+	      #{matReqId},
+	      #{empId}
 	    )
 	    ]]>
   	</insert>
