@@ -82,6 +82,8 @@
 
 		#searchKey {
 			width: 160px;
+			background-color: white;
+			border: 0.1px solid black;
 		}
 
 		.tab button {
@@ -367,6 +369,7 @@
 
 			// 검색창 엔터 버튼 이벤트
 			$("#searchKey").on('keydown', function (e) {
+				e.preventDefault();
 				if (e.keyCode == 13) {
 					$("#searchForm button").click();
 				}

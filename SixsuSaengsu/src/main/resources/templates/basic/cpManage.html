@@ -281,6 +281,9 @@
 					dataType: "JSON",
 					success: function (result) {
 						grid.resetData(result);
+						$('.empty').val('');
+						$('#cpSize').val('').prop("selected", true);
+						$("input:radio[name='cpStat']:radio[value='Y']").prop('checked', true);
 					}
 				});
 			})
