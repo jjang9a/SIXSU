@@ -348,7 +348,7 @@ with work as (
     AND SUBSTR(a.WK_HEAD_ID, 0,8) >= TO_CHAR((SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul'), 'yyyyMMdd') OR a.WK_DETA_ID IN (SELECT WK_DETA_ID FROM DETA_WORK_ORDR WHERE START_DATE >= TRUNC((SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul')))
     OR a.END_DATE > TRUNC(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul')
     OR CMPLT_ST = '진행중'
-    ORDER BY WK_HEAD_ID
+    ORDER BY TO_DATE(SUBSTR(WK_HEAD_ID,0,8),'yyyyMMdd') DESC, TO_NUMBER(SUBSTR(WK_HEAD_ID,10,2))DESC
 </select>
 
 <select id="workFilterAjax" parameterType="WorkFilterDataVO" resultType="DetaWorkOrdrVO">
