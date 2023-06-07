@@ -325,17 +325,17 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
  	        editor: 'text'
  	      },
  	      {
- 	        header: '생산일',// 아직VO에 없음 정의못했음
+ 	        header: '생산일',
  	        name: 'startDate',
- 	        editor: 'datePicker'
+ 	       	editor: 'datePicker'
  	      },
  	      {
- 	        header: '종료일',// 아직VO에 없음 정의못했음
+ 	        header: '종료일',
  	        name: 'endDate',
- 	        editor: 'datePicker'
+ 	       	editor: 'datePicker'
  	 	  },
  	 		{
- 	 	        header: '담당자',// 아직VO에 없음 정의못했음
+ 	 	        header: '담당자',
  	 	        name: 'empName'
  	 	 	  },
 	 	 	{
@@ -536,6 +536,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	 	        editorOptions: {
 	 	        	type: 'number'
 	 	        }
+	 	      },
+	 	      {
+	 	    	header: '사용가능개수',
+	 	    	name: 'sumQt',
+	 	    	editor: 'text'
 	 	      }
 		    ]
 		  });
@@ -659,10 +664,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		let WorkCode = document.getElementById("orderCodeInput").placeholder 
 		$.ajax({
 				url : "/ajax/addDetaWork",
-				method : "GET",
-				dataType : "JSON",
+				method : "POST",
 				contentType: "application/json",
-				data : { data: WorkCode },
+				data : JSON.stringify({wkHeadId : WorkCode,
+										empId : empId}),
 				success : function(result){
 					console.dir(result);
 					grid1.resetData(result);
@@ -771,13 +776,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		selectBomWorkCode = '';
 		selectMatWorkCode = '';
 	})
-	
+	let empId = '[[${#authentication.principal.empId}]]'
 	grid1.on('afterChange', function (ev) {
 		  let getRow = grid1.getRow(grid1Ev.rowKey)
-		  console.log(getRow)
-		  console.log('ev : ')
-		  console.log(ev)
-		  console.log(ev.changes[0].columnName)
 		  if(ev.changes[0].columnName == 'cpId'){
 			  getRow.single = 'Y';
 		  }
@@ -990,6 +991,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	//모달안에 그리드중 데이터클릭시 작동. 모달닫히는거까지
 	grid_product.on('click',ev => {
+		bom_search1.clear()
+		bom_search2.clear()
 		let cpId = grid_product.getRow(ev.rowKey).cpId
 		let cpName = grid_product.getRow(ev.rowKey).cpName
 		console.log('들어가는 데이터 : ' + cpId + '  ' + cpName)
@@ -1106,16 +1109,21 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	$('.submitBtn').on('click',function(){
 		console.log('WorkCode : ')
 		let workCode = document.getElementById("orderCodeInput").placeholder
-		console.log(workCode)
+		let empId = '[[${#authentication.principal.empId}]]'
+		console.log(empId)
 		$.ajax({
 			url: "/ajax/addSubmit",
-			method: "GET",
-			data : { data: workCode},
+			method: "POST",
+			contentType: "application/json",
+			data : JSON.stringify({ wkHeadId: workCode,
+					 empId : empId}),
 			success: function (result){
 				console.log('RESULT : ');
 				console.log(result);
 				alert(result);
-				location.href = '/work/workControllPage';
+				if(result == '등록되었습니다 !'){
+					location.href = '/work/workControllPage';
+				}
 			},
 			error: function(reject){
 				console.err(reject)
