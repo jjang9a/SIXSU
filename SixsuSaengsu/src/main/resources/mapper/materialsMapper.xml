@@ -24,7 +24,7 @@
 		 	<if test="matHoldStat == null and matHoldStat == ''.toString()">
 		 	</if>
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.mat_rec_date  between #{sDate} and #{eDate}
+		 		and mat_rec_date between #{sDate} and #{eDate}
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if> 
