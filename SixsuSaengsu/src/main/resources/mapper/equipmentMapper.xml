@@ -115,14 +115,21 @@
 
 	<!-- 설비관리(등록) -->
 	<insert id="equAdd" parameterType="EquConVO">
+	<selectKey keyProperty="equCode" resultType="string" order="BEFORE">
+	select 'EQU_' || LPAD(EQU_SEQ.nextval, 3, '0') from dual
+	</selectKey>
 		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, emp_id, equ_check, add_date, c_temp)
-		VALUES(('EQU_' || LPAD(EQU_SEQ.nextval, 3, '0')), #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, #{addDate}, #{ctemp})
+		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, to_date(#{addDate})
+		<if test="ctemp != ''">
+			, #{ctemp}
+		</if>
+		)
 	</insert>
 	
-	<!-- 설비관리(수정) -->
+	<!-- 설비관리(수정) -->																																								
 	<update id="equUpdate" parameterType="EquConVO">
 		UPDATE equ_con
-		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date=#{addDate}, c_temp=#{ctemp}
+		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date = to_date(#{addDate}), c_temp=#{ctemp}
 		WHERE equ_code=#{equCode}
 	</update>
 	
@@ -188,26 +195,26 @@
 				
   		 	</where>
   		 	
-  		 	
-  		 
-  		 	
-  		 	
-  		 	
-  		 	
   	</select>
   	
   	<!-- 점검 관리(등록) -->
-  	<insert id="checkAdd" parameterType="EquInspVO">
+  	<insert id="checkAdd" parameterType="EquInspVO" >
+  	<selectKey keyColumn="check_code,check_date,check_next" keyProperty="checkCode,checkDate,checkNext" resultType="map" order="BEFORE">
+  		select 'CHECK_' || LPAD(CHECK_SEQ.nextval, 3, '0') as "check_code",
+		  		to_char(sysdate,'YYYY/MM/dd') as "check_date", 
+		  		to_char(add_months(sysdate, #{equCheck}), 'YYYY/MM/dd') as "check_next"       
+  		from dual
+  	</selectKey>
 		INSERT INTO equ_insp (check_code, equ_code, equ_name, check_date, check_next, equ_check, equ_suit, check_type, check_info, check_com, check_note, emp_id)
-		VALUES(('CHECK_' || LPAD(CHECK_SEQ.nextval, 3, '0')), #{equCode}, #{equName}, sysdate, to_date(add_months(sysdate, #{equCheck}), 'yy/MM/dd'), #{equCheck}||'개월', #{equSuit}, #{checkType}, #{checkInfo}, #{checkCom}, #{checkNote}, #{empId})
+		VALUES(#{checkCode}, #{equCode}, #{equName}, #{checkDate}, #{checkNext}, #{equCheck}||'개월', #{equSuit}, #{checkType}, #{checkInfo}, #{checkCom}, #{checkNote}, #{empId})
 	</insert>
 	
 	<!-- 점검 관리(수정) -->
 	<update id="cUpdate" parameterType="EquInspVO">
 		UPDATE equ_insp
-		SET check_code=#{checkCode}, equ_code=#{equCode}, equ_name=#{equName}, check_date=#{checkDate}, check_next=#{checkNext}, equ_check=#{equCheck}, equ_suit=#{equSuit}, check_type=#{checkType}, check_info=#{checkInfo}, check_com=#{checkCom}, check_note=#{checkNote}, emp_id=#{empId}
+		SET check_code=#{checkCode}, equ_code=#{equCode}, equ_name=#{equName}, check_date= to_date(#{checkDate}), check_next = to_date(#{checkNext}), equ_check=#{equCheck}, equ_suit=#{equSuit}, check_type=#{checkType}, check_info=#{checkInfo}, check_com=#{checkCom}, check_note=#{checkNote}, emp_id=#{empId}
 		WHERE check_code=#{checkCode}
-	</update> 
+	</update> 														
 						
 	
 	<!-- 점검 관리(삭제) -->
@@ -228,7 +235,7 @@
   	        o.oper_note, 
   	        c.equ_stat
 	   FROM equ_con c
-	   LEFT OUTER JOIN equ_oper o
+	   JOIN equ_oper o
 		 ON c.equ_code = o.equ_code
 		 ORDER BY o.oper_code 
   	</select>
@@ -238,7 +245,7 @@
   	<sql id="criteria">
 			<where>
 				<if test="equCode != null and equCode != ''.toString()">
-	       		 	 c.equ_code like '%'||#{equCode}||'%' OR lower(c.equ_code) like '%'||#{equCode}||'%'
+	       		 	 (c.equ_code like '%'||#{equCode}||'%' OR lower(c.equ_code) like '%'||#{equCode}||'%')
 	     		 </if>
 				
 				<if test="equName != null and equName != ''.toString()">
@@ -269,7 +276,7 @@
   	        o.oper_note, 
   	        c.equ_stat
 	   FROM equ_con c
-	   LEFT OUTER JOIN equ_oper o
+	   JOIN equ_oper o
 		 ON c.equ_code = o.equ_code
 		 
 		 <include refid="criteria"></include>	
@@ -278,7 +285,7 @@
   	<!-- 비가동 관리(수정) -->
 	<update id="oUpdate" parameterType="EquOperVO">
 		UPDATE equ_oper
-		SET oper_code=#{operCode}, equ_code=#{equCode}, equ_name=#{equName}, oper_type=#{operType}, oper_note=#{operNote}, emp_id=#{empId}
+		SET oper_code=#{operCode}, equ_code=#{equCode}, oper_type=#{operType}, oper_note=#{operNote}, emp_id=#{empId}
 		WHERE oper_code=#{operCode}
 	</update> 
 	
@@ -305,7 +312,7 @@
 	<!-- 비가동 관리 비가동 종료버튼(가동 등록) -->
   	<update id="fnishIn" parameterType="EquOperVO">
 		UPDATE equ_oper
-		SET oper_fnish=to_date(#{operFinish}, 'yyyy-MM-dd')
+		SET oper_fnish = to_date(#{operFnish}, 'yyyy-MM-dd')
 		WHERE oper_code = #{operCode}
 	</update>   
 	
