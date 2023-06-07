@@ -46,6 +46,8 @@ import co.sixsu.app.work.service.WorkService;
 			return "work/modifyWorkPage";
 		}
 		
+		
+		
 		@GetMapping("/work/workKiosk")
 		public String xPage() {
 			return "/work/workKiosk";
