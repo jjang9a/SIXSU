@@ -330,6 +330,7 @@ public class WorkServiceImpl implements WorkService{
 	@Override
 	public String endWorkOrder(String wkDetaId) {
 		Map<String, Object> paramMap = new HashMap<>();
+		System.err.println(wkDetaId);
 		paramMap.put("detaCode", wkDetaId);
 		paramMap.put("resultParam", null);
 		mapper.endWorkOrder(paramMap);
