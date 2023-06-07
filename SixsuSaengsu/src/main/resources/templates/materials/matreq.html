@@ -394,7 +394,7 @@
 
 			//발주 등록
 			$('#appendBtn').on("click", function () {
-				
+				grid.blur();
 				$.ajax({
 					url: "/materials/matreqlist",
 					method: "GET",
@@ -434,6 +434,7 @@
 					success: function (result) {
 						console.log(result);
 						alert('발주 등록 완료');
+						matReqList();
 					},
  					error: function(reject){
 						console.log(reject);

@@ -11,4 +11,5 @@ public class MatrecWaitVO {
 	int suitQt;
 	String inspDate;
 	String matReqId;
+	String empName;
 }

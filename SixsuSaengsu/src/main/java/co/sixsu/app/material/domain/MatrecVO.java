@@ -18,6 +18,7 @@ public class MatrecVO {
 	String empName;
 	String matLotId;
 	String outMessage =" ";
+	String empId;
 	
 	String sDate;
 	String eDate;

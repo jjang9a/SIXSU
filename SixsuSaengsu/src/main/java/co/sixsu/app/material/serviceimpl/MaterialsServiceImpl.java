@@ -87,7 +87,9 @@ public class MaterialsServiceImpl implements MaterialsService{
 		//자재 입고 등록
 		@Override
 		public void insertMatRec(List<MatrecVO> vo) {
+			String id = vo.get(0).getEmpId();
 			for(MatrecVO i : vo) {
+				i.setEmpId(id);
 				mapper.insertMatRec(i);
 			}
 		}
@@ -133,7 +135,9 @@ public class MaterialsServiceImpl implements MaterialsService{
 		//자재 조정입고
 		@Override
 		public void matRecAdj(List<MatAdjVO> vo) {
+			String id = vo.get(0).getEmpId();
 			for(MatAdjVO i : vo) {
+				i.setEmpId(id);
 				mapper.matRecAdj(i);
 			}
 		}
@@ -141,7 +145,9 @@ public class MaterialsServiceImpl implements MaterialsService{
 		//자재 조정출고
 		@Override
 		public void matShipAdj(List<MatAdjVO> vo) {
+			String id = vo.get(0).getEmpId();
 			for(MatAdjVO i : vo) {
+				i.setEmpId(id);
 				mapper.matShipAdj(i);
 			}
 			
@@ -159,18 +165,22 @@ public class MaterialsServiceImpl implements MaterialsService{
 			return mapper.getSpShipList(vo);
 		}
 		
-		//자재 조정입고
+		//반제품 조정입고
 		@Override
 		public void spRecAdj(List<SpAdjVO> vo) {
+			String id = vo.get(0).getEmpId();
 			for(SpAdjVO i : vo) {
+				i.setEmpId(id);
 				mapper.spRecAdj(i);
 			}
 		}
 		
-		//자재 조정출고
+		//반제품 조정출고
 		@Override
 		public void spShipAdj(List<SpAdjVO> vo) {
+			String id = vo.get(0).getEmpId();
 			for(SpAdjVO i : vo) {
+				i.setEmpId(id);
 				mapper.spShipAdj(i);
 			}
 			
@@ -198,9 +208,10 @@ public class MaterialsServiceImpl implements MaterialsService{
 		@Override
 		public void insertMatDmg(List<MatDmgVO> vo) {
 			String stat = vo.get(0).getDmatResult();
+			String id = vo.get(0).getEmpId();
 			for(MatDmgVO i : vo) {
 				i.setDmatStat(stat);
-				i.setEmpId("1003");
+				i.setEmpId(id);
 				mapper.insertMatDmg(i);
 			}
 			

@@ -17,15 +17,19 @@
 			padding-left: 10px;
 			width: 230px;
 		}
+		#modal-content {
+			width: 500px;
+		}
 		.divBtn {
 			text-align: center;
-			padding: 15px 0 30px 0;
+			padding: 15px 0 10px 0;
+			margin-bottom: 12px;
 		}
 		.sixBtn2 {
 			margin-right: 7px;
 		}
 		#addForm td {
-			padding: 4px 20px;
+			padding: 4px 10px;
 			text-align: left;
 		}
 		#addDate{
@@ -36,9 +40,9 @@
 			margin: auto;
 			text-align: center;
 			/* height: 400px; */
-			width: 400px;
+			width: 500px;
 			background: #e5edf5;
-			padding-right: 20px;
+			padding-right: 10px;
 		}	
 		.modal-footer {
 			text-align: center;
@@ -94,9 +98,9 @@
 					<td><input type="date" name="addDate" id="addDate" class="empty"></td>
 				
 					<td>담당자<span class="needStar"> *</span></td>
-					<!-- <td><input type="text" name="empId" id="empId" class="empty"></td>  -->
-					<td><input type="text" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empName}'></td> .
-					<input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'>
+					
+					<td><input type="text" name="empName" id="empName" class="empty" th:value='${#authentication.principal.empName}'></td> .
+					<!-- <input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'> -->
 				</tr>
 			</table>
 
@@ -337,7 +341,7 @@
 						console.log(result);
 						//등록 버튼을 누르면 리스트에 삽입된다.     
 						const appendedData = result
-						grid.appendRow(appendedData);
+						grid.prependRow(appendedData);
 						// 리스트를 리셋. 등록데이터가 바로 뜸.
 						grid.resetData(result);
 						setTimeout(() => orderingGrid.refreshLayout(), 1000);
@@ -359,7 +363,7 @@
 				
 				console.log($('#addForm').serialize())
 				$.ajax({
-					url: '/equipment/equUpdate',
+					url: 'equUpdate',
 					type: 'post',
 					data: $('#addForm').serialize(),
 					dataType: 'json',

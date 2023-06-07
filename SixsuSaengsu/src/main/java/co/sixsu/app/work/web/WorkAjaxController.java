@@ -30,10 +30,6 @@ import co.sixsu.app.work.service.WorkService;
 public class WorkAjaxController {
 	
 	@Autowired WorkService service;
-	//@RequestParam(required = false)
-	//@ResponseBody
-	//contentType : application/json  
-	//data : JSON.stringfy()
 	
 	@RequestMapping("planAjax")
 	public List<DetaProdPlanVO> palnListData() {
@@ -44,8 +40,6 @@ public class WorkAjaxController {
 	
 	@RequestMapping("planFilterAjax")
 	public List<DetaProdPlanVO> palnFilterListData(@RequestBody  PlanDataVO data) {
-		System.out.println("받아들인 데이터 >");
-		System.out.println(data);
 		String checkFilter = "";
 		
 		if(data.getStatusCheckbox().length != 0) {
@@ -59,7 +53,6 @@ public class WorkAjaxController {
 			}
 			checkFilter += "))";
 			data.setStatusFilter(checkFilter);
-			System.out.println(checkFilter);
 		}
 		List<DetaProdPlanVO> list = service.getPlanFilter(data);
 		
@@ -78,7 +71,6 @@ public class WorkAjaxController {
 	};
 	@RequestMapping("workFilterAjax")
 	public List<DetaWorkOrdrVO> workFilterAjax(@RequestBody WorkFilterDataVO data){
-		System.out.println(data);
 		List<DetaWorkOrdrVO> list = service.workFilterAjax(data);
 		return list;
 	}
@@ -96,23 +88,18 @@ public class WorkAjaxController {
 	@RequestMapping("sorderListAjax")
 	public List<SorderVO> sorderList() {
 		List<SorderVO> list = service.getSorder();
-		System.out.println(list);
 		return list;
 	}
 	
 	@RequestMapping("detOrdListAjax")
 	public List<detOrdVO> detOrdList(@RequestParam String ordId ) {
 		List<detOrdVO> list = service.getdetOrd(ordId);
-		System.out.println("클릭된 GRID2의 상세주문 내역 >");
-		System.out.println(list);
 		return list;
 	}
 	
 	@RequestMapping("getProductList")
 	public List<ProductVO> getProductList() {
 		List<ProductVO> list = service.getProductList();
-		System.out.println("제품조회 리스트");
-		System.out.println(list);
 		return list;
 	}
 	
@@ -127,24 +114,18 @@ public class WorkAjaxController {
 	@RequestMapping("getDetaPlanList")
 	public List<addPlanVO> getDetaPlanList(@RequestParam String planHeadId ) {
 		List<addPlanVO> list = service.getDetaPlanList(planHeadId);
-		System.out.println("클릭된 GRID2의 상세주문 내역 >");
-		System.out.println(list);
 		return list;
 	}
 	
 	@RequestMapping("getProcessList")
 	public List<ProcessVO> getDetaPlanList() {
 		List<ProcessVO> list = service.getProcessList();
-		System.out.println("공정리스트 출력 >");
-		System.out.println(list);
 		return list;
 	}
 	
 	@RequestMapping("getMaterialList")
 	public List<MatVO> getMaterialList() {
 		List<MatVO> list = service.getMaterialList();
-		System.out.println("자재 및 반제품 출력 >");
-		System.out.println(list);
 		return list;
 	}
 	
@@ -161,7 +142,6 @@ public class WorkAjaxController {
 	 */
 	@RequestMapping("getWkBomList")
 	public List<workBomVO> getWkBomList(@RequestParam String data) {
-		System.out.println("HIRE IS WorkAjaxController AND My data IS = " + data);
 		List<workBomVO> list = service.getWkBomList(data);
 		return list;
 	}
@@ -173,61 +153,52 @@ public class WorkAjaxController {
 	 */
 	@RequestMapping("plusBomList")
 	public List<workBomVO> plusBomList(@RequestParam String data) {
-		System.out.println(data);
 		List<workBomVO> list = service.plusBomList(data);
 		return list;
 	}
 	
 	@RequestMapping("getWkMatList")
 	public List<bomMatVO> getWkMatList(@RequestParam String data) {
-		System.out.println(data);
 		List<bomMatVO> list = service.getWkMatList(data);
 		return list;
 	}
 	
 	@RequestMapping("plusMatList")
 	public List<bomMatVO> plusMatList(@RequestParam String data) {
-		System.out.println(data);
 		List<bomMatVO> list = service.plusMatList(data);
 		return list;
 	}
 	
 	@RequestMapping("delBomList")
 	public List<workBomVO> delBomList(@RequestBody List<workBomVO> data) {
-		System.out.println(data);
 		List<workBomVO> list = service.delBomList(data);
 		return list;
 	}
 	
 	@RequestMapping("delMatList")
 	public List<bomMatVO> delMatList(@RequestBody List<bomMatVO> data) {
-		System.out.println(data);
 		List<bomMatVO> list = service.delMatList(data);
 		return list;
 	}
 	
 	@RequestMapping("delDetWorkList")
 	public List<DetaWorkOrdrVO> delDetWorkList(@RequestBody List<DetaWorkOrdrVO> data) {
-		System.out.println(data);
 		List<DetaWorkOrdrVO> list = service.delDetWorkList(data);
 		return list;
 	}
 	
 	@RequestMapping("modifyMatList")
 	public List<bomMatVO> modifyMatList(@RequestBody bomMatVO data) {
-		System.out.println(data);
 		List<bomMatVO> list = service.modifyMatList(data);
 		return list;
 	}
 	@RequestMapping("modifyBomList")
 	public List<workBomVO> modifyBomList(@RequestBody workBomVO data) {
-		System.out.println(data);
 		List<workBomVO> list = service.modifyBomList(data);
 		return list;
 	}
 	@RequestMapping("modifyDetaWorkList")
 	public List<Object> modifyDetaWorkList(@RequestBody DetaWorkOrdrVO data) {
-		System.out.println(data);
 		List<Object> allList = service.modifyDetaWorkList(data);
 		return allList;
 	}
@@ -256,7 +227,6 @@ public class WorkAjaxController {
 	 */
 	@RequestMapping("modifyFirstList")
 	public List<Object> modifyFirstList(@RequestParam String data) {
-		System.out.println("HeadCode IS = " + data);
 		List<Object> allList = service.modifyFirstList(data);
 		return allList;
 	}
@@ -264,34 +234,24 @@ public class WorkAjaxController {
 	//미완성
 	@RequestMapping("getBomMatList")
 	public List<bomMatVO> getBomMatList(@RequestBody DetaWorkOrdrVO detaCode) {
-		System.out.println("preparing getBomMatList");
-		System.out.println("detaCode is " + detaCode.getWkDetaId());
 		List<bomMatVO> list = service.getBomMatList(detaCode.getWkDetaId());
 		return list;
 	}
 	
 	@RequestMapping("startWorkOrder")
 	public String startWorkOrder(@RequestBody DetaWorkOrdrVO detaCode) {
-		System.out.println("preparing startWorkOrder");
-		System.out.println("detaCode is " + detaCode.getWkDetaId());
 		String result = service.startWorkOrder(detaCode.getWkDetaId());
-		System.out.println(result);
 		return result;
 	}
 	
 	@RequestMapping("endWorkOrder")
 	public String endWorkOrder(@RequestBody DetaWorkOrdrVO detaCode) {
-		System.out.println("preparing endWorkOrder");
-		System.out.println("detaCode is " + detaCode.getWkDetaId());
 		String result = service.endWorkOrder(detaCode.getWkDetaId());
-		System.out.println(result);
 		return result;
 	}
 	
 	@RequestMapping("getLotInfoList")
 	public List<MatLotVO> getLotInfoList(@RequestBody bomMatVO bomMatId) {
-		System.out.println("preparing endWorkOrder");
-		System.out.println("detaCode is " + bomMatId.getBomMatId());
 		return service.getLotInfoList(bomMatId.getBomMatId());
 	}
 	

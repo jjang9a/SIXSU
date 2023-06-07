@@ -237,6 +237,7 @@ public class WorkServiceImpl implements WorkService{
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("wkHeadId", wkDeta.getWkHeadId());
 		paramMap.put("empId", wkDeta.getEmpId());
+		paramMap.put("cmpltSt", wkDeta.getCmpltSt());
 		paramMap.put("outParam", null);
 		
 		mapper.workInsertSubmit(paramMap);
@@ -329,6 +330,7 @@ public class WorkServiceImpl implements WorkService{
 	@Override
 	public String endWorkOrder(String wkDetaId) {
 		Map<String, Object> paramMap = new HashMap<>();
+		System.err.println(wkDetaId);
 		paramMap.put("detaCode", wkDetaId);
 		paramMap.put("resultParam", null);
 		mapper.endWorkOrder(paramMap);

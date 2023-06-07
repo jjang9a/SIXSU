@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/template}">
+	>
 <head>
 <meta charset="UTF-8">
 <title>작업 KIOSK</title>
@@ -90,7 +90,6 @@
 </style>
 </head>
 <body>
-	<div layout:fragment="content">
 
 
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">작업 KIOSK</h1>
@@ -189,7 +188,6 @@
 			        frozenBorderWidth: 2
 			     }
 			});
-			grid1.setBodyHeight(660);
 			
 			
 			window.onload = function() {
@@ -404,6 +402,9 @@
 					success : function(result) {
 						console.log("첫 출력값 > ")
 						console.dir(result);
+						while((result.length)%19 != 0){
+							result.push([])
+						}
 						grid1.resetData(result);
 						그리드초기수정();
 					}
@@ -439,6 +440,7 @@
 				
 				
 				grid1.resetData(allGrid);
+				
 				for(let i in target_ary_false){
 					 let rowIndex = Number(target_ary_false[i]);
 				    
@@ -482,7 +484,6 @@
 
 
 
-	</div>
 
 
 
