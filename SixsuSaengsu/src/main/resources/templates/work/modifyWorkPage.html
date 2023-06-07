@@ -1,224 +1,229 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
- 	layout:decorate="~{layout/template}">
+	layout:decorate="~{layout/template}">
 <head>
 <meta charset="UTF-8">
 <title>수정</title>
 <!-- 토스트~ -->
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 <!-- 부트스트라프 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+	crossorigin="anonymous"></script>
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 <!-- 타임리프 -->
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- 페이징 눼이쉔~ -->
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
-<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <style>
-	.input-group{
-		width: 200px;
-	}
-	.btn_container{
-		width: 100%;
-	}
-	.topConatiner{
-		width: 100%
-		height: 450px;
-	}
-	.addContainer{
-		width: 40%;
-		height: 450px;
-		border: 1px solid black;
-		padding: 20px;
-		float: left;
-	}
-	.plan_monitor{
-		width: 60%;
-		height: 450px;
-		border: 1px solid black;
-		padding: 20px;
-		float: left;
-		display: none;
-	}
-	#plan_search1{
-		width: 45%;
-		height: 100%;
-		float: left;
-	}
-	#plan_search2{
-		width: 53%;
-		height: 500px;
-		float: left;
-		margin-left: 20px;
-	}
-	.bom_monitor{
-		width: 60%;
-		height: 450px;
-		border: 1px solid black;
-		padding: 20px;
-		float: left;
-		
-	}
-	#left_search{
-		width: 48%;
-		height: 100%;
-		float: left;
-		text-align: right;
-	}
-	#right_search{
-		width: 50%;
-		height: 500px;
-		float: left;
-		margin-left: 20px;
-		text-align: right;
-	}
-	.topBtnContainer{
-		width: 100%;
-		height: 40px;
-	}
-	#leftBtn{
-		margin-bottom: 10px;
-		float: left;
-	}
-	#rightBtn{
-		float: right;
-		margin-right: 40px;
-		margin-bottom: 10px;
-	
-	}
-	.modal-body {
-		background: #e5edf5;
-	}
+.input-group {
+	width: 200px;
+}
 
-	.sel {
-		width: 232.5px;
-		text-align: center;
-		padding: 10px;
-		font-size: 15px;
-		font-weight: bold;
-	}
 
-	.sel1 {
-		float: left;
-	}
+.topContainer {
+	width: 100% height: 450px;
+	margin-top: 20px;
+}
 
-	.sel2 {
-		float: right;
-	}
+.addContainer {
+	width: 40%;
+	height: 450px;
+	border: 1px solid black;
+	padding: 20px;
+	float: left;
+}
 
-	.sel3 {
-		background-color: white;
-	}
-	
+.plan_monitor {
+	width: 60%;
+	height: 450px;
+	border: 1px solid black;
+	padding: 20px;
+	float: left;
+	display: none;
+}
+
+#plan_search1 {
+	width: 45%;
+	height: 100%;
+	float: left;
+}
+
+#plan_search2 {
+	width: 53%;
+	height: 500px;
+	float: left;
+	margin-left: 20px;
+}
+
+.bom_monitor {
+	width: 60%;
+	height: 450px;
+	border: 1px solid black;
+	padding: 20px;
+	float: left;
+}
+
+#left_search {
+	width: 48%;
+	height: 100%;
+	float: left;
+	text-align: right;
+}
+
+#right_search {
+	width: 50%;
+	height: 500px;
+	float: left;
+	margin-left: 20px;
+	text-align: right;
+}
+
+.topBtnContainer {
+	width: 100%;
+	height: 40px;
+}
+
+#leftBtn {
+	margin-bottom: 10px;
+	float: left;
+}
+
+#rightBtn {
+	float: right;
+	margin-right: 40px;
+	margin-bottom: 10px;
+}
+
+.modal-body {
+	background: #e5edf5;
+}
+
+.sel {
+	width: 232.5px;
+	text-align: center;
+	padding: 10px;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.sel1 {
+	float: left;
+}
+
+.sel2 {
+	float: right;
+}
+
+.sel3 {
+	background-color: white;
+}
 </style>
 </head>
 <body>
 	<div layout:fragment="content">
-	<h1 class="mt-4" style="font-family: 'MaruBuri';">지시 수정</h1>
-	<hr>
-	<div class="btn_container">
-	<div class="topBtnContainer">
-		<div id="leftBtn">
-			<button class="moveBtn sixBtn4">이동</button>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">지시 수정</h1>
+		<hr>
+		세부지시
+		<button class="plusBtn sixBtn4">지시추가</button>
+		<button class="removeBtn sixBtn4">지시삭제</button>
+		<div id="grid1"></div>
+
+		<div class="topContainer">
+			<div class="addContainer">
+
+				<table>
+					<tr>
+						<td style="text-align: center;">작업지시번호</td>
+						<td style="text-align: center;">작성자</td>
+
+					</tr>
+					<tr>
+						<td><input type="text" class="form-control"
+							id="orderCodeInput" placeholder="지시코드"
+							aria-label="Recipient's username"
+							aria-describedby="button-addon2" readonly></td>
+						<td><input type="hidden" name="empId"
+							th:value='${#authentication.principal.empId}'> <input
+							type="text" class="form-control" placeholder="담당자"
+							th:value='${#authentication.principal.empName}' readonly></td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">등록일</td>
+						<td style="text-align: center;">지시상태</td>
+					</tr>
+					<tr>
+						<td><input type="text" class="form-control" placeholder="등록일"></td>
+						<td><select class="form-select" id="inputGroupSelect01">
+								<option selected>대기</option>
+								<option>진행중</option>
+								<option>완료</option>
+								<option>취소</option>
+						</select></td>
+
+					</tr>
+					<tr>
+						<td colspan="4" style="text-align: center;">
+							<button class="submitBtn sixBtn4">등록</button>
+							<button class="cancelBtn sixBtn4">취소</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="plan_monitor">
+				<div id="plan_search1"></div>
+				<div id="plan_search2"></div>
+			</div>
+			<div class="bom_monitor">
+				<div id="left_search">
+					<button class="plusBomBtn sixBtn1">+</button>
+					<button class="delBomBtn sixBtn1">-</button>
+					<div id="bom_search1"></div>
+				</div>
+
+				<div id="right_search">
+					<button class="plusMatBtn sixBtn1">+</button>
+					<button class="delMatBtn sixBtn1">-</button>
+					<div id="bom_search2"></div>
+				</div>
+			</div>
 		</div>
-		
-		<div id="rightBtn">
-			<button class="planBtn sixBtn4">생산계획</button>
-			<button class="bomBtn sixBtn4">공정등록</button>
-		</div>
-	</div>	
-	</div>
-	<div class="topContainer">
-	<div class="addContainer">
-	
-	<table>
-	<tr>
-		<td>
-			<div class="input-group mb-3">
-			  <input type="text" class="form-control" id="orderCodeInput" placeholder="지시코드" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
-			</div>
-		</td>
-		<td>
-			<div class="input-group mb-3">
-			  <input type="text" class="form-control" placeholder="담당자" aria-label="Recipient's username" aria-describedby="button-addon2">
-			  <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-			</div>
-		</td>
-		<td>
-			<div class="input-group mb-3">
-			  <input type="text" class="form-control" placeholder="등록일" aria-label="Recipient's username" aria-describedby="button-addon2">
-			  <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="input-group mb-3">
-			  <input type="text" class="form-control" placeholder="작업지시 상태" aria-label="Recipient's username" aria-describedby="button-addon2">
-			  <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-			</div>
-		</td>
-		<td>	
-			<div class="input-group mb-3">
-			  <input type="text" class="form-control" placeholder="생산계획 검색" aria-label="Recipient's username" aria-describedby="button-addon2">
-			  <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-			</div>
-		</td>
-	</tr>
-	</table>
-	<div class="input-group mb-3">
-	  <select class="form-select" id="inputGroupSelect01">
-	    <option selected>상태</option>
-	    <option value="1">진행중</option>
-	    <option value="2">완료</option>
-	    <option value="3">취소</option>
-	  </select>
-	</div>
-	
-	<button class="submitBtn sixBtn4">저장</button>
-	<button class="cancelBtn sixBtn4">취소</button>
-	</div>
-	
-	<div class="plan_monitor">
-		<div id="plan_search1"></div>
-		<div id="plan_search2"></div>
-	</div>
-	<div class="bom_monitor">
-		<div id="left_search">
-			<button class="plusBomBtn sixBtn1">+</button>
-			<button class="delBomBtn sixBtn1">-</button>
-			<div id="bom_search1"></div>
-		</div>
-		
-		<div id="right_search">
-			<button class="plusMatBtn sixBtn1">+</button>
-			<button class="delMatBtn sixBtn1">-</button>
-			<div id="bom_search2"></div>
-		</div>
-	</div>
-	</div>
-	
-	<!-- <button class="modal_btn sixBtn4">모달버튼</button> -->
-	<br>
-	<button class="plusBtn sixBtn4">+</button>
-	<button class="removeBtn sixBtn4">삭제</button>
-	<div id="grid1"></div>
-	
-	<!-- 제품 선택 Modal 시작 -->
-		<div class="modal fade" id="product_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-			aria-labelledby="pdModal" aria-hidden="true">
+
+		<!-- <button class="modal_btn sixBtn4">모달버튼</button> -->
+		<br>
+		<div id="grid1"></div>
+
+		<!-- 제품 선택 Modal 시작 -->
+		<div class="modal fade" id="product_modal" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1" aria-labelledby="pdModal"
+			aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="pdModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<h5 class="modal-title" id="pdModalLabel"
+							style="font-family: 'MaruBuri';">제품선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
 					</div>
 					<!-- 모달 바디 -->
 					<div class="modal-body">
@@ -227,45 +232,49 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 						<div id="grid_product"></div>
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
-					<div class="modal-footer">
-					</div>
+					<div class="modal-footer"></div>
 				</div>
 			</div>
 		</div>
 		<!-- 제품 선택 Modal 끝 -->
-		
-		
+
+
 		<!-- 공정 선택 Modal 시작 -->
-		<div class="modal fade" id="process_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-			aria-labelledby="procModal" aria-hidden="true">
+		<div class="modal fade" id="process_modal" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1" aria-labelledby="procModal"
+			aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="procModalLabel" style="font-family: 'MaruBuri';">공정선택</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<h5 class="modal-title" id="procModalLabel"
+							style="font-family: 'MaruBuri';">공정선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
 					</div>
 					<!-- 모달 바디 -->
 					<div class="modal-body">
 						<div id="grid_process"></div>
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
-					<div class="modal-footer">
-					</div>
+					<div class="modal-footer"></div>
 				</div>
 			</div>
 		</div>
 		<!-- 공정 선택 Modal 끝 -->
-		
+
 		<!-- 자재 선택 Modal 시작 -->
-		<div class="modal fade" id="mat_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-			aria-labelledby="matModal" aria-hidden="true">
+		<div class="modal fade" id="mat_modal" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1" aria-labelledby="matModal"
+			aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<!-- 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="matModalLabel" style="font-family: 'MaruBuri';">제품선택</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<h5 class="modal-title" id="matModalLabel"
+							style="font-family: 'MaruBuri';">제품선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
 					</div>
 					<!-- 모달 바디 -->
 					<div class="modal-body">
@@ -274,14 +283,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 						<div id="grid_mat"></div>
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
-					<div class="modal-footer">
-					</div>
+					<div class="modal-footer"></div>
 				</div>
 			</div>
 		</div>
 		<!-- 자재 선택 Modal 끝 -->
-		
-	<script th:inline="javascript">
+
+		<script th:inline="javascript">
     // Thymeleaf에서 값을 가져와서 JavaScript 변수에 할당
     var orderCode = /*[[${headCode}]]*/ '';
 
@@ -289,9 +297,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
     document.getElementById("orderCodeInput").placeholder = orderCode;
     document.getElementById("orderCodeInput").value = orderCode;
     
-</script>	   
-	
-	<script>
+</script>
+
+		<script>
 	
 	let cell
 	{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
@@ -657,14 +665,15 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		
 	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
 	//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료//검증완료
+	let empId = '[[${#authentication.principal.empId}]]'
 	$('.plusBtn').on('click', function(){
 		let WorkCode = document.getElementById("orderCodeInput").placeholder 
 		$.ajax({
 				url : "/ajax/addDetaWork",
-				method : "GET",
-				dataType : "JSON",
+				method : "POST",
 				contentType: "application/json",
-				data : { data: WorkCode },
+				data : JSON.stringify({wkHeadId : WorkCode,
+										empId : empId}),
 				success : function(result){
 					console.dir(result);
 					grid1.resetData(result);
@@ -1202,7 +1211,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	
 	
 	</script>
-	
+
 	</div>
 </body>
 </html>

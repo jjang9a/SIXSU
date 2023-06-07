@@ -237,6 +237,7 @@ public class WorkServiceImpl implements WorkService{
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("wkHeadId", wkDeta.getWkHeadId());
 		paramMap.put("empId", wkDeta.getEmpId());
+		paramMap.put("cmpltSt", wkDeta.getCmpltSt());
 		paramMap.put("outParam", null);
 		
 		mapper.workInsertSubmit(paramMap);
