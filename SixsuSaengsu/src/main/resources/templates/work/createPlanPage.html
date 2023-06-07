@@ -52,6 +52,12 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	  .form-row label {
 	    margin-right: 10px;
 	  }
+	  #grid2{
+	  	margin-bottom: 40px; 
+	  }
+	  #grid4{
+	  	margin-bottom: 60px; 
+	  }
 	</style>
 </head>
 	
@@ -62,6 +68,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <hr>
 
 	<div id="gridContainer1">
+		<div id="grid2"></div>
+		<button class="moveBtn sixBtn4">선택</button>
+		<button class="removeBtn sixBtn4">삭제</button>
+
 		<div id="grid1">
 		
 			 <div class="form-row">
@@ -85,14 +95,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			
 			<button class="sixBtn2 regSubmit">저장</button>
 		</div>
-		<button class="searchBtn sixBtn4">검색예정</button>
-		<div id="grid2"></div>
+		
+		<!-- <button class="searchBtn sixBtn4">검색예정</button> -->
+		
 	</div>
 	<div id="gridContainer2">
-		<div id="grid3"></div>
-		<button class="moveBtn sixBtn4">선택</button>
-		<button class="removeBtn sixBtn4">삭제</button>
 		<div id="grid4"></div>
+		<div id="grid3"></div>
 	</div>
 	
 	<!-- 모달창 -->
