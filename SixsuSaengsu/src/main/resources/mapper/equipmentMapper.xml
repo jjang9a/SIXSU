@@ -37,8 +37,8 @@
 	  	        i.check_type, 
 	            i.check_info, 
 	            c.c_temp, 
-	  	        to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, 
-	  	        o.oper_fnish, 
+	  	        to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start, 
+	  	        to_char(o.oper_fnish, 'yyyy-mm-dd - hh:mm') as oper_fnish,
 	  	        o.oper_type, 
 	            o.oper_note, 
 	  	        to_char(c.add_date, 'yyyy-mm-dd') as add_date , 
@@ -48,7 +48,7 @@
 	        ON c.equ_code = i.equ_code
 		  LEFT OUTER JOIN oper o
 		    ON c.equ_code = o.equ_code
-		  ORDER BY c.equ_code 
+		 ORDER BY c.equ_code 
   	</select>
   	
   	<!-- 설비조회(검색) -->
@@ -151,7 +151,7 @@
 		  		   to_char(i.check_next, 'yyyy-mm-dd') as check_next ,
 		  		   i.check_info, i.check_com,
 		  		   i.check_note,
-		  		   to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start,
+		  		   to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start,
 		  		   i.emp_id,
 		  		   get_emp_name(i.emp_id) emp_name
 			  FROM equ_con c LEFT OUTER JOIN equ_insp i
@@ -173,7 +173,7 @@
 	  		   to_char(i.check_next, 'yyyy-mm-dd') as check_next ,
 	  		   i.check_info, i.check_com,
 	  		   i.check_note,
-	  		   to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start,
+	  		   to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start,
 	  		   i.emp_id  
 		  FROM equ_con c LEFT OUTER JOIN equ_insp i
 			ON c.equ_code = i.equ_code
@@ -229,8 +229,8 @@
   	        c.equ_code,
   	        c.equ_name, 
   	        o.oper_type, 
-  	        to_char(o.oper_start, 'yyyy-MM-dd / hh:mm') as oper_start, 
-  	        to_char(o.oper_fnish, 'yyyy-MM-dd / hh:mm') as oper_fnish, 
+  	        to_char(o.oper_start, 'yyyy-MM-dd - hh:mm') as oper_start, 
+  	        to_char(o.oper_fnish, 'yyyy-MM-dd - hh:mm') as oper_fnish, 
   	        c.emp_id, 
   	        o.oper_note, 
   	        c.equ_stat
@@ -270,8 +270,8 @@
   	        c.equ_code,
   	        c.equ_name, 
   	        o.oper_type, 
-  	        to_char(o.oper_start, 'yyyy-MM-dd / hh:mm') as oper_start, 
-  	        to_char(o.oper_fnish, 'yyyy-MM-dd / hh:mm') as oper_fnish, 
+  	        to_char(o.oper_start, 'yyyy-MM-dd - hh:mm') as oper_start, 
+  	        to_char(o.oper_fnish, 'yyyy-MM-dd - hh:mm') as oper_fnish, 
   	        c.emp_id, 
   	        o.oper_note, 
   	        c.equ_stat
