@@ -452,6 +452,10 @@ window.onload = function() {
 		}
 		]
 	});
+	
+  	
+  	
+  	
 	gridy.setBodyHeight(400);
 	tui.Grid.applyTheme('default', {
 		cell: {
@@ -644,7 +648,7 @@ window.onload = function() {
 			align: 'center'
 		}]
 	});
-	 
+    gridt.setBodyHeight(400);
 	// 모달거래처행 클릭시 자동으로 주문등록페이지에 값이 입력이됨
 	gridt.on('click', ev=> {
       	let dataRow = gridt.getRow(ev.rowKey);
@@ -746,7 +750,9 @@ window.onload = function() {
 		},
 		]
 	});		
-  	
+	orderingGrid.setBodyHeight(400);
+    
+    
 	//진행중인 주문서를 클릭시 모든 상세정보들이 주문서와 주문서 상세페이지에 뜨도록 구현
 	orderingGrid.on('click', ev=> {
 		const focusCell = orderingGrid.getFocusedCell()

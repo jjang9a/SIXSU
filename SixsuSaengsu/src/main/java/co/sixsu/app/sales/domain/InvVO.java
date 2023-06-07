@@ -21,6 +21,9 @@ public class InvVO {
 	private String empName;
 	
 	private String ordStatName;
-	
+	private String ordSdate;
+	private String ordFdate;
+	private String ordIng;
+	private String ordC;
 	List<OrdVO> list;
 }

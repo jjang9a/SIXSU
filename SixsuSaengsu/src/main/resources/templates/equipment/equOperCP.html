@@ -12,41 +12,45 @@
 		.sixBtn2 {
 			margin-right: 7px;
 		}
-		
+		#addForm {
+			margin: auto;
+		    margin-left: 150px;
+		}
 		#addForm td {
+			height: 30px;
 			padding: 4px 10px;
 			text-align: left;
 		}
-		/* #operTbl {
+	    #operTbl td {
 			padding-left: 10px;
-			width: 100px; */
-		}
+		} 
 		#equStat,
 		#operType {
-			width: 230px;
+			width: 185px;
 			height: 30px;
 		}
 		.operBtn {
-			margin-top: 100px;
-			height: 150px;
-			width: 150px;
-			margin-right: 60px;
-			border-radius: 25px;
+			margin-top: 50px;
+			margin-right: 50px;
+		    margin-left: 70px; 
+			height: 190px;
+			width: 190px;
+			border-radius: 35px;
 			font-weight: bolder;
-			font-size: 25px;
+			font-size: 35px;
 			margin-bottom: 60px;
-			
 		}
 		#startBtn {
 			background-color: #ea9999;
 			float: right;
+			margin-left: 20px;
 		}
 		#endBtn {
 			background-color: #6697c3;
 			float: right;
 		}
 		.divBtn {
-			float: right;
+			float: left;
 			text-align: center;
 			padding: 15px 0 30px 0;
 		}
@@ -78,67 +82,85 @@
 		<!-- 인풋창 -->
 		<form action="mt-4" method="post" id="addForm">
 			<input type="hidden" name="operFnish" id="operType">
-			<table id="operTbl">
+
+
+			<table>
 				<tr>
-					<td>비가동 코드<span class="needStar"> * </span></td>
-					<td><input type="text" name="operCode" id="operCode" style="background: #ccdceb;" class="empty" readonly></td>
-					
-						<!-- 가동 비가동 버튼 -->
-						<div id="">
-							<button type="button" class="operBtn" style="" id="startBtn">비가동</button>
-							<button type="button" class="operBtn" style="" id="endBtn">가동</button>
-						</div>
-						
+					<td>
+						<table id="operTbl">
+							<tr>
+								<td>비가동 코드<span class="needStar"> * </span></td>
+								<td><input type="text" name="operCode" id="operCode" style="background: #ccdceb;" class="empty" readonly></td>
+								
+								
+								<td>설비코드<span class="needStar"> * </span></td>
+								<td colspan="2"><input type="text" name="equCode" id="equCode" class="empty" readonly style="background: #ccdceb;">
+								<button type="button" id="eqBtn" class="sixBtn2" style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
+							<tr>
+								<td>비가동 구분<span class="needStar"> *</span></td>
+								<td>
+									<select id="operType" name="operType">
+										<option value='' selected>===== 선택 =====</option>
+										<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}"></option>
+									</select>
+								</td>	
+								<td>설비상태 <span class="needStar"> *</span></td>
+								 <td>
+									<select id="equStat" name="equStat">
+										<option value='' selected>===== 선택 =====</option>
+										<option th:each="type : ${equStat}" th:value="${type.value}" th:text="${type.text}"></option>
+									</select>
+									</td> 
+							</tr>
+							<tr>
+								<td>비가동시작<span class="needStar"> *</span></td>
+								<td><input type="text" name="operStart" id="operStart" class="empty" readonly style="background: #ccdceb;"></td>
+								
+								<td>설비명<span class="needStar"> * </span></td>
+								<td><input type="text" name="equName" id="equName" class="empty"></td>
+							</tr>
+								<td>가동시작<span class="needStar"> *</span></td>
+								<td><input type="text" name="operFnish" id="operFnish" class="empty" readonly style="background: #ccdceb;"></td>
+							
+							<tr>
+								<td>비고<span class="needStar"> *</span></td>
+								<td><input type="text" name="operNote" id="operNote" class="empty"></td>
+							
+								<td>담당자<span class="needStar"> *</span></td>
+								<td><input type="text" name="empName" id="empName" class="empty" th:value='${#authentication.principal.empName}'></td> 
+								<input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'>
+							</tr>
+							
+						</table>
+					</td>
+					<td>
+						<td>
+							<!-- 가동 비가동 버튼 -->
+							<div id="">
+								<button type="button" class="operBtn" style="" id="startBtn">비가동</button>
+								<button type="button" class="operBtn" style="" id="endBtn">가동</button>
+							</div>
+						</td>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">	
 						<!-- 수정 삭제 버튼 -->
 						<div class="divBtn">
 							<button type="button" class="sixBtn2" style="float: right;" id="delBtn">삭제</button>
 							<button type="button" class="sixBtn2" style="float: right;" id="modBtn">수정</button>
 						</div>
-					
-					<td>설비코드<span class="needStar"> * </span></td>
-					<td colspan="2"><input type="text" name="equCode" id="equCode" class="empty" readonly style="background: #ccdceb;">
-					<button type="button" id="eqBtn" class="sixBtn2" style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
-				<tr>
-					<td>비가동 구분<span class="needStar"> *</span></td>
-					<td>
-						<select id="operType" name="operType">
-							<option value='' selected>===== 선택 =====</option>
-							<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}"></option>
-						</select>
-					</td>	
-					<td>설비상태 <span class="needStar"> *</span></td>
-					 <td>
-						<select id="equStat" name="equStat">
-							<option value='' selected>===== 선택 =====</option>
-							<option th:each="type : ${equStat}" th:value="${type.value}" th:text="${type.text}"></option>
-						</select>
-						</td> 
+					</td>
 				</tr>
-				<tr>
-					<td>비가동시작<span class="needStar"> *</span></td>
-					<td><input type="text" name="operStart" id="operStart" class="empty" readonly style="background: #ccdceb;"></td>
-					
-					<td>설비명<span class="needStar"> * </span></td>
-					<td><input type="text" name="equName" id="equName" class="empty"></td>
-				</tr>
-					<td>가동시작<span class="needStar"> *</span></td>
-					<td><input type="text" name="operFnish" id="operFnish" class="empty" readonly style="background: #ccdceb;"></td>
-				
-				<tr>
-					<td>비고<span class="needStar"> *</span></td>
-					<td><input type="text" name="operNote" id="operNote" class="empty"></td>
-				
-					<td>담당자<span class="needStar"> *</span></td>
-					<td><input type="text" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empName}'></td> 
-					<input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'>
-				</tr>
-				
-				
 			</table>
-			
-			
-			
+		</form>
 
+			
+			
+		
+			
+			
+			
 			<!-- 설비코드 선택 Modal 시작 -->
 			<div class="modal fade" id="eqModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 				aria-labelledby="eqModal" aria-hidden="true">
@@ -159,7 +181,6 @@
 					</div>
 				</div>
 			</div>
-		</form>
 
 		<!--  그리드 시작 -->
 		<div id="grid"></div>
@@ -395,7 +416,7 @@
 							console.log(result);
 							//등록 버튼을 누르면 리스트에 삽입된다.     
 							const appendedData = result
-							grid.appendRow(appendedData);
+							grid.prependRow(appendedData);
 							// 리스트를 리셋. 등록데이터가 바로 뜸.
 							grid.resetData(result);
 							setTimeout(() => orderingGrid.refreshLayout(), 1000);

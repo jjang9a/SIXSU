@@ -10,13 +10,7 @@
 	<title>제품 품질 관리</title>
 
 	<style>
-		.detail {
-			display: none;
-		}
 
-		#prInspForm {
-			display: none;
-		}
 
 		#topS {
 			margin: 10px;
@@ -39,10 +33,10 @@
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-7">
+				<div class="col-lg-6">
 
 					<!-- 발주 번호 검색 버튼 -->
-					<label style="font-family: 'MaruBuri';">지시 세부 코드 조회</label>
+					<label style="font-family: 'MaruBuri';">공정 실적 코드 조회</label>
 					<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#detWorkModal">
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
 							class="bi bi-search" viewBox="0 2 16 16">
@@ -113,7 +107,7 @@
 
 
 				<!-- 검사 결과 등록 폼 -->
-				<div class="col-lg-5" id="formDiv">
+				<div class="col-lg-6" id="formDiv">
 					<form action="" method="post" id="prInspForm">
 						<!-- display: none;  -->
 
@@ -170,9 +164,9 @@
 							</div>
 						</div>
 						
-						<div class="row">
+						<div class="col">
 							<label for="inspQt" class="form-label">비고 </label> <input type="text"
-									class="form-control" id="inspQt" name="inspQt">
+									class="form-control" id="inspNote" name="inspNote">
 						</div>
 
 					</form>
@@ -239,7 +233,7 @@
 						method: "GET",
 						success: function (result) {
 							dwGrid.resetData(result);
-							setTimeout(() => dwGrid.refreshLayout(), 700);
+							setTimeout(() => dwGrid.refreshLayout(), 100);
 						},
 						error: function (reject) {
 							console.log(reject);
@@ -389,6 +383,7 @@
 						dataType: 'json',
 						success: function (result) {
 							console.log('qua_com_update:' + result);
+							aiGrid.appendRow(result);
 						},
 						error: function (reject) {
 							console.log(reject);
@@ -410,6 +405,7 @@
 							$('#prInspForm').css('display', 'none');
 							$('.detail').css('display', 'none');
 							$('#prInspForm input').val('');
+							detailGrid.resetData();
 
 
 						},
@@ -418,6 +414,19 @@
 							alert('검사 결과값 등록에 실패했습니다.')
 						}
 					});
+					
+					// 검사 등록 완료 후 리스트 출력
+				$.ajax({
+					url: "/quality/prdComList",
+					method: "GET",
+					success: function (result) {
+						afterGrid.resetData(result);
+
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				})
 
 				}) // 폼 등록 버튼 이벤트 끝
 				
@@ -492,7 +501,7 @@
 							console.log(result);
 							detailGrid.resetData(result);
 							detailGrid.setColumnValues('inspNum', afterInspNum, false);
-							setTimeout(() => detailGrid.refreshLayout(), 700);
+							setTimeout(() => detailGrid.refreshLayout(), 300);
 
 						},
 						error: function (reject) {
@@ -535,15 +544,36 @@
 				}, {
 					header: '검사수량',
 					name: 'detaQt',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '적합수량',
 					name: 'goodQt',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '부적합수량',
 					name: 'dmatQt',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '생산날짜',
 					name: 'wkEnd',
@@ -584,15 +614,36 @@
 				}, {
 					header: '검사수량',
 					name: 'detaQt',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				},  {
 					header: '적합수량',
 					name: 'goodQt',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '부적합수량',
 					name: 'dmatQt',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '생산날짜',
 					name: 'wkEnd',
@@ -637,16 +688,25 @@
 				}, {
 					header: '검사수량',
 					name: 'detaQt',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+					 return value.toLocaleString()
+					   }
 				}, {
 					header: '적합수량',
 					name: 'goodQt',
 					editor: 'text',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+					 return value.toLocaleString()
+					   }
 				}, {
 					header: '부적합 수량',
 					name: 'dmatQt',
-					align: 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+					 return value.toLocaleString()
+					   }
 				}, {
 					header: '검사자',
 					name: 'empId',
@@ -742,6 +802,7 @@
 			
 			// 수정하기 버튼 클릭 이벤트
 			$('#modifyBtn').on('click', function () {
+				
 
 				// 검사 공통 업데이트 ajax 실행
 				quaComUpdateAjax();
@@ -796,12 +857,14 @@
 
 			// 세부 검사 항목 그리드에 스크롤 부여
 			detailGrid.setBodyHeight(400);
+			beforeGrid.setBodyHeight(280);
+			afterGrid.setBodyHeight(280);
  
-			// Toast Grid의 값이 변경될 때마다 호출되는 이벤트 핸들러 등록
+			// Toast 의 값이 변경될 때마다 호출되는 이벤트 핸들러 등록
 			detailGrid.on('editingFinish', function (e) {
 				if (e.columnName === 'nsuitQt') {
-					checkNsuitQt(); // 수량 초과 여부 확인
-					detailGrid.setValue(e.rowKey, 'resStat', 'STAT-C');
+					if(checkNsuitQt()) // 수량 초과 여부 확인
+						detailGrid.setValue(e.rowKey, 'resStat', 'STAT-C');
 				} else if (e.columnName === 'resVal') {
 					let compareData = detailGrid.getRow(e.rowKey);
 					let standard = compareData.stdVal;
@@ -815,28 +878,33 @@
 
 			});
 			
-			// 총 수량 초과 여부 확인
-			function checkNsuitQt() {
+		// 총 수량 초과 여부 확인
+		function checkNsuitQt() {
+			//합계 계산
 		  	const rows = detailGrid.getData();
 		  	let totalNsuitQt = 0;
 		  	rows.forEach(function (row) {
-		    const nsuitQt = parseInt(row.nsuitQt);
-		    if (!isNaN(nsuitQt)) {
-		      totalNsuitQt += nsuitQt;
-		    }
-		  	});
-		  
+		    	const nsuitQt = parseInt(row.nsuitQt);
+		    
+		    	if (!isNaN(nsuitQt)) {
+		    		totalNsuitQt += nsuitQt;
+		    	}
+		 	});
+		 
+			// 수량 체크
 		  	const totNsuitQt = parseInt($('#totNsuitQt').val());
 		  	if (totalNsuitQt > totNsuitQt) {
-		    alert('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.');
-		    
-		    let rowKey = detailGrid.getModifiedRows()[0].rowKey;
-		    let prevNsuitQt = detailGrid.getValue(rowKey, 'nsuitQt');
-		    detailGrid.setValue(rowKey, 'nsuitQt', '');
-		    
-		    return false; // 등록을 중지하기 위해 false 반환
+			    alert('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.');
+			    
+			    let cell = detailGrid.getFocusedCell();
+			    let prevNsuitQt = detailGrid.getValue(cell.rowKey, 'nsuitQt');
+			    
+			    detailGrid.setValue(cell.rowKey, 'nsuitQt', '0');
+			    
+			    return false; // 등록을 중지하기 위해 false 반환
 		  	}
-		  
+
+
 		  	return true; // 등록을 진행하기 위해 true 반환
 		}
 			 

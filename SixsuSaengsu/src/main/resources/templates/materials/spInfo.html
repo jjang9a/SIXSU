@@ -34,6 +34,7 @@
 		<div id="gridm"></div>
 
 		<script>
+<<<<<<< HEAD
 			function spList(spName) {
 				$.ajax({
 					url: "/materials/semiprodlist",
@@ -56,6 +57,39 @@
 
 
 			const gridData = [
+=======
+		
+		function spList(spName){
+			$.ajax({
+				url : "/materials/semiprodlist",
+				method : "GET",
+				data : {spName : spName},
+				success : function(result) {
+					gridm.resetData(result);
+					gridm.getData().forEach(ele=>{
+						if(ele.spQtSum==0){
+							gridm.addCellClassName(ele.rowKey, 'spId','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spName','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spSize','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spUnit','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spNote','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spQtSum','redcolor');
+						}
+					});
+				},
+				error: function(reject) {
+					console.log(reject);
+				}
+			});
+		}
+		
+		
+		let spName = null;
+		spList(spName);
+		
+		
+		const gridData = [
+>>>>>>> branch 'main' of https://github.com/jjang9a/SIXSU.git
 
 			];
 			window.onload = function () {
