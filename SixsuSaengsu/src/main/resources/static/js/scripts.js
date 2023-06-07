@@ -24,3 +24,12 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+
+			function get_date(d) {
+				let date = new Date()
+				let year = date.getFullYear();
+				let month = date.getMonth();
+				let day = date.getDate();
+				let ago = new Date(year, month, day + d);
+				return ago;
+			}

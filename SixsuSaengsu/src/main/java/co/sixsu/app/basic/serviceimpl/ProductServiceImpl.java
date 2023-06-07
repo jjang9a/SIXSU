@@ -177,9 +177,9 @@ public class ProductServiceImpl implements ProductService{
 				} else { // 미적재된 LOT가 존재 할 때
 					if(qt <= ableQt) {
 						if(qt == ableQt) { // 현재수량이 적재가능수량과 같다면
-							vo.setCpLotQtCk("Y"); // 적재완료
+							vo.setCpLotQtCk("LOT_Y"); // 적재완료
 						}else { // 현재수량이 적재가능수량보다 적다면
-							vo.setCpLotQtCk("N"); // 적재량 미달				
+							vo.setCpLotQtCk("LOT_N"); // 적재량 미달				
 						}
 						vo.setCpLotQt(lotInfo.getCpLotQt() + qt); // LOT수량을 원래수량 + 현재 수량으로 세팅
 						vo.setCpLotId(lotInfo.getCpLotId()); // 마지막 LOT번호를 LOT번호로 세팅
@@ -188,7 +188,7 @@ public class ProductServiceImpl implements ProductService{
 						mapper.insertCpRec(vo); // 입고
 						System.out.println("중간점검 : " + list);
 					} else if(qt > ableQt) {
-						vo.setCpLotQtCk("Y"); // 적재완료
+						vo.setCpLotQtCk("LOT_Y"); // 적재완료
 						vo.setCpLotQt(lot); // LOT수량을 최대수량으로 설정
 						vo.setCpLotId(lotInfo.getCpLotId()); // 마지막 LOT번호를 LOT번호로 세팅
 						mapper.updateCpLot(vo); // LOT 수량, 상태 업데이트
@@ -207,9 +207,9 @@ public class ProductServiceImpl implements ProductService{
 	
 	public void cpRecMini(int ableQt, int qt, ReceiveVO lotInfo, ReceiveVO vo) {
 		if(qt == ableQt) { // 현재수량이 적재가능수량과 같다면
-			vo.setCpLotQtCk("Y"); // 적재완료
+			vo.setCpLotQtCk("LOT_Y"); // 적재완료
 		}else { // 현재수량이 적재가능수량보다 적다면
-			vo.setCpLotQtCk("N"); // 적재량 미달				
+			vo.setCpLotQtCk("LOT_N"); // 적재량 미달				
 		}
 		vo.setCpLotQt(qt); // LOT수량을 현재 수량으로 세팅
 		vo.setCpLotId(mapper.getCpLotId(vo.getCpId())); // 새로운 LOT번호 생성
@@ -224,7 +224,7 @@ public class ProductServiceImpl implements ProductService{
 			cpRecMini(ableQt, qt, lotInfo, vo);
 		}else {
 			while(qt > lot) {
-				vo.setCpLotQtCk("Y"); // 적재완료
+				vo.setCpLotQtCk("LOT_Y"); // 적재완료
 				vo.setCpLotQt(lot); // LOT수량을 최대 수량으로 세팅
 				vo.setCpLotId(mapper.getCpLotId(vo.getCpId())); // 새로운 LOT번호 생성
 				mapper.insertCpLot(vo); // LOT번호 부여

@@ -7,7 +7,7 @@
 	<title>반제품 관리</title>
 	<style>
 		h1 {
-			margin-bottom: 40px;
+			margin-bottom: 25px;
 		}
 
 		#spTable {
@@ -42,17 +42,17 @@
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 관리</h1>
 
 		<!-- 정보입력 폼 -->
-		<form action="" method="post" id="spForm">
+		<form action="" method="post" id="spForm" onsubmit="return false">
 			<table id="spTable">
 				<tr>
 					<td>반제품 코드</td>
 					<td><input type="text" name="spId" id="spId" class="empty" placeholder="검색"></td>
-					<td>규격</td>
-					<td><input type="text" name="spSize" id="spSize" class="empty"></td>
-				</tr>
-				<tr>
 					<td>제품명<span class="needStar"> *</span></td>
 					<td><input type="text" name="spName" id="spName" class="empty" placeholder="검색"></td>
+				</tr>
+				<tr>
+					<td>규격</td>
+					<td><input type="text" name="spSize" id="spSize" class="empty"></td>
 					<td>활성여부<span class="needStar"> *</span></td>
 					<td>
 						<div id="divRadio">
@@ -130,7 +130,12 @@
 				}, {
 					header: '관리LOT수량',
 					name: 'spLot',
-					align: 'center'
+					align: 'right',
+					formatter: ({
+						value
+					}) => {
+						return value.toLocaleString()
+					}
 				}, {
 					header: '비고',
 					name: 'spNote',
@@ -138,7 +143,16 @@
 				}, {
 					header: '활성여부',
 					name: 'spStat',
-					align: 'center'
+					align: 'center',
+					formatter: ({
+						value
+					}) => {
+						if (value == 'Y') {
+							return "사용"
+						} else {
+							return "비사용"
+						}
+					}
 				}]
 			});
 
@@ -156,27 +170,32 @@
 
 			// 등록 버튼 이벤트
 			$('#addBtn').on('click', function (e) {
-				$.ajax({
-					url: '/basic/addSp',
-					type: 'post',
-					data: $('#spForm').serialize(),
-					dataType: 'json',
-					success: function (result) {
-						alert('반제품이 성공적으로 등록되었습니다');
-						//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
-						const appendedData = result
-						grid.appendRow(appendedData);
-					},
-					error: function () {
-						alert('반제품 등록 중 오류가 발생했습니다!');
-					}
-				});
-				$('.empty').val('');
+				if (selRow != 999) {
+					alert('수정중에는 등록 할 수 없습니다. 초기화 후 등록해주세요.')
+				} else {
+					$.ajax({
+						url: '/basic/addSp',
+						type: 'post',
+						data: $('#spForm').serialize(),
+						dataType: 'json',
+						success: function (result) {
+							alert('반제품이 성공적으로 등록되었습니다');
+							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+							const appendedData = result
+							grid.prependRow(appendedData);
+							$('.empty').val('');
+							$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
+						},
+						error: function () {
+							alert('반제품 등록 중 오류가 발생했습니다!');
+						}
+					});
+				}
 			});
 
 			// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
 			let selRow = 999;
-			grid.on('dblclick', function (e) {
+			grid.on('click', function (e) {
 				// 열을 더블클릭하면 열 정보를 변수에 저장
 				selRow = e.rowKey;
 				let dataRow = grid.getRow(selRow);
@@ -264,6 +283,18 @@
 
 			})
 
+			// 엔터 검색 이벤트
+			$("#spId").on('keypress', function (e) {
+				if (e.keyCode == 13) {
+					$('#searchBtn').click();
+				}
+			})
+			$("#spName").on('keypress', function (e) {
+				if (e.keyCode == 13) {
+					$('#searchBtn').click();
+				}
+			})
+
 			// 초기화 버튼 이벤트
 			$('#initBtn').on('click', (e) => {
 				$.ajax({
@@ -274,6 +305,7 @@
 						$('.empty').val('');
 						$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
 						grid.resetData(result);
+						selRow = 999;
 					}
 				});
 			})

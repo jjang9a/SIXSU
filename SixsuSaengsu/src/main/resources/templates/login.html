@@ -42,11 +42,15 @@
         }
 
         #notlogin {
-            font-size: 12px;
-            text-align: right;
-            color: rgba(255, 255, 255, 0.3);
-            margin-right: 10px;
-            margin-top: 15px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.45);
+            margin: 10px 10px 0px 155px;
+            text-decoration: none;
+            padding-top : 20px;
+        }
+
+        #notlogin:hover {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -68,7 +72,7 @@
                     <td colspan="2"><button type="submit" class="btn btn-light" id="loginBtn">로그인</button></td>
                 </tr>
             </table>
-            <p id="notlogin">비로그인 화면으로 이동</p>
+            <a id="notlogin" href="/work/workKiosk">작업 키오스크로 이동</a>
         </form>
     </div>
 </body>
