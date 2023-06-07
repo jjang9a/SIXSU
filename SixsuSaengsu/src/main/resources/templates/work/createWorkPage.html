@@ -1149,7 +1149,7 @@
 				console.log(result);
 				alert(result);
 				if(result == '등록되었습니다 !'){
-					location.href = '/work/workControllPage';
+					location.href = '/product/workControllPage';
 				}
 			},
 			error: function(reject){
@@ -1159,7 +1159,7 @@
 	})		
 	
 	$('.cancelBtn').on('click', function(){
-		let link = '/work/workControllPage'
+		let link = '/product/workControllPage'
 		if(confirm("  페이지를 떠날 시 작성 중인 데이터는 사라집니다 \n  페이지를 떠나시겠습니까? \n  지시코드 : " + orderCode) == true){
     		location.href = link;
     	}else{
