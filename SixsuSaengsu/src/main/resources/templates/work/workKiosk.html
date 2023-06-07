@@ -236,28 +236,28 @@
 				scrollY : true,
 				rowHeaders : [ 'rowNum' ],
 				columns : [ {
-					header : '공정구분',
-					name : 'comName',
-					align : 'center'
-				}, {
-					header : '공정코드',
-					name : 'procId',
-					align : 'center'
-				}, {
-					header : '공정명',
-					name : 'procName',
-					align : 'center'
-				}, {
 					header : '자재코드',
-					name : '1',
+					name : 'matId',
 					align : 'center'
 				}, {
 					header : '자재명',
-					name : '2',
+					name : 'matName',
 					align : 'center'
 				}, {
-					header : '개수',
-					name : '3',
+					header : '보유수량',
+					name : 'matQt',
+					align : 'center'
+				}, {
+					header : '필요수량',
+					name : 'cpQt',
+					align : 'center'
+				}, {
+					header : '크기',
+					name : 'matSize',
+					align : 'center'
+				}, {
+					header : 'LOT',
+					name : 'matLotId',
 					align : 'center'
 				}
 				]
@@ -356,7 +356,7 @@
 				}
 				grid1.addRowClassName(ev.rowKey, 'cell-pink'); // 새로운 제품 열에 음영 넣기
 				selRowKey = ev.rowKey
-				let dataRow = grid1.getRow(ev.rowKey); //필요하니?
+				let dataRow = grid1.getRow(ev.rowKey);
 						
 				$.ajax({
 					url : "/ajax/getBomMatList",
@@ -370,12 +370,31 @@
 						console.err(reject)
 					}
 				});
+				workLotList.clear();
 			})
 			
 			workBomList.on('click', function(ev){
 				console.log(workBomList.getRow(ev.rowKey))
+				let dataRow = workBomList.getRow(ev.rowKey);
+				workLotList.clear();
+				$.ajax({
+					url : "/ajax/getLotInfoList",
+					method : "POST",
+					contentType: "application/json",
+					data : JSON.stringify({bomMatId : dataRow.bomMatId}),
+					success : function(result){
+						if(result.length != 0){
+							console.log(result)							
+							result[0].cpQt = (grid1.getRow(selRowKey).detaQt * dataRow.cpQt)
+							workLotList.resetData(result)
+						}
+					},
+					error : function(reject){
+						console.err(reject)
+					}
+				});
+				
 			})
-			
 			
 			function 전체조회리스트(){
 				$.ajax({
