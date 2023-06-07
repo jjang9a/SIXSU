@@ -52,6 +52,12 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	  .form-row label {
 	    margin-right: 10px;
 	  }
+	  #grid2{
+	  	margin-bottom: 60px; 
+	  }
+	  #grid4{
+	  	margin-bottom: 30px; 
+	  }
 	</style>
 </head>
 	
@@ -59,9 +65,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 <div layout:fragment="content">
 
 <h1 class="mt-4" style="font-family: 'MaruBuri';">생산계획 등록</h1>
-<hr>
 
 	<div id="gridContainer1">
+		<div id="grid2"></div>
 		<div id="grid1">
 		
 			 <div class="form-row">
@@ -85,14 +91,15 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			
 			<button class="sixBtn2 regSubmit">저장</button>
 		</div>
-		<button class="searchBtn sixBtn4">검색예정</button>
-		<div id="grid2"></div>
+		
+		<!-- <button class="searchBtn sixBtn4">검색예정</button> -->
+		
 	</div>
 	<div id="gridContainer2">
-		<div id="grid3"></div>
+		<div id="grid4"></div>
 		<button class="moveBtn sixBtn4">선택</button>
 		<button class="removeBtn sixBtn4">삭제</button>
-		<div id="grid4"></div>
+		<div id="grid3"></div>
 	</div>
 	
 	<!-- 모달창 -->
@@ -212,11 +219,14 @@ while (defaultData.length < 8){
 		if(data.type == ''){
 			alert('분류를 입력하세요')
 			isEmpty = true;
-		} else if (data.regDate == ''){
-			alert('등록일을 입력하세요')
+		} else if (data.startDate == ''){
+			alert('계획기간을 입력하세요')
 			isEmpty = true;
-		} else if (data.empName == ''){
-			alert('작성자를 입력하세요')
+		} else if (data.endDate == ''){
+			alert('계획기간을 입력하세요')
+			isEmpty = true;
+		} else if (dataArr[1] == null){
+			alert('계획된 작업이 없습니다')
 			isEmpty = true;
 		}
 		

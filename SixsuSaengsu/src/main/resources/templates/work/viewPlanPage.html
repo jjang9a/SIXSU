@@ -25,7 +25,6 @@
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">생산계획</h1>
-		<hr>
 		<div class="workContainer">
 
 		<button class="workFilterBtn sixBtn4">검색</button>
@@ -148,8 +147,7 @@
 			contentType: "application/json",
 			data: JSON.stringify(searchData),
 			success : function(result){
-				console.dir(result);
-				gridP.resetData(result);
+				그리드출력(result)
 			}
 		})
 		$('#workFilter_modal').modal('hide');
@@ -165,53 +163,71 @@
         columns: [
           {
             header: '분류',
-            name: 'type'
-           
+            name: 'type',
+			align : 'center'
           },
           {
             header: '생산세부번호',
-            name: 'planDetaId'
+            name: 'planDetaId',
+			align : 'center'
           },
           {
             header: '품목코드',
-            name: 'matId'
+            name: 'matId',
+			align : 'center'
           },
           {
             header: '제품명',
-            name: 'cpName'
+            name: 'cpName',
+			align : 'center'
           },
           {
             header: '계획수량',
-            name: 'detaQt'
+            name: 'detaQt',
+			align : 'center'
           },
           {
             header: '완료수량',
-            name: 'goodQt'
+            name: 'goodQt',
+			align : 'center'
           },
           {
             header: '납기일',
-            name: 'ordEndDate'
+            name: 'ordEndDate',
+			align : 'center'
           },
           {
             header: '착수일',
-            name: 'startDate'
+            name: 'startDate',
+			align : 'center'
           },
           {
             header: '완료일',
-            name: 'endDate'
+            name: 'endDate',
+			align : 'center'
           },
           {
               header: '작성자',
-              name: 'empName'
+              name: 'empName',
+				align : 'center'
             },
                 
           {
             header: '비고',
             name: 'memo',
+			align : 'center'
           }
-        ]
+        ],
+		pageOptions : {
+			useClient : true,
+			perPage : 18
+		},
+		columnOptions: {
+	        frozenCount: 1,
+	        frozenBorderWidth: 2
+	     }
       });
-      
+	gridP.setBodyHeight(720);
 	window.onload = function(){
 		
 		$.ajax({
@@ -219,9 +235,7 @@
 			method : "GET",
 			dataType : "JSON",
 			success : function(result){
-				console.log("첫 출력값 > ")
-				console.dir(result);
-				gridP.resetData(result);
+				그리드출력(result)
 			}
 		})
 	}
@@ -244,16 +258,6 @@
 		dataOb.stringData = dataRow.planDetaId;
 		console.log(dataRow);
 		console.log(dataRow.planDetaId);
-		
-		$.ajax({
-			url : "/ajax/test1",
-			method : "POST",
-			dataType : "JSON",
-			data : dataOb,
-			success : function(result){
-				console.dir(result);
-			}
-		})
 	})
 	
 	//////////////////////////////////////////////////////////////////
@@ -266,7 +270,26 @@
 				$('#workFilter_modal').modal('show');
 			})
 	
+	$('.filter_reset').on('click', function() {
+				$('input[name="제품명"]').val('');
+				$('input[name="계획"]').val('');
+				$('input[name="작성자"]').val('');
+				$('input[name="makeFrom"]').val('');
+				$('input[name="makeTo"]').val('');
+				$('input[name="workFrom"]').val('');
+				$('input[name="workTo"]').val('');
+
+				$('input[name="상태"]:checked').prop('checked', false);
+
+			})		
 	
+	function 그리드출력(result){
+		while((result.length)%18 != 0){
+			result.push([])
+		}
+		gridP.resetData(result);
+	}
+			
 </script>
 	</div>
 </body>
