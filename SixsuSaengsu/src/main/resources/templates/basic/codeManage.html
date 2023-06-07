@@ -132,7 +132,7 @@
 			<div id="grid"></div>
 			<!-- 검색 선택시 : 검색 폼 -->
 			<div id="search">
-				<form action="" method="post" id="searchForm">
+				<form action="" method="get" id="searchForm">
 					<select name="searchType">
 						<option value="code">코드</option>
 						<option value="name">이름</option>
@@ -233,6 +233,11 @@
 						background: '#ffffff',
 						text: '#000'
 					}
+				},
+				row: {
+					hover: {
+						background: '#fefafa'
+					}
 				}
 			});
 
@@ -304,7 +309,7 @@
 			let groupKey = '';
 			let selRowKey = '';
 			//let oldCount = '';
-			grid.on('dblclick', function (ev) {
+			grid.on('click', function (ev) {
 				// 열을 더블클릭하면 그룹코드 정보를 변수에 저장
 				console.log("dblclick");
 				if (selRowKey != ev.rowKey) { // 그룹코드 선택 정보가 달라졌다면
@@ -358,6 +363,13 @@
 						alert('공통코드 조회 중 오류 발생!');
 					}
 				})
+			})
+
+			// 검색창 엔터 버튼 이벤트
+			$("#searchKey").on('keydown', function (e) {
+				if (e.keyCode == 13) {
+					$("#searchForm button").click();
+				}
 			})
 
 			// 추가 버튼 이벤트

@@ -78,10 +78,10 @@
 	FROM common_code
 	WHERE 
 	<if test='searchType.equals("group")'>
-		g_id = #{searchKey}
+		g_id = upper(#{searchKey})
 	</if>
 	<if test='searchType.equals("code")'>
-		com_id like '%'||#{searchKey}||'%'
+		com_id like '%'||upper(#{searchKey})||'%'
 	</if>
 	<if test='searchType.equals("name")'>
 		com_name like '%'||#{searchKey}||'%'
