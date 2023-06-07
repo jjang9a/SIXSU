@@ -40,6 +40,10 @@
 			text-align: center;
 			height: 330px;
 		}
+		#modalTbl select {
+			width: 185px;
+			height: 30px;
+		}
 		.modal-body {
 			background: #e5edf5;
 		}
@@ -114,7 +118,7 @@
 										<td><input type="text" name="procId" id="procId"></td>
 									</tr>
 									<tr>
-										<td>설비상태 <span class="needStar"> *</span></td>
+										<td id="select">설비상태 <span class="needStar"> *</span></td>
 										<td>
 											<select id="equStat" name="equStat">
 												<option value='' selected>===== 선택 =====</option>
@@ -138,7 +142,7 @@
 										<td><input type="text" name="ctemp" id="ctemp"></td>
 									</tr>
 									<tr>
-										<td>판정<span class="needStar"> *</span></td>
+										<td id="select">판정<span class="needStar"> *</span></td>
 										<td>
 											<select id="equSuit" name="equSuit">
 												<option value=''>===== 선택 =====</option>
@@ -187,7 +191,7 @@
 									</tr>
 									<tr>
 										
-										<td>비가동구분<span class="needStar"> *</span></td>
+										<td id="select">비가동구분<span class="needStar"> *</span></td>
 										<!-- <td><input type="text" name="operType" id="operType"></td> -->
 										
 										 <td>

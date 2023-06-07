@@ -24,7 +24,7 @@ public class EquConVO {
 		String operType; // 비가동구분
 		String operNote; // 비가동사유
 		String empId; // 사원코드
-		int ctemp; // 기준온도
+		Integer ctemp; // 기준온도
 		String addDate; // 등록일자
 	
 		
