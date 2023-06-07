@@ -207,7 +207,7 @@
 					success : function(result) {
 						console.log("첫 출력값 > ")
 						console.dir(result);
-						grid1.resetData(result);
+						그리드출력(result)
 						그리드초기수정();
 					}
 				})
@@ -243,8 +243,7 @@
 						}
 					}
 				}
-
-				grid1.resetData(allGrid);
+				그리드출력(allGrid);
 				for ( let i in target_ary_false) {
 					//grid1.addRowClassName(target_ary[i], 'set_color');
 					let rowIndex = Number(target_ary_false[i]);
@@ -442,6 +441,13 @@
 					}
 				}
 			});
+			
+			function 그리드출력(result){
+				while((result.length)%18 != 0){
+					result.push([])
+				}
+				grid1.resetData(result);
+			}
 		</script>
 
 
