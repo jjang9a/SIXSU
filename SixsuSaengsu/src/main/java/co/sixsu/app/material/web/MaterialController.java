@@ -62,7 +62,7 @@ public class MaterialController {
 	}
 	
 	//자재Lot조회 페이지 열어주기
-	@GetMapping("mlot")
+	@GetMapping("matLotInfo")
 	public void mlot() {
 	}
 	
