@@ -11,4 +11,6 @@ public class SpAdjVO {
 	String spSize;
 	int spQt;
 	int spAdjQt;
+	
+	String empId;
 }
