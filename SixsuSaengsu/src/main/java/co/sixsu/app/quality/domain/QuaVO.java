@@ -55,6 +55,7 @@ public class QuaVO {
 	private String cpShipId; // 완제품 출고 코드
 	private String retId; // 반품 코드
 	
+	private int dNsuitQt;//수정시에만 사용할 nsuitQt
 	
 	
 	private String inspDate2; // 검사 일자 검색용
