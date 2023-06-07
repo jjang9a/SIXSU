@@ -12,7 +12,8 @@
 		}
 		#oTable {
 			margin: auto;
-			
+			margin-top: 20px;
+			margin-bottom: 60px;
 		}
 		#oTable input, select, date {
 			padding-left: 10px;
@@ -33,7 +34,7 @@
 			text-align: right;
 			height: 50px;
 			margin-top: 65px;
-			margin-bottom: 3px;
+			margin-bottom: 12px;
 		}
 		.center {
 			text-align: center;
@@ -86,20 +87,24 @@
 				<td id="date">비가동 시작일<span class="needStar"> * </span></td>
 				<td id="date"><input type="date" name="operStart" id="oname" class="empty"></td>
 				<td id="date"><input type="date" name="operFnish" id="oname" class="empty"></td>
-			</tr>
+
+				
+				<!-- 검색 버튼 -->
+				<td>
+				<button type="button" class="sixBtn1" id="searchBtn2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+						fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+						<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+					</svg>
+				</button>
+				<button class="sixBtn2" id="reset">초기화</button>
+				</td>
+		</tr>
 			</table>
 			
-			<!-- 검색 버튼 -->
-		<div id="Btn">
-		<button type="button" class="sixBtn1" id="searchBtn2">
-			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-				fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-                <path
-					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                </svg>
-			</button>
-			<button class="sixBtn2" id="reset">초기화</button>
-		</div>
+		
+		
 		</Form>
 
 
