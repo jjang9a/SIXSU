@@ -153,6 +153,7 @@
 		       q.insp_qt,
 		       q.suit_qt, 
 		       d.res_stat
+		       <!-- d.nsuit_qt-->
 		  
 		  from qua_details d
 		  join qua_com q 
