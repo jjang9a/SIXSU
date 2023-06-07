@@ -9,9 +9,6 @@
 	#gridm .redcolor{
 		background-color : #ffe4e4
 	}
-	#gridm .yellowcolor{
-		background-color : #e8f71c63
-	}
 	
 	</style>
 </head>
@@ -39,6 +36,16 @@
 				data : {spName : spName},
 				success : function(result) {
 					gridm.resetData(result);
+					gridm.getData().forEach(ele=>{
+						if(ele.spQtSum==0){
+							gridm.addCellClassName(ele.rowKey, 'spId','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spName','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spSize','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spUnit','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spNote','redcolor');
+							gridm.addCellClassName(ele.rowKey, 'spQtSum','redcolor');
+						}
+					});
 				},
 				error: function(reject) {
 					console.log(reject);

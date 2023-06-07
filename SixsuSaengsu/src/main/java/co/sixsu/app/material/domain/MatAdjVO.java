@@ -11,4 +11,6 @@ public class MatAdjVO {
 	String matSize;
 	int matQt;
 	int matAdjQt;
+	
+	String empId;
 }
