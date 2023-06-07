@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
@@ -148,9 +149,8 @@ public class WorkAjaxController {
 	}
 	
 	@RequestMapping("addDetaWork")
-	public List<DetaWorkOrdrVO> addDetaWork(@RequestParam String data) {
-		System.out.println(data);
-		List<DetaWorkOrdrVO> list = service.addDetaWork(data);
+	public List<DetaWorkOrdrVO> addDetaWork(@RequestBody DetaWorkOrdrVO headId) {
+		List<DetaWorkOrdrVO> list = service.addDetaWork(headId);
 		return list;
 	}
 	
@@ -233,11 +233,12 @@ public class WorkAjaxController {
 	}
 	
 	@RequestMapping("addSubmit")
-	public String workInsertSubmit(@RequestParam String data) {
-		System.out.println("data : " + data);
-		String message = service.workInsertSubmit(data);
+	public String workInsertSubmit(@RequestBody DetaWorkOrdrVO wkDeta) {
+		String message = service.workInsertSubmit(wkDeta);
 		return message;
 	}
+	
+	
 	/**
 	 * 
 	 * @param data is 삭제를 위한 WK_HEAD_ID 코드
@@ -287,6 +288,12 @@ public class WorkAjaxController {
 		return result;
 	}
 	
+	@RequestMapping("getLotInfoList")
+	public List<MatLotVO> getLotInfoList(@RequestBody bomMatVO bomMatId) {
+		System.out.println("preparing endWorkOrder");
+		System.out.println("detaCode is " + bomMatId.getBomMatId());
+		return service.getLotInfoList(bomMatId.getBomMatId());
+	}
 	
 	
 } 

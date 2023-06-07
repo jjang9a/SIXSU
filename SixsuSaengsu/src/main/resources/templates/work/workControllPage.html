@@ -573,7 +573,7 @@
 			data : { data: bom_search1.getRow(ev.rowKey).wkBomId},
 			success : function(result){
 				console.dir(result);
-				bom_search2.resetData(result);
+				bom_search2그리드출력(result)
 				},
 				errer : function(reject){
 					console.log(reject)
@@ -594,6 +594,22 @@
 	        }
 	    }
 	});
+	
+	function grid1그리드출력(result){
+		while((result.length)%10 != 0){
+			result.push([])
+		}
+		bom_search1.resetData(result);
+	}
+	
+	function bom_search2그리드출력(result){
+		console.log(result.length)
+		while((result.length) < 7){
+			
+			result.push([])
+		}
+		bom_search2.resetData(result);
+	}
 </script>
 
 

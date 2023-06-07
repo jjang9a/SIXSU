@@ -8,7 +8,7 @@
 <select id="getPlan" resultType="DetaProdPlanVO">
 	SELECT *
 	  FROM PLAN_VIEW
-     ORDER BY plan_deta_id
+     ORDER BY plan_deta_id DESC
 </select>
 
 <select id="getPlanFilter" resultType="DetaProdPlanVO" parameterType="PlanDataVO">
@@ -18,26 +18,7 @@
   	   AND (plan_deta_id = #{planNo} OR #{planNo} IS NULL)
   	   AND (emp_name = #{writer} OR #{writer} IS NULL)
   	${statusFilter}
-     ORDER BY plan_deta_id
-</select>
-
-<select id="xxxxx" resultType="DetaProdPlanVO">
-	SELECT a.type, 
-	       a.PLAN_HEAD_ID, 
-	       b.MAT_ID, 
-	       c.CP_name, 
-	       b.deta_qt, 
-	       b.good_qt,
-	       a.plan_due_date, 
-	       TO_char(b.START_DATE, 'yyyy-MM-dd') AS start_date, 
-	       TO_char(b.END_DATE, 'yyyy-MM-dd') AS end_date, 
-	       b.MEMO
-	       
-	  FROM PROD_PLAN a 
-	  left JOIN DETA_PROD_PLAN b ON a.PLAN_HEAD_ID = b.PLAN_HEAD_ID
-      left JOIN COMPLETE_PROD c ON b.MAT_ID = c.CP_ID
-      
-    ORDER BY a.plan_deta_id
+     ORDER BY plan_deta_id DESC
 </select>
 
 <select id="getSorder" resultType="SorderVO">
@@ -154,8 +135,8 @@ with work as (
 
 <insert id="addDetaWork" parameterType="DetaWorkOrdrVO">
 	INSERT 
-		INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST) 
-		values(#{wkHeadId},#{wkDetaId},'작성중')
+		INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST, emp_id) 
+		values(#{wkHeadId},#{wkDetaId},'작성중', #{empId})
 </insert>
 <insert id="addWkBom">
 	INSERT 
@@ -210,14 +191,22 @@ with work as (
 </insert>
 
 <select id="getWkMatList" resultType="bomMatVO">
-	SELECT *
+	SELECT a.*, b.*, c.SUM_QT
 	FROM WORK_BOM_MAT a LEFT OUTER JOIN (SELECT MAT_ID, MAT_NAME, MAT_SIZE, MAT_UNIT, MAT_STAT,'자재' AS TYPE
 	FROM MATERIAL
 	UNION ALL
 	SELECT SP_ID,SP_NAME,SP_SIZE,SP_UNIT,SP_stat,'반제품' AS TYPE
 	FROM SEMI_PROD) b
     ON a.MAT_ID = b.MAT_ID
-    WHERE a.WK_BOM_ID = #{data} 
+    LEFT OUTER JOIN (SELECT MAT_ID, SUM(MAT_QT) AS SUM_QT
+                        FROM(SELECT *
+                            FROM MAT_LOT
+                            UNION ALL
+                            SELECT *
+                            FROM SP_LOT
+                            WHERE SP_LOT_QT_CK = 'Y')
+                        GROUP BY MAT_ID) c ON a.MAT_ID = c.MAT_ID
+                        WHERE a.WK_BOM_ID = #{data} 
     ORDER BY a.BOM_MAT_ID
 </select>
 
@@ -284,7 +273,9 @@ with work as (
 
 <select id="workInsertSubmit" statementType="CALLABLE" resultMap="outResultMap">
   { CALL WORK_DETA_INSERT(
-    #{data, mode=IN, jdbcType=VARCHAR},
+    #{wkHeadId, mode=IN, jdbcType=VARCHAR},
+    #{empId, mode=IN, jdbcType=VARCHAR},
+    #{cmpltSt, mode=IN, jdbcType=VARCHAR},
     #{outParam, mode=OUT, jdbcType=VARCHAR}
   ) }
 </select>
@@ -342,8 +333,7 @@ with work as (
 	FROM SEMI_PROD) b ON a.CP_ID = b.CP_ID
         LEFT OUTER JOIN employee c ON a.EMP_ID = c.EMP_ID
     WHERE CMPLT_ST != '작성중'
-    AND SUBSTR(a.WK_HEAD_ID, 0,8) >= TO_CHAR((SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul'), 'yyyyMMdd') OR a.WK_DETA_ID IN (SELECT WK_DETA_ID FROM DETA_WORK_ORDR WHERE START_DATE >= TRUNC((SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul')))
-    ORDER BY WK_HEAD_ID
+    ORDER BY TO_DATE(SUBSTR(WK_HEAD_ID,0,8),'yyyyMMdd') DESC, TO_NUMBER(SUBSTR(WK_HEAD_ID,10,2))DESC
 </select>
 
 <select id="getWorkListForProcess" resultType="DetaWorkOrdrVO">
@@ -401,7 +391,25 @@ with work as (
 		                        WHERE WK_DETA_ID = #{detaCode})
 </select>
 
-
+<select id="getLotInfoList" resultType="MatLotVO">
+	SELECT *
+	FROM(SELECT *
+	        FROM MAT_LOT
+	        UNION ALL
+	        SELECT *
+	        FROM SP_LOT) a LEFT OUTER JOIN (SELECT MAT_ID,MAT_NAME,MAT_SIZE
+	                                        FROM MATERIAL
+	                                        UNION ALL
+	                                        SELECT SP_ID,SP_NAME,SP_SIZE
+	                                        FROM SEMI_PROD) b ON a.MAT_ID = b.MAT_ID
+	WHERE MAT_LOT_ID IN (WITH data AS (SELECT MAT_WORK_LOT_ID 
+	                FROM WORK_BOM_MAT
+	                WHERE BOM_MAT_ID = #{bomMatId})
+	
+	                SELECT REGEXP_SUBSTR(MAT_WORK_LOT_ID, '[^,]+',1,LEVEL) AS element
+	                FROM data
+	                CONNECT BY REGEXP_SUBSTR(MAT_WORK_LOT_ID, '[^,]+',1,LEVEL) IS NOT NULL)
+</select>
 
 
 
