@@ -87,7 +87,9 @@ public class MaterialsServiceImpl implements MaterialsService{
 		//자재 입고 등록
 		@Override
 		public void insertMatRec(List<MatrecVO> vo) {
+			String id = vo.get(0).getEmpId();
 			for(MatrecVO i : vo) {
+				i.setEmpId(id);
 				mapper.insertMatRec(i);
 			}
 		}
