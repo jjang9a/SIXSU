@@ -24,7 +24,7 @@
 		 	<if test="matHoldStat == null and matHoldStat == ''.toString()">
 		 	</if>
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.mat_rec_date  between #{sDate} and #{eDate}
+		 		and mat_rec_date between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if> 
@@ -57,7 +57,7 @@
 		 	<if test="matRecType == null and matRecType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.mat_rec_date  between #{sDate} and #{eDate}
+		 		and c.mat_rec_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -88,7 +88,7 @@
 		 	<if test="matShipType == null and matShipType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and s.mat_ship_date  between #{sDate} and #{eDate}
+		 		and s.mat_ship_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if> 
@@ -119,7 +119,7 @@
 		 	<if test="spShipType == null and spShipType == ''.toString()">
 		 	</if>		 	
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and s.sp_ship_date  between #{sDate} and #{eDate}
+		 		and s.sp_ship_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -144,7 +144,7 @@
 		 	<if test="spHoldStat == null and spHoldStat == ''.toString()">
 		 	</if>
 		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
-		 		and c.sp_rec_date  between #{sDate} and #{eDate}
+		 		and c.sp_rec_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
 		 	</if>
@@ -174,12 +174,12 @@
 		 	<if test="matReqStat == null and matReqStat == ''.toString()">
 		 	</if>
 		 	<if test= "matInSDate != ''.toString() and matInEDate != ''.toString()">
-		 		and mat_req_date  between #{matInSDate} and #{matInEDate}
+		 		and mat_req_date  between to_date(#{matInSDate}, 'yyyy-MM-dd') and to_date(#{matInEDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "matInSDate == ''.toString() and matInEDate == ''.toString()">
 		 	</if>
 		 	<if test= "matEndSDate != ''.toString() and matEndEDate != ''.toString()">
-		 		and mat_end_date  between #{matEndSDate} and #{matEndEDate}
+		 		and mat_end_date  between to_date(#{matEndSDate}, 'yyyy-MM-dd') and to_date(#{matEndEDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
 		 	</if>
 		 	<if test= "matEndSDate == ''.toString() and matEndEDate == ''.toString()">
 		 	</if>
@@ -260,7 +260,7 @@
 		        #{busId}, 
 		        #{matId}, 
 		        #{matReqQt}, 
-		        to_date(#{matEndDate}), 
+		        to_date(#{matEndDate},'yyyy-MM-dd'),
 		        #{empId})
 	</insert>
 	
@@ -275,13 +275,13 @@
 	<!-- 자재 발주 수정 -->
   	<update id="updateMatReq" parameterType="MatreqVO">
 	  	update mat_req
-	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = to_date(#{matEndDate})
+	  	set bus_id = #{busId} ,mat_id = #{matId}, mat_req_qt = #{matReqQt}, mat_end_date = to_date(#{matEndDate},'yyyy-MM-dd')
 	  	where mat_req_id = #{matReqId}
   	</update>
   	
 	<!-- 입고대기 목록 -->
 	<select id="selectMatRecWaitList" resultType="MatrecWaitVO">
-		select q.insp_num, m.mat_req_id, q.insp_item_id, t.mat_name, q.suit_qt, to_char(q.insp_date, 'yyyy-mm-dd') as insp_date
+		select q.insp_num, m.mat_req_id, q.insp_item_id, t.mat_name, q.suit_qt, to_char(q.insp_date, 'yyyy-mm-dd') as insp_date, get_emp_name(q.emp_id) emp_name
 		  from qua_com q 
 		  left join mat_req m
 		    on q.insp_std_id = m.mat_req_id
@@ -304,7 +304,7 @@
 	       c.mat_lot_id,
 	       l.mat_name, 
 	       b.bus_name, 
-	       GET_EMP_NAME(emp_id) as emp_name
+	       GET_EMP_NAME(c.emp_id) as emp_name
 		from mat_rec c 
 		left join mat_req q
 		 on c.mat_req_id = q.mat_req_id
@@ -332,7 +332,7 @@
 	       c.mat_lot_id,
 	       l.mat_name, 
 	       b.bus_name, 
-	       GET_EMP_NAME(emp_id) as emp_name
+	       GET_EMP_NAME(c.emp_id) as emp_name
 		from mat_rec c 
 		left join mat_req q
 		 on c.mat_req_id = q.mat_req_id
@@ -353,7 +353,8 @@
 	<insert id="insertMatRec" parameterType="MatrecVO">
     <![CDATA[
 	    CALL IN_MAT_REC(
-	      #{matReqId}
+	      #{matReqId},
+	      #{empId}
 	    )
 	    ]]>
   	</insert>
@@ -417,7 +418,7 @@
 			   s.mat_lot_id, 
 			   m.mat_name, 
 			   s.mat_ship_type, 
-			   s.mat_ship_date, 
+			   to_char(s.mat_ship_date, 'yyyy-MM-dd') as mat_ship_date,
 			   s.mat_ship_qt, 
 			   s.mat_ship_note, 
 			   e.emp_name
@@ -432,10 +433,10 @@
 		
 		left join employee e
 		 on s.emp_id = e.emp_id
-
+		
 		<!-- 조건 -->
 		<include refid="criteria3"></include>		 
-		
+		order by mat_ship_date desc
 	</select>
 	
 	<!-- 자재 재고조정 페이지 -->
@@ -448,8 +449,9 @@
 		from mat_lot l 
 		left join material m
 		  on l.mat_id = m.mat_id
+		where l.mat_hold_stat = 'N'
 	 	<if test= "matLotId != ''.toString() and matLotId != ''.toString()">
-	 		where l.mat_lot_id like '%'|| upper(#{matLotId}) || '%'
+	 		and l.mat_lot_id like '%'|| upper(#{matLotId}) || '%'
 	 	</if>
 	 	<if test= "matLotId == ''.toString() and matLotId == ''.toString()">
 	 	</if> 		   
@@ -459,9 +461,10 @@
 	<!-- 자재 조정입고 프로시저-->
 	<insert id="matRecAdj" parameterType="MatAdjVO">
     <![CDATA[
-	    call  mat_adj_insert(
+	    call mat_adj_insert(
 	      #{matLotId, mode=IN, jdbcType=VARCHAR},
-	      #{matAdjQt, mode=IN, jdbcType=INTEGER}
+	      #{matAdjQt, mode=IN, jdbcType=INTEGER},
+	      #{empId, mode=IN, jdbcType=VARCHAR}
 	    )
 	    
 	    ]]>
@@ -472,7 +475,8 @@
     <![CDATA[
 	    call  mat_adj_del(
 	      #{matLotId, mode=IN, jdbcType=VARCHAR},
-	      #{matAdjQt, mode=IN, jdbcType=INTEGER}
+	      #{matAdjQt, mode=IN, jdbcType=INTEGER},
+	      #{empId, mode=IN, jdbcType=VARCHAR}
 	    )
 	    
 	    ]]>
@@ -488,8 +492,9 @@
 		  from sp_lot l 
 		  left join semi_prod s
 		    on l.sp_id = s.sp_id
+		  where l.sp_hold_stat = 'N'
 	 	<if test= "spLotId != ''.toString() and spLotId != ''.toString()">
-	 		where l.sp_lot_id like '%'|| upper(#{spLotId}) || '%'
+	 		and l.sp_lot_id like '%'|| upper(#{spLotId}) || '%'
 	 	</if>
 	 	<if test= "spLotId == ''.toString() and spLotId == ''.toString()">
 	 	</if> 			    
@@ -501,7 +506,7 @@
   			   s.sp_lot_id, 
   			   p.sp_name, 
   			   s.sp_ship_type, 
-  			   to_char(s.sp_ship_date, 'yyyy-mm-dd') as sp_ship_date, 
+  			   to_char(s.sp_ship_date, 'yyyy-MM-dd') as sp_ship_date, 
   			   s.sp_ship_qt, 
   			   s.sp_ship_note, 
   			   e.emp_name
@@ -518,6 +523,8 @@
 		 
 		 <!-- 반제품 출고 조회 조건 -->
 		<include refid="criteria4"></include>
+		
+		order by sp_ship_date desc
   	</select>
   	
   	<!-- 반제품 조정입고 프로시저 -->
@@ -525,7 +532,8 @@
     <![CDATA[
 	    call  sp_adj_insert(
 	      #{spLotId, mode=IN, jdbcType=VARCHAR},
-	      #{spAdjQt, mode=IN, jdbcType=INTEGER}
+	      #{spAdjQt, mode=IN, jdbcType=INTEGER},
+	      #{empId}
 	    )
 	    
 	    ]]>
@@ -536,7 +544,8 @@
     <![CDATA[
 	    call  sp_adj_del(
 	      #{spLotId, mode=IN, jdbcType=VARCHAR},
-	      #{spAdjQt, mode=IN, jdbcType=INTEGER}
+	      #{spAdjQt, mode=IN, jdbcType=INTEGER},
+	      #{empId}
 	    )
 	    
 	    ]]>
@@ -544,7 +553,7 @@
   	
   	<!-- 불량자재 처리대기 리스트 -->
 	<select id="getMatDmgWaitList" resultType="MatDmgVO">
-		SELECT d.insp_num, to_char(c.insp_date, 'yyyy-mm-dd') as insp_date, m.mat_id, m.mat_name, m.mat_size, to_number(d.res_val) as res_val, get_emp_name(c.emp_id) as emp_name
+		SELECT d.insp_num, to_char(c.insp_date, 'yyyy-MM-dd') as insp_date, m.mat_id, m.mat_name, m.mat_size, to_number(d.res_val) as res_val, get_emp_name(c.emp_id) as emp_name
 		FROM qua_details d
 		JOIN qua_com c 
 		 ON d.insp_num = c.insp_num
@@ -586,7 +595,7 @@
 	<!-- 자재 불량처리 -->
   	<insert id="insertMatDmg" parameterType="MatDmgVO">
 		insert into damaged_mat (dmat_id, dmat_stat, emp_Id, insp_num)
-		values (GET_MAT_DMG_ID(), #{dmatResult}, #{empId}, #{inspNum})
+		values (GET_MAT_DMG_ID(), #{dmatStat}, #{empId}, #{inspNum})
   	</insert>
 	
 	<!-- 반제품 리스트 -->

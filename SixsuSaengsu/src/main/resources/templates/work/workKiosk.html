@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/template}">
+	>
 <head>
 <meta charset="UTF-8">
 <title>작업 KIOSK</title>
@@ -90,7 +90,6 @@
 </style>
 </head>
 <body>
-	<div layout:fragment="content">
 
 
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">작업 KIOSK</h1>
@@ -189,7 +188,6 @@
 			        frozenBorderWidth: 2
 			     }
 			});
-			grid1.setBodyHeight(660);
 			
 			
 			window.onload = function() {
@@ -236,28 +234,28 @@
 				scrollY : true,
 				rowHeaders : [ 'rowNum' ],
 				columns : [ {
-					header : '공정구분',
-					name : 'comName',
-					align : 'center'
-				}, {
-					header : '공정코드',
-					name : 'procId',
-					align : 'center'
-				}, {
-					header : '공정명',
-					name : 'procName',
-					align : 'center'
-				}, {
 					header : '자재코드',
-					name : '1',
+					name : 'matId',
 					align : 'center'
 				}, {
 					header : '자재명',
-					name : '2',
+					name : 'matName',
 					align : 'center'
 				}, {
-					header : '개수',
-					name : '3',
+					header : '보유수량',
+					name : 'matQt',
+					align : 'center'
+				}, {
+					header : '필요수량',
+					name : 'cpQt',
+					align : 'center'
+				}, {
+					header : '크기',
+					name : 'matSize',
+					align : 'center'
+				}, {
+					header : 'LOT',
+					name : 'matLotId',
 					align : 'center'
 				}
 				]
@@ -356,7 +354,7 @@
 				}
 				grid1.addRowClassName(ev.rowKey, 'cell-pink'); // 새로운 제품 열에 음영 넣기
 				selRowKey = ev.rowKey
-				let dataRow = grid1.getRow(ev.rowKey); //필요하니?
+				let dataRow = grid1.getRow(ev.rowKey);
 						
 				$.ajax({
 					url : "/ajax/getBomMatList",
@@ -370,12 +368,31 @@
 						console.err(reject)
 					}
 				});
+				workLotList.clear();
 			})
 			
 			workBomList.on('click', function(ev){
 				console.log(workBomList.getRow(ev.rowKey))
+				let dataRow = workBomList.getRow(ev.rowKey);
+				workLotList.clear();
+				$.ajax({
+					url : "/ajax/getLotInfoList",
+					method : "POST",
+					contentType: "application/json",
+					data : JSON.stringify({bomMatId : dataRow.bomMatId}),
+					success : function(result){
+						if(result.length != 0){
+							console.log(result)							
+							result[0].cpQt = (grid1.getRow(selRowKey).detaQt * dataRow.cpQt)
+							workLotList.resetData(result)
+						}
+					},
+					error : function(reject){
+						console.err(reject)
+					}
+				});
+				
 			})
-			
 			
 			function 전체조회리스트(){
 				$.ajax({
@@ -385,6 +402,9 @@
 					success : function(result) {
 						console.log("첫 출력값 > ")
 						console.dir(result);
+						while((result.length)%19 != 0){
+							result.push([])
+						}
 						grid1.resetData(result);
 						그리드초기수정();
 					}
@@ -420,6 +440,7 @@
 				
 				
 				grid1.resetData(allGrid);
+				
 				for(let i in target_ary_false){
 					 let rowIndex = Number(target_ary_false[i]);
 				    
@@ -463,7 +484,6 @@
 
 
 
-	</div>
 
 
 

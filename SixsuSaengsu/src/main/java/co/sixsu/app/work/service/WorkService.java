@@ -5,6 +5,7 @@ import java.util.List;
 
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
@@ -42,7 +43,7 @@ public interface WorkService {
 
 	public String addWork();
 
-	public List<DetaWorkOrdrVO> addDetaWork(String data);
+	public List<DetaWorkOrdrVO> addDetaWork(DetaWorkOrdrVO data);
 
 	public List<workBomVO> getWkBomList(String data);
 
@@ -64,7 +65,7 @@ public interface WorkService {
 
 	public List<Object> modifyDetaWorkList(DetaWorkOrdrVO data);
 
-	public String workInsertSubmit(String data);
+	public String workInsertSubmit(DetaWorkOrdrVO wkDeta);
 
 	public List<DetaWorkOrdrVO> getWorkList();
 
@@ -81,6 +82,8 @@ public interface WorkService {
 	public List<DetaWorkOrdrVO> getWorkListForProcess();
 
 	public List<bomMatVO> getBomMatList(String detaCode);
+
+	public List<MatLotVO> getLotInfoList(String bomMatId);
 
 
 }

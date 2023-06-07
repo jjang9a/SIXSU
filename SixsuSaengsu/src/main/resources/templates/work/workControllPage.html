@@ -68,8 +68,6 @@
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 관리</h1>
-		<hr>
-
 		<button class="workFilterBtn sixBtn2">검색</button>
 		<button class="sixBtn2" onclick="location.href='/work/createWorkPage'">등록</button>
 		<div class="text_container">
@@ -573,7 +571,7 @@
 			data : { data: bom_search1.getRow(ev.rowKey).wkBomId},
 			success : function(result){
 				console.dir(result);
-				bom_search2.resetData(result);
+				bom_search2그리드출력(result)
 				},
 				errer : function(reject){
 					console.log(reject)
@@ -594,6 +592,22 @@
 	        }
 	    }
 	});
+	
+	function grid1그리드출력(result){
+		while((result.length)%10 != 0){
+			result.push([])
+		}
+		bom_search1.resetData(result);
+	}
+	
+	function bom_search2그리드출력(result){
+		console.log(result.length)
+		while((result.length) < 7){
+			
+			result.push([])
+		}
+		bom_search2.resetData(result);
+	}
 </script>
 
 

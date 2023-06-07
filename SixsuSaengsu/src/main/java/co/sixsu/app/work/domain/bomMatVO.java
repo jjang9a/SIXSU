@@ -16,4 +16,5 @@ public class bomMatVO {
 	String comName;
 	String procId;
 	String procName;
+	int sumQt;
 }
