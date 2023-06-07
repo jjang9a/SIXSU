@@ -7,11 +7,12 @@
 	<title>BOM</title>
 	<style>
 		h1 {
-			margin-bottom: 70px;
+			margin-bottom: 35px;
 		}
 
 		h2 {
-			padding: 40px 20px 0px 20px;
+			float: left;
+			padding: 10px 20px 10px 20px;
 		}
 
 		.divBtn {
@@ -101,7 +102,7 @@
 		<!-- 상품 선택 완료 -->
 		<!-- 소요량 그리드 -->
 		<h2 class="mt-4" style="font-family: 'MaruBuri';">제품 소요량 관리</h2>
-		<div class="divBtn">
+		<div class="divBtn" style="padding: 60px 10px 10px 10px;">
 			<button type="button" class="sixBtn3" id="initBtn">초기화</button>
 			<button type="button" class="sixBtn2" id="addBtn">추가</button>
 			<button type="button" class="sixBtn2" id="delBtn">삭제</button>
@@ -191,7 +192,7 @@
 				scrollX: false,
 				scrollY: true,
 				rowHeaders: ['checkbox'],
-				minBodyHeight: 400,
+				minBodyHeight: 480,
 				columns: [{
 					header: 'BOM코드',
 					name: 'bomId',
@@ -239,7 +240,7 @@
 
 
 			// 그리드 높이 & 색 변경 테마 적용
-			grid.setBodyHeight(400);
+			grid.setBodyHeight(480);
 			tui.Grid.applyTheme('default', {
 				cell: {
 					header: {
@@ -606,12 +607,19 @@
 
 			// 다운로드 버튼 이벤트
 			$('#printBtn').on('click', function (e) {
-				console.log('저장 버튼 눌림')
-				const options = {
-					includeHiddenColumns: true,
-					fileName: selPd + ' BOM',
-				};
-				grid.export('xlsx', options);
+				let check = 0;
+				check += grid.getModifiedRows().createdRows.length;
+				check += grid.getModifiedRows().updatedRows.length;
+				check += grid.getModifiedRows().deletedRows.length;
+				if (check > 0) {
+					alert('저장되지 않은 변경사항이 있습니다. 저장이나 초기화 후 사용해주세요.')
+				} else {
+					const options = {
+						includeHiddenColumns: true,
+						fileName: selPd + ' BOM',
+					};
+					grid.export('xlsx', options);
+				}
 			})
 
 			// 윈도우 온 로드 닫는 괄호

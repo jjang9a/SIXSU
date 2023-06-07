@@ -132,11 +132,17 @@
 				}, {
 					header: '입고량',
 					name: 'spRecQt',
-					align: 'center'
+					align: 'right',
+					formatter: ({
+						value
+					}) => {
+						return value.toLocaleString()
+					}
 				}, {
 					header: '입고유형',
 					name: 'spRecType',
-					align: 'center'
+					align: 'center',
+					filter: 'select'
 				}, {
 					header: 'LOT번호',
 					name: 'spLotId',

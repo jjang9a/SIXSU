@@ -5,6 +5,33 @@
 <head>
 	<meta charset="UTF-8">
 	<title>반제품 LOT 조회</title>
+	<style>
+		.inputR {
+			width: 210px;
+		}
+
+		.inputS {
+			width: 110px;
+		}
+
+		#spLotTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}
+
+		#spLot {
+			width: 242px;
+		}
+
+		#spLotTable {
+			margin: 15px auto;
+		}
+
+		#left {
+			text-align: center;
+			padding-bottom: 20px;
+		}
+	</style>
 
 </head>
 
@@ -12,42 +39,39 @@
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 LOT 조회</h1>
 		<form action="" method="post" id="spLotForm">
-				<table id="spLotTable">
-					<tr>
-						<td>반제품LOT번호</td>
-						<td><input type="text" name="spLot" id="spLot" class="empty" placeholder="검색"></td>
-					</tr>
-					<tr>
-						<td>반제품명</td>
-						<td><input type="text" name="spName" id="spName" class="empty" placeholder="검색">
-						</td>
-					</tr>
-					<tr>
-						<td>홀드상태</td>
-						<td>
-							<div id="divRadio">
-								<input type="radio" id="spHoldStat0" name="spHoldStat" value="">
-								<label for="spHoldStat0">전체</label>
-								<input type="radio" id="spHoldStat1" name="spHoldStat" value="Y">
-								<label for="spHoldStat1">Y</label>
-								<input type="radio" id="spHoldStat2" name="spHoldStat" value="N">
-								<label for="spHoldStat2">N</label>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>입고일자</td>
-						<td>
-							<input type="date" id="spRecDate"> ~ <input type="date" id="spRecDatee">
-						</td>
-					</tr>
-				</table>
-			</form>
-			<div id="left">
-				<button class="sixBtn2" id="check">조회</button>
-				<button class="sixBtn4" id="reset">초기화</button>
-			</div>
-		
+			<table id="spLotTable">
+				<tr>
+					<td>반제품LOT번호</td>
+					<td><input type="text" name="spLot" id="spLot" class="empty" placeholder="검색"></td>
+					<td>반제품명</td>
+					<td><input type="text" name="spName" id="spName" class="empty inputR" placeholder="검색">
+					</td>
+				</tr>
+				<tr>
+					<td>입고일자</td>
+					<td>
+						<input type="date" id="spRecDate" class="inputS"> ~ <input type="date" id="spRecDatee"
+							class="inputS">
+					</td>
+					<td>홀드상태</td>
+					<td style="text-align: left">
+						<div id="divRadio">
+							<input type="radio" id="spHoldStat0" name="spHoldStat" value="">
+							<label for="spHoldStat0">전체</label>&nbsp;&nbsp;
+							<input type="radio" id="spHoldStat1" name="spHoldStat" value="Y">
+							<label for="spHoldStat1">Y</label>&nbsp;&nbsp;
+							<input type="radio" id="spHoldStat2" name="spHoldStat" value="N">
+							<label for="spHoldStat2">N</label>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div id="left">
+			<button class="sixBtn2" id="check">조회</button>
+			<button class="sixBtn3" id="reset">초기화</button>
+		</div>
+
 		<div id="grid"></div>
 		<script>
 			const gridData = [
@@ -55,32 +79,38 @@
 			];
 
 
-			
-				function spLotList(spLotId, spName, spholdStat, sDate, eDate){
-					
-					$.ajax({
-						url: "/materials/splotlist",
-						method: "GET",
-						data:{spLotId : spLotId, spName : spName, spHoldStat : spHoldStat, sDate: sDate, eDate:eDate},
-						success: function (result) {
-							grid.resetData(result);
-						},
-	 					error: function(reject){
-							console.log(reject);
-						}
-					
-					});
 
-				}
-				
-			let spLotId =null;
+			function spLotList(spLotId, spName, spholdStat, sDate, eDate) {
+
+				$.ajax({
+					url: "/materials/splotlist",
+					method: "GET",
+					data: {
+						spLotId: spLotId,
+						spName: spName,
+						spHoldStat: spHoldStat,
+						sDate: sDate,
+						eDate: eDate
+					},
+					success: function (result) {
+						grid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+
+				});
+
+			}
+
+			let spLotId = null;
 			let spName = null;
 			let spHoldStat = null;
 			let sDate = null;
 			let eDate = null;
 			spLotList(spLotId, spName, spHoldStat, sDate, eDate);
-			
-			$('#check').click(function(){
+
+			$('#check').click(function () {
 				spLotId = $('#spLot').val();
 				spName = $('#spName').val();
 				spHoldStat = $("input[name='spHoldStat']:checked").val();
@@ -89,8 +119,8 @@
 				spLotList(spLotId, spName, spHoldStat, sDate, eDate);
 
 			})
-			
-			$('#reset').click(function(){
+
+			$('#reset').click(function () {
 				$('#spLot').val('');
 				$('#spName').val('');
 				$("input[name='spHoldStat']:checked").val('');
@@ -105,64 +135,73 @@
 				spLotList(spLotId, spName, spHoldStat, sDate, eDate);
 
 			})
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
+
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
-				
+
 				scrollX: false,
 				scrollY: false,
 				pageOptions: {
 					useClient: true,
 					perPage: 10
 				},
-
-
-				
 				rowHeaders: ['rowNum'],
 
 
 				columns: [{
 						header: '반제품LOT번호',
-						name: 'spLotId'
+						name: 'spLotId',
+						align: 'center'
 					},
 					{
 						header: '반제품코드',
-						name: 'spId'
+						name: 'spId',
+						align: 'center'
 					},
 					{
 						header: '반제품명',
-						name: 'spName'
+						name: 'spName',
+						align: 'center'
 					},
 					{
 						header: '규격',
-						name: 'spSize'
+						name: 'spSize',
+						align: 'center'
 					},
 					{
 						header: '재고량',
-						name: 'spQt'
+						name: 'spQt',
+						align: 'right',
+						formatter: ({
+							value
+						}) => {
+							return value.toLocaleString()
+						}
 					},
 					{
 						header: '홀드상태',
-						name: 'spHoldStat'
+						name: 'spHoldStat',
+						align: 'center'
 					},
 					{
 						header: '입고일자',
-						name: 'spRecDate'
+						name: 'spRecDate',
+						align: 'center'
 					}
 				]
-				
+
 			});
-			
-			
- 			tui.Grid.applyTheme('default', {
+
+
+			tui.Grid.applyTheme('default', {
 				cell: {
 					header: {
 						background: '#e5edf5'

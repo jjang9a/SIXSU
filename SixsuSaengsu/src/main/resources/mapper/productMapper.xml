@@ -17,6 +17,7 @@
 	AND B.FLOW_NUM IN( SELECT MAX(FLOW_NUM)
 	                    FROM WORK_BOM
 	                    GROUP BY WK_DETA_ID)
+    AND P.GOOD_QT != 0
 	ORDER BY P.PD_ID,P.WK_END
 </select>
 
@@ -54,17 +55,18 @@
 </update>
 
 <select id="spRecList" resultType="ReceiveVO">
-	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, to_char(r.sp_rec_date, 'yyyy/MM/dd') sp_rec_date, e.emp_name, r.sp_lot_id, s.sp_name, r.sp_rec_qt
+	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, to_char(r.sp_rec_date, 'yyyy-MM-dd') sp_rec_date, e.emp_name, r.sp_lot_id, s.sp_name, r.sp_rec_qt
 	from sp_rec r join semi_prod s 
 	on r.sp_id = s.sp_id
 	LEFT OUTER join employee e
 	on r.emp_id = e.emp_id
+	order by sp_rec_date desc
 </select>
 <!-- 반제품 입고관리 끝 -->
 
 <!-- 완제품 입고관리 시작 -->
 <select id="readyCpList" resultType="ReceiveVO">
-	SELECT P. PRCS_PFMC_ID, P.PD_ID CP_ID, P.PD_NAME CP_NAME, S.CP_SIZE sp_size, P.WK_END, P.GOOD_QT, S.CP_LOT
+    SELECT P. PRCS_PFMC_ID, P.PD_ID CP_ID, P.PD_NAME CP_NAME, get_com_name(S.CP_SIZE) sp_size, P.WK_END, P.GOOD_QT, S.CP_LOT
 	FROM PROCESS_PERFORMANCE P
 	JOIN WORK_BOM B ON B.WK_BOM_ID = P.WK_BOM_ID
 	JOIN COMPLETE_PROD S ON P.PD_ID = S.CP_ID
@@ -74,16 +76,16 @@
 	AND B.FLOW_NUM IN( SELECT MAX(FLOW_NUM)
 	                    FROM WORK_BOM
 	                    GROUP BY WK_DETA_ID)
+    AND P.GOOD_QT != 0
 	ORDER BY P.PD_ID,P.WK_END
 </select>
 
 <select id="cpRecList" resultType="ReceiveVO">
-	select r.cp_rec_id, r.prcs_pfmc_id, l.cp_id, r.cp_rec_tp, to_char(r.cp_rec_date, 'yyyy/MM/dd') cp_rec_date, e.emp_name, r.cp_lot_id, s.cp_name, r.cp_rec_qt
+    select r.cp_rec_id, r.prcs_pfmc_id, l.cp_id, get_com_name(r.cp_rec_tp) cp_rec_tp , to_char(r.cp_rec_date, 'yyyy-MM-dd') cp_rec_date, get_emp_name(r.emp_id) emp_name, r.cp_lot_id, s.cp_name, r.cp_rec_qt
 	from prod_rev r join prod_lot l on r.cp_lot_id = l.cp_lot_id
 	join complete_prod s 
 	on l.cp_id = s.cp_id
-	LEFT OUTER join employee e
-	on r.emp_id = e.emp_id
+    order by cp_rec_date desc
 </select>
 
 <select id="procCpLotInfo" parameterType="ReceiveVO" statementType="CALLABLE">
@@ -95,22 +97,22 @@
     }
 </select>
 
-<select id="getCpLotId" parameterType="String" resultType="ReceiveVO">
+<select id="getCpLotId" parameterType="String" resultType="String">
 	select GET_CP_LOT_ID(#{cpId})
 	from dual
 </select>
 
 <insert id="insertCpLot" parameterType="ReceiveVO">
-	INSERT INTO sp_lot VALUES (#{cpLotId}, #{cpId}, #{cpLotQt}, #{spLotQtCk}, '0')
+	INSERT INTO prod_lot VALUES (#{cpLotId}, #{cpId}, #{cpLotQt}, #{cpLotQtCk}, '0')
 </insert>
 
 <insert id="insertCpRec" parameterType="ReceiveVO">
 	<selectKey resultType="ReceiveVO" keyProperty="cpRecId,cpRecDate"  order="BEFORE" >
-		select get_prod_rec_num cp_rec_id, to_char(sysdate, 'yyyy/MM/dd') cp_rec_date
+		select get_prod_rec_num() cp_rec_id, to_char(sysdate, 'yyyy/MM/dd') cp_rec_date
 		from dual
 	</selectKey>
 	
-	INSERT INTO prod_rev VALUES (#{cpRecId}, '정상입고', #{prcsPfmcId}, #{empId}, to_date(#{cpRecDate},'yyyy/MM/dd', #{cpRecQt}, #{cpLotId})
+	INSERT INTO prod_rev VALUES (#{cpRecId}, 'CPF', #{prcsPfmcId}, #{empId}, to_date(#{cpRecDate},'yyyy/MM/dd'), #{cpRecQt}, #{cpLotId})
 </insert>
 
 <update id="updateCpLot" parameterType="ReceiveVO">
@@ -122,7 +124,7 @@
 
 <!-- 공정실적 조회 시작 -->
 <select id="performanceList" resultType="PfmcVO">
-	select prcs_pfmc_id, r.proc_name, wk_deta_id, p.pd_id, pd_name, equ_code, to_char(wk_start, 'yyyy/MM/dd hh24:mi') wk_start, to_char(wk_end, 'yyyy/MM/dd hh24:mi') wk_end, deta_qt, dmat_qt, good_qt, nvl(nvl(c.cp_unit , s.sp_unit), m.mat_unit) pd_unit, emp_name
+	select prcs_pfmc_id, r.proc_name, wk_deta_id, p.pd_id, pd_name, equ_code, to_char(wk_start, 'yyyy-MM-dd hh24:mi') wk_start, to_char(wk_end, 'yyyy/MM/dd hh24:mi') wk_end, deta_qt, dmat_qt, good_qt, nvl(nvl(c.cp_unit , s.sp_unit), m.mat_unit) pd_unit, emp_name
 	from PROCESS_PERFORMANCE p
     natural join work_bom b
     left outer join complete_prod c on p.pd_id = c.cp_id
@@ -158,7 +160,7 @@
 </sql>
 
 <select id="searchPerformance" resultType="PfmcVO">
-	select prcs_pfmc_id, r.proc_name, wk_deta_id, p.pd_id, pd_name, equ_code, to_char(wk_start, 'yyyy/MM/dd') wk_start, to_char(wk_end, 'yyyy/MM/dd') wk_end, deta_qt, dmat_qt, good_qt, nvl(nvl(c.cp_unit , s.sp_unit), m.mat_unit) pd_unit, emp_name
+	select prcs_pfmc_id, r.proc_name, wk_deta_id, p.pd_id, pd_name, equ_code, to_char(wk_start, 'yyyy-MM-dd') wk_start, to_char(wk_end, 'yyyy-MM-dd') wk_end, deta_qt, dmat_qt, good_qt, nvl(nvl(c.cp_unit , s.sp_unit), m.mat_unit) pd_unit, emp_name
 	from PROCESS_PERFORMANCE p
     natural join work_bom b
     left outer join complete_prod c on p.pd_id = c.cp_id
@@ -204,7 +206,7 @@
 	</where>
 </sql>
 <select id="spRecSearch" resultType="ReceiveVO">
-	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, to_char(r.sp_rec_date, 'yyyy/MM/dd') sp_rec_date, get_emp_name(emp_id) emp_name, r.sp_lot_id, s.sp_name, r.sp_rec_qt
+	select r.sp_rec_id, r.prcs_pfmc_id, r.sp_id, r.sp_rec_type, to_char(r.sp_rec_date, 'yyyy-MM-dd') sp_rec_date, get_emp_name(emp_id) emp_name, r.sp_lot_id, s.sp_name, r.sp_rec_qt
 	from sp_rec r join semi_prod s 
 	on r.sp_id = s.sp_id
 	<include refid="spResSql"></include>

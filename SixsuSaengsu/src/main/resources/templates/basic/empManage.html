@@ -10,8 +10,9 @@
 			padding: 0.5em;
 			text-align: right;
 			height: 50px;
-			margin-top: 65px;
+			margin-top: 30px;
 			margin-bottom: 3px;
+			padding: 20px;
 		}
 
 		.modalTbl {
@@ -45,8 +46,8 @@
 		}
 
 		#searchForm {
-			margin-top: 70px;
-			text-align: center;
+			margin-bottom: 10px;
+			float: left;
 		}
 
 		#searchForm input {
@@ -64,30 +65,34 @@
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">사원관리</h1>
+
 		<div class="test">
-			<button type="button" class="sixBtn3" id="initBtn">초기화</button>
-			<button type="button" class="sixBtn2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">등록</button>
-			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
-			<button type="button" class="sixBtn6" id="pwBtn" data-bs-toggle="modal">비밀번호 변경</button>
+			<!-- 검색부분 -->
+			<form action="" method="get" id="searchForm" onsubmit="return false">
+				<select name="searchType">
+					<option value="id">사원번호</option>
+					<option value="name">이름</option>
+				</select>
+				<input type="text" id="searchKey" name="searchKey">
+				<button type="button" class="sixBtn1" id="searchBtn"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+						height="18" fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+						<path
+							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+					</svg></button>
+				<button type="button" class="sixBtn3" id="initBtn">초기화</button>
+			</form>
+			<div class="divBtn">
+				<!-- 검색부분 끝 -->
+				<button type="button" class="sixBtn2" data-bs-toggle="modal"
+					data-bs-target="#staticBackdrop">등록</button>
+				<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+				<button type="button" class="sixBtn6" id="pwBtn" data-bs-toggle="modal">비밀번호 변경</button>
+			</div>
 		</div>
 
 		<!-- 사원목록 그리드 -->
 		<div id="grid"></div>
 		<!-- 사원목록 그리드 끝 -->
-
-		<!-- 검색부분 -->
-		<form action="" method="post" id="searchForm">
-			<select name="searchType">
-				<option value="id">사원번호</option>
-				<option value="name">이름</option>
-			</select>
-			<input type="text" id="searchKey" name="searchKey">
-			<button type="button" class="sixBtn1" id="searchBtn"><svg xmlns="http://www.w3.org/2000/svg" width="14"
-					height="18" fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
-					<path
-						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-				</svg></button>
-		</form>
 
 
 		<!-- 등록 Modal 시작 -->
@@ -168,7 +173,7 @@
 				<div class="modal-content">
 					<!-- 비밀번호 수정 모달 헤더 -->
 					<div class="modal-header">
-						<h5 class="modal-title" id="pwModalLabel" style="font-family: 'MaruBuri';">비밀번호 수정</h5>
+						<h5 class="modal-title" id="pwModalLabel" style="font-family: 'MaruBuri';">비밀번호 변경</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<!-- 비밀번호 수정 모달 바디 -->
@@ -180,7 +185,7 @@
 									<td id="pwEmpData"></td>
 								</tr>
 								<tr>
-									<td><input type="password" name="empPw"></td>
+									<td><input type="text" name="empPw"></td>
 								</tr>
 							</table>
 						</form>
@@ -358,11 +363,6 @@
 			let selEmpName = '';
 			let selKey = '';
 			grid.on('focusChange', (ev) => {
-				// focus된 셀이 있는 열 전체 select 처리
-				// grid.setSelectionRange({
-				// 	start: [ev.rowKey, 0],
-				// 	end: [ev.rowKey, grid.getColumns().length - 1]
-				// });
 				if (selKey != ev.rowKey) {
 					grid.removeRowClassName(selKey, 'cell-pink');
 				}
@@ -393,7 +393,7 @@
 						console.log(result);
 						//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
 						const appendedData = result
-						grid.appendRow(appendedData);
+						grid.prependRow(appendedData);
 					},
 					error: function () {
 						alert('사원 등록 중 오류가 발생했습니다!');
@@ -471,6 +471,14 @@
 						alert('사원 조회 중 오류 발생!');
 					}
 				})
+			})
+
+			// 검색창 엔터 버튼 이벤트
+			$("#searchKey").on('keypress', function (e) {
+				//e.preventDefault();
+				if (e.keyCode == 13) {
+					$('#searchBtn').click();
+				}
 			})
 
 			// 초기화 버튼 이벤트

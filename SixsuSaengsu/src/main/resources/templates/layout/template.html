@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="utf-8" />
@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
     <script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
-
+    <script src="/js/scripts.js"></script>
 
     <!-- <meta name="_csrf" th:content="${_csrf.token}"/>
 	<meta name="_csrf_header" th:content="${_csrf.headerName}"/> -->
@@ -54,7 +54,7 @@
                     </li>
                     <li>
                         <form action="/logout" method="post">
-                            <button class="dropdown-item">로그아웃</button>
+                            <button id="logoutBtn" class="dropdown-item">로그아웃</button>
                         </form>
                     </li>
                 </ul>
@@ -66,10 +66,10 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="index.html">
+                        <div class="sb-sidenav-menu-heading">KIOSK</div>
+                        <a class="nav-link" href="/work/workKiosk" target="_blank">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
+                            생산작업 KIOSK
                         </a>
                         <div class="sb-sidenav-menu-heading">SIXSU SAENGSU</div>
 
@@ -118,14 +118,12 @@
                         <div class="collapse" id="collapsePages" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="/sales/invoice">주문서관리</a>
+                                <a class="nav-link-a" href="/sales/invoice" sec:authorize="hasAnyRole('ROLE_A','ROLE_B')">주문서관리</a>
                                 <a class="nav-link-a" href="/sales/invoiceInfo">주문서조회</a>
-                                <a class="nav-link-a" href="/prod/cpRec">입고관리</a>
+                                <a class="nav-link-a" href="/prod/cpRec" sec:authorize="hasAnyRole('ROLE_A','ROLE_B')">입고관리</a>
                                 <a class="nav-link-a" href="/sales/receiveInfo">입고조회</a>
-                                <a class="nav-link-a" href="/sales/ship">출고관리</a>
+                                <a class="nav-link-a" href="/sales/ship" sec:authorize="hasAnyRole('ROLE_A','ROLE_B')">출고관리</a>
                                 <a class="nav-link-a" href="/sales/shipInfo">출고조회</a>
-                                <a class="nav-link-a" href="/sales/return">반품관리</a>
-                                <a class="nav-link-a" href="/sales/returnInfo">반품조회</a>
                                 <a class="nav-link-a" href="/sales/inventoryInfo">제품재고조회</a>
                                 <a class="nav-link-a" href="#">판매실적조회</a>
                             </nav>
@@ -147,11 +145,10 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link-a" href="/work/viewPlanPage">생산계획 조회</a>
-                                <a class="nav-link-a" href="/work/createPlanPage">생산계획 등록</a>
+                                <a class="nav-link-a" href="/work/createPlanPage" sec:authorize="hasAnyRole('ROLE_A','ROLE_C')">생산계획 등록</a>
                                 <a class="nav-link-a" href="/work/viewWorkPage">작업지시 조회</a>
-                                <a class="nav-link-a" href="/work/workControllPage">작업지시 관리</a>
+                                <a class="nav-link-a" href="/work/workControllPage" sec:authorize="hasAnyRole('ROLE_A','ROLE_C')">작업지시 관리</a>
                                 <a class="nav-link-a" href="/work/performanceInfo">공정실적 조회</a>
-                                <a class="nav-link-a" href="/work/workKiosk">작업 KIOSK</a>
                             </nav>
                         </div>
 
@@ -171,20 +168,20 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link-a" href="/materials/matInfo">자재조회</a>
-                                <a class="nav-link-a" href="/materials/mlot">자재LOT조회</a>
-                                <a class="nav-link-a" href="/materials/matreq">자재발주관리</a>
+                                <a class="nav-link-a" href="/materials/matlotInfo">자재LOT조회</a>
+                                <a class="nav-link-a" href="/materials/matreq" sec:authorize="hasAnyRole('ROLE_A','ROLE_D')">자재발주관리</a>
                                 <a class="nav-link-a" href="/materials/matReqInfo">자재발주조회</a>
-                                <a class="nav-link-a" href="/materials/matrec">자재입고관리</a>
+                                <a class="nav-link-a" href="/materials/matrec" sec:authorize="hasAnyRole('ROLE_A','ROLE_D')">자재입고관리</a>
                                 <a class="nav-link-a" href="/materials/matRecInfo">자재입고조회</a>
                                 <a class="nav-link-a" href="/materials/matShipInfo">자재출고조회</a>
                                 <a class="nav-link-a" href="/materials/spInfo">반제품조회</a>
                                 <a class="nav-link-a" href="/materials/spLotInfo">반제품LOT조회</a>
-                                <a class="nav-link-a" href="/prod/spRec">반제품입고관리</a>
-                                <a class="nav-link-a" href="#">반제품입고조회</a>
+                                <a class="nav-link-a" href="/prod/spRec" sec:authorize="hasAnyRole('ROLE_A','ROLE_D')">반제품입고관리</a>
+                                <a class="nav-link-a" href="/prod/spRecInfo">반제품입고조회</a>
                                 <a class="nav-link-a" href="/materials/spShipInfo">반제품출고조회</a>
-                                <a class="nav-link-a" href="/materials/matadj">자재재고조정</a>
-                                <a class="nav-link-a" href="/materials/spadj">반제품재고조정</a>
-                                <a class="nav-link-a" href="/materials/matdmg">불량자재관리</a>
+                                <a class="nav-link-a" href="/materials/matadj" sec:authorize="hasAnyRole('ROLE_A','ROLE_D')">자재재고조정</a>
+                                <a class="nav-link-a" href="/materials/spadj" sec:authorize="hasAnyRole('ROLE_A','ROLE_D')">반제품재고조정</a>
+                                <a class="nav-link-a" href="/materials/matdmg" sec:authorize="hasAnyRole('ROLE_A','ROLE_D')">불량자재관리</a>
                             </nav>
                         </div>
 
@@ -206,11 +203,11 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link-a" href="/equipment/EquInfo">설비조회</a>
-                                <a class="nav-link-a" href="/equipment/equConpage">설비관리</a>
+                                <a class="nav-link-a" href="/equipment/equConpage" sec:authorize="hasAnyRole('ROLE_A','ROLE_E')">설비관리</a>
                                 <a class="nav-link-a" href="/equipment/CheckInfo">점검조회</a>
-                                <a class="nav-link-a" href="/equipment/equCheckCP">점검관리</a>
+                                <a class="nav-link-a" href="/equipment/equCheckCP" sec:authorize="hasAnyRole('ROLE_A','ROLE_E')">점검관리</a>
                                 <a class="nav-link-a" href="/equipment/OperInfo">설비 비가동 조회</a>
-                                <a class="nav-link-a" href="/equipment/equOperCP">설비 비가동 관리</a>
+                                <a class="nav-link-a" href="/equipment/equOperCP" sec:authorize="hasAnyRole('ROLE_A','ROLE_E')">설비 비가동 관리</a>
                             </nav>
                         </div>
 
@@ -231,11 +228,11 @@
                         <div class="collapse" id="qualnav" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="/quality/recInsp">자재 입고 검사 관리</a>
-                                <a class="nav-link-a" href="/quality/prInsp">제품 품질 관리</a>
-                                <a class="nav-link-a" href="/quality/psInsp">완제품 출고 품질 관리</a>
-                                <a class="nav-link-a" href="/quality/returnInsp">반품 품질 검사 관리</a>
-                                <a class="nav-link-a" href="/quality/inspList">품질검사 항목관리</a>
+                                <a class="nav-link-a" href="/quality/recInsp" sec:authorize="hasAnyRole('ROLE_A','ROLE_F')">자재 입고 검사 관리</a>
+                                <a class="nav-link-a" href="/quality/prInsp" sec:authorize="hasAnyRole('ROLE_A','ROLE_F')">제품 품질 관리</a>
+                                <a class="nav-link-a" href="/quality/psInsp" sec:authorize="hasAnyRole('ROLE_A','ROLE_F')">완제품 출고 품질 관리</a>
+                                <a class="nav-link-a" href="/quality/returnInsp" sec:authorize="hasAnyRole('ROLE_A','ROLE_F')">반품 품질 검사 관리</a>
+                                <a class="nav-link-a" href="/quality/InspList" sec:authorize="hasAnyRole('ROLE_A','ROLE_F')">품질검사 항목관리</a>
                                 <a class="nav-link-a" href="/quality/inspInfo">품질검사 결과조회</a>
                             </nav>
                         </div>
@@ -255,7 +252,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
-    <script src="/js/scripts.js"></script>
+
     <script>
         $('.nav-link.collapsed').on('click', (e) => {
             let sideIndex = $(e.target).attr('data-value');
@@ -270,6 +267,10 @@
             //$('.nav-link.collapsed').get(navIndex).click();
         }
         //$('.nav-link.collapsed').get(2).click();
+        
+        $('#logoutBtn').on('click', (e) =>{
+        	sessionStorage.removeItem('sideIndex');
+        })
     </script>
 </body>
 

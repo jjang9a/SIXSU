@@ -6,28 +6,58 @@
 	<meta charset="UTF-8">
 	<title>반제품조회</title>
 	<style>
-	#gridm .redcolor{
-		background-color : #ffe4e4
-	}
-	
+		#gridm .redcolor {
+			background-color: #ffe4e4
+		}
+
+		#gridm .yellowcolor {
+			background-color: #e8f71c63
+		}
+
+		#left {
+			text-align: center;
+			padding: 10px 0 30px;
+		}
 	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
-			<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품조회</h1>
-	
-			<div id="left">
-				반제품명 <input type="text" id="spName" name="spName">
-			</div>
-			<div id="left">
-				<button class="sixBtn2" id="check">조회</button>
-				<button class="sixBtn4" id="reset">초기화</button>
-			</div>
-			
-			<div id="gridm"></div>
-			
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품조회</h1>
+
+		<div id="left">
+			반제품명 <input type="text" id="spName" name="spName">
+			<button class="sixBtn2" id="check">조회</button>
+			<button class="sixBtn3" id="reset">초기화</button>
+		</div>
+
+		<div id="gridm"></div>
+
 		<script>
+<<<<<<< HEAD
+			function spList(spName) {
+				$.ajax({
+					url: "/materials/semiprodlist",
+					method: "GET",
+					data: {
+						spName: spName
+					},
+					success: function (result) {
+						gridm.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			}
+
+
+			let spName = null;
+			spList(spName);
+
+
+			const gridData = [
+=======
 		
 		function spList(spName){
 			$.ajax({
@@ -59,46 +89,56 @@
 		
 		
 		const gridData = [
+>>>>>>> branch 'main' of https://github.com/jjang9a/SIXSU.git
 
 			];
 			window.onload = function () {
-				
+
 				spList(spName);
 			}
-			
+
 			const gridm = new tui.Grid({
-				el : document.getElementById('gridm'),
+				el: document.getElementById('gridm'),
 				//data : gridData,
-				scrollX : false,
-				scrollY : false,
+				scrollX: false,
+				scrollY: false,
 				pageOptions: {
 					useClient: true,
 					perPage: 10
 				},
 				rowHeaders: ['rowNum'],
-				columns : [ 
-					{
-					header : '반제품코드',
-					name : 'spId',
+				columns: [{
+					header: '반제품코드',
+					name: 'spId',
+					align: 'center'
 				}, {
-					header : '반제품명',
-					name : 'spName'
+					header: '반제품명',
+					name: 'spName',
+					align: 'center'
 				}, {
-					header : '반제품규격',
-					name : 'spSize'
+					header: '반제품규격',
+					name: 'spSize',
+					align: 'center'
 				}, {
-					header : '단위',
-					name : 'spUnit'
+					header: '단위',
+					name: 'spUnit',
+					align: 'center'
 				}, {
-					header : '비고',
-					name : 'spNote'
+					header: '비고',
+					name: 'spNote'
 				}, {
-					header : '현재고',
-					name : 'spQtSum'
+					header: '현재고',
+					name: 'spQtSum',
+					align: 'right',
+					formatter: ({
+						value
+					}) => {
+						return value.toLocaleString()
+					}
 				}]
 			});
-			
- 			tui.Grid.applyTheme('default', {
+
+			tui.Grid.applyTheme('default', {
 				cell: {
 					header: {
 						background: '#e5edf5'
@@ -111,19 +151,19 @@
 					}
 				}
 			});
- 			
- 			
- 			
- 			$('#check').on('click', function(){
- 				spName = $('#spName').val();
- 				spList(spName);
- 			})
- 			
- 			$('#reset').on('click', function() {
- 				$('#spName').val('');
- 				spName = '';
- 				spList(spName);
- 			})
+
+
+
+			$('#check').on('click', function () {
+				spName = $('#spName').val();
+				spList(spName);
+			})
+
+			$('#reset').on('click', function () {
+				$('#spName').val('');
+				spName = '';
+				spList(spName);
+			})
 		</script>
 	</div>
 </body>

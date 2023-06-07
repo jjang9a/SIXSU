@@ -31,13 +31,14 @@ public class SecurityConfig{
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> 
 		requests
-			.antMatchers("/top","/login", "/**", "/").permitAll()
-			.antMatchers("/admin/**").hasAuthority("ROLE_A") // boot에서는 ROLE_ 생략하고 그냥 ADMIN으로 적는것도 가능
-			.antMatchers("/admin/**").hasAuthority("ROLE_B")
-			.antMatchers("/admin/**").hasAuthority("ROLE_C")
-			.antMatchers("/admin/**").hasAuthority("ROLE_D")
-			.antMatchers("/admin/**").hasAuthority("ROLE_E")
-			.antMatchers("/admin/**").hasAuthority("ROLE_F")
+			.antMatchers("/top","/login", "/", "/work/workKiosk").permitAll()
+			.antMatchers("/basic/**","/**/*Info").authenticated()
+			.antMatchers("/sales/**", "/prod/cpRec").hasAuthority("ROLE_B")
+			.antMatchers("/work/**").hasAuthority("ROLE_C")
+			.antMatchers("/material/**", "/prod/spRec", "/prod/spRecInfo").hasAuthority("ROLE_D")
+			.antMatchers("/equipment/**").hasAuthority("ROLE_E")
+			.antMatchers("/quality/**").hasAuthority("ROLE_F")
+			.antMatchers("/**").hasAuthority("ROLE_A") // boot에서는 ROLE_ 생략하고 그냥 ADMIN으로 적는것도 가능
 			.anyRequest().authenticated())
 		//.formLogin().loginPage("/login").usernameParameter("").and()
 		.formLogin(login -> login.loginPage("/login")
@@ -50,6 +51,6 @@ public class SecurityConfig{
 	
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/css/**");
+		return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/css/**", "/assets/**");
 	}
 }

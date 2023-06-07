@@ -7,7 +7,7 @@
 	<title>완제품 관리</title>
 	<style>
 		h1 {
-			margin-bottom: 40px;
+			margin-bottom: 25px;
 		}
 
 		#cpTable {
@@ -42,7 +42,7 @@
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">완제품 관리</h1>
 
 		<!-- 정보입력 폼 -->
-		<form action="" method="post" id="cpForm">
+		<form action="" method="post" id="cpForm" onsubmit="return false">
 			<table id="cpTable">
 				<tr>
 					<td>완제품 코드</td>
@@ -138,7 +138,12 @@
 				}, {
 					header: '관리LOT수량',
 					name: 'cpLot',
-					align: 'center'
+					align: 'right',
+					formatter: ({
+						value
+					}) => {
+						return value.toLocaleString()
+					}
 				}, {
 					header: '비고',
 					name: 'cpNote',
@@ -146,7 +151,16 @@
 				}, {
 					header: '활성여부',
 					name: 'cpStat',
-					align: 'center'
+					align: 'center',
+					formatter: ({
+						value
+					}) => {
+						if (value == 'Y') {
+							return "사용"
+						} else {
+							return "비사용"
+						}
+					}
 				}]
 			});
 
@@ -159,33 +173,44 @@
 					normal: {
 						background: '#ffffff'
 					}
+				},
+				row: {
+					hover: {
+						background: '#fefafa'
+					}
 				}
 			});
 
 			// 등록 버튼 이벤트
 			$('#addBtn').on('click', function (e) {
-				$.ajax({
-					url: '/basic/addCp',
-					type: 'post',
-					data: $('#cpForm').serialize(),
-					dataType: 'json',
-					success: function (result) {
-						alert('완제품이 성공적으로 등록되었습니다');
-						//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
-						const appendedData = result
-						grid.appendRow(appendedData);
-					},
-					error: function () {
-						alert('완제품 등록 중 오류가 발생했습니다!');
-					}
-				});
-				$('.empty').val('');
+				if (selRow != '') {
+					alert('수정중에는 등록 할 수 없습니다. 초기화 후 등록해주세요.')
+				} else {
+					$.ajax({
+						url: '/basic/addCp',
+						type: 'post',
+						data: $('#cpForm').serialize(),
+						dataType: 'json',
+						success: function (result) {
+							alert('완제품이 성공적으로 등록되었습니다');
+							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
+							const appendedData = result
+							grid.prependRow(appendedData);
+						},
+						error: function () {
+							alert('완제품 등록 중 오류가 발생했습니다!');
+							$('.empty').val('');
+							$('#cpSize').val('').prop("selected", true);
+							$("input:radio[name='cpStat']:radio[value='Y']").prop('checked', true);
+						}
+					});
+				}
 			});
 
-			// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
+			// 열을 클릭하면 위쪽 폼으로 데이터 가져오기
 			let selRow = '';
-			grid.on('dblclick', function (e) {
-				// 열을 더블클릭하면 열 정보를 변수에 저장
+			grid.on('click', function (e) {
+				// 열을 클릭하면 열 정보를 변수에 저장
 				selRow = e.rowKey;
 				let dataRow = grid.getRow(selRow);
 				$('#cpId').val(dataRow.cpId);
@@ -270,7 +295,18 @@
 						}
 					})
 				}
+			})
 
+			// 검색창 엔터 버튼 이벤트
+			$("#cpId").on('keypress', function (e) {
+				if (e.keyCode == 13) {
+					$('#searchBtn').click();
+				}
+			})
+			$("#cpName").on('keypress', function (e) {
+				if (e.keyCode == 13) {
+					$('#searchBtn').click();
+				}
 			})
 
 			// 초기화 버튼 이벤트
@@ -281,6 +317,10 @@
 					dataType: "JSON",
 					success: function (result) {
 						grid.resetData(result);
+						$('.empty').val('');
+						$('#cpSize').val('').prop("selected", true);
+						$("input:radio[name='cpStat']:radio[value='Y']").prop('checked', true);
+						selRow = '';
 					}
 				});
 			})

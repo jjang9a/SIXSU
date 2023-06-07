@@ -9,34 +9,39 @@
 	
 	<!-- 검색용 -->
 	<sql id="criteria">
-		<trim prefix="and (" suffix=")" prefixOverrides="and">
-			<foreach collection="typeArr" item="type">
-				<trim prefix=" and ">
+		<where>
+			<if test="inspType != null and inspType != ''.toString()">
+				insp_type = #{inspType}
+			</if>
+			<trim prefix="and (" suffix=")" prefixOverrides="and">
+				<foreach collection="typeArr" item="type">
+					<trim prefix=" and ">
 						<if test="type == 'I'.toString() ">
 							insp_num like '%'||#{inspNum}||'%'
 						</if>
 						<if test="type == 'P'.toString()">
-							insp_item_id like '%'||#{insp_item_id}||'%'
+							insp_item_id like '%'||#{inspItemId}||'%'
 						</if>
 						<if test="type == 'E'.toString()">
 							emp_id like like '%'||#{empId}||'%'
 						</if>
 						<if test="type == 'D'.toString()">
-							insp_date between to_date(#{inspDate}, 'YYYY-MM-DD') and
+							insp_date between to_date(#{inspDate}, 'YYYY-MM-DD')
+							and
 							to_date(#{inspDate2}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
 						</if>
-				</trim>
-			</foreach>
-		</trim>
+					</trim>
+				</foreach>
+			</trim>
+		</where>
 	</sql>
 		
 	<select id="searchInsp" resultType="QuaVO">
-		select q.insp_num, q.insp_item_id, to_char(insp_date, 'yyyy/MM/dd') insp_date, insp_qt, suit_qt, nsuit_qt ,q.insp_std_id, get_emp_name(emp_id) emp_name, get_com_name(insp_type) insp_exp, NVL(NVL(c.cp_name, s.sp_name), m.mat_name) mat_name
+		select q.insp_num, q.insp_item_id, to_char(insp_date, 'yyyy-MM-dd') insp_date, insp_qt, suit_qt, nsuit_qt ,q.insp_std_id, get_emp_name(emp_id) emp_name, get_com_name(insp_type) insp_exp, NVL(NVL(c.cp_name, s.sp_name), m.mat_name) mat_name
 		from qua_com q
 		left outer join complete_prod c on q.insp_item_id = c.cp_id
 		left outer join semi_prod s on q.insp_item_id = s.sp_id
 		left outer join material m on q.insp_item_id = m.mat_id  
-		where insp_type = #{inspType}
       <include refid="criteria"></include>
       	order by insp_num desc
 	</select>

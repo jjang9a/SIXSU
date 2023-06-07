@@ -8,7 +8,7 @@
 	<title>품질 검사 결과 조회</title>
 	<style>
 		h1 {
-			margin-bottom: 40px;
+			margin-bottom: 25px;
 		}
 
 		#cpTable {
@@ -21,11 +21,11 @@
 		}
 
 		.inputR {
-			width: 210px;
+			width: 240px;
 		}
 
 		.inputS {
-			width: 110px;
+			width: 125px;
 		}
 
 		#cpTable td {
@@ -35,7 +35,7 @@
 
 		.divBtn {
 			text-align: center;
-			padding: 15px 0 50px 0;
+			padding: 10px 0 30px 0;
 		}
 
 		.modal-body {
@@ -73,7 +73,9 @@
 					<td>검사종류</td>
 					<div id="divRadio">
 						<td colspan="3">
-							<input type="radio" id="inspType1" name="inspType" value="INSP-A" checked>
+							<input type="radio" id="inspType0" name="inspType" value="" checked>
+							<label for="inspType1">전체</label>&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" id="inspType1" name="inspType" value="INSP-A">
 							<label for="inspType1">자재 입고 검사</label>&nbsp;&nbsp;&nbsp;&nbsp;
 							<input type="radio" id="inspType2" name="inspType" value="INSP-B">
 							<label for="inspType2">공정 검사</label>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -142,7 +144,7 @@
 			</div>
 		</div>
 		<!-- 제품 선택 Modal 끝 -->
-		
+
 		<!-- 검사 상세정보 Modal 시작 -->
 		<div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="detailModal" aria-hidden="true">
@@ -159,13 +161,13 @@
 					</div>
 					<!-- 모달 푸터(버튼부분) -->
 					<div class="modal-footer">
-					<button type="button" class="sixBtn2" data-bs-dismiss="modal">확인</button>
+						<button type="button" class="sixBtn2" data-bs-dismiss="modal">확인</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- 검사 상세정보 Modal 끝 -->
-		
+
 
 		<script>
 			window.onload = function () {
@@ -176,227 +178,238 @@
 					success: function (result) {
 						aiGrid.resetData(result);
 					}
-				});	
+				});
 			}
-				const aiGrid = new tui.Grid({
-					el: document.getElementById('aiGrid'),
-					scrollX: false,
-					scrollY: false,
-					minBodyHeight: 480,
-					pageOptions: {
-						useClient: true,
-						perPage: 12
+			const aiGrid = new tui.Grid({
+				el: document.getElementById('aiGrid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 480,
+				pageOptions: {
+					useClient: true,
+					perPage: 12
+				},
+
+				columns: [{
+					header: '검사종류',
+					name: 'inspExp',
+					align: 'center',
+					filter: 'select'
+				}, {
+					header: '검사번호',
+					name: 'inspNum',
+					align: 'center'
+				}, {
+					header: '제품코드',
+					name: 'inspItemId',
+					align: 'center'
+				}, {
+					header: '제품명',
+					name: 'matName',
+					align: 'center'
+				}, {
+					header: '검사수량',
+					name: 'inspQt',
+					align: 'right',
+					formatter: ({
+						value
+					}) => {
+						return value.toLocaleString()
+					}
+				}, {
+					header: '부적합 수량',
+					name: 'nsuitQt',
+					align: 'right',
+					formatter: ({
+						value
+					}) => {
+						return value.toLocaleString()
+					}
+				}, {
+					header: '검사자',
+					name: 'empName',
+					align: 'center'
+				}, {
+					header: '검사일자',
+					name: 'inspDate',
+					align: 'center',
+					format: 'yyyy-MM-dd'
+				}, {
+					header: '검사기준코드',
+					name: 'inspStdId',
+					align: 'center'
+				}]
+			});
+
+			// 그리드 색 변경 테마 적용
+			tui.Grid.applyTheme('default', {
+				cell: {
+					header: {
+						background: '#e5edf5'
 					},
-
-					columns: [{
-						header: '검사종류',
-						name: 'inspExp',
-						align: 'center',
-						filter: 'select'
-					}, {
-						header: '검사번호',
-						name: 'inspNum',
-						align: 'center'
-					}, {
-						header: '제품코드',
-						name: 'inspItemId',
-						align: 'center'
-					}, {
-						header: '제품명',
-						name: 'matName',
-						align: 'center'
-					}, {
-						header: '검사수량',
-						name: 'inspQt',
-						align: 'center'
-					}, {
-						header: '부적합 수량',
-						name: 'nsuitQt',
-						align: 'center'
-					}, {
-						header: '검사자',
-						name: 'empName',
-						align: 'center'
-					}, {
-						header: '검사일자',
-						name: 'inspDate',
-						align: 'center',
-						format: 'yyyy-MM-dd'
-					}, {
-						header: '검사기준코드',
-						name: 'inspStdId',
-						align: 'center'
-					}]
-				});
-
-				// 그리드 색 변경 테마 적용
-				tui.Grid.applyTheme('default', {
-					cell: {
-						header: {
-							background: '#e5edf5'
-						},
-						normal: {
-							background: '#ffffff'
-						}
+					normal: {
+						background: '#ffffff'
 					}
-				});
+				}
+			});
 
-				const pdGrid = new tui.Grid({
-					el: document.getElementById('pdGrid'),
-					scrollX: false,
-					scrollY: false,
-					minBodyHeight: 400,
-					pageOptions: {
-						useClient: true,
-						perPage: 10
+			const pdGrid = new tui.Grid({
+				el: document.getElementById('pdGrid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 400,
+				pageOptions: {
+					useClient: true,
+					perPage: 10
+				},
+				columns: [{
+					header: '제품코드',
+					name: 'cpId',
+					align: 'center'
+				}, {
+					header: '제품명',
+					name: 'cpName',
+					align: 'center'
+				}, {
+					header: '규격',
+					name: 'cpSize',
+					align: 'center'
+				}]
+			});
+
+			$('#pdBtn').on('click', function (e) {
+				$.ajax({
+					url: "/basic/activeCpList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
 					},
-					columns: [{
-						header: '제품코드',
-						name: 'cpId',
-						align: 'center'
-					}, {
-						header: '제품명',
-						name: 'cpName',
-						align: 'center'
-					}, {
-						header: '규격',
-						name: 'cpSize',
-						align: 'center'
-					}]
+					error: function (reject) {
+						console.log(reject)
+					}
 				});
+				setTimeout(() => pdGrid.refreshLayout(), 500);
+				$('#pdModal').modal('show');
+			})
 
-				$('#pdBtn').on('click', function (e) {
+			// 제품 선택 모달창 탭 기능(완제품 클릭)
+			$('.sel1').on('click', function (e) {
+				$('.sel4').removeClass('sel3');
+				$('.sel2').removeClass('sel3');
+				$(this).addClass('sel3');
+				$.ajax({
+					url: "/basic/activeCpList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
+
+			// 제품 선택 모달창 탭 기능(반제품 클릭)
+			$('.sel2').on('click', function (e) {
+				$('.sel4').removeClass('sel3');
+				$('.sel1').removeClass('sel3');
+				$(this).addClass('sel3');
+				$.ajax({
+					url: "/basic/activeSpList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
+
+			// 제품 선택 모달창 탭 기능(자재 클릭)
+			$('.sel4').on('click', function (e) {
+				$('.sel2').removeClass('sel3');
+				$('.sel1').removeClass('sel3');
+				$(this).addClass('sel3');
+				$.ajax({
+					url: "/basic/activeMatList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						pdGrid.resetData(result);
+					},
+					error: function (reject) {
+						console.log(reject)
+					}
+				});
+			})
+
+			// 모달창 제품 선택 이벤트
+			pdGrid.on('click', function (e) {
+				rowData = pdGrid.getRow(e.rowKey);
+				$('#inspItemId').val(rowData.cpId);
+				$('.sel4').removeClass('sel3');
+				$('.sel2').removeClass('sel3');
+				$('.sel1').addClass('sel3');
+				$('#pdModal').modal('hide');
+			})
+
+
+			// 검색 버튼 이벤트
+			var searchType = '';
+			let searchKey = '';
+			$('#searchBtn').on('click', function (e) {
+				if ($('#inspNum').val() != '') {
+					searchType += 'I'
+				}
+				if ($('#inspItemId').val() != '') {
+					searchType += 'P'
+				}
+				if ($('#empId').val() != '') {
+					searchType += 'E'
+				}
+				if ($('#inspDate').val() != '' && $('#inspDate2').val() != '') {
+					searchType += 'D'
+				}
+				if (searchType != '') {
+					console.log(searchType)
+					$('#searchType').val(searchType);
 					$.ajax({
-						url: "/basic/activeCpList",
-						method: "GET",
-						dataType: "JSON",
+						url: '/quality/searchInsp',
+						type: 'post',
+						data: $('#searchForm').serialize(),
+						dataType: 'json',
 						success: function (result) {
-							pdGrid.resetData(result);
+							const searchData = result
+							aiGrid.resetData(searchData);
+							let searchType = '';
 						},
-						error: function (reject) {
-							console.log(reject)
+						error: function () {
+							alert('검색 중 오류가 발생했습니다!');
 						}
 					});
-					setTimeout(() => pdGrid.refreshLayout(), 500);
-					$('#pdModal').modal('show');
-				})
+				}
+			})
 
-				// 제품 선택 모달창 탭 기능(완제품 클릭)
-				$('.sel1').on('click', function (e) {
-					$('.sel4').removeClass('sel3');
-					$('.sel2').removeClass('sel3');
-					$(this).addClass('sel3');
-					$.ajax({
-						url: "/basic/activeCpList",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							pdGrid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					});
-				})
-
-				// 제품 선택 모달창 탭 기능(반제품 클릭)
-				$('.sel2').on('click', function (e) {
-					$('.sel4').removeClass('sel3');
-					$('.sel1').removeClass('sel3');
-					$(this).addClass('sel3');
-					$.ajax({
-						url: "/basic/activeSpList",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							pdGrid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					});
-				})
-
-				// 제품 선택 모달창 탭 기능(자재 클릭)
-				$('.sel4').on('click', function (e) {
-					$('.sel2').removeClass('sel3');
-					$('.sel1').removeClass('sel3');
-					$(this).addClass('sel3');
-					$.ajax({
-						url: "/basic/activeMatList",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							pdGrid.resetData(result);
-						},
-						error: function (reject) {
-							console.log(reject)
-						}
-					});
-				})
-
-				// 모달창 제품 선택 이벤트
-				pdGrid.on('click', function (e) {
-					rowData = pdGrid.getRow(e.rowKey);
-					$('#inspItemId').val(rowData.cpId);
-					$('.sel4').removeClass('sel3');
-					$('.sel2').removeClass('sel3');
-					$('.sel1').addClass('sel3');
-					$('#pdModal').modal('hide');
-				})
-
-
-				// 검색 버튼 이벤트
-				let searchType = '';
-				let searchKey = '';
-				$('#searchBtn').on('click', function (e) {
-					if ($('#inspNum').val() != '') {
-						searchType += 'I'
+			// 초기화 버튼 이벤트
+			$('#initBtn').on('click', (e) => {
+				$.ajax({
+					url: "/quality/resultInspList",
+					method: "GET",
+					dataType: "JSON",
+					success: function (result) {
+						aiGrid.resetData(result);
+						$('.inputR').val('');
+						$('.inputS').val('');
 					}
-					if ($('#inspItemId').val() != '') {
-						searchType += 'P'
-					}
-					if ($('#empId').val() != '') {
-						searchType += 'E'
-					}
-					if ($('#inspDate').val() != '' && $('#inspDate2').val() != '') {
-						searchType += 'D'
-					}
-					if (searchType != '') {
-						$('#searchType').val(searchType);
-						$.ajax({
-							url: '/quality/searchInsp',
-							type: 'post',
-							data: $('#searchForm').serialize(),
-							dataType: 'json',
-							success: function (result) {
-								const searchData = result
-								aiGrid.resetData(searchData);
-								let searchType = '';
-							},
-							error: function () {
-								alert('검색 중 오류가 발생했습니다!');
-							}
-						});
-					}
-				})
+				});
+			})
 
-				// 초기화 버튼 이벤트
-				$('#initBtn').on('click', (e)=>{
-					$.ajax({
-						url: "/quality/resultInspList",
-						method: "GET",
-						dataType: "JSON",
-						success: function (result) {
-							aiGrid.resetData(result);
-							$('.inputR').val('');
-							$('.inputS').val('');
-						}
-					});
-				})
-				
-				// 상세정보 그리드
-				const detailGrid = new tui.Grid({
+			// 상세정보 그리드
+			const detailGrid = new tui.Grid({
 				el: document.getElementById('detailGrid'),
 				scrollX: false,
 				scrollY: false,
@@ -419,30 +432,32 @@
 					align: 'center'
 				}]
 			});
-				
-				detailGrid.setBodyHeight(320);
-				
-				// 그리드 클릭시 상세정보 모달 띄우기 이벤트
-				aiGrid.on('click', e => {
-					let key = aiGrid.getRow(e.rowKey).inspNum
-					$.ajax({
-						url: '/quality/getDetail',
-						type: 'get',
-						data: {
-							"inspNum": key
-						},
-						success: function (result) {
-							detailGrid.resetData(result);
-							setTimeout(() => detailGrid.refreshLayout(), 500);
-							$('#detailModal').modal('show');
-						},
-						error: function (r) {
-							console.log(r);
-						}
-					})
+
+			detailGrid.setBodyHeight(320);
+
+			// 그리드 클릭시 상세정보 모달 띄우기 이벤트
+			aiGrid.on('click', e => {
+				let key = aiGrid.getRow(e.rowKey).inspNum
+				$.ajax({
+					url: '/quality/getDetail',
+					type: 'get',
+					data: {
+						"inspNum": key
+					},
+					success: function (result) {
+						detailGrid.resetData(result);
+						setTimeout(() => detailGrid.refreshLayout(), 500);
+						$('#detailModal').modal('show');
+					},
+					error: function (r) {
+						console.log(r);
+					}
 				})
+			})
 
-
+			// 날짜 인풋상자 기본데이터 현재시간~2주전 으로 세팅
+			document.getElementById('inspDate').valueAsDate = get_date(-14);
+			document.getElementById('inspDate2').valueAsDate = new Date();
 		</script>
 	</div>
 </body>

@@ -13,7 +13,7 @@
 		}
 
 		h3 {
-			padding: 20px 20px 0px 20px;
+			padding: 5px 20px 0px 20px;
 		}
 
 		button {
@@ -66,28 +66,39 @@
 				rowHeaders: ['checkbox'],
 				columns: [{
 						header: '공정실적코드',
-						name: 'prcsPfmcId'
+						name: 'prcsPfmcId',
+						align: 'center'
 					},
 					{
 						header: '반제품코드',
 						name: 'spId',
-						filter: 'select'
+						filter: 'select',
+						align: 'center'
 					},
 					{
 						header: '반제품명',
-						name: 'spName'
+						name: 'spName',
+						align: 'center'
 					},
 					{
 						header: '반제품규격',
-						name: 'spSize'
+						name: 'spSize',
+						align: 'center'
 					},
 					{
 						header: '양품수량',
-						name: 'goodQt'
+						name: 'goodQt',
+						align: 'right',
+						formatter: ({
+							value
+						}) => {
+							return value.toLocaleString()
+						}
 					},
 					{
 						header: '생산종료일',
-						name: 'wkEnd'
+						name: 'wkEnd',
+						align: 'center'
 					},
 					{
 						header: 'LOT단위',
@@ -194,10 +205,20 @@
 						contentType: "application/json",
 						data: JSON.stringify(readyGrid.getCheckedRows()),
 						success: function (result) {
-							let appData = result;
-							grid.appendRows(appData);
+							// let appData = result;
+							// grid.appendRows(appData);
 							readyGrid.removeCheckedRows(false);
 							alert('입고가 완료되었습니다.')
+							$.ajax({
+								url: "/prod/spRecList",
+								method: "GET",
+								success: function (result) {
+									grid.resetData(result);
+								},
+								error: function (reject) {
+									console.log(reject)
+								}
+							})
 						},
 						error: function (reject) {
 							console.log(reject)
