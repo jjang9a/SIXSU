@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.sixsu.app.basic.domain.ProcessVO;
 import co.sixsu.app.basic.domain.ProductVO;
+import co.sixsu.app.material.domain.MatLotVO;
 import co.sixsu.app.material.domain.MatVO;
 import co.sixsu.app.work.domain.DetaProdPlanVO;
 import co.sixsu.app.work.domain.DetaWorkOrdrVO;
@@ -128,18 +129,16 @@ public class WorkServiceImpl implements WorkService{
 
 	@Override
 	@Transactional
-	public List<DetaWorkOrdrVO> addDetaWork(String data) {
+	public List<DetaWorkOrdrVO> addDetaWork(DetaWorkOrdrVO headId) {
 		//세부지시에 쓸 ID가져오기
-		String subData = data.substring(2) ;
+		String subData = headId.getWkHeadId().substring(2) ;
 		String detaCode = mapper.getDetaCode(subData);
-		System.out.println(detaCode);
 		//세부지시 추가
-		DetaWorkOrdrVO ob = new DetaWorkOrdrVO();
-		ob.setWkHeadId(data);
+		DetaWorkOrdrVO ob = headId;
 		ob.setWkDetaId(detaCode);
 		mapper.addDetaWork(ob);
 		//list보낼거 선택
-		List<DetaWorkOrdrVO> list = mapper.getDetaWorkHeadList(data);
+		List<DetaWorkOrdrVO> list = mapper.getDetaWorkHeadList(headId.getWkHeadId());
 		return list;
 		
 	}
@@ -234,9 +233,10 @@ public class WorkServiceImpl implements WorkService{
 	}
 
 	@Override
-	public String workInsertSubmit(String data) {
+	public String workInsertSubmit(DetaWorkOrdrVO wkDeta) {
 		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("data", data);
+		paramMap.put("wkHeadId", wkDeta.getWkHeadId());
+		paramMap.put("empId", wkDeta.getEmpId());
 		paramMap.put("outParam", null);
 		
 		mapper.workInsertSubmit(paramMap);
@@ -338,6 +338,11 @@ public class WorkServiceImpl implements WorkService{
 	@Override
 	public List<bomMatVO> getBomMatList(String detaCode) {
 		return mapper.getBomMatList(detaCode);
+	}
+
+	@Override
+	public List<MatLotVO> getLotInfoList(String bomMatId) {
+		return mapper.getLotInfoList(bomMatId);
 	}
 
 	

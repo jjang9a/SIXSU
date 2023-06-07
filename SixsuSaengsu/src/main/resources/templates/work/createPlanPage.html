@@ -212,11 +212,14 @@ while (defaultData.length < 8){
 		if(data.type == ''){
 			alert('분류를 입력하세요')
 			isEmpty = true;
-		} else if (data.regDate == ''){
-			alert('등록일을 입력하세요')
+		} else if (data.startDate == ''){
+			alert('계획기간을 입력하세요')
 			isEmpty = true;
-		} else if (data.empName == ''){
-			alert('작성자를 입력하세요')
+		} else if (data.endDate == ''){
+			alert('계획기간을 입력하세요')
+			isEmpty = true;
+		} else if (dataArr[1] == null){
+			alert('계획된 작업이 없습니다')
 			isEmpty = true;
 		}
 		
