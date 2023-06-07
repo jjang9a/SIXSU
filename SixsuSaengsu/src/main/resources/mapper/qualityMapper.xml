@@ -152,12 +152,13 @@
 		       l.std_val,
 		       q.insp_qt,
 		       q.suit_qt, 
-		       d.res_stat
+		       d.res_stat,
+		       d.res_val nsuit_qt
 		  
 		  from qua_details d
 		  join qua_com q 
 		    on d.insp_num = q.insp_num
-		  join qua_insp_list l 
+left outer join qua_insp_list l 
 		    on d.insp_id = l.insp_id
 		
 		where d.insp_num = #{inspNum}
@@ -239,7 +240,7 @@
 			   q.insp_qt, 
 			   q.nsuit_qt, 
 			   get_emp_name(e.emp_id) emp_name,
-			   b.bus_id,
+			   b.bus_name,
 			   TO_CHAR(q.insp_date, 'YYYY-MM-DD') AS insp_date
 		  FROM qua_com q
 		  JOIN mat_req r 
@@ -393,7 +394,8 @@ LEFT OUTER JOIN  work_bom b
 	         ON  b.proc_id = r.proc_id
           WHERE  q.INSP_NUM IS NOT NULL
             AND  q.INSP_DATE IS NOT NULL
-       ORDER BY  q.insp_num
+            AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
+       ORDER BY  q.insp_date desc
 	</select>
 	
 	
@@ -425,18 +427,18 @@ LEFT OUTER JOIN  work_bom b
 
 	<!-- 완제품 출고 관리 리스트 -->
   	<select id="shInspList" resultType="ShipInspVO">
-		select s.cp_ship_id, 
+        select s.cp_ship_id, 
 			   s.ord_det_id, 
 			   s.cp_lot_id, 
 			   c.cp_name,
 			   p.cp_id, 
 			   s.cp_ship_qt, 
 			   get_com_code(s.cp_ship_stat) cp_ship_stat,
-			   get_com_code(d.res_stat) res_stat,
+			   d.res_stat,
 			   to_char(q.insp_date, 'yyyy-MM-dd') insp_date, 
 			   q.insp_num, 
-			   f.wk_end, 
-			   f.wk_end + (INTERVAL '2' YEAR) as exp_date,
+			   to_char(f.wk_end,'yyyy-MM-dd') wk_end ,
+			   to_char(f.wk_end + (INTERVAL '2' YEAR), 'yyyy-MM-dd') as exp_date,
 			   get_emp_name(q.emp_id) emp_name
 		from
 				pro_ship s left join qua_com q
@@ -451,7 +453,7 @@ LEFT OUTER JOIN prod_rev r
              ON p.cp_lot_id = r.cp_lot_id
 LEFT OUTER JOIN process_performance f 
              ON r.prcs_pfmc_id = f.prcs_pfmc_id
-		order by cp_ship_stat desc, cp_ship_id
+		order by cp_ship_stat
 	</select>
 	
 	<!-- 완제품 출고 관리 리스트 -->

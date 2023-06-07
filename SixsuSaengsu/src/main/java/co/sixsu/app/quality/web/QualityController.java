@@ -203,7 +203,8 @@ public class QualityController {
 	// 출고 검사 목록 리스트
 	@ResponseBody
 	@GetMapping("/quality/shInspList")
-	public List<ShipInspVO> shInspList() {
+	public List<ShipInspVO> shInspList(Model model) {
+			model.addAttribute("inspResStat",bservice.commGroupList("INSP_RES_STAT"));
 		return quaService.shInspList();
 	}
 
@@ -223,6 +224,7 @@ public class QualityController {
 	@ResponseBody
 	@PostMapping("/quality/shipInspMod")
 	public ShipInspVO shipInspMod(ShipInspVO ship) {
+		System.out.println("수정:"+ship);
 		quaService.shipInspMod(ship);
 		return ship;
 	}

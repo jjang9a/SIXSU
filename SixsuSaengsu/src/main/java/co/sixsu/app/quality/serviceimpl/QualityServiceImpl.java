@@ -334,6 +334,7 @@ public class QualityServiceImpl implements QualityService {
 			ship.setResVal(result);
 			ship.setCpShipStat("CP_SHIP_TRASH");
 		}
+		System.out.println("서비스:" + ship);
 		quaMapper.modShipDet(ship);
 		quaMapper.modShipCom(ship);
 		quaMapper.updateShip(ship);
