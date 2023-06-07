@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.sixsu.app.sales.mapper.ShipMapper">
-	<sql id="site">
+	<sql id="tite">
       <if test="cpId != null and cpId != ''.toString()">
          and (p.cp_id = #{cpId})
       </if>
@@ -13,6 +13,8 @@
                      to_date(#{endDate}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
       </if>
 	</sql>
+	
+	
 <select id="orderingList" resultType= "OrdVO">
 	select b.bus_name, to_char(s.ord_date, 'yyyy-MM-dd') ord_date, to_char(d.ord_end_date, 'yyyy-MM-dd') ord_end_date, s.ord_id, d.ord_det_id, p.cp_id, p.cp_name, d.ord_qt
 	from det_ord d 
@@ -25,8 +27,8 @@
 	left outer join business b
 	on b.bus_id = s.bus_id
 	where t.cp_ship_id is null
-	<include refid="site"></include>
-	
+	<include refid="tite"></include>
+	order by s.ord_date desc
 </select>
 <select id="lotProducts" resultType="LotVO">
 <!--  select* 
@@ -76,7 +78,7 @@ order by r.cp_rec_date-->
 	</update>
 	<!--출고대기 열에 나오는 품목 -->
 	<select id="readyShipList" resultType="ShipVO" >
-	Select p.ord_det_id, p.cp_ship_id, p.cp_lot_id, p.cp_ship_qt, to_char(p.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, get_com_name(p.cp_ship_stat) cp_ship_stat
+	Select p.ord_det_id, p.cp_ship_id, p.cp_lot_id, p.cp_ship_qt, to_char(p.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, get_com_name(p.cp_ship_stat) cp_ship_stat, b.bus_addr, b.bus_id, b.bus_name, b.bus_num, b.bus_tell
 	from pro_ship p 
 	left outer join det_ord d
     on p.ord_det_id = d.ord_det_id
@@ -84,10 +86,9 @@ order by r.cp_rec_date-->
     on d.ord_id = s.ord_id
     Left OUTER JOIN BUSINESS b
     on s.bus_id = b.bus_id
-	where p.cp_ship_stat ='CP_SHIP_CHECK'
-	or p.cp_ship_stat = 'CP_SHIP_COMP'
+	where p.cp_ship_stat = 'CP_SHIP_COMP'
 	<if test="keyword != null and keyword !=''">
-	or d.ord_det_id = #{keyword}
+	and d.ord_det_id = #{keyword}
 	</if>
 	</select>
 	
@@ -99,9 +100,9 @@ order by r.cp_rec_date-->
 	
 	
 	<sql id="criteria">
-   <where>
+
       <if test="cpId != null and cpId != ''.toString()">
-         c.cp_id = #{cpId}
+         and(c.cp_id = #{cpId})
       </if>
       <if test="cpShipStat != null and cpShipStat != 'all'.toString() and cpShipStat != ''.toString()" >
          and ( t.cp_ship_stat = #{cpShipStat})
@@ -110,14 +111,14 @@ order by r.cp_rec_date-->
          and (t.cp_ship_req_date  between to_date(#{startDate}, 'YYYY-MM-DD') and
                      to_date(#{endDate}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
       </if>
-   </where>
+ 
 </sql>
 
   
   
   <select id="searchShip"
   		resultType="ShipVO">
-  	 	select t.cp_ship_id, TO_CHAR(t.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, t.ord_det_id, b.bus_id, t.cp_lot_id, c.cp_id, c.cp_name, t.cp_ship_qt, get_com_name(t.cp_ship_stat) cp_ship_stat
+  	 	select t.cp_ship_id, TO_CHAR(t.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, t.ord_det_id, b.bus_name, t.cp_lot_id, c.cp_id, c.cp_name, t.cp_ship_qt, get_com_name(t.cp_ship_stat) cp_ship_stat
         from pro_ship t
         left outer join prod_lot p
         on t.CP_LOT_ID = p.CP_LOT_ID
@@ -129,7 +130,10 @@ order by r.cp_rec_date-->
         on s.ord_id = d.ord_id
         left outer join business b
         on s.bus_id = b.bus_id
-        
+        where (t.cp_ship_stat ='CP_SHIP_C'
+        or t.cp_ship_stat ='CP_SHIP_COMP')
   		<include refid="criteria"></include>
   </select>
+  
+  
  </mapper>

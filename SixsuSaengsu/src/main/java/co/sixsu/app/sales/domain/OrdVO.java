@@ -22,4 +22,6 @@ public class OrdVO {
 	
 	private String empId;
 	private int totalProd;
+	
+	
 }
