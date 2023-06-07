@@ -122,7 +122,7 @@
 
 <!-- 공정실적 조회 시작 -->
 <select id="performanceList" resultType="PfmcVO">
-	select prcs_pfmc_id, r.proc_name, wk_deta_id, p.pd_id, pd_name, equ_code, to_char(wk_start, 'yyyy/MM/dd') wk_start, to_char(wk_end, 'yyyy/MM/dd') wk_end, deta_qt, dmat_qt, good_qt, nvl(nvl(c.cp_unit , s.sp_unit), m.mat_unit) pd_unit, emp_name
+	select prcs_pfmc_id, r.proc_name, wk_deta_id, p.pd_id, pd_name, equ_code, to_char(wk_start, 'yyyy/MM/dd hh24:mi') wk_start, to_char(wk_end, 'yyyy/MM/dd hh24:mi') wk_end, deta_qt, dmat_qt, good_qt, nvl(nvl(c.cp_unit , s.sp_unit), m.mat_unit) pd_unit, emp_name
 	from PROCESS_PERFORMANCE p
     natural join work_bom b
     left outer join complete_prod c on p.pd_id = c.cp_id
