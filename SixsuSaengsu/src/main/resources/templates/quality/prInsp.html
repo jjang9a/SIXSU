@@ -96,12 +96,13 @@
 					</div> -->
 
 					<!-- 검사 완료 그리드 -->
-					<h6 class="mt-4" style="font-family: 'MaruBuri';">검사 등록 완료</h6>
-					<div id="afterGrid"></div>
-					
+					<label style="font-family: 'MaruBuri';">검사 등록 완료</label>
+					<!-- <h6 style="font-family: 'MaruBuri';">검사 등록 완료</h6> -->
 					<div class="rightBtn">
 					<button class="sixBtn2" id="modBtn">수정</button>
 					</div>
+					<div id="afterGrid"></div>
+					
 				</div>
 
 
@@ -115,17 +116,17 @@
 						<div class="row">
 							<div class="col">
 								<label for="inspStdId" class="form-label">공정실적코드</label> <input type="text"
-									class="form-control" id="prcsPfmcId" name="prcsPfmcId">
+									class="form-control empty" id="prcsPfmcId" name="prcsPfmcId">
 							</div>
 
 							<div class="col">
 								<label for="inspStdId" class="form-label">검사번호</label> <input type="text"
-									class="form-control" id="inspNum" name="inspNum">
+									class="form-control empty" id="inspNum" name="inspNum">
 							</div>
 
 							<div class="col">
 								<label for="inspStdId" class="form-label">공정</label> <input type="text"
-									class="form-control" id="procName" name="procName">
+									class="form-control empty" id="procName" name="procName">
 							</div>
 
 						</div>
@@ -133,7 +134,7 @@
 						<div class="row">
 							<div class="col">
 								<label for="matId" class="form-label">제품코드 </label> <input type="text"
-									class="form-control" id="pdId" name="pdId">
+									class="form-control empty" id="pdId" name="pdId">
 							</div>
 
 
@@ -152,21 +153,21 @@
 						<div class="row">
 							<div class="col">
 								<label for="inspQt" class="form-label">검사 수량 </label> <input type="text"
-									class="form-control" id="inspQt" name="inspQt">
+									class="form-control empty" id="inspQt" name="inspQt">
 							</div>
 							<div class="col">
 								<label for="suitQt" class="form-label">적합 수량 </label> <input type="text"
-									class="form-control" id="suitQt" name="suitQt">
+									class="form-control empty" id="suitQt" name="suitQt">
 							</div>
 							<div class="col">
 								<label for="nsuitQt" class="form-label">부적합 수량 </label> <input type="text"
-									class="form-control" id="totNsuitQt" name="totNsuitQt">
+									class="form-control empty" id="totNsuitQt" name="totNsuitQt">
 							</div>
 						</div>
 						
 						<div class="col">
 							<label for="inspQt" class="form-label">비고 </label> <input type="text"
-									class="form-control" id="inspNote" name="inspNote">
+									class="form-control empty" id="inspNote" name="inspNote">
 						</div>
 
 					</form>
@@ -233,7 +234,7 @@
 						method: "GET",
 						success: function (result) {
 							dwGrid.resetData(result);
-							setTimeout(() => dwGrid.refreshLayout(), 100);
+							setTimeout(() => dwGrid.refreshLayout(), 50);
 						},
 						error: function (reject) {
 							console.log(reject);
@@ -295,20 +296,6 @@
 				let selDetaQt;
 
 				beforeGrid.on('focusChange', (ev) => {
-					// focus된 셀이 있는 열 전체 select 처리
-					beforeGrid.setSelectionRange({
-						start: [ev.rowKey, 0],
-						end: [ev.rowKey, beforeGrid.getColumns().length - 1]
-					});
-					console.log(ev.rowKey)
-
-					// rowKey 얻는법
-					// focus된 cell 내의 정보
-					const focusCell = beforeGrid.getFocusedCell()
-					console.log(focusCell)
-
-					selKey = ev.rowKey;
-
 					// 행 전체 정보 얻기
 					let dataRow = beforeGrid.getRow(ev.rowKey);
 					console.log(dataRow);
@@ -360,7 +347,7 @@
 							console.log(result);
 							detailGrid.resetData(result);
 							detailGrid.setColumnValues('inspNum', selInspNum, false);
-							setTimeout(() => detailGrid.refreshLayout(), 300);
+							detailGrid.setColumnValues('resStat', 'STAT-C', true);// resStat 초기값 설정
 
 						},
 						error: function (reject) {
@@ -383,7 +370,7 @@
 						dataType: 'json',
 						success: function (result) {
 							console.log('qua_com_update:' + result);
-							aiGrid.appendRow(result);
+							afterGrid.appendRow(result);
 						},
 						error: function (reject) {
 							console.log(reject);
@@ -402,10 +389,10 @@
 							console.log("등록&업데이트:"+result);
 							alert('검사 결과값 등록이 완료되었습니다.');
 							// 등록 완료 후 폼과 그리드 숨기고 초기화
-							$('#prInspForm').css('display', 'none');
-							$('.detail').css('display', 'none');
-							$('#prInspForm input').val('');
-							detailGrid.resetData();
+							$('.empty').val('');
+							//detailGrid.resetData();
+							detailGrid.clear();
+							beforeGrid.removeRow(selRowKey);
 
 
 						},
@@ -415,36 +402,26 @@
 						}
 					});
 					
-					// 검사 등록 완료 후 리스트 출력
-				$.ajax({
-					url: "/quality/prdComList",
-					method: "GET",
-					success: function (result) {
-						afterGrid.resetData(result);
+					// 검사 등록 완료 리스트 재출력
+					$.ajax({
+						url: "/quality/prdComList",
+						method: "GET",
+						success: function (result) {
+							afterGrid.resetData(result);
 
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-				})
+						},
+						error: function (reject) {
+							console.log(reject);
+						}
+					})
+					
 
 				}) // 폼 등록 버튼 이벤트 끝
 				
 				// 검사 완료 그리드 값 가져오기
 				afterGrid.on('focusChange', (ev) => {
-				// focus된 셀이 있는 row 전체 select 처리
-				afterGrid.setSelectionRange({
-					start: [ev.rowKey, 0],
-					end: [ev.rowKey, afterGrid.getColumns().length - 1]
-				});
-				console.log(ev.rowKey)
-
-				// rowKey 얻는법
-				// focus된 cell 내의 정보
-				let aiFocusCell = afterGrid.getFocusedCell()
-				console.log(aiFocusCell)
-
-				aselKey = ev.rowKey;
+					
+					aselKey = ev.rowKey;
 
 				// 행 전체 정보 얻기
 				let afterDataRow = afterGrid.getRow(ev.rowKey);
@@ -487,6 +464,7 @@
 					$('#suitQt').val(afterSuitQt);
 					$('#totNsuitQt').val(afterNsuitQt);
 					$('#procName').val(afterProcName);
+					$('#empId').val(afterEmpId);
 
 
 					// 검사 항목 ajax 호출
@@ -524,7 +502,7 @@
 					useClient: true,
 					perPage: 10
 				},
-
+				rowHeight: 45,
 				rowHeaders: ['checkbox'],
 
 				columns: [{
@@ -591,7 +569,7 @@
 					useClient: true,
 					perPage: 5
 				},
-
+				rowHeight: 45,
 				columns: [{
 					header: '검사번호',
 					name: 'inspNum',
@@ -615,13 +593,13 @@
 					header: '검사수량',
 					name: 'detaQt',
 					align : 'right',
-					formatter: ({ value }) => {
-						if(value != null){
-							return value.toLocaleString();
-						}else{
-							return 0;
+						formatter: ({ value }) => {
+							if(value != null){
+								return value.toLocaleString();
+							}else{
+								return 0;
+							}
 						}
-					}
 				},  {
 					header: '적합수량',
 					name: 'goodQt',
@@ -651,6 +629,16 @@
 
 				}]
 			});
+			
+			// 검사 대기 그리드 클릭 시 셀 색깔 바뀜
+			let selRowKey = '';
+			beforeGrid.on('click', function(ev){
+				if (selRowKey != ev.rowKey) { // 그룹코드 선택 정보가 달라졌다면
+					beforeGrid.removeRowClassName(selRowKey, 'cell-pink'); // 지난 그룹코드에서 음영 제거
+		            }
+				beforeGrid.addRowClassName(ev.rowKey, 'cell-pink'); // 새로운 그룹코드에 음영 넣기
+		            selRowKey = ev.rowKey
+			})
 
 			// 검사 완료 그리드
 			const afterGrid = new tui.Grid({
@@ -659,7 +647,7 @@
 
 				scrollX: false,
 				scrollY: false,
-
+				rowHeight: 45,
 				pageOptions: {
 					useClient: true,
 					perPage: 5
@@ -690,33 +678,56 @@
 					name: 'detaQt',
 					align : 'right',
 					formatter: ({ value }) => {
-					 return value.toLocaleString()
-					   }
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '적합수량',
 					name: 'goodQt',
 					editor: 'text',
 					align : 'right',
 					formatter: ({ value }) => {
-					 return value.toLocaleString()
-					   }
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '부적합 수량',
 					name: 'dmatQt',
 					align : 'right',
 					formatter: ({ value }) => {
-					 return value.toLocaleString()
-					   }
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '검사자',
 					name: 'empId',
 					align: 'center'
 				}, {
 					header: '검사일자',
-					name: 'wkEnd',
+					name: 'inspDate',
+					sortable: true,
 					align: 'center'
 				}]
 			});
+			
+			// 검사 완료 그리드 선택 시 셀 색깔 바뀜
+			//let selRowKey = '';
+			afterGrid.on('click', function(ev){
+				if (selRowKey != ev.rowKey) { // 그룹코드 선택 정보가 달라졌다면
+					afterGrid.removeRowClassName(selRowKey, 'cell-pink'); // 지난 그룹코드에서 음영 제거
+		            }
+				afterGrid.addRowClassName(ev.rowKey, 'cell-pink'); // 새로운 그룹코드에 음영 넣기
+		            selRowKey = ev.rowKey
+			})
 
 			// 검사 세부 항목 그리드
 			const detailGrid = new tui.Grid({
@@ -725,6 +736,8 @@
 
 				scrollX: false,
 				scrollY: true,
+				
+				rowHeight: 45,
 
 				columns: [{
 						header: '검사번호',
@@ -817,11 +830,9 @@
 
 						console.log(result);
 						alert('검사 결과값 수정이 완료되었습니다.');
-						// 등록 완료 후 폼과 그리드 숨기고 초기화
-						$('#prInspForm').css('display', 'none');
-						$('.detail').css('display', 'none');
-						$('#prInspForm input').val('');
-
+						
+						$('.empty').val('');
+						detailGrid.clear();
 
 					},
 					error: function (reject) {
@@ -855,7 +866,7 @@
 			}
 
 
-			// 세부 검사 항목 그리드에 스크롤 부여
+			// 그리드 높이 고정
 			detailGrid.setBodyHeight(400);
 			beforeGrid.setBodyHeight(280);
 			afterGrid.setBodyHeight(280);
