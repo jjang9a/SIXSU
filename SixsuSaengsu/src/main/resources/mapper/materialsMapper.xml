@@ -436,7 +436,7 @@
 		
 		<!-- 조건 -->
 		<include refid="criteria3"></include>		 
-		order by to_date(mat_ship_date) desc
+		order by to_date(s.mat_ship_date, 'yyyy-MM-dd') desc
 	</select>
 	
 	<!-- 자재 재고조정 페이지 -->
@@ -523,8 +523,7 @@
 		 
 		 <!-- 반제품 출고 조회 조건 -->
 		<include refid="criteria4"></include>
-		
-		order by to_date(sp_ship_date) desc
+		order by to_date(s.sp_ship_date, 'yyyy-MM-dd') desc
   	</select>
   	
   	<!-- 반제품 조정입고 프로시저 -->
