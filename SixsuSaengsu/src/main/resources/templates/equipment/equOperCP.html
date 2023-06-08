@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>비가동 관리 페이지</title>
+	<title>설비 비가동 관리</title>
 	<style>
 		h1 {
 			margin-bottom: 40px;
@@ -14,7 +14,7 @@
 		}
 		#addForm {
 			margin: auto;
-		    margin-left: 150px;
+		    margin-left: 200px;
 		}
 		#addForm td {
 			height: 30px;
@@ -32,7 +32,7 @@
 		.operBtn {
 			margin-top: 50px;
 			margin-right: 50px;
-		    margin-left: 70px; 
+		    margin-left: 200px; 
 			height: 190px;
 			width: 190px;
 			border-radius: 35px;
@@ -43,16 +43,16 @@
 		#startBtn {
 			background-color: #ea9999;
 			float: right;
-			margin-left: 20px;
+			margin-left: 50px;
 		}
 		#endBtn {
 			background-color: #6697c3;
 			float: right;
 		}
 		.divBtn {
-			float: left;
 			text-align: center;
 			padding: 15px 0 30px 0;
+			margin: auto;
 		}
 		.modalTbl {
 			margin: auto;
@@ -76,7 +76,7 @@
 	<div layout:fragment="content">
 
 		
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">비가동 관리 페이지</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비 비가동 관리</h1>
 
 		
 		<!-- 인풋창 -->
@@ -168,8 +168,8 @@
 					<td colspan="2">	
 						<!-- 수정 삭제 버튼 -->
 						<div class="divBtn">
-							<button type="button" class="sixBtn2" style="float: right;" id="delBtn">삭제</button>
-							<button type="button" class="sixBtn2" style="float: right;" id="modBtn">수정</button>
+							<button type="button" class="sixBtn2" id="delBtn">삭제</button>
+							<button type="button" class="sixBtn2" id="modBtn">수정</button>
 						</div>
 					</td>
 				</tr>
@@ -214,14 +214,14 @@
 
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
+				scrollX: false,
+				scrollY: false,
+				minBodyHeight: 450,
+				rowHeight: 45,
 				pageOptions: {
 					useClient: true,
 					perPage: 10
 				},
-				BodyHeight: 450,
-				rowHeight: 45,
-				scrollX: false,
-				scrollY: false,
 				rowHeaders: ['rowNum'],
 				columns: [{
 						header: '비가동 코드',

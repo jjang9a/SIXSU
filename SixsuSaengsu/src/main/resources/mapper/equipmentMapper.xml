@@ -353,8 +353,9 @@
 	</delete>
 	
 	<!-- 비가동 관리 비가동 시작버튼(비가동 등록) -->
-  	<insert id="startIn" parameterType="EquOperVO">
+	
   	<!-- <selectkey keyColumn="oper_code,oper_type,oper_start,oper_fnish,oper_note," keyProperty="operCode,operType,operStart,operFnish,operNote" resultType="map" order="BEFORE"></select> -->
+  	<insert id="startIn" parameterType="EquOperVO">
 		INSERT INTO equ_oper (oper_code, equ_code, oper_type, oper_start, oper_note, emp_id)
 		VALUES('OPER_' || LPAD(OPER_SEQ.nextval, 3, '0'), #{equCode}, #{operType}, current_date, #{operNote}, #{empId})
 	</insert>   
