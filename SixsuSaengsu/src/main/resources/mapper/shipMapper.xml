@@ -51,7 +51,7 @@ order by r.cp_rec_date-->
 		WHERE l.cp_lot_qt_ck = 'LOT_Y'
 		and l.cp_lot_qt != 0
 		and l.cp_id= #{keyword}
-		order by r.cp_rec_date
+		order by TO_NUMBER(SUBSTR(l.cp_lot_id, 11))
 
 </select>
 <!-- 모달창에 자동으로 총수량이 뜨도록 하는기능 -->
@@ -91,6 +91,7 @@ order by r.cp_rec_date-->
 	<if test="keyword != null and keyword !=''">
 	and d.ord_det_id = #{keyword}
 	</if>
+	order by p.ord_det_id desc
 	</select>
 	
 	<select id="completeShip" statementType="CALLABLE">
@@ -134,6 +135,7 @@ order by r.cp_rec_date-->
         where (t.cp_ship_stat ='CP_SHIP_C'
         or t.cp_ship_stat ='CP_SHIP_COMP')
   		<include refid="criteria"></include>
+  		order by t.cp_ship_id desc
   </select>
   
   
