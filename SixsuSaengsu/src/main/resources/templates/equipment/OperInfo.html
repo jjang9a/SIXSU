@@ -5,7 +5,7 @@
 	layout:decorate="~{layout/template}">
 <head>
 	<meta charset="utf-8">
-	<title>비가동 조회 페이지</title>
+	<title>설비 비가동 조회</title>
 	<style>
 		h1 {
 			margin-bottom: 40px;
@@ -61,7 +61,7 @@
 	<div layout:fragment="content">
 		
 		
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">비가동 조회</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비 비가동 조회</h1>
 		
 		
 		<!-- 검색 인풋 창 -->
@@ -119,15 +119,14 @@
 	    
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
-        pageOptions: {
-			useClient : true,
+        scrollX: false,
+		scrollY: false,
+		minBodyHeight: 450,
+		rowHeight: 45,
+		pageOptions: {
+			useClient: true,
 			perPage: 10
 		},
-		BodyHeight: 450,
-		rowHeight: 45,
-        scrollX: false,
-        scrollY: false,
-        
         rowHeaders: ['rowNum'],
         columns: [
 		  {

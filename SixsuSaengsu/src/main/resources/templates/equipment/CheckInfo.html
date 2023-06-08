@@ -152,15 +152,14 @@
 	    
 	    const grid = new tui.Grid({
         el: document.getElementById('grid'),
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 450,
+		rowHeight: 45,
         pageOptions: {
 			useClient : true,
 			perPage: 10
 		},
-		rowHeight: 45,
-		BodyHeight: 450,
-        scrollX: false,
-        scrollY: false,
-        
         rowHeaders: ['rowNum'],
         columns: [
           {
