@@ -487,20 +487,35 @@
 					header: '기준값',
 					width: 110,
 					name: 'stdVal',
-					align: 'center'
+					align: 'center',
+					
 				}, {
 					header: '결과값',
 					width: 110,
 					name: 'resVal',
 					editor: 'text',
-					align: 'center'
+					align: 'center',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				},
 				{
 					header: '부적합 수량',
 					width: 110,
 					name: 'nsuitQt',
 					editor: 'text',
-					align: 'center'
+					align: 'center',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				},
 				{
 					header: '적합여부',
@@ -559,12 +574,26 @@
 				}, {
 					header: '발주 수량',
 					name: 'matReqQt',
-					align: 'center'
+					align: 'center',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				},
 				{
 					header: '검사 수량',
 					name: 'inspQt',
 					editor: 'text',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}
 				]
 			});
@@ -612,6 +641,7 @@
 					header: '생산수량',
 					name: 'inspQt',
 					editor: 'text',
+					
 				}]
 			});
 
@@ -846,6 +876,7 @@
 				$('#matId').val(aselMatId);
 				$('#matName').val(aselMatName);
 				$('#inspQt').val(aselInspQt);
+				
 
 				// 검사 항목 ajax 호출
 				$.ajax({
