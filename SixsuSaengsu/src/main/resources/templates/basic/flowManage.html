@@ -74,7 +74,7 @@
 			background: #e5edf5;
 		}
 
-		.tui-grid-table:hover {
+		#pdGrid:hover {
 			cursor: pointer;
 		}
 	</style>
@@ -98,9 +98,11 @@
 			<h5>공정흐름도</h5>
 			<div class="rightBtn">
 				<button type="button" class="sixBtn3" id="initBtn">초기화</button>
-				<button type="button" class="sixBtn2" id="addBtn">추가</button>
-				<button type="button" class="sixBtn2" id="delBtn">삭제</button>
-				<button type="button" class="sixBtn2" id="saveBtn">저장</button>
+				<span sec:authorize="hasRole('ROLE_A')">
+					<button type="button" class="sixBtn2" id="addBtn">추가</button>
+					<button type="button" class="sixBtn2" id="delBtn">삭제</button>
+					<button type="button" class="sixBtn2" id="saveBtn">저장</button>
+				</span>
 			</div>
 			<div id="grid"></div>
 		</div>
@@ -180,6 +182,7 @@
 				el: document.getElementById('pdGrid'),
 				scrollX: false,
 				scrollY: true,
+				rowHeight: 45,
 				minBodyHeight: 480,
 				columns: [{
 					header: '제품코드',
@@ -196,7 +199,7 @@
 				}]
 			});
 
-			pdGrid.setBodyHeight(480)
+			pdGrid.setBodyHeight(495)
 
 			// 그리드 색 변경 테마 적용
 			tui.Grid.applyTheme('default', {
@@ -207,6 +210,11 @@
 					normal: {
 						background: '#ffffff'
 					}
+				},
+				row: {
+					hover: {
+						background: '#fefafa'
+					}
 				}
 			});
 
@@ -214,8 +222,9 @@
 				el: document.getElementById('grid'),
 				scrollX: false,
 				scrollY: true,
+				rowHeight: 45,
 				rowHeaders: ['rowNum'],
-				minBodyHeight: 480,
+				minBodyHeight: 495,
 				draggable: true,
 				columns: [{
 					header: '공정흐름코드',
@@ -265,7 +274,7 @@
 				}]
 			});
 
-			grid.setBodyHeight(480)
+			grid.setBodyHeight(495)
 			procGrid.setBodyHeight(480)
 
 			// 제품 선택 시 선택정보 기반으로 공정흐름도 데이터 불러오기

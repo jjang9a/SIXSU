@@ -214,4 +214,53 @@
 </select>
 <!-- 반제품 입고 조회 종료 -->
 
+<!-- 판매실적 조회 -->
+<select id="getSalesInfo" resultType="SalesVO">
+	select o.*, cp_name
+	from(
+	        select cp_id, sum(ord_sale_price) sales
+	        from det_ord 
+	        where ord_end_date between to_date(#{date1}, 'YYYY. MM. DD.') and to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD. HH24:MI:SS')
+	        and ORD_STAT_DET ='ORD_DET_COM'
+	        group by cp_id ) o
+	join complete_prod c
+	on o.cp_id = c.cp_id
+	order by o.cp_id
+</select>
+
+<select id="getSalesCount" resultType="SalesVO">
+	select o.*, cp_name
+	from(
+	        select cp_id, sum(ord_qt) sales
+	        from det_ord 
+	        where ord_end_date between to_date(#{date1}, 'YYYY. MM. DD.') and to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD. HH24:MI:SS')
+	        and ORD_STAT_DET ='ORD_DET_COM'
+	        group by cp_id ) o
+	join complete_prod c
+	on o.cp_id = c.cp_id
+	order by o.cp_id
+</select>
+
+<select id="getMonthlySales" resultType="SalesVO">
+	<![CDATA[
+	SELECT TO_CHAR(b.dt, 'YYYY-MM') AS date1, NVL(SUM(a.sales), 0) sales
+	FROM ( SELECT TO_CHAR(ord_end_date, 'YYYY-MM-DD') AS ord_end_date, sum(ord_sale_price) sales
+	           FROM det_ord
+	            where ord_end_date between add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) and
+	                                            to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD HH24:MI:SS')
+	           and ORD_STAT_DET ='ORD_DET_COM'
+	           GROUP BY ord_end_date
+	        ) a
+	      , ( SELECT add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) + LEVEL - 1 AS dt
+	            FROM dual 
+	         CONNECT BY LEVEL <= (to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD HH24:MI:SS') 
+	                            - add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) + 1)
+	        ) b
+	  WHERE b.dt = a.ord_end_date(+)
+	  GROUP BY TO_CHAR(b.dt, 'YYYY-MM')
+	  ORDER BY TO_CHAR(b.dt, 'YYYY-MM')
+	]]>
+</select>
+
+
 </mapper>

@@ -3,6 +3,7 @@ package co.sixsu.app.basic.service;
 import java.util.List;
 
 import co.sixsu.app.basic.domain.ReceiveVO;
+import co.sixsu.app.basic.domain.SalesVO;
 import co.sixsu.app.quality.domain.QilVO;
 import co.sixsu.app.work.domain.PfmcVO;
 
@@ -30,4 +31,8 @@ public interface ProductService {
 	boolean addInsp(QilVO vo); // 검사항목 추가
 	boolean updateInsp(QilVO vo); // 검사항목 수정
 	
+	// 판매실적 조회
+	String getSalesInfo(SalesVO vo); // 상품별 판매실적 조회
+	String getSalesCount(SalesVO vo); // 상품별 판매 개수 실적 조회
+	String getMonthlySales(SalesVO vo); // 월별 매출액 추이
 }

@@ -11,7 +11,7 @@
 			text-align: right;
 			height: 50px;
 			margin-top: 30px;
-			margin-bottom: 3px;
+			margin-bottom: 10px;
 			padding: 20px;
 		}
 
@@ -46,7 +46,7 @@
 		}
 
 		#searchForm {
-			margin-bottom: 10px;
+			margin-bottom: 30px;
 			float: left;
 		}
 
@@ -58,6 +58,16 @@
 		#searchForm select {
 			width: 102px;
 			height: 27px;
+		}
+
+		[data-column-name='empName'],
+		[data-column-name='empTell'],
+		[data-column-name='empHire'],
+		[data-column-name='empDept'],
+		[data-column-name='empRk'],
+		[data-column-name='empStat'],
+		[data-column-name='empNote'] {
+			cursor: pointer;
 		}
 	</style>
 </head>
@@ -81,8 +91,8 @@
 					</svg></button>
 				<button type="button" class="sixBtn3" id="initBtn">초기화</button>
 			</form>
-			<div class="divBtn">
-				<!-- 검색부분 끝 -->
+			<!-- 검색부분 끝 -->
+			<div class="divBtn" sec:authorize="hasRole('ROLE_A')" style="margin-top: 20px;">
 				<button type="button" class="sixBtn2" data-bs-toggle="modal"
 					data-bs-target="#staticBackdrop">등록</button>
 				<button type="button" class="sixBtn2" id="modiBtn">수정</button>
@@ -218,7 +228,8 @@
 				el: document.getElementById('grid'),
 				scrollX: false,
 				scrollY: false,
-				minBodyHeight: 480,
+				rowHeight: 45,
+				minBodyHeight: 540,
 				rowHeaders: ['rowNum'],
 				pageOptions: {
 					useClient: true,
