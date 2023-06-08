@@ -144,9 +144,9 @@
                         <div class="collapse" id="prodnav" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link-a" href="/work/viewPlanPage">생산계획 조회</a>
+                                <a class="nav-link-a" href="/work/viewPlanInfo">생산계획 조회</a>
                                 <a class="nav-link-a" href="/work/createPlanPage" sec:authorize="hasAnyRole('ROLE_A','ROLE_C')">생산계획 등록</a>
-                                <a class="nav-link-a" href="/work/viewWorkPage">작업지시 조회</a>
+                                <a class="nav-link-a" href="/work/viewWorkInfo">작업지시 조회</a>
                                 <a class="nav-link-a" href="/work/workControllPage" sec:authorize="hasAnyRole('ROLE_A','ROLE_C')">작업지시 관리</a>
                                 <a class="nav-link-a" href="/work/performanceInfo">공정실적 조회</a>
                             </nav>
@@ -168,7 +168,7 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link-a" href="/materials/matInfo">자재조회</a>
-                                <a class="nav-link-a" href="/materials/matlotInfo">자재LOT조회</a>
+                                <a class="nav-link-a" href="/materials/matLotInfo">자재LOT조회</a>
                                 <a class="nav-link-a" href="/materials/matreq" sec:authorize="hasAnyRole('ROLE_A','ROLE_D')">자재발주관리</a>
                                 <a class="nav-link-a" href="/materials/matReqInfo">자재발주조회</a>
                                 <a class="nav-link-a" href="/materials/matrec" sec:authorize="hasAnyRole('ROLE_A','ROLE_D')">자재입고관리</a>
