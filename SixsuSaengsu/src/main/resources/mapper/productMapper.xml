@@ -247,13 +247,13 @@
 	FROM ( SELECT TO_CHAR(ord_end_date, 'YYYY-MM-DD') AS ord_end_date, sum(ord_sale_price) sales
 	           FROM det_ord
 	            where ord_end_date between add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) and
-	                                            to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD HH24:MI:SS')
+	                                            to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD. HH24:MI:SS')
 	           and ORD_STAT_DET ='ORD_DET_COM'
 	           GROUP BY ord_end_date
 	        ) a
 	      , ( SELECT add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) + LEVEL - 1 AS dt
 	            FROM dual 
-	         CONNECT BY LEVEL <= (to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD HH24:MI:SS') 
+	         CONNECT BY LEVEL <= (to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD. HH24:MI:SS') 
 	                            - add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) + 1)
 	        ) b
 	  WHERE b.dt = a.ord_end_date(+)
