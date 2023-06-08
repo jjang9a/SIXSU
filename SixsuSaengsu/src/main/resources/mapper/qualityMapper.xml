@@ -89,7 +89,8 @@
 		       b.bus_name, 
 		       r.mat_id, 
 		       m.mat_name, 
-		       r.mat_req_qt
+		       r.mat_req_qt,
+		       r.mat_req_qt insp_qt
 		       
 		  from mat_req r 
 		  left join	material m
@@ -100,7 +101,7 @@
 		 where r.mat_req_stat='A'
 		   and mat_req_qt>0
 		   
-		order by mat_req_id
+		order by TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1))
 	</select>
 
 
