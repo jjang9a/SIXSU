@@ -268,6 +268,8 @@
                useClient: true,
                perPage: 10
             },
+			rowHeight: 45,
+			minBodyHeight: 200,
             rowHeaders: ['checkbox'],
 
 
@@ -459,53 +461,60 @@
          //발주 등록
          $('#appendBtn').on("click", function () {
             grid.blur();
-            $.ajax({
-               url: "/materials/matreqlist",
-               method: "GET",
-               dataType: "JSON",
-               success: function (result) {
-                  grid.resetData(result);
-                  gridInsertRow();
-                  $.ajax({
-                     url: "/materials/matreqlist",
-                     method: "GET",
-                     dataType: "JSON",
-                     success: function (result) {
-                        grid.setValue(0, 'matReqStat', "A", false);
-                        grid.setValue(0, 'busId', grid.getRow(1).busId, false);
-                        grid.setValue(0, 'busName', grid.getRow(1).busName, false);
-                     },
-                     error: function (reject) {
-                        console.log(reject);
-                     }
-
-                  });
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
-
-            });
-            console.log(JSON.stringify(grid.getRow(0)));
+            
             let insertData = JSON.stringify(grid.getRow(0));
-            $.ajax({
-               url: "/materials/insertmatreq",
-               type: "POST",
-               data: insertData,
-               contentType: 'application/json',
-               //data : {list : JSON.stringify(matReqIds)},
-               //data :{matReqId : grid.getCheckedRows()[0].matReqId},
-               success: function (result) {
-                  console.log(result);
-                  alert('발주 등록 완료');
-                  matReqList();
-               },
-               error: function (reject) {
-                  console.log(reject);
-                  alert('발주 등록 실패');
-               }
+            let inMatId = grid.getRow(0).matId;
+            let inMatReqQt = grid.getRow(0).matReqQt;
+            let inBusId = grid.getRow(0).busId;
+            let inMatEndDate = grid.getRow(0).matEndDate;
+            
+            if(inMatId != null && inMatReqQt != null && inBusId != null && inMatEndDate != null && inMatReqQt != 0){
+            	
+	            $.ajax({
+	               url: "/materials/insertmatreq",
+	               type: "POST",
+	               data: insertData,
+	               contentType: 'application/json',
+	               success: function (result) {
+	                  console.log(result);
+	                  alert('발주 등록 완료');
+	                  $.ajax({
+	                      url: "/materials/matreqlist",
+	                      method: "GET",
+	                      dataType: "JSON",
+	                      success: function (result) {
+	                         grid.resetData(result);
+	                         gridInsertRow();
+	                         $.ajax({
+	                            url: "/materials/matreqlist",
+	                            method: "GET",
+	                            dataType: "JSON",
+	                            success: function (result) {
+	                               grid.setValue(0, 'matReqStat', "A", false);
+	                               grid.setValue(0, 'busId', grid.getRow(1).busId, false);
+	                               grid.setValue(0, 'busName', grid.getRow(1).busName, false);
+	                            },
+	                            error: function (reject) {
+	                               console.log(reject);
+	                            }
 
-            })
+	                         });
+	                      },
+	                      error: function (reject) {
+	                         console.log(reject);
+	                      }
+
+	                   });
+	               },
+	               error: function (reject) {
+	                  console.log(reject);
+	                  alert('발주 등록 실패');
+	               }
+	
+	            })
+            }else{
+            	alert("발주 양식 오류");
+            }
 
 
          });

@@ -6,7 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>재고현황</title>
+<style>
+h1 {
+	margin-bottom: 40px;
+}
+
+#allProductGrid {
+cursor: pointer;
+}
+</style>
 </head>
+
 <body>
     <div layout:fragment="content">
 	<h1 class="mt-4" style="font-family: 'MaruBuri'">재고현황</h1>
@@ -35,7 +45,8 @@
 		//data : gridData,
 		scrollX : false,
 		scrollY : false,
-		minBodyHeight: 400,
+		rowHeight: 45,
+		minBodyHeight: 450,
 		
 		
 		columns : [ {
@@ -49,7 +60,10 @@
 		},{
 			header : '제품총수량',
 			name : 'totalProd',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+			 return value.toLocaleString()
+			   }
 		}
 		]
 		});
@@ -92,7 +106,7 @@
           //data : gridData,
           scrollX: false,
           scrollY: false,
-
+          rowHeight: 45,
           pageOptions: {
             useClient: true,
             perPage: 10,
@@ -116,12 +130,15 @@
             {
               header: "완제품 수량",
               name: "cpLotQt",
-              align:"center"
+              align : 'right',
+  			formatter: ({ value }) => {
+  			 return value.toLocaleString()
+  			   }
             },
           ],
         });
-		allProductGrid.setBodyHeight(400);
-		lotProductGrid.setBodyHeight(400);
+		allProductGrid.setBodyHeight(450);
+		lotProductGrid.setBodyHeight(450);
 </script>	
 	
 	</div>

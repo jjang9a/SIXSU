@@ -38,6 +38,10 @@ h1 {
 .modal-body {
 	background: #e5edf5;
 }
+
+#orderingGrid, #radio, #ordDate, #ordFdate, #gridt {
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -50,7 +54,7 @@ h1 {
 					<tr>
 						<td>거래처명</td>
 						<td><input type="text" name="busName" id="busName"
-							style="width: 199px;">
+							style="width: 199px;" readonly>
 							<button type="button" data-bs-toggle="modal" id="search1Btn"
 								class="sixBtn1" data-bs-target="#search1Modal">
 								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
@@ -65,15 +69,15 @@ h1 {
 					</tr>
 					<tr>
 						<td>거래처코드</td>
-						<td><input type="text" name="busId" id="busCode"></td>
+						<td><input type="text" name="busId" id="busCode" readonly></td>
 
 						<td>진행구분</td>
 
 						<td><input type="radio" name="ordStat" value="all"
-							checked="checked" style="width: 35px;" />전체 <input type="radio"
-							name="ordStat" value="ORD_C" style="width: 35px;" />완료 <input
-							type="radio" name="ordStat" value="ORD_ING" style="width: 35px;" />
-							진행중</td>
+							checked="checked" style="width: 35px;" id="radio" />전체 <input
+							type="radio" name="ordStat" value="ORD_C" style="width: 35px;"
+							id="radio" />완료 <input type="radio" name="ordStat"
+							value="ORD_ING" style="width: 35px;" id="radio" /> 진행중</td>
 					</tr>
 				</table>
 				<div class="divBtn">
@@ -151,6 +155,7 @@ h1 {
 		//data : gridData,
 		scrollX : false,
 		scrollY : false,
+		rowHeight: 45,
 		pageOptions: {
 			useClient: true,
 			perPage: 10
@@ -184,7 +189,8 @@ h1 {
 		},
 		]
 	    });
-        orderingGrid.setBodyHeight(400);
+        
+        orderingGrid.setBodyHeight(450);
 		tui.Grid.applyTheme('default', {
 			cell: {
 				header: {
@@ -203,6 +209,7 @@ h1 {
 			//data : gridData,
 			scrollX : false,
 			scrollY : false,
+			rowHeight: 45,
 			columns : [ 
 				{
 				header : '거래처번호',
@@ -226,7 +233,7 @@ h1 {
 				align: 'center'
 			}]
 		});
-		gridt.setBodyHeight(400);
+		gridt.setBodyHeight(450);
 	// 모달거래처행 클릭시 자동으로 주문등록페이지에 값이 입력이됨
 		gridt.on('click', ev=> {
 		     	let dataRow = gridt.getRow(ev.rowKey);
@@ -268,6 +275,7 @@ h1 {
 			dataType : "JSON",
 			success : function(result) {
 				gridt.resetData(result);
+				$("#search1-text").val("");
 			}
 		});   
 	})
@@ -347,7 +355,7 @@ h1 {
 		
 		scrollX : false,
 		scrollY : false,
-	    	
+		rowHeight: 45,	
 		 columns : [ 
 			{header : '주문코드',
 			 name : 'ordId',
@@ -374,12 +382,18 @@ h1 {
 			{
 			header : '주문수량',
 			name : 'ordQt',
-			align: 'center' 
+			align : 'right',
+			formatter: ({ value }) => {
+			 return value.toLocaleString()
+			   }
 			},
 		    {
 			header : '상품가격',
 			name : 'ordDetPrice',
-			align: 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+			 return value.toLocaleString()
+			   }
 		  	},
 			{
 			header : '납기일자',
@@ -393,6 +407,7 @@ h1 {
 			}
 			]
 	});
+		gridy.setBodyHeight(450);
     </script>
 
 	</div>

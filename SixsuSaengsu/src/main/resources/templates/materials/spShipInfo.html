@@ -4,28 +4,48 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>반제품출고조회</title>
+	<title>반제품 출고 조회</title>
+	<style>
+		#spShipTable{
+			margin: 20px auto;
+		}
+		#spShipTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}
+      .inputR {
+			width: 210px;
+			padding-left : 5px
+		}
+		#divRadio input{
+			width:30px
+		}
+		.divBtn{
+			text-align:center;
+			padding : 10px 0 30px;
+		}
+		#divRadio{
+			padding-right : 180px;
+		}
+	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품출고조회</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 출고 조회</h1>
 		<form action="" method="post" id="spShipForm">
 				<table id="spShipTable">
 					<tr>
 						<td>공정실적코드</td>
-						<td><input type="text" name="pNum" id="pNum" class="empty" placeholder="검색"></td>
+						<td><input type="text" name="pNum" id="pNum" class="inputR" placeholder="검색"></td>
+						<td>출고일자</td>
+						<td>
+							<input type="date" id="spShipDate" class="inputR"> ~ <input type="date" id="spShipDatee" class="inputR">
+						</td>
 					</tr>				
 					<tr>
 						<td>반제품LOT번호</td>
-						<td><input type="text" name="spLotId" id="spLotId" class="empty" placeholder="검색"></td>
-					</tr>
-					<tr>
-						<td>반제품명</td>
-						<td><input type="text" name="spName" id="spName" class="empty" placeholder="검색"></td>
-						
-					</tr>
-					<tr>
+						<td><input type="text" name="spLotId" id="spLotId" class="inputR" placeholder="검색"></td>
 						<td>출고유형</td>
 						<td>
 							<div id="divRadio">
@@ -39,15 +59,14 @@
 						</td>
 					</tr>
 					<tr>
-						<td>출고일자</td>
-						<td>
-							<input type="date" id="spShipDate"> ~ <input type="date" id="spShipDatee">
-						</td>
+						<td>반제품명</td>
+						<td><input type="text" name="spName" id="spName" class="inputR" placeholder="검색"></td>
+						
 					</tr>
 				</table>
 			</form>
-			<div id="left">
-				<button class="sixBtn2" id="check">조회</button>
+			<div class="divBtn">
+				<button class="sixBtn2" id="check">검색</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
 			
@@ -116,32 +135,49 @@
 					useClient: true,
 					perPage: 10
 				},
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['rowNum'],
 				columns : [ 
 					{
 					header : '공정실적코드',
 					name : 'prcsPfmcId',
+	                align: 'center'
 				}, {
 					header : '반제품LOT번호',
-					name : 'spLotId'
+					name : 'spLotId',
+	                align: 'center'
 				}, {
 					header : '반제품명',
-					name : 'spName'
+					name : 'spName',
+	                align: 'center'
 				}, {
 					header : '출고량',
-					name : 'spShipQt'
+					name : 'spShipQt',
+	                align: 'right',
+	                formatter: ({ value }) => {
+		              	  if(value != null){
+		                 		return value.toLocaleString()
+		                  }else{
+		              	 		return ''
+		                  } 
+		            }
 				}, {
 					header : '출고일자',
-					name : 'spShipDate'
+					name : 'spShipDate',
+	                align: 'center'
 				}, {
 					header : '출고유형',
-					name : 'spShipType'
+					name : 'spShipType',
+	                align: 'center'
 				}, {
 					header : '담당자',
-					name : 'empName'
+					name : 'empName',
+	                align: 'center'
 				}, {
 					header : '비고',
-					name : 'spShipNote'
+					name : 'spShipNote',
+	                align: 'center'
 				}]
 			});
 			

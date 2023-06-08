@@ -5,16 +5,20 @@
 <head>
 	<meta charset="UTF-8">
 	<title>자재재고조정</title>
+	<style>
+		#left {
+			text-align: center;
+			padding: 10px 0 30px;
+		}	
+	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
-			<h1 class="mt-4" style="font-family: 'MaruBuri';">자재재고조정</h1>
+			<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 재고 조정</h1>
 	
 			<div id="left">
 				자재LOT번호 <input type="text" id="matLotId" name="matLotId">
-			</div>
-			<div id="left">
 				<button class="sixBtn2" id="check">조회</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
@@ -70,27 +74,50 @@
 				pageOptions: {
 					useClient: true,
 					perPage: 10
+					
 				},
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['checkbox', 'rowNum'],
 				columns : [ 
 					{
 					header : '자재LOT번호',
 					name : 'matLotId',
+	                align: 'center'
 				},	{
 					header : '자재코드',
 					name : 'matId',
+	                align: 'center'
 				}, {
 					header : '자재명',
-					name : 'matName'
+					name : 'matName',
+	                align: 'center'
 				}, {
 					header : '자재규격',
-					name : 'matSize'
+					name : 'matSize',
+	                align: 'center'
 				}, {
 					header : '현재재고량',
-					name : 'matQt'
+					name : 'matQt',
+	                align: 'right',
+	                formatter: ({ value }) => {
+	              	  if(value != null){
+	                 		return value.toLocaleString()
+	                  }else{
+	              	 		return ''
+	                  } 
+	                }
 				}, {
 					header : '조정수량',
 					name : 'matAdjQt',
+	                align: 'right',
+	                formatter: ({ value }) => {
+	              	  if(value != null){
+	                 		return value.toLocaleString()
+	                  }else{
+	              	 		return ''
+	                  } 
+	                },
 					editor : 'text'
 				}]
 			});

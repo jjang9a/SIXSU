@@ -31,8 +31,8 @@ public class ShipController {
 	//페이지 주문중인 목록 (품질요청 전 그리드 테이블)
 	@ResponseBody
 	@RequestMapping("orderedList")
-	public List<OrdVO> orderingList(){
-		List<OrdVO> list = service.orderingList();
+	public List<OrdVO> orderingList(OrdVO vo){
+		List<OrdVO> list = service.orderingList(vo);
 		
 		return list;
 	}

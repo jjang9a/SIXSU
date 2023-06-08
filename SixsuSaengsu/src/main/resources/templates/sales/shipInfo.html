@@ -39,6 +39,9 @@ h1 {
 .modal-body {
 			background: #e5edf5;
 		}
+#radio, #startDate, #endDate, #gridp {
+cursor: pointer;
+}		
 </style>
 </head>
 <body>
@@ -49,7 +52,7 @@ h1 {
 				<table id="cpTable">
 				<tr>				
 					
-					<td>상품명</td><td> <input type="text" name="cpName" id="cpName" style="width : 199px;">
+					<td>상품명</td><td> <input type="text" name="cpName" id="cpName" style="width : 199px;" readonly>
 					<button type="button" data-bs-toggle="modal" id="search1Btn"
 						class="sixBtn1" data-bs-target="#search1Modal">
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
@@ -62,12 +65,12 @@ h1 {
                     <input type="date" name="endDate" id="endDate" style="width : 120px;" /></td>	
 				</tr>
 				<tr>
-				 	<td>상품코드</td><td><input type="text" name="cpId" id="cpId"></td>
+				 	<td>상품코드</td><td><input type="text" name="cpId" id="cpId" readonly></td>
                   
                     <td>진행구분</td><td>
-                <input type="radio" name="cpShipStat" value="all" checked="checked" style="width : 25px;"/> 전체
-                <input type="radio" name="cpShipStat" value="CP_SHIP_C"  style="width : 25px;"/> 출고완료	
-                 <input type="radio" name="cpShipStat" value="CP_SHIP_COMP"  style="width :25px;"/> 출고준비</td>
+                <input type="radio" name="cpShipStat" value="all" checked="checked" style="width : 25px;" id="radio"/> 전체
+                <input type="radio" name="cpShipStat" value="CP_SHIP_C"  style="width : 25px;"id="radio"/> 출고완료	
+                 <input type="radio" name="cpShipStat" value="CP_SHIP_COMP"  style="width :25px;"id="radio"/> 출고준비</td>
                 
                 </tr>
                 
@@ -120,6 +123,7 @@ h1 {
 	})
 	const gridp = new tui.Grid({
 		el : document.getElementById('gridp'),
+		rowHeight: 45,
 		//data : gridData,
 		scrollX : false,
 		scrollY : false,
@@ -162,6 +166,7 @@ h1 {
 		//data : gridData,
 		scrollX : false,
 		scrollY : false,
+		rowHeight: 45,
 		pageOptions: {
 			useClient: true,
 			perPage: 10
@@ -198,7 +203,10 @@ h1 {
 		},{
 			header : '출고수량',
 			name : 'cpShipQt',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+			 return value.toLocaleString()
+			   }
 			
 		},{
 			header : '진행상태',
@@ -234,7 +242,8 @@ h1 {
 	         $('#endDate').val('');
 	         $("input:radio[name='cpShipStat']:radio[value='all']").prop('checked', true);
 		})
-        gridp.setBodyHeight(400);
+		shipGrid.setBodyHeight(450);
+        gridp.setBodyHeight(450);
 			tui.Grid.applyTheme('default', {
 				cell: {
 				header: {
