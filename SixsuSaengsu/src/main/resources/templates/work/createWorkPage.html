@@ -328,39 +328,46 @@
 	    columns: [
     	  {
  	        header: '세부코드',
- 	        name: 'wkDetaId'
+ 	        name: 'wkDetaId',
+ 	        align : 'center'
  	      },
  	      {
  	        header: '제품코드',
- 	        name: 'cpId'
+ 	        name: 'cpId',
+ 	        align : 'center'
  	      },
  	      {
  	        header: '제품명',
- 	        name: 'cpName'
+ 	        name: 'cpName',
+ 	        align : 'center'
  	      },
  	      {
  	        header: '지시수량',
  	        name: 'detaQt',
- 	        editor: 'text'
+ 	        editor: 'text',
+ 	        align : 'right'
  	      },
  	      {
  	        header: '양품수량',
  	        name: 'goodQt',
- 	        editor: 'text'
+ 	        align : 'right'
  	      },
  	      {
  	        header: '생산일',
  	        name: 'startDate',
- 	       	editor: 'datePicker'
+ 	       	editor: 'datePicker',
+ 	        align : 'center'
  	      },
  	      {
  	        header: '종료일',
  	        name: 'endDate',
- 	       	editor: 'datePicker'
+ 	       	editor: 'datePicker',
+ 	        align : 'center'
  	 	  },
  	 		{
  	 	        header: '담당자',
- 	 	        name: 'empName'
+ 	 	        name: 'empName',
+ 	 	        align : 'center'
  	 	 	  },
 	 	 	{
 		          header: '진행현황',
@@ -376,7 +383,8 @@
 			                { text: '생산완료', value: '생산완료' }
 			              ]
 			            }
-			     }
+			     },
+		 	        align : 'center'
 		       }
 	    ]
 	  });
@@ -557,12 +565,14 @@
 	 	        editor: 'text',
 	 	        editorOptions: {
 	 	        	type: 'number'
-	 	        }
+	 	        },
+	 	        align : 'right'
 	 	      },
 	 	      {
 	 	    	header: '사용가능개수',
 	 	    	name: 'sumQt',
-	 	    	editor: 'text'
+	 	    	editor: 'text',
+	 	    	align : 'right'
 	 	      }
 		    ]
 		  });
@@ -908,7 +918,7 @@
 		}
 	})
 	
-	// 공정조회 모달창
+	//공정그리드 클릭 시 필요한 자재수량을 기입할 수 있음 보유자재도 표시.
 	bom_search1.on('click',ev => {
 		let columnName = ev.columnName;
 		selectBomWorkCode = ev.rowKey;
@@ -933,6 +943,7 @@
 				}
 			})
 	});
+	
 	
 	bom_search1.on('afterChange', function (ev) {
 		  let getRow = bom_search1.getRow(selectBomWorkCode)
@@ -1149,7 +1160,7 @@
 				console.log(result);
 				alert(result);
 				if(result == '등록되었습니다 !'){
-					location.href = '/product/workControllPage';
+					location.href = '/work/workControllPage';
 				}
 			},
 			error: function(reject){
@@ -1159,7 +1170,7 @@
 	})		
 	
 	$('.cancelBtn').on('click', function(){
-		let link = '/product/workControllPage'
+		let link = '/work/workControllPage'
 		if(confirm("  페이지를 떠날 시 작성 중인 데이터는 사라집니다 \n  페이지를 떠나시겠습니까? \n  지시코드 : " + orderCode) == true){
     		location.href = link;
     	}else{

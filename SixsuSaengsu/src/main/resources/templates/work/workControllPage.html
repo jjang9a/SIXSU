@@ -69,7 +69,7 @@
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">작업지시 관리</h1>
 		<button class="workFilterBtn sixBtn2">검색</button>
-		<button class="sixBtn2" onclick="location.href='/product/createWorkPage'">등록</button>
+		<button class="sixBtn2" onclick="location.href='/work/createWorkPage'">등록</button>
 		<div class="text_container">
 			<p class="filter_text">검색기준 : 날짜</p>
 		</div>
@@ -185,17 +185,26 @@
 	      {
 	        header: '계획수량',
 	        name: 'detaQt',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+			 return value.toLocaleString()
+			   }
 	      },
 	      {
 	        header: '완료수량',
 	        name: 'goodQt',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+			 return value.toLocaleString()
+			   }
 	      },
 	      {
 	        header: '불량수량',
 	        name: 'dmatQt',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+			 return value.toLocaleString()
+			   }
 	      },
 	      {
 	          header: '상태',
@@ -448,7 +457,6 @@
         }
         
         searchData.statusCheckbox = statusCheckbox;
-        console.log(searchData);
         
         $.ajax({
 			url : "/ajax/workFilterAjax",
@@ -519,7 +527,7 @@
 
 	grid1.on('click',ev => {
 		//클릭한 세부지시에 대한 공정가져오기
-		let link = '/product/modifyWorkPage?data=' + grid1.getRow(ev.rowKey).wkDetaId;
+		let link = '/work/modifyWorkPage?data=' + grid1.getRow(ev.rowKey).wkDetaId;
 		if (ev.columnName === 'edit'){ 
 		    console.log('오호홓ㅎㅎ 수정클릭되었다');
 		    

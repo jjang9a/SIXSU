@@ -15,18 +15,18 @@ import co.sixsu.app.work.service.WorkService;
 	
 		@Autowired WorkService service;
 	
-		@GetMapping("viewPlanPage")
+		@GetMapping("viewPlanInfo")
 		public String viewPlanPage() {
-		return "work/viewPlanPage";
+		return "work/viewPlanInfo";
 		}
 		
 		@GetMapping("createPlanPage")
 		public String createPlanPage() {
 		return "work/createPlanPage";
 		}
-		@GetMapping("viewWorkPage")
+		@GetMapping("viewWorkInfo")
 		public String viewWorkPage() {
-			return "work/viewWorkPage";
+			return "work/viewWorkInfo";
 		}
 		@GetMapping("workControllPage")
 		public String workControllPage() {
