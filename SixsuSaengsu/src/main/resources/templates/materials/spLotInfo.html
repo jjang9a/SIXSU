@@ -19,10 +19,6 @@
 			text-align: center;
 		}
 
-		#spLot {
-			width: 242px;
-		}
-
 		#spLotTable {
 			margin: 15px auto;
 		}
@@ -42,16 +38,16 @@
 			<table id="spLotTable">
 				<tr>
 					<td>반제품LOT번호</td>
-					<td><input type="text" name="spLot" id="spLot" class="empty" placeholder="검색"></td>
-					<td>반제품명</td>
-					<td><input type="text" name="spName" id="spName" class="empty inputR" placeholder="검색">
-					</td>
-				</tr>
-				<tr>
+					<td><input type="text" name="spLot" id="spLot" class="inputR" placeholder="검색"></td>
 					<td>입고일자</td>
 					<td>
 						<input type="date" id="spRecDate" class="inputS"> ~ <input type="date" id="spRecDatee"
 							class="inputS">
+					</td>
+				</tr>
+				<tr>
+					<td>반제품명</td>
+					<td><input type="text" name="spName" id="spName" class="inputR" placeholder="검색">
 					</td>
 					<td>홀드상태</td>
 					<td style="text-align: left">
@@ -153,9 +149,10 @@
 					useClient: true,
 					perPage: 10
 				},
+				
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['rowNum'],
-
-
 				columns: [{
 						header: '반제품LOT번호',
 						name: 'spLotId',

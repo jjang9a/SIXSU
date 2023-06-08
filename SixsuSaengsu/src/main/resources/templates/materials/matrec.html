@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>자재입고관리</title>
+	<title>자재 입고 관리</title>
 	<style>
 		h1 {
 			margin-bottom: 10px;
@@ -22,7 +22,7 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재입고관리</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 입고 관리</h1>
 
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 대기 목록</h3>
 		<div id="grid"></div>
@@ -95,31 +95,45 @@
 
 				columns: [{
 						header: '검사번호',
-						name: 'inspNum'
+						name: 'inspNum',
+			            align: 'center'
 					},
 					{
 						header: '발주번호',
-						name: 'matReqId'
+						name: 'matReqId',
+			            align: 'center'
 					},
 					{
 						header: '자재코드',
-						name: 'inspItemId'
+						name: 'inspItemId',
+			            align: 'center'
 					},
 					{
 						header: '자재명',
-						name: 'matName'
+						name: 'matName',
+			            align: 'center'
 					},
 					{
 						header: '적합수량',
-						name: 'suitQt'
+						name: 'suitQt',
+		                align: 'center',
+		                formatter: ({ value }) => {
+		              	  if(value != null){
+		                 		return value.toLocaleString()
+		                  }else{
+		              	 		return ''
+		                  } 
+		                }
 					},
 					{
 						header: '검사일자',
-						name: 'inspDate'
+						name: 'inspDate',
+			            align: 'center'
 					},
 					{
 						header: '담당자',
-						name: 'empName'
+						name: 'empName',
+			            align: 'center'
 					}
 
 
@@ -150,47 +164,65 @@
 
 				columns: [{
 						header: '자재입고번호',
-						name: 'matRecId'
+						name: 'matRecId',
+			            align: 'center'
 					},
 					{
 						header: '자재LOT번호',
-						name: 'matLotId'
+						name: 'matLotId',
+			            align: 'center'
 					},
 					{
 						header: '발주번호',
-						name: 'matReqId'
+						name: 'matReqId',
+			            align: 'center'
 					},
 					{
 						header: '자재명',
-						name: 'matName'
+						name: 'matName',
+			            align: 'center'
 					},
 					{
 						header: '입고수량',
-						name: 'matRecQt'
+						name: 'matRecQt',
+		                align: 'center',
+		                formatter: ({ value }) => {
+		              	  if(value != null){
+		                 		return value.toLocaleString()
+		                  }else{
+		              	 		return ''
+		                  } 
+		                }
 					},
 					{
 						header: '거래처명',
-						name: 'busName'
+						name: 'busName',
+			            align: 'center'
 					},
 					{
 						header: '검사일자',
-						name: 'inspDate'
+						name: 'inspDate',
+			            align: 'center'
 					},
 					{
 						header: '입고일자',
-						name: 'matRecDate'
+						name: 'matRecDate',
+			            align: 'center'
 					},
 					{
 						header: '입고유형',
-						name: 'matRecType'
+						name: 'matRecType',
+			            align: 'center'
 					},
 					{
 						header: '담당자',
-						name: 'empName'
+						name: 'empName',
+			            align: 'center'
 					},
 					{
 						header: '비고',
-						name: 'matRecNote'
+						name: 'matRecNote',
+			            align: 'center'
 					}
 					
 				]
