@@ -135,32 +135,49 @@
 					useClient: true,
 					perPage: 10
 				},
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['rowNum'],
 				columns : [ 
 					{
 					header : '공정실적코드',
 					name : 'prcsPfmcId',
+	                align: 'center'
 				}, {
 					header : '자재LOT번호',
-					name : 'matLotId'
+					name : 'matLotId',
+	                align: 'center'
 				}, {
 					header : '자재명',
-					name : 'matName'
+					name : 'matName',
+	                align: 'center'
 				}, {
 					header : '출고량',
-					name : 'matShipQt'
+					name : 'matShipQt',
+	                align: 'right',
+	                formatter: ({ value }) => {
+	              	  if(value != null){
+	                 		return value.toLocaleString()
+	                  }else{
+	              	 		return ''
+	                  } 
+	                }
 				}, {
 					header : '출고일자',
-					name : 'matShipDate'
+					name : 'matShipDate',
+	                align: 'center'
 				}, {
 					header : '출고유형',
-					name : 'matShipType'
+					name : 'matShipType',
+	                align: 'center'
 				}, {
 					header : '담당자',
-					name : 'empName'
+					name : 'empName',
+	                align: 'center'
 				}, {
 					header : '비고',
-					name : 'matShipNote'
+					name : 'matShipNote',
+	                align: 'center'
 				}]
 			});
 			
