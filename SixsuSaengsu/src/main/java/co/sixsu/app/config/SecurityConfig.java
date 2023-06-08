@@ -33,12 +33,11 @@ public class SecurityConfig{
 		requests
 			.antMatchers("/top","/login", "/", "/work/workKiosk").permitAll()
 			.antMatchers("/basic/**","/**/*Info").authenticated()
-			.antMatchers("/sales/**", "/prod/cpRec").hasAuthority("ROLE_B")
-			.antMatchers("/work/**").hasAuthority("ROLE_C")
-			.antMatchers("/material/**", "/prod/spRec", "/prod/spRecInfo").hasAuthority("ROLE_D")
-			.antMatchers("/equipment/**").hasAuthority("ROLE_E")
-			.antMatchers("/quality/**").hasAuthority("ROLE_F")
-			.antMatchers("/**").hasAuthority("ROLE_A") // boot에서는 ROLE_ 생략하고 그냥 ADMIN으로 적는것도 가능
+			.antMatchers("/sales/**", "/prod/cpRec").hasAnyAuthority("ROLE_B", "ROLE_A")
+			.antMatchers("/work/**").hasAnyAuthority("ROLE_C", "ROLE_A")
+			.antMatchers("/material/**", "/prod/spRec", "/prod/spRecInfo").hasAnyAuthority("ROLE_D", "ROLE_A")
+			.antMatchers("/equipment/**").hasAnyAuthority("ROLE_E", "ROLE_A")
+			.antMatchers("/quality/**").hasAnyAuthority("ROLE_F", "ROLE_A")
 			.anyRequest().authenticated())
 		//.formLogin().loginPage("/login").usernameParameter("").and()
 		.formLogin(login -> login.loginPage("/login")
