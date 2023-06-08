@@ -436,7 +436,7 @@
 		
 		<!-- 조건 -->
 		<include refid="criteria3"></include>		 
-		order by to_date(s.mat_ship_date, 'yyyy-MM-dd') desc
+		order by s.mat_ship_date desc
 	</select>
 	
 	<!-- 자재 재고조정 페이지 -->
