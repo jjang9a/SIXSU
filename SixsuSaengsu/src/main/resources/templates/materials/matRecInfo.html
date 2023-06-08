@@ -12,7 +12,11 @@
       .inputR {
 			width: 210px;
 			padding-left : 5px
-		}	
+		}
+	  .inputS {
+	  
+			width: 110px;
+		}
 	
 		#recTable td {
 			padding: 3px 20px 10px;
@@ -144,54 +148,73 @@
 					useClient: true,
 					perPage: 10
 				},
-
+				rowHeight: 45,
+				minBodyHeight: 200,
 
 				rowHeaders: ['rowNum'],
 
 
 				columns: [{
 						header: '자재입고번호',
-						name: 'matRecId'
+						name: 'matRecId',
+			            align: 'center'
 					},
 					{
 						header: '자재LOT번호',
-						name: 'matLotId'
+						name: 'matLotId',
+			            align: 'center'
 					},
 					{
 						header: '발주번호',
-						name: 'matReqId'
+						name: 'matReqId',
+			            align: 'center'
 					},
 					{
 						header: '자재명',
-						name: 'matName'
+						name: 'matName',
+			            align: 'center'
 					},
 					{
 						header: '입고수량',
-						name: 'matRecQt'
+						name: 'matRecQt',
+		                align: 'right',
+		                formatter: ({ value }) => {
+		              	  if(value != null){
+		                 		return value.toLocaleString()
+		                  }else{
+		              	 		return ''
+		                  } 
+		                }
 					},
 					{
 						header: '거래처명',
-						name: 'busName'
+						name: 'busName',
+			            align: 'center'
 					},
 					{
 						header: '검사일자',
-						name: 'inspDate'
+						name: 'inspDate',
+			            align: 'center'
 					},
 					{
 						header: '입고일자',
-						name: 'matRecDate'
+						name: 'matRecDate',
+			            align: 'center'
 					},
 					{
 						header: '입고유형',
-						name: 'matRecType'
+						name: 'matRecType',
+			            align: 'center'
 					},
 					{
 						header: '담당자',
-						name: 'empName'
+						name: 'empName',
+			            align: 'center'
 					},
 					{
 						header: '비고',
-						name: 'matRecNote'
+						name: 'matRecNote',
+			            align: 'center'
 					}
 					
 				]

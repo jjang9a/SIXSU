@@ -5,16 +5,19 @@
 <head>
 	<meta charset="UTF-8">
 	<title>반제품재고조정</title>
+	<style>
+		#left {
+			text-align: center;
+			padding: 10px 0 30px;
+		}		
+	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
-			<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품재고조정</h1>
-	
+			<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 재고 조정</h1>
 			<div id="left">
 				반제품LOT번호 <input type="text" id="spLotId" name="spLotId">
-			</div>
-			<div id="left">
 				<button class="sixBtn2" id="check">조회</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
@@ -68,27 +71,49 @@
 					useClient: true,
 					perPage: 10
 				},
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['checkbox', 'rowNum'],
 				columns : [ 
 					{
 					header : '반제품LOT번호',
 					name : 'spLotId',
+	                align: 'center'
 				},	{
 					header : '반제품코드',
 					name : 'spId',
+	                align: 'center'
 				}, {
 					header : '반제품명',
-					name : 'spName'
+					name : 'spName',
+	                align: 'center'
 				}, {
 					header : '반제품규격',
-					name : 'spSize'
+					name : 'spSize',
+	                align: 'center'
 				}, {
 					header : '현재재고량',
-					name : 'spQt'
+					name : 'spQt',
+	                align: 'right',
+	                formatter: ({ value }) => {
+		              	  if(value != null){
+		                 		return value.toLocaleString()
+		                  }else{
+		              	 		return ''
+		                  } 
+		            }
 				}, {
 					header : '조정수량',
 					name : 'spAdjQt',
-					editor : 'text'
+	                align: 'right',
+					editor : 'text',
+	                formatter: ({ value }) => {
+		              	  if(value != null){
+		                 		return value.toLocaleString()
+		                  }else{
+		              	 		return ''
+		                  } 
+		            }
 				}]
 			});
 			
