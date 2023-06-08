@@ -94,7 +94,7 @@
 	        ON c.equ_code = i.equ_code
 		  LEFT OUTER JOIN oper o
 		    ON c.equ_code = o.equ_code
-		 ORDER BY c.equ_code 
+		 
   	
   	
   	<!--  WITH oper as ( 
@@ -163,7 +163,7 @@
 	select 'EQU_' || LPAD(EQU_SEQ.nextval, 3, '0') from dual
 	</selectKey>
 		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, emp_id, equ_check, add_date, c_temp)
-		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, to_date(#{addDate})
+		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, to_date(#{addDate},'yyyy-MM-dd' )
 		<if test="ctemp != ''">
 			, #{ctemp}
 		</if>
@@ -173,7 +173,7 @@
 	<!-- 설비관리(수정) -->																																								
 	<update id="equUpdate" parameterType="EquConVO">
 		UPDATE equ_con
-		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date = to_date(#{addDate}), c_temp=#{ctemp}
+		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date = to_date(#{addDate},'yyyy-MM-dd'), c_temp=#{ctemp}
 		WHERE equ_code=#{equCode}
 	</update>
 	
@@ -296,6 +296,8 @@
 		 ORDER BY o.oper_code 
   	</select>
   	
+  
+  	
   	
   	
   	<sql id="criteria">
@@ -351,7 +353,8 @@
 	</delete>
 	
 	<!-- 비가동 관리 비가동 시작버튼(비가동 등록) -->
-  	<insert id="startIn" parameterType="EquOperVO"> 
+  	<insert id="startIn" parameterType="EquOperVO">
+  	<!-- <selectkey keyColumn="oper_code,oper_type,oper_start,oper_fnish,oper_note," keyProperty="operCode,operType,operStart,operFnish,operNote" resultType="map" order="BEFORE"></select> -->
 		INSERT INTO equ_oper (oper_code, equ_code, oper_type, oper_start, oper_note, emp_id)
 		VALUES('OPER_' || LPAD(OPER_SEQ.nextval, 3, '0'), #{equCode}, #{operType}, current_date, #{operNote}, #{empId})
 	</insert>   
