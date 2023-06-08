@@ -24,6 +24,7 @@ public interface EquService {
 
 	boolean equDel(EquConVO equCode); // 설비관리(삭제)
 
+
 	List<EquInspVO> equCheckList(); // 점검 조회 리스트
 	
 	List<EquInspVO> equCheckSearch(EquSearchDTO dto); // 점검 조회(검색)
@@ -44,6 +45,6 @@ public interface EquService {
 
 	boolean startIn(EquOperVO data); // 비가동 관리 비가동 시작버튼(비가동 등록)
 	
-	boolean fnishIn(EquOperVO data); // // 비가동 관리 비가동 종료버튼(가동 등록)
+	List<EquOperVO> fnishIn(EquOperVO data); // // 비가동 관리 비가동 종료버튼(가동 등록)
 	
 }

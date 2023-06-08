@@ -96,9 +96,14 @@ public class MaterialController {
 	public void spShipList() {
 	}
 	
-	//자재 불량 페이지 열어주기
+	//자재 불량 관리 페이지 열어주기
 	@GetMapping("matdmg")
 	public void matDmgList() {
+	}
+	
+	//자재 불량 조회 페이지 열어주기
+	@GetMapping("matDmgInfo")
+	public void matDamageList() {
 	}
 	
 	//발주조회 페이지 열어주기

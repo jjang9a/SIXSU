@@ -108,9 +108,7 @@
  			
  			//반제품조정입고버튼
  			$('#adjinsert').on('click', function() {
- 				console.log(gridm.getCheckedRows());
- 				console.log(gridm.getData());
- 				console.log(JSON.stringify(gridm.getCheckedRows()));
+ 				gridm.blur();
  				$.ajax({
 					url: "/materials/sprecadj",
 					method: "POST",
@@ -118,30 +116,44 @@
 					data: JSON.stringify(gridm.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
+						alert('입고 완료');
 						spAdjList(spLotId);
 					},
 					error : function(reject){
 						console.log(reject);
+						alert('입고 실패');
 					}
  				})
  			});
  			
  			//반제품조정출고버튼
  			$('#adjdelete').on('click', function(){
- 				$.ajax({
-					url: "/materials/spshipadj",
-					method: "POST",
-					contentType: 'application/json',
-					data: JSON.stringify(gridm.getCheckedRows()),
-					success: function (result) {
-						console.log(result);
-						spAdjList(spLotId);
-					},
-					error : function(reject){
-						console.log(reject);
-					}
- 				})
- 			})
+ 				gridm.blur();
+ 			    var checkedRows = gridm.getCheckedRows();
+ 			    var invalidRows = checkedRows.filter(function(row) {
+ 			        return parseInt(row.spAdjQt) > parseInt(row.spQt);
+ 			    });
+ 			    if (invalidRows.length > 0) {
+ 			        alert('출고 수량이 현재 수량보다 많습니다');
+ 			    } else {
+	 				$.ajax({
+						url: "/materials/spshipadj",
+						method: "POST",
+						contentType: 'application/json',
+						data: JSON.stringify(gridm.getCheckedRows()),
+						success: function (result) {
+							console.log(result);
+							alert('출고 완료');
+							spAdjList(spLotId);
+						},
+						error : function(reject){
+							console.log(reject);
+							alert('출고 실패');
+						}
+	 				})
+ 			    }
+ 			});
+ 			
 		</script>
 	</div>
 </body>

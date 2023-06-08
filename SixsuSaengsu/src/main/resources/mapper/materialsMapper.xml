@@ -68,17 +68,17 @@
 <sql id="criteria3">
  	<where>
 		 	<if test="prcsPfmcId != null and prcsPfmcId != ''.toString()">
-		 		s.prcs_pfmc_id = #{prcsPfmcId}
+		 		s.prcs_pfmc_id like '%'|| upper(#{prcsPfmcId}) || '%'
 		 	</if>
 		 	<if test="prcsPfmcId == null and prcsPfmcId == ''.toString()">
 		 	</if>
 		 	<if test="matLotId != null and matLotId != ''.toString()">
-		 		and s.mat_lot_id = #{matLotId}
+		 		and s.mat_lot_id like '%'|| upper(#{matLotId}) || '%'
 		 	</if>
 		 	<if test="matLotId == null and matLotId == ''.toString()">
 		 	</if>
 		 	<if test="matName != null and matName != ''.toString()">
-		 		and m.mat_name = #{matName}
+		 		and m.mat_name like '%'|| upper(#{matName}) || '%'
 		 	</if>
 		 	<if test="matName == null and matName == ''.toString()">
 		 	</if>
@@ -99,17 +99,17 @@
 <sql id="criteria4">
  	<where>
 		 	<if test="prcsPfmcId != null and prcsPfmcId != ''.toString()">
-		 		s.prcs_pfmc_id = #{prcsPfmcId}
+		 		s.prcs_pfmc_id like '%'|| upper(#{prcsPfmcId}) || '%'
 		 	</if>
 		 	<if test="prcsPfmcId == null and prcsPfmcId == ''.toString()">
 		 	</if>
 		 	<if test="spLotId != null and spLotId != ''.toString()">
-		 		and s.sp_lot_id = #{spLotId}
+		 		and s.sp_lot_id like '%'|| upper(#{spLotId}) || '%'
 		 	</if>
 		 	<if test="spLotId == null and spLotId == ''.toString()">
 		 	</if>
 		 	<if test="spName != null and spName != ''.toString()">
-		 		and p.sp_name = #{spName}
+		 		and p.sp_name like '%'|| upper(#{spName}) || '%'
 		 	</if>
 		 	<if test="spName == null and spName == ''.toString()">
 		 	</if>
@@ -288,7 +288,7 @@
 		  left join material t
 		    on q.insp_item_id = t.mat_id
 		 where m.mat_req_stat = 'C'
-		 order by insp_date
+		 order by q.insp_date desc
 	</select>
 	
 	<!-- 입고 목록-->
@@ -316,7 +316,7 @@
 		 on c.mat_lot_id = t.mat_lot_id 
 		left join material l
 		 on t.mat_id = l.mat_id
-		order by c.mat_rec_date desc
+		order by c.mat_rec_id desc
 	</select>
 	
 	<!-- 자재 입고 조회-->
@@ -346,7 +346,7 @@
 		 on t.mat_id = l.mat_id
 		<!-- 조건 -->
 		<include refid="criteria2"></include>
-		order by c.mat_rec_date desc
+		order by c.mat_rec_id desc
 	</select>
 	
 	<!-- 입고등록 -->
@@ -400,7 +400,7 @@
 		from mat_lot m 
 		
 		left join mat_rec c
-		 on m.mat_rec_id = c.mat_rec_id
+		 on m.mat_lot_id = c.mat_lot_id
 		
 		left join material l
 		 on m.mat_id = l.mat_id
@@ -436,7 +436,8 @@
 		
 		<!-- 조건 -->
 		<include refid="criteria3"></include>		 
-		order by mat_ship_date desc
+		order by s.mat_ship_date desc
+		
 	</select>
 	
 	<!-- 자재 재고조정 페이지 -->
@@ -523,8 +524,7 @@
 		 
 		 <!-- 반제품 출고 조회 조건 -->
 		<include refid="criteria4"></include>
-		
-		order by sp_ship_date desc
+		order by s.sp_ship_date desc
   	</select>
   	
   	<!-- 반제품 조정입고 프로시저 -->
@@ -590,6 +590,7 @@
 		 AND d.insp_id = (SELECT insp_id
 		                  FROM QUA_INSP_LIST
 		                  WHERE insp_name = '자재불량')
+		order by a.dmat_date desc
 	</select>
 	
 	<!-- 자재 불량처리 -->
@@ -605,7 +606,7 @@
 		select p.*, s.sp_qt_sum from semi_prod p left join splotsum s on p.sp_id = s.sp_id
 		where p.sp_stat = 'Y' 
 		<if test="spName != null and spName != ''.toString()">
-			and p.sp_name = #{spName}
+			and p.sp_name like '%' || #{spName} || '%'
 		</if>
 		<if test="spName == null and spName == ''.toString()">
 		</if>
