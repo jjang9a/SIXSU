@@ -13,11 +13,11 @@ h1 {
 #cpTable {
 	margin: auto;
 }
-#tdTable input,select{
-margin: auto;
-padding-left: 10px;
-	width: 130px;
 
+#tdTable input, select {
+	margin: auto;
+	padding-left: 10px;
+	width: 120px;
 }
 
 #cpTable input, select {
@@ -34,27 +34,23 @@ padding-left: 10px;
 	padding: 4px 20px;
 }
 
-#busTable tr, input{
-padding-left: 10px;
-width: 250px;	
+#busTable tr, input {
+	padding-left: 10px;
+	width: 250px;
 }
-
-
 
 .divBtn {
 	text-align: center;
 	padding: 15px 0 30px 0;
 }
 
-
-
 .modal-body {
 	background: #e5edf5;
 }
-#gridp, #radio, #startDate, #endDate, #orderListGrid, #orderReadyGrid {
-cursor: pointer;
-}
 
+#gridp, #radio, #startDate, #endDate, #orderListGrid, #orderReadyGrid {
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -78,11 +74,11 @@ cursor: pointer;
 					<td>주문일자</td>
 					<td><input type="date" name="startDate" id="startDate"
 						style="width: 120px;" /> <input type="date" name="endDate"
-						id="endDate" style="width: 120px;"  /></td>
+						id="endDate" style="width: 120px;" /></td>
 				</tr>
 				<tr>
 					<td>상품코드</td>
-					<td><input type="text" name="cpId" id="cpId" readonly/></td>
+					<td><input type="text" name="cpId" id="cpId" readonly /></td>
 
 				</tr>
 			</table>
@@ -133,19 +129,25 @@ cursor: pointer;
 								aria-label="Close"></button>
 						</div>
 
+						<div class="modal-body">
 						<div class="btns">
-						<table id="tdTable">
-						<tr>
-							<td>상품명:</td>
-							<td><input type="text" name="cpOrdNameBox" id="cpOrdNameBox" readonly /></td> 
-							<td>상품코드:</td> <td><input type="text" name="cpOrdCode" id="cpOrdCode" readonly /></td>  
-							<td>주문수량:</td> <td><input type="text"name="ordQt" id="cpOrdQt" readonly /></td>
-							<td>총재고량:</td> <td><input	type="text" name="totalQt" id="totalQt" readonly /></td>
-						</tr>
-						</table>
+							<table id="tdTable">
+								<tr>
+									<td>상품명:</td>
+									<td><input type="text" name="cpOrdNameBox"
+										id="cpOrdNameBox" readonly /></td>
+									<td>상품코드:</td>
+									<td><input type="text" name="cpOrdCode" id="cpOrdCode"
+										readonly /></td>
+									<td>주문수량:</td>
+									<td><input type="text" name="ordQt" id="cpOrdQt" readonly /></td>
+									<td>총재고량:</td>
+									<td><input type="text" name="totalQt" id="totalQt"
+										readonly /></td>
+								</tr>
+							</table>
 						</div>
 
-						<div class="modal-body">
 							<div id="lotProductGrid"></div>
 							<button class="sixBtn4" id="readyShip">출고시작</button>
 
@@ -171,24 +173,27 @@ cursor: pointer;
 						</div>
 
 						<div class="btns">
-						<table id="busTable">
-						<tr>
-							<td>거래처코드:</td>
-							<td><input type="text" name="busId" id="busId" readonly /></td>	
-							<td>거래처명:</td>
-							<td><input type="text" name="busName" id="busName" readonly /></td>
-						</tr>
-						<tr>	
-							<td>사업자번호:</td>
-							<td><input type="text" name="busNum" id="busNum"readonly /></td>	
-							<td>거래처전화번호:</td>
-							<td><input type="text"name="busTell" id="busTell" readonly /></td>
-						</tr>
-						<tr>	
-							<td>거래처주소:</td>	
-							<td><input type="text" name="busAddr"id="busAddr" readonly /></td>
-						</tr>	
-						</table>
+							<table id="busTable">
+								<tr>
+									<td>거래처코드:</td>
+									<td><input type="text" name="busId" id="busId" readonly /></td>
+									<td>거래처명:</td>
+									<td><input type="text" name="busName" id="busName"
+										readonly /></td>
+								</tr>
+								<tr>
+									<td>사업자번호:</td>
+									<td><input type="text" name="busNum" id="busNum" readonly /></td>
+									<td>거래처전화번호:</td>
+									<td><input type="text" name="busTell" id="busTell"
+										readonly /></td>
+								</tr>
+								<tr>
+									<td>거래처주소:</td>
+									<td><input type="text" name="busAddr" id="busAddr"
+										readonly /></td>
+								</tr>
+							</table>
 						</div>
 						<div class="modal-body">
 							<div id="completeShipGrid"></div>

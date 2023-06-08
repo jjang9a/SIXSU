@@ -88,10 +88,11 @@ order by r.cp_rec_date-->
     Left OUTER JOIN BUSINESS b
     on s.bus_id = b.bus_id
 	where p.cp_ship_stat = 'CP_SHIP_CHECK'
+	or p.cp_ship_stat = 'CP_SHIP_COMP'
 	<if test="keyword != null and keyword !=''">
 	and d.ord_det_id = #{keyword}
 	</if>
-	order by p.ord_det_id desc
+	order by p.cp_ship_stat , p.ord_det_id desc , p.cp_ship_id desc
 	</select>
 	
 	<select id="completeShip" statementType="CALLABLE">
