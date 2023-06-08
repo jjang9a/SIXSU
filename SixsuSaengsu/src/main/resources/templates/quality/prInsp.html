@@ -33,11 +33,11 @@
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-5">
 
 					<!-- 발주 번호 검색 버튼 -->
 					<label style="font-family: 'MaruBuri';">공정 실적 코드 조회</label>
-					<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#detWorkModal">
+					<button id="modalBtn" class="sixBtn1" data-bs-toggle="modal" data-bs-target="#detWorkModal">
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
 							class="bi bi-search" viewBox="0 2 16 16">
 							<path
@@ -108,7 +108,7 @@
 
 
 				<!-- 검사 결과 등록 폼 -->
-				<div class="col-lg-6" id="formDiv">
+				<div class="col-lg-7" id="formDiv">
 					<form action="" method="post" id="prInspForm">
 						<!-- display: none;  -->
 
@@ -228,13 +228,13 @@
 
 
 				// 지시 세부 코드 조회 클릭 시 모달창 오픈
-				$('#detWorkModal').on('shown.bs.modal', function (e) {
+				$('#modalBtn').on('click', function (e) {
 					$.ajax({
 						url: "/quality/bpAddList",
 						method: "GET",
 						success: function (result) {
 							dwGrid.resetData(result);
-							setTimeout(() => dwGrid.refreshLayout(), 50);
+							setTimeout(() => dwGrid.refreshLayout(), 100);
 						},
 						error: function (reject) {
 							console.log(reject);
@@ -747,43 +747,52 @@
 						header: '제품코드',
 						name: 'pdId',
 						hidden: true
+					},{
+						header: '검사세부번호',
+						name: 'detInspNum',
+						hidden: true
 					},
 					{
 						header: '검사 항목 코드',
-						//width: 120,
+						width: 130,
 						name: 'inspId',
 						align: 'center'
 
 					},
 					{
 						header: '항목명',
+						width: 130,
 						name: 'inspName',
 						align: 'center'
 					},
 					{
 						header: '설명',
+						width: 350,
 						name: 'inspExp',
 						align: 'center'
 					},
 					{
 						header: '기준값',
+						width: 110,
 						name: 'stdVal',
-						align: 'center',
-						hidden: true
+						align: 'center'
 					}, {
 						header: '결과값',
+						width: 110,
 						name: 'resVal',
 						editor: 'text',
 						align: 'center'
 					},
 					 {
 						header: '부적합 수량',
+						width: 110,
 						name: 'nsuitQt',
 						editor: 'text',
 						align: 'center'
 					}, 
 					{
 						header: '적합여부',
+						width: 110,
 						name: 'resStat',
 						align: 'center',
 						formatter: 'listItemText',

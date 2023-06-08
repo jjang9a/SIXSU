@@ -29,6 +29,7 @@ public class QuaVO {
 	private String resStat; // 적합 여부
 	private String inspStdId; // 검사 단위 코드(발주번호, 지시세부코드, 완제품출고코드)
 	private String wkDetaId;// 지시 세부 코드
+	private String quaComNote; // 검사 공통 비고
 	
 	// 품질 검사 항목
 	private String inspSep; // 검사 구분

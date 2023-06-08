@@ -89,7 +89,7 @@
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-5">
 
 					<!-- 토스트 그리드 코드 -->
 					<!-- 발주 번호 검색 버튼 -->
@@ -173,7 +173,7 @@
 
 
 				<!-- 자재 검사 결과 등록 폼 -->
-				<div class="col-lg-6" id="formDiv">
+				<div class="col-lg-7" id="formDiv">
 					<form action="" method="post" id="prInspForm">
 						<!-- display: none;  -->
 
@@ -232,7 +232,7 @@
 						
 						<div class="col">
 							<label for="inspQt" class="form-label">비고 </label> <input type="text"
-									class="form-control empty" id="inspNote" name="inspNote">
+									class="form-control empty" id="quaComNote" name="quaComNote">
 						</div>
 
 					</form>
@@ -270,14 +270,14 @@
 		<script th:inline="javascript">
 		let inspResStat = [[${inspResStat}]];
 		
-			$('#regModal').on('shown.bs.modal', function (e) {
+			$('#regModal').on('show.bs.modal', function (e) {
 				$.ajax({
 					url: "/quality/proRecList",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
 						grid2.resetData(result);
-						setTimeout(() => grid2.refreshLayout(), 10);
+						setTimeout(() => grid2.refreshLayout(), 100);
 					},
 					error: function (reject) {
 						console.log(reject);
@@ -466,39 +466,45 @@
 				},
 				{
 					header: '검사 항목 코드',
-					//width: 120,
+					width: 130,
 					name: 'inspId',
 					align: 'center'
 
 				},
 				{
 					header: '항목명',
+					width: 130,
 					name: 'inspName',
 					align: 'center'
 				},
 				{
 					header: '설명',
+					width: 350,
 					name: 'inspExp',
 					align: 'center'
 				},
 				{
 					header: '기준값',
+					width: 110,
 					name: 'stdVal',
 					align: 'center'
 				}, {
 					header: '결과값',
+					width: 110,
 					name: 'resVal',
 					editor: 'text',
 					align: 'center'
 				},
 				{
 					header: '부적합 수량',
+					width: 110,
 					name: 'nsuitQt',
 					editor: 'text',
 					align: 'center'
 				},
 				{
 					header: '적합여부',
+					width: 110,
 					name: 'resStat',
 					align: 'center',
 					formatter: 'listItemText',
@@ -722,11 +728,25 @@
 				}, {
 					header: '검사수량',
 					name: 'inspQt',
-					align: 'center'
+					align: 'center',
+					formatter: ({ value }) => {
+							if(value != null){
+								return value.toLocaleString();
+							}else{
+								return 0;
+							}
+						}
 				}, {
 					header: '부적합 수량',
 					name: 'nsuitQt',
-					align: 'center'
+					align: 'center',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '검사자',
 					name: 'empName',
@@ -736,6 +756,13 @@
 					sortable: true,
 					name: 'inspDate',
 					align: 'center'
+				}, {
+					header: '비고',
+					sortable: true,
+					name: 'quaComNote',
+					align: 'center',
+					hidden: true
+					
 				}]
 			});
 
@@ -754,6 +781,7 @@
 				aselStdId = aDataRow.inspStdId;
 				aselBusName = aDataRow.busName;
 				aselNsuitQt = aDataRow.nsuitQt;
+				aselQuaComNote = aDataRow.quaComNote;
 
 			});
 
