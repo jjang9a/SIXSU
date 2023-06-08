@@ -52,7 +52,11 @@ public class EquServiceImpl implements EquService{
 
 	@Override
 	public boolean equDel(EquConVO equCode) { // 설비관리(삭제)
-		return mapper.equDel(equCode) == 1;
+		// 점검에서 설비(삭제)
+		mapper.equoperDel(equCode);
+		// 비가동에서 설비(삭제)
+		mapper.equcheckDel(equCode);
+		return mapper.equDel(equCode)== 1;
 	}
 
 	@Override
@@ -111,12 +115,15 @@ public class EquServiceImpl implements EquService{
 
 	@Override
 	@Transactional // 
-	public boolean fnishIn(EquOperVO data) { // 비가동 관리 비가동 종료버튼(가동 등록)
+	public List<EquOperVO> fnishIn(EquOperVO data) { // 비가동 관리 비가동 종료버튼(가동 등록)
 		int count = 0;
 		count += mapper.fnishIn(data);
 		count += mapper.fnishUp(data);
-		return count > 0; 
+		List<EquOperVO> list = mapper.equOperList(); 
+		return list;
 	}
+
+	
 	
 
 	

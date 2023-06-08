@@ -158,15 +158,24 @@
 				}, {
 					header : '계획수량',
 					name : 'detaQt',
-					align : 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+					 return value.toLocaleString()
+					   }
 				}, {
 					header : '완료수량',
 					name : 'goodQt',
-					align : 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+					 return value.toLocaleString()
+					   }
 				}, {
 					header : '불량수량',
 					name : 'dmatQt',
-					align : 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+					 return value.toLocaleString()
+					   }
 				}, {
 					header : '상태',
 					name : 'cmpltSt',
