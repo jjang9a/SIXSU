@@ -99,7 +99,7 @@ public class ProductController {
 	
 	
 	// 공정 실적 조회
-	@GetMapping("/product/performanceInfo") // 공정실적 페이지 띄우기
+	@GetMapping("/work/performanceInfo") // 공정실적 페이지 띄우기
 	public void performanceInfo(Model model) {
 		String key = "proc_type";
 		model.addAttribute("types", basicService.getComList(key));

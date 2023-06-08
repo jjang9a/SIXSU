@@ -20,12 +20,23 @@
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 <style>
+	.text_container {
+		float: right;
+	}
+	
+	.filter_text {
+		font-size: 12px;
+		color: blue;
+	}
 </style>
 </head>
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">생산계획</h1>
 		<div class="workContainer">
+		<div class="text_container">
+			<p class="filter_text">검색기준 : 날짜</p>
+		</div>
 
 		<button class="workFilterBtn sixBtn4">검색</button>
 			<div id="grid"></div>
@@ -72,7 +83,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div class="row filter">
 								<div class="col" style="text-align: right;">
 									지시상태 <label><input type="checkbox" name="상태" value='완료'>완료</label>
 									<label><input type="checkbox" name="상태" value='진행중'>진행중</label>
@@ -83,7 +94,7 @@
 									작성자 <input type="text" name="작성자">
 								</div>
 							</div>
-							<div class="row">
+							<div class="row filter">
 								<div class="col" style="text-align: right;">
 									작업지시 <label><input type="checkbox" name="지시여부" value='생성'>생성</label>
 									<label><input type="checkbox" name="지시여부" value='미생성'>미생성</label>
@@ -124,12 +135,14 @@
         $('.filter input[name="지시여부"]:checked').each(function() {
           var checkboxValue = $(this).val();
           planCheckbox.push(checkboxValue);
+          console.log(checkboxValue)
         });
         
 		var statusCheckbox = [];
         $('.filter input[name="상태"]:checked').each(function() {
           var checkboxValue = $(this).val();
           statusCheckbox.push(checkboxValue);
+          console.log(checkboxValue)
         });
 			
 		var searchData = {};
@@ -137,9 +150,27 @@
 		searchData.productName = $('input[name="제품명"]').val();
         searchData.planNo = $('input[name="계획"]').val();
         searchData.writer = $('input[name="작성자"]').val();
+        searchData.makeFrom = $('input[name="makeFrom"]').val();
+        searchData.makeTo = $('input[name="makeTo"]').val();
+        searchData.planFrom = $('input[name="planFrom"]').val();
+        searchData.planTo = $('input[name="planTo"]').val();
         searchData.planCheckbox = planCheckbox;
         searchData.statusCheckbox = statusCheckbox;
         console.log(searchData);
+        
+        if(searchData.makeFrom != '' || searchData.makeTo != ''){
+	        if(searchData.makeFrom > searchData.makeTo || searchData.makeFrom == ''){
+	        	alert('생성일자 범위를 수정해주세요')
+	        	return;
+	        }
+        }
+        
+        if(searchData.planFrom != '' || searchData.planTo != ''){
+	        if(searchData.planFrom > searchData.planTo || searchData.planFrom == ''){
+	        	alert('착수일 범위를 수정해주세요')
+	        	return;
+	        }
+        }
         
 		$.ajax({
 			url : "/ajax/planFilterAjax",
@@ -150,7 +181,44 @@
 				그리드출력(result)
 			}
 		})
+		let readyToText = '';
+		if(searchData.productName != ''){
+			readyToText += ' | 제품명: ' + searchData.productName;
+		}
+		if(searchData.planNo != ''){
+			readyToText += ' | 지시번호: ' + searchData.planNo;
+		}
+		if(searchData.writer != ''){
+			readyToText += ' | 작성자: ' + searchData.writer;
+		}
+		if(searchData.makeFrom != ''){
+			readyToText += ' | 생성일자: ' + searchData.makeFrom + '~'+ searchData.makeTo;
+		}
+		if(searchData.planFrom != ''){
+			readyToText += ' | 착수일: ' + searchData.planFrom + '~'+ searchData.planTo;
+		}
+		if(statusCheckbox.length > 0){
+			readyToText += ' | 지시상태 : ';
+	        for(let i in statusCheckbox){
+	        	readyToText += statusCheckbox[i]
+	        	if(statusCheckbox.length-1 != i){
+	        		readyToText += ', ';
+	        	}
+	        }
+        }
+		if(planCheckbox.length > 0){
+			readyToText += ' | 지시상태 : ';
+	        for(let i in planCheckbox){
+	        	readyToText += planCheckbox[i]
+	        	if(planCheckbox.length-1 != i){
+	        		readyToText += ', ';
+	        	}
+	        }
+        }
+		$('.filter_text').text(readyToText)
+		
 		$('#workFilter_modal').modal('hide');
+		
 	})
 	
 	
@@ -184,12 +252,12 @@
           {
             header: '계획수량',
             name: 'detaQt',
-			align : 'center'
+			align : 'right'
           },
           {
             header: '완료수량',
             name: 'goodQt',
-			align : 'center'
+			align : 'right'
           },
           {
             header: '납기일',
@@ -276,11 +344,11 @@
 				$('input[name="작성자"]').val('');
 				$('input[name="makeFrom"]').val('');
 				$('input[name="makeTo"]').val('');
-				$('input[name="workFrom"]').val('');
-				$('input[name="workTo"]').val('');
-
+				$('input[name="planFrom"]').val('');
+				$('input[name="planTo"]').val('');
+				
 				$('input[name="상태"]:checked').prop('checked', false);
-
+				$('input[name="지시여부"]:checked').prop('checked', false);
 			})		
 	
 	function 그리드출력(result){

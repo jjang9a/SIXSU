@@ -34,30 +34,7 @@
 		<div id="gridm"></div>
 
 		<script>
-<<<<<<< HEAD
-			function spList(spName) {
-				$.ajax({
-					url: "/materials/semiprodlist",
-					method: "GET",
-					data: {
-						spName: spName
-					},
-					success: function (result) {
-						gridm.resetData(result);
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-				});
-			}
 
-
-			let spName = null;
-			spList(spName);
-
-
-			const gridData = [
-=======
 		
 		function spList(spName){
 			$.ajax({
@@ -89,7 +66,6 @@
 		
 		
 		const gridData = [
->>>>>>> branch 'main' of https://github.com/jjang9a/SIXSU.git
 
 			];
 			window.onload = function () {
