@@ -37,7 +37,7 @@
 		where upper (bus_name) like '%'|| upper(#{keyword}) || '%'
 		</if> 
 		and bus_type= 'SELL'
-		and and bus_stat = 'Y'
+	    and bus_stat = 'Y'
 		
 	</select>
 	<!-- 대소문자 구별 및 값이 비슷한 경우도 나오게 하는기능 -->
@@ -52,7 +52,7 @@
 	<!-- 일반페이지 상세 주문 등록 페이지 -->
 	<select id="ordList"
 	resultType='ordVO'>
-	select d.ORD_DET_ID, d.ORD_QT, d.ORD_STAT_DET, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, TO_CHAR(d.ORD_END_DATE, 'yyyy-MM-dd') as ORD_det, c.CP_SIZE
+	select d.ORD_DET_ID, d.ORD_QT, d.ORD_STAT_DET, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, TO_CHAR(d.ORD_END_DATE, 'yyyy-MM-dd') as ORD_det, get_com_name(c.CP_SIZE) CP_SIZE
 	from SORDER s , DET_ORD d, COMPLETE_PROD c
 	where s.ORD_ID = d.ORD_ID
 	and c.CP_ID = d.CP_ID
@@ -61,7 +61,8 @@
 	<!-- 모달창 주문목록 페이지 -->
 	<select id="prodList"
 		resultType='ProductVO'>
-		select* from complete_prod
+		select cp_id, cp_name, get_com_name(CP_SIZE) CP_SIZE
+		 from complete_prod
 	</select>
 	
 	<!-- 주문등록 (주문서만) -->
@@ -103,7 +104,7 @@
 
 	<!-- 진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 -->
 	<select id="firstOrderingList" resultType='InvVO'>
-	select s.ord_id, s.ord_date, e.emp_name, e.emp_id, b.bus_num,b.bus_id,b.bus_name,b.bus_addr,b.bus_tell
+	select s.ord_id, TO_CHAR(s.ord_date, 'yyyy-MM-dd') as ord_date, e.emp_name, e.emp_id, b.bus_num,b.bus_id,b.bus_name,b.bus_addr,b.bus_tell
 	from SORDER s, BUSINESS b, EMPLOYEE e
 	where s.BUS_ID = b.BUS_ID
 	and s.emp_ID = e.emp_ID
@@ -112,7 +113,7 @@
 
 	<!--  진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 상세 주문서가 화면에 나오도록 -->
 	<select id="secondOrderingList" resultType='OrdVO'>
-	select d.ORD_DET_ID, d.ORD_QT, get_com_name(d.ORD_STAT_DET) ord_stat_det_name, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, TO_CHAR(d.ORD_END_DATE, 'yyyy-MM-dd') as ord_end_date, c.CP_SIZE
+	select d.ORD_DET_ID, d.ORD_QT, get_com_name(d.ORD_STAT_DET) ord_stat_det_name, d.CP_ID, c.CP_NAME ,S.ORD_ID, d.ORD_DET_PRICE, d.ORD_SALE_PRICE, TO_CHAR(d.ORD_END_DATE, 'yyyy-MM-dd') as ord_end_date, get_com_name(c.CP_SIZE) CP_SIZE 
 	from SORDER s , DET_ORD d, COMPLETE_PROD c
 	where s.ORD_ID = d.ORD_ID
 	and c.CP_ID = d.CP_ID

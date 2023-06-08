@@ -160,22 +160,34 @@
 					name : 'detaQt',
 					align : 'right',
 					formatter: ({ value }) => {
-					 return value.toLocaleString()
-					   }
+	                     if(value != null){
+	                   return value.toLocaleString()
+	                   }else{
+	                    return ''
+	                   } 
+	                  }
 				}, {
 					header : '완료수량',
 					name : 'goodQt',
 					align : 'right',
 					formatter: ({ value }) => {
-					 return value.toLocaleString()
-					   }
+	                     if(value != null){
+	                   return value.toLocaleString()
+	                   }else{
+	                    return ''
+	                   } 
+	                  }
 				}, {
 					header : '불량수량',
 					name : 'dmatQt',
 					align : 'right',
 					formatter: ({ value }) => {
-					 return value.toLocaleString()
-					   }
+	                     if(value != null){
+	                   return value.toLocaleString()
+	                   }else{
+	                    return ''
+	                   } 
+	                  }
 				}, {
 					header : '상태',
 					name : 'cmpltSt',
@@ -206,7 +218,7 @@
 			        frozenBorderWidth: 2
 			     }
 			});
-
+			grid1.setBodyHeight(720);
 			window.onload = function() {
 
 				$.ajax({
@@ -452,9 +464,9 @@
 			});
 			
 			function 그리드출력(result){
-				while((result.length)%18 != 0){
+				/* while((result.length)%17 != 0){
 					result.push([])
-				}
+				} */
 				grid1.resetData(result);
 			}
 		</script>

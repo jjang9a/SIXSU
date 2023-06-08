@@ -345,12 +345,26 @@
  	        header: '지시수량',
  	        name: 'detaQt',
  	        editor: 'text',
- 	        align : 'right'
+ 	        align : 'right',
+ 	       formatter: ({ value }) => {
+               if(value != null){
+             return value.toLocaleString()
+             }else{
+              return ''
+             } 
+            }
  	      },
  	      {
  	        header: '양품수량',
  	        name: 'goodQt',
- 	        align : 'right'
+ 	        align : 'right',
+ 	       formatter: ({ value }) => {
+               if(value != null){
+             return value.toLocaleString()
+             }else{
+              return ''
+             } 
+            }
  	      },
  	      {
  	        header: '생산일',

@@ -187,24 +187,36 @@
 	        name: 'detaQt',
 			align : 'right',
 			formatter: ({ value }) => {
-			 return value.toLocaleString()
-			   }
+                if(value != null){
+              return value.toLocaleString()
+              }else{
+               return ''
+              } 
+             }
 	      },
 	      {
 	        header: '완료수량',
 	        name: 'goodQt',
 			align : 'right',
 			formatter: ({ value }) => {
-			 return value.toLocaleString()
-			   }
+                if(value != null){
+              return value.toLocaleString()
+              }else{
+               return ''
+              } 
+             }
 	      },
 	      {
 	        header: '불량수량',
 	        name: 'dmatQt',
 			align : 'right',
 			formatter: ({ value }) => {
-			 return value.toLocaleString()
-			   }
+                if(value != null){
+              return value.toLocaleString()
+              }else{
+               return ''
+              } 
+             }
 	      },
 	      {
 	          header: '상태',

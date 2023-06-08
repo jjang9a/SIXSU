@@ -7,37 +7,40 @@
 	<title>입고조회</title>
 	<style>
 h1 {
-			margin-bottom: 40px;
-		}
+margin-bottom: 40px;
+}
 
-		#cpTable {
-			margin: auto;
-		}
+#cpTable {
+margin: auto;
+}
 
-		#cpTable input,
-		select {
-			padding-left: 10px;
-			width: 230px;
-		}
+#cpTable input,
+select {
+padding-left: 10px;
+width: 230px;
+}
 
-		#divRadio input {
-			padding-left: 7px;
-			width: 20px;
-		}
+#divRadio input {
+padding-left: 7px;
+width: 20px;
+}
 
-		#cpTable td {
-			padding: 4px 20px;
-			
-		}
+#cpTable td {
+padding: 4px 20px;
+	
+}
 	
 		
-		.divBtn {
-			text-align: center;
-			padding: 15px 0 30px 0;
-		}
+.divBtn {
+text-align: center;
+padding: 15px 0 30px 0;
+}
 .modal-body {
-			background: #e5edf5;
-		}
+background: #e5edf5;
+}
+#gridp, #radio, #startDate, #endDate {
+cursor: pointer;
+}
 </style>
 </head>
 
@@ -65,9 +68,9 @@ h1 {
 						<td> <input type="text" name="cpId" id="cpId"></td>
 						
 						<td>진행구분</td>
-						<td><input type="radio" name="cpRecTp" value="all" checked="checked" style="width : 35px;" /> 전체
-							<input type="radio" name="cpRecTp" value="CPF" style="width : 35px;" /> 입고
-							<input type="radio" name="cpRecTp" value="CPR" style="width : 35px;" /> 재입고</td>
+						<td><input type="radio" name="cpRecTp" value="all" checked="checked" style="width : 35px;" id ="radio" /> 전체
+							<input type="radio" name="cpRecTp" value="CPF" style="width : 35px;" id ="radio"/> 입고
+							<input type="radio" name="cpRecTp" value="CPR" style="width : 35px;" id ="radio"> 재입고</td>
 					</tr>
 				</table>
 			
@@ -144,7 +147,10 @@ h1 {
 				}, {
 					header: '입고수량',
 					name: 'cpRecQt',
-					align:'center'
+					align : 'right',
+					formatter: ({ value }) => {
+					 return value.toLocaleString()
+					   }
 
 				}, {
 					header: '입고유형',
