@@ -437,6 +437,7 @@
 		<!-- 조건 -->
 		<include refid="criteria3"></include>		 
 		order by s.mat_ship_date desc
+		
 	</select>
 	
 	<!-- 자재 재고조정 페이지 -->
