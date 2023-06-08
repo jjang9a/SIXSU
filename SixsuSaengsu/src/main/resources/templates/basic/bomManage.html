@@ -7,12 +7,12 @@
 	<title>BOM</title>
 	<style>
 		h1 {
-			margin-bottom: 35px;
+			margin-bottom: 25px;
 		}
 
-		h2 {
+		h3 {
 			float: left;
-			padding: 10px 20px 10px 20px;
+			padding: 25px 20px 10px 20px;
 		}
 
 		.divBtn {
@@ -70,6 +70,14 @@
 		.sel3 {
 			background-color: white;
 		}
+
+		[data-column-name='bomMat'],
+		[data-column-name='procName'],
+		#pdGrid,
+		#procGrid,
+		#matGrid {
+			cursor: pointer;
+		}
 	</style>
 </head>
 
@@ -101,12 +109,14 @@
 		</table>
 		<!-- 상품 선택 완료 -->
 		<!-- 소요량 그리드 -->
-		<h2 class="mt-4" style="font-family: 'MaruBuri';">제품 소요량 관리</h2>
+		<h3 class="mt-4" style="font-family: 'MaruBuri';">제품 소요량</h3>
 		<div class="divBtn" style="padding: 60px 10px 10px 10px;">
 			<button type="button" class="sixBtn3" id="initBtn">초기화</button>
-			<button type="button" class="sixBtn2" id="addBtn">추가</button>
-			<button type="button" class="sixBtn2" id="delBtn">삭제</button>
-			<button type="button" class="sixBtn2" id="saveBtn">저장</button>
+			<span sec:authorize="hasRole('ROLE_A')">
+				<button type="button" class="sixBtn2" id="addBtn">추가</button>
+				<button type="button" class="sixBtn2" id="delBtn">삭제</button>
+				<button type="button" class="sixBtn2" id="saveBtn">저장</button>
+			</span>
 		</div>
 		<div id="grid"></div>
 		<div class="divBtn">
@@ -191,8 +201,9 @@
 				el: document.getElementById('grid'),
 				scrollX: false,
 				scrollY: true,
+				rowHeight: 45,
 				rowHeaders: ['checkbox'],
-				minBodyHeight: 480,
+				minBodyHeight: 495,
 				columns: [{
 					header: 'BOM코드',
 					name: 'bomId',
@@ -240,7 +251,7 @@
 
 
 			// 그리드 높이 & 색 변경 테마 적용
-			grid.setBodyHeight(480);
+			grid.setBodyHeight(495);
 			tui.Grid.applyTheme('default', {
 				cell: {
 					header: {
@@ -248,6 +259,11 @@
 					},
 					normal: {
 						background: '#ffffff'
+					}
+				},
+				row: {
+					hover: {
+						background: '#fefafa'
 					}
 				}
 			});
@@ -276,7 +292,6 @@
 					align: 'center'
 				}]
 			});
-
 
 			$('#pdBtn').on('click', function (e) {
 				$.ajax({
@@ -364,14 +379,17 @@
 				if (selPd == '') {
 					alert('제품을 먼저 선택하세요!');
 				} else {
+					let icon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search icon" viewBox="0 0 16 16" style="color:#a6a6a6">
+						<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+						</svg>`
 					const newData = { // 빈 데이터 열 생성
 						pdId: selPd,
 						pdType: '',
-						bomMat: '',
+						bomMat: icon,
 						matName: '',
 						bomNum: '',
 						bomUnit: '',
-						procName: '',
+						procName: icon,
 						procId: '',
 						updateDate: ''
 					};

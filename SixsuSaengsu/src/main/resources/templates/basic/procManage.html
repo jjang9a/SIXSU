@@ -7,7 +7,7 @@
 	<title>공정 관리</title>
 	<style>
 		h1 {
-			margin-bottom: 25px;
+			margin-bottom: 20px;
 		}
 
 		#manageTbl {
@@ -79,9 +79,11 @@
 		</form>
 		<div class="divBtn">
 			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
-			<button type="button" class="sixBtn2" id="addBtn">등록</button>
-			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
-			<button type="button" class="sixBtn2" id="initBtn">초기화</button>
+			<span sec:authorize="hasRole('ROLE_A')">
+				<button type="button" class="sixBtn2" id="addBtn">등록</button>
+				<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+				<button type="button" class="sixBtn2" id="initBtn">초기화</button>
+			</span>
 		</div>
 		<!-- 상단 폼 끝 -->
 
@@ -108,7 +110,8 @@
 				el: document.getElementById('grid'),
 				scrollX: false,
 				scrollY: false,
-				minBodyHeight: 400,
+				rowHeight: 45,
+				minBodyHeight: 450,
 				pageOptions: {
 					useClient: true,
 					perPage: 10

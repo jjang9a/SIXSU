@@ -3,6 +3,7 @@ package co.sixsu.app.basic.mapper;
 import java.util.List;
 
 import co.sixsu.app.basic.domain.ReceiveVO;
+import co.sixsu.app.basic.domain.SalesVO;
 import co.sixsu.app.quality.domain.QilVO;
 import co.sixsu.app.work.domain.PfmcVO;
 
@@ -39,5 +40,10 @@ public interface ProductMapper {
 	public List<QilVO> getInspList(); // 검사항목 리스트
 	public int addInsp(QilVO vo); // 검사항목 추가
 	public int updateInsp(QilVO vo); // 검사항목 수정
+	
+	// 판매실적 조회
+	public List<SalesVO> getSalesInfo(SalesVO vo); // 상품별 판매 금액 실적 조회
+	public List<SalesVO> getSalesCount(SalesVO vo); // 상품별 판매 개수 실적 조회
+	public List<SalesVO> getMonthlySales(SalesVO vo); // 월별 매출액 추이
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.sixsu.app.basic.domain.ReceiveVO;
+import co.sixsu.app.basic.domain.SalesVO;
 import co.sixsu.app.basic.mapper.ProductMapper;
 import co.sixsu.app.basic.service.ProductService;
 import co.sixsu.app.quality.domain.QilVO;
@@ -274,6 +275,44 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public List<ReceiveVO> spRecSearch(ReceiveVO vo) {
 		return mapper.spRecSearch(vo);
+	}
+	
+	// 판매실적 조회
+
+	@Override
+	public String getSalesInfo(SalesVO vo) {
+		List<SalesVO> list = mapper.getSalesInfo(vo);
+		String json = "[";
+		for(SalesVO map : list) {
+			json += "{\""+map.getCpName()+"\":"+map.getSales()+"},";
+		}
+		json = json.substring(0, json.length()-1);
+		json += "]";
+		return json;
+	}
+
+	@Override
+	public String getSalesCount(SalesVO vo) {
+		List<SalesVO> list = mapper.getSalesCount(vo);
+		String json = "[";
+		for(SalesVO map : list) {
+			json += "{\""+map.getCpName()+"\":"+map.getSales()+"},";
+		}
+		json = json.substring(0, json.length()-1);
+		json += "]";
+		return json;
+	}
+
+	@Override
+	public String getMonthlySales(SalesVO vo) {
+		List<SalesVO> list = mapper.getMonthlySales(vo);
+		String json = "[";
+		for(SalesVO map : list) {
+			json += "{\""+map.getDate1()+"\":"+map.getSales()+"},";
+		}
+		json = json.substring(0, json.length()-1);
+		json += "]";
+		return json;
 	}
 
 	
