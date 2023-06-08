@@ -22,6 +22,7 @@ public class OrdVO {
 	
 	private String empId;
 	private int totalProd;
-	
+	private String startDate;
+	private String endDate;
 	
 }

@@ -43,6 +43,7 @@
         left outer join COMPLETE_PROD c
         on c.cp_id = p.cp_id
   		<include refid="criteria"></include>
+  		order by r.cp_rec_id desc
   </select>
   
  </mapper>
