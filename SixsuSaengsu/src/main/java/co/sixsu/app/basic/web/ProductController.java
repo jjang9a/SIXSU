@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.sixsu.app.basic.domain.ReceiveVO;
+import co.sixsu.app.basic.domain.SalesVO;
 import co.sixsu.app.basic.service.BasicService;
 import co.sixsu.app.basic.service.ProductService;
 import co.sixsu.app.quality.domain.QilVO;
@@ -141,6 +142,29 @@ public class ProductController {
 	public QilVO upodateInsp(QilVO vo) { // 품질검사 항목 수정
 		service.updateInsp(vo);
 		return vo;
+	}
+	
+	// 판매실적 조회
+	@GetMapping("/sales/salesInfo")
+	public void sales() {
+	}
+	
+	@ResponseBody
+	@GetMapping("/sales/getSalePrice")
+	public String getSalePrice(SalesVO vo){
+		return service.getSalesInfo(vo);
+	}
+	
+	@ResponseBody
+	@GetMapping("/sales/getSaleCount")
+	public String getSaleCount(SalesVO vo){
+		return service.getSalesCount(vo);
+	}
+	
+	@ResponseBody
+	@GetMapping("/sales/getMonthlySales")
+	public String getMonthlySales(SalesVO vo){
+		return service.getMonthlySales(vo);
 	}
 	
 }

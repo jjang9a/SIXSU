@@ -12,7 +12,7 @@
 			margin-bottom: 10px;
 		}
 
-		h3 {
+		h4 {
 			padding: 5px 20px 0px 20px;
 		}
 
@@ -26,213 +26,214 @@
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">완제품입고관리</h1>
 
-		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 대기 목록</h3>
-		<div id="readyGrid"></div>
-		<button type="button" class="sixBtn2" id="recBtn">입고</button>
+		<h4 class="mt-4" style="font-family: 'MaruBuri';">입고 대기 목록</h3>
+			<div id="readyGrid"></div>
+			<button type="button" class="sixBtn2" id="recBtn">입고</button>
 
-		<h3 class="mt-4" style="font-family: 'MaruBuri';">입고 목록</h3>
-		<div id="grid"></div>
+			<h4 class="mt-4" style="font-family: 'MaruBuri';">입고 목록</h3>
+				<div id="grid"></div>
 
-		<script>
-			window.onload = function () {
-				$.ajax({
-					url: "/prod/readyCpList",
-					method: "GET",
-					success: function (result) {
-						readyGrid.resetData(result);
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-				});
-
-				$.ajax({
-					url: "/prod/cpRecList",
-					method: "GET",
-					success: function (result) {
-						grid.resetData(result);
-					},
-					error: function (reject) {
-						console.log(reject)
-					}
-				})
-			};
-
-			//입고대기 리스트
-			const readyGrid = new tui.Grid({
-				el: document.getElementById('readyGrid'),
-				scrollX: false,
-				scrollY: true,
-				rowHeaders: ['checkbox'],
-				columns: [{
-						header: '공정실적코드',
-						name: 'prcsPfmcId',
-						align: 'center'
-					},
-					{
-						header: '완제품코드',
-						name: 'cpId',
-						filter: 'select',
-						align: 'center'
-					},
-					{
-						header: '완제품명',
-						name: 'cpName',
-						align: 'center'
-					},
-					{
-						header: '완제품규격',
-						name: 'spSize',
-						align: 'center'
-					},
-					{
-						header: '양품수량',
-						name: 'goodQt',
-						align: 'right',
-						formatter: ({
-							value
-						}) => {
-							return value.toLocaleString()
-						}
-					},
-					{
-						header: '생산종료일',
-						name: 'wkEnd',
-						align: 'center'
-					},
-					{
-						header: 'LOT단위',
-						name: 'cpLot',
-						hidden: true
-					}
-				],
-				summary: {
-					height: 30,
-					position: 'bottom', // or 'top'
-					columnContent: {
-						prcsPfmcId: {
-							template: function (valueMap) {
-								return `COUNT : ${valueMap.cnt}`;
+				<script>
+					window.onload = function () {
+						$.ajax({
+							url: "/prod/readyCpList",
+							method: "GET",
+							success: function (result) {
+								readyGrid.resetData(result);
+							},
+							error: function (reject) {
+								console.log(reject);
 							}
+						});
+
+						$.ajax({
+							url: "/prod/cpRecList",
+							method: "GET",
+							success: function (result) {
+								grid.resetData(result);
+							},
+							error: function (reject) {
+								console.log(reject)
+							}
+						})
+					};
+
+					//입고대기 리스트
+					const readyGrid = new tui.Grid({
+						el: document.getElementById('readyGrid'),
+						scrollX: false,
+						scrollY: true,
+						rowHeaders: ['checkbox'],
+						columns: [{
+								header: '공정실적코드',
+								name: 'prcsPfmcId',
+								align: 'center'
+							},
+							{
+								header: '완제품코드',
+								name: 'cpId',
+								filter: 'select',
+								align: 'center'
+							},
+							{
+								header: '완제품명',
+								name: 'cpName',
+								align: 'center'
+							},
+							{
+								header: '완제품규격',
+								name: 'spSize',
+								align: 'center'
+							},
+							{
+								header: '양품수량',
+								name: 'goodQt',
+								align: 'right',
+								formatter: ({
+									value
+								}) => {
+									return value.toLocaleString()
+								}
+							},
+							{
+								header: '생산종료일',
+								name: 'wkEnd',
+								align: 'center'
+							},
+							{
+								header: 'LOT단위',
+								name: 'cpLot',
+								hidden: true
+							}
+						],
+						summary: {
+							height: 30,
+							position: 'bottom', // or 'top'
+							columnContent: {
+								prcsPfmcId: {
+									template: function (valueMap) {
+										return `COUNT : ${valueMap.cnt}`;
+									}
+								},
+								goodQt: {
+									template: function (valueMap) {
+										return `TOTAL : ${valueMap.sum}`;
+									}
+								}
+							}
+						}
+					});
+
+					readyGrid.setBodyHeight(200)
+
+					// 입고 목록
+					const grid = new tui.Grid({
+						el: document.getElementById('grid'),
+						scrollX: false,
+						scrollY: false,
+						rowHeight: 45,
+						pageOptions: {
+							useClient: true,
+							perPage: 8
 						},
-						goodQt: {
-							template: function (valueMap) {
-								return `TOTAL : ${valueMap.sum}`;
+
+						rowHeaders: ['rowNum'],
+						columns: [{
+							header: '입고번호',
+							name: 'cpRecId',
+							align: 'center'
+						}, {
+							header: '완제품코드',
+							name: 'cpId',
+							filter: 'select',
+							align: 'center'
+						}, {
+							header: '제품명',
+							name: 'cpName',
+							align: 'center'
+						}, {
+							header: '입고량',
+							name: 'cpRecQt',
+							align: 'center',
+							align: 'right',
+							formatter: ({
+								value
+							}) => {
+								return value.toLocaleString()
+							}
+						}, {
+							header: '입고유형',
+							name: 'cpRecTp',
+							filter: 'select',
+							align: 'center'
+						}, {
+							header: 'LOT번호',
+							name: 'cpLotId',
+							align: 'center'
+						}, {
+							header: '입고일자',
+							name: 'cpRecDate',
+							align: 'center'
+						}, {
+							header: '담당자',
+							name: 'empName',
+							align: 'center'
+						}, {
+							header: '공정실적코드',
+							name: 'prcsPfmcId',
+							align: 'center'
+						}]
+					});
+
+					tui.Grid.applyTheme('default', {
+						cell: {
+							header: {
+								background: '#e5edf5'
+							},
+							rowHeader: {
+								background: '#e5edf5'
+							},
+							normal: {
+								background: '#ffffff'
 							}
 						}
-					}
-				}
-			});
+					});
 
-			readyGrid.setBodyHeight(190)
-
-			// 입고 목록
-			const grid = new tui.Grid({
-				el: document.getElementById('grid'),
-				scrollX: false,
-				scrollY: false,
-				pageOptions: {
-					useClient: true,
-					perPage: 9
-				},
-
-				rowHeaders: ['rowNum'],
-				columns: [{
-					header: '입고번호',
-					name: 'cpRecId',
-					align: 'center'
-				}, {
-					header: '완제품코드',
-					name: 'cpId',
-					filter: 'select',
-					align: 'center'
-				}, {
-					header: '제품명',
-					name: 'cpName',
-					align: 'center'
-				}, {
-					header: '입고량',
-					name: 'cpRecQt',
-					align: 'center',
-					align: 'right',
-					formatter: ({
-						value
-					}) => {
-						return value.toLocaleString()
-					}
-				}, {
-					header: '입고유형',
-					name: 'cpRecTp',
-					filter: 'select',
-					align: 'center'
-				}, {
-					header: 'LOT번호',
-					name: 'cpLotId',
-					align: 'center'
-				}, {
-					header: '입고일자',
-					name: 'cpRecDate',
-					align: 'center'
-				}, {
-					header: '담당자',
-					name: 'empName',
-					align: 'center'
-				}, {
-					header: '공정실적코드',
-					name: 'prcsPfmcId',
-					align: 'center'
-				}]
-			});
-
-			tui.Grid.applyTheme('default', {
-				cell: {
-					header: {
-						background: '#e5edf5'
-					},
-					rowHeader: {
-						background: '#e5edf5'
-					},
-					normal: {
-						background: '#ffffff'
-					}
-				}
-			});
-
-			// 입고버튼 클릭 이벤트
-			$('#recBtn').on('click', (e) => {
-				if (readyGrid.getCheckedRows().length == 0) {
-					alert('입고할 제품을 선택해주세요.')
-				} else {
-					$.ajax({
-						url: "/prod/cpRec",
-						method: "POST",
-						dataType: "JSON",
-						contentType: "application/json",
-						data: JSON.stringify(readyGrid.getCheckedRows()),
-						success: function (result) {
-							// let appData = result;
-							// grid.appendRows(appData);
-							readyGrid.removeCheckedRows(false);
-							alert('입고가 완료되었습니다.')
+					// 입고버튼 클릭 이벤트
+					$('#recBtn').on('click', (e) => {
+						if (readyGrid.getCheckedRows().length == 0) {
+							alert('입고할 제품을 선택해주세요.')
+						} else {
 							$.ajax({
-								url: "/prod/cpRecList",
-								method: "GET",
+								url: "/prod/cpRec",
+								method: "POST",
+								dataType: "JSON",
+								contentType: "application/json",
+								data: JSON.stringify(readyGrid.getCheckedRows()),
 								success: function (result) {
-									grid.resetData(result);
+									// let appData = result;
+									// grid.appendRows(appData);
+									readyGrid.removeCheckedRows(false);
+									alert('입고가 완료되었습니다.')
+									$.ajax({
+										url: "/prod/cpRecList",
+										method: "GET",
+										success: function (result) {
+											grid.resetData(result);
+										},
+										error: function (reject) {
+											console.log(reject)
+										}
+									})
 								},
 								error: function (reject) {
 									console.log(reject)
+									alert('입고 과정에서 에러가 발생하였습니다.')
 								}
 							})
-						},
-						error: function (reject) {
-							console.log(reject)
-							alert('입고 과정에서 에러가 발생하였습니다.')
 						}
 					})
-				}
-			})
-		</script>
+				</script>
 	</div>
 </body>
 

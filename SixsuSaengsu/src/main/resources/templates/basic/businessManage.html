@@ -7,7 +7,7 @@
 	<title>거래처 관리</title>
 	<style>
 		h1 {
-			margin-bottom: 25px;
+			margin-bottom: 15px;
 		}
 
 		#manageTbl {
@@ -80,41 +80,46 @@
 					<td class="center">사업자번호</td>
 					<td>
 						<input type="text" name="busNum" id="busNum" placeholder="000-00-00000">
-						<button type="button" id="busBtn" class="sixBtn">확인</button>
+						<button type="button" id="busBtn" class="sixBtn" sec:authorize="hasRole('ROLE_A')">확인</button>
 					</td>
 				</tr>
-				<tr>
-					<td class="center">전화번호<span class="needStar"> *</span></td>
-					<td><input type="text" name="busTell" id="busTell" class="empty">
-					<td class="center">활성여부<span class="needStar"> *</span></td>
-					<td class="center">
-						<div id="divRadio">
-							<input type="radio" id="busStat1" name="busStat" value="Y" checked>
-							<label for="busStat1">사용</label>
-							<input type="radio" id="busStat2" name="busStat" value="N">
-							<label for="busStat2">비사용</label>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="center">주소</td>
-					<td colspan="2"><input type="text" name="busAddr" id="busAddr" class="empty" readonly
-							style="width: 100%"></td>
-					<td><input type="text" name="busAddrDet" id="busAddrDet" class="empty"></td>
-				</tr>
-				<tr>
-					<td class="center">비고</td>
-					<td colspan="3"><input type="text" name="spNote" id="spNote" class="empty" style="width : 620px;">
-					</td>
-				</tr>
+				<div sec:authorize="hasRole('ROLE_A')">
+					<tr>
+						<td class="center">전화번호<span class="needStar"> *</span></td>
+						<td><input type="text" name="busTell" id="busTell" class="empty">
+						<td class="center">활성여부<span class="needStar"> *</span></td>
+						<td class="center">
+							<div id="divRadio">
+								<input type="radio" id="busStat1" name="busStat" value="Y" checked>
+								<label for="busStat1">사용</label>
+								<input type="radio" id="busStat2" name="busStat" value="N">
+								<label for="busStat2">비사용</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="center">주소</td>
+						<td colspan="2"><input type="text" name="busAddr" id="busAddr" class="empty" readonly
+								style="width: 100%"></td>
+						<td><input type="text" name="busAddrDet" id="busAddrDet" class="empty"></td>
+					</tr>
+					<tr>
+						<td class="center">비고</td>
+						<td colspan="3"><input type="text" name="spNote" id="spNote" class="empty"
+								style="width : 620px;">
+						</td>
+					</tr>
+				</div>
 			</table>
 		</form>
 
 		<div class="divBtn">
 			<button type="button" class="sixBtn2" id="searchBtn">검색</button>
-			<button type="button" class="sixBtn2" id="addBtn">등록</button>
-			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
-			<button type="button" class="sixBtn2" id="initBtn">초기화</button>
+			<span sec:authorize="hasRole('ROLE_A')">
+				<button type="button" class="sixBtn2" id="addBtn">등록</button>
+				<button type="button" class="sixBtn2" id="modiBtn">수정</button>
+				<button type="button" class="sixBtn2" id="initBtn">초기화</button>
+			</span>
 		</div>
 		<!-- 상단 폼 끝 -->
 
@@ -140,7 +145,8 @@
 				el: document.getElementById('grid'),
 				scrollX: false,
 				scrollY: false,
-				minBodyHeight: 400,
+				rowHeight: 45,
+				minBodyHeight: 450,
 				pageOptions: {
 					useClient: true,
 					perPage: 10
@@ -266,7 +272,7 @@
 
 			// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
 			let selRow = 999;
-			grid.on('dblclick', function (e) {
+			grid.on('click', function (e) {
 				// 열을 더블클릭하면 열 정보를 변수에 저장
 				selRow = e.rowKey;
 				console.log(selRow)

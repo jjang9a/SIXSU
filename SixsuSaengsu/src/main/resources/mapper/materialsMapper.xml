@@ -390,7 +390,7 @@
   	
   	<!-- 자재lot리스트 -->
   	<select id="mLotList" parameterType="MatLotVO" resultType="MatLotVO">
-		select m.mat_lot_id, 
+		select DISTINCT m.mat_lot_id, 
 			   m.mat_id, 
 			   l.mat_name, 
 			   l.mat_size, 
@@ -616,7 +616,7 @@
 	
 	<!-- 반제품 LOT 리스트 -->
 	<select id="getSpLotList" resultType="SpLotVO" parameterType="SpLotVO">
-        select l.sp_lot_id, l.sp_id, s.sp_name, s.sp_size, l.sp_qt, l.sp_hold_stat, l.sp_lot_qt_ck, to_char(c.sp_rec_date, 'yyyy-MM-dd') sp_rec_date
+        select DISTINCT l.sp_lot_id, l.sp_id, s.sp_name, s.sp_size, l.sp_qt, l.sp_hold_stat, l.sp_lot_qt_ck, to_char(c.sp_rec_date, 'yyyy-MM-dd') sp_rec_date
 		from sp_lot l left join semi_prod s
 		on l.sp_id = s.sp_id
         left join sp_rec c

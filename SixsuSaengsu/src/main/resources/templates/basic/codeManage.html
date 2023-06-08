@@ -112,6 +112,10 @@
 		.modalTbl td {
 			padding-right: 20px;
 		}
+
+		#grid:hover {
+			cursor: pointer;
+		}
 	</style>
 
 </head>
@@ -127,7 +131,7 @@
 				<button type="button" id="gc">그룹코드</button>
 				<button type="button" id="gs" class="gSel">검색</button>
 			</div>
-			<div id="groupAdd">
+			<div id="groupAdd" sec:authorize="hasRole('ROLE_A')">
 				<img src="/assets/img/folder-plus.svg" style="height:25px">
 			</div>
 			<!-- 그룹코드 선택시 : 그리드 (디폴트) -->
@@ -150,7 +154,7 @@
 		<!-- 오른쪽 틀 -->
 		<div id="comm" class="codeBack">
 			<h5>상세정보</h5>
-			<div class="rightBtn">
+			<div class="rightBtn" sec:authorize="hasRole('ROLE_A')">
 				<button type="button" class="sixBtn2" id="addBtn">추가</button>
 				<button type="button" class="sixBtn2" id="saveBtn">저장</button>
 			</div>
@@ -210,7 +214,8 @@
 				el: document.getElementById('grid'),
 				scrollX: false,
 				scrollY: true,
-				minBodyHeight: 480,
+				rowHeight: 45,
+				minBodyHeight: 495,
 				columns: [{
 					header: '그룹코드',
 					name: 'gid',
@@ -264,6 +269,7 @@
 				scrollX: false,
 				scrollY: true,
 				minBodyHeight: 400,
+				rowHeight: 45,
 				rowHeaders: ['rowNum'],
 				columns: [{
 					header: '그룹코드',
@@ -305,8 +311,8 @@
 			});
 
 			// 그리드에 스크롤 부여
-			grid.setBodyHeight(480)
-			commGrid.setBodyHeight(480)
+			grid.setBodyHeight(495)
+			commGrid.setBodyHeight(495)
 
 			// 그룹코드 선택 시 선택정보 기반으로 소속 공통코드 데이터 불러오기
 			let groupKey = '';
