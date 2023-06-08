@@ -103,14 +103,35 @@
 										<option value='' selected>===== 선택 =====</option>
 										<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}"></option>
 									</select>
-								</td>	
+								</td>
+								
 								<td>설비상태 <span class="needStar"> *</span></td>
+								<td>
+									<div id="divRadio">
+										<input type="radio" id="equStat1" name="equStat" value="STAT-1" checked>
+										<label for="equStat1">가동</label>
+										<input type="radio" id="equStat2" name="equStat" value="STAT-2">
+										<label for="equStat2">비가동</label>
+									</div>
+								</td> 
+								
+								<!-- <td>설비상태 <span class="needStar"> *</span></td>
 								 <td>
 									<select id="equStat" name="equStat">
 										<option value='' selected>===== 선택 =====</option>
 										<option th:each="type : ${equStat}" th:value="${type.value}" th:text="${type.text}"></option>
 									</select>
-									</td> 
+								</td> -->
+								
+								<!-- <td>설비상태 <span class="needStar"> *</span></td>
+									<td>
+										<div id="radio">
+										<input type="radio" id="equStat0" name="matReqStat" value="" checked>
+										<label for="equStat1">전체</label>
+										<input type="radio" th:each="req: ${equStat}" th:value="${type.value}" th:text="${type.text}"
+										name="equStat">
+									</div>
+								</td> -->
 							</tr>
 							<tr>
 								<td>비가동시작<span class="needStar"> *</span></td>
@@ -137,8 +158,8 @@
 						<td>
 							<!-- 가동 비가동 버튼 -->
 							<div id="">
-								<button type="button" class="operBtn" style="" id="startBtn">비가동</button>
-								<button type="button" class="operBtn" style="" id="endBtn">가동</button>
+								<button type="button" class="operBtn" id="startBtn">비가동</button>
+								<button type="button" class="operBtn" id="endBtn">가동</button>
 							</div>
 						</td>
 					</td>
@@ -190,9 +211,6 @@
 			let operType = [[${operType}]];
 	
 			let equStat = [[${equStat}]];
-			
-				
-			
 
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
@@ -200,6 +218,8 @@
 					useClient: true,
 					perPage: 10
 				},
+				BodyHeight: 450,
+				rowHeight: 45,
 				scrollX: false,
 				scrollY: false,
 				rowHeaders: ['rowNum'],
@@ -211,6 +231,7 @@
 					},
 					{
 						header: '설비코드',
+						sortable: true,
 						name: 'equCode',
 						align: 'center'
 					},
@@ -340,7 +361,7 @@
 			})
 
 			// 페이지가 열리면 기능작동 - 리스트 띄워주기.  
-			window.onload = function () {
+			function operList() {
 
 				$.ajax({
 					url: "equOperList",
@@ -351,6 +372,8 @@
 					}
 				});
 			};
+
+			operList();
 
 			// 색 테마 적용
 			tui.Grid.applyTheme('default', {
@@ -384,14 +407,13 @@
 				$('#operCode').val(dataRow.operCode); // 비가동코드  
 				$('#equCode').val(dataRow.equCode); // 설비코드
 				$('#equName').val(dataRow.equName); // 설비명
-				//	$('#equStat').val(dataRow.equStat); // 설비상태
 				$('#operStart').val(dataRow.operStart); // 비가동 시작시점
 				$('#operFnish').val(dataRow.operFnish); // 비가동 종료시점
 				$('#operNote').val(dataRow.operNote); // 비가동 비고
 				$('#empId').val(dataRow.empId); // 담당자	
-				$('#equStat').val(dataRow.equStat).prop("selected", true); // 설비상태 
+				//$('#equStat').val(dataRow.equStat).prop("selected", true); // 설비상태 셀렉트 박스
 				$('#operType').val(dataRow.operType).prop("selected", true); // 비가동 구분 
-				//$("input:radio[name='equStat']:radio[value="+dataRow.equStat+"]").prop('checked', true); //설비상태
+				$("input:radio[name='equStat']:radio[value="+dataRow.equStat+"]").prop('checked', true); //설비상태
 
 
 			});
@@ -400,9 +422,10 @@
 			// 비가동 시작(등록)버튼 기능 구현
 			// 동시에 처리 설비 테이블에 설비상태 비가동으로 업데이트 비가동 등록.
 			$('#startBtn').on('click', function (e) {
-				if (selRow == 999) {
-					alert('등록 정보를 입력하시오.')
-				} else {
+				// if (selRow == 999) {
+					
+				// 	alert('등록 정보를 입력하시오.')
+				// } else {
 
 					console.log($('#addForm').serialize())
 					$.ajax({
@@ -411,15 +434,22 @@
 						data: $('#addForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
+							
 							alert('등록되었습니다');
-							console.log('result : ');
-							console.log(result);
-							//등록 버튼을 누르면 리스트에 삽입된다.     
+
 							const appendedData = result
 							grid.prependRow(appendedData);
-							// 리스트를 리셋. 등록데이터가 바로 뜸.
-							grid.resetData(result);
-							setTimeout(() => orderingGrid.refreshLayout(), 1000);
+
+							// operList();
+
+
+							
+							// console.log('result : ');
+							// console.log(result);
+							// //등록 버튼을 누르면 리스트에 삽입된다.     
+							// // 리스트를 리셋. 등록데이터가 바로 뜸.
+							 grid.resetData(result);
+							 setTimeout(() => orderingGrid.refreshLayout(), 1000);
 						},
 						error: function (reject) {
 							alert('등록 중 오류가 발생했습니다!');
@@ -431,7 +461,12 @@
 
 					// 셀렉트 리셋해줌
 					$('#operType').val('').prop("selected", true);
-				}
+
+					// 라디오 버튼 초기화
+					$('#equStat').val('').prop("checked", true);
+
+				//}
+				
 			});
 
 		
@@ -442,9 +477,9 @@
 			// 동시에 처리 설비 테이블에 설비상태 가동으로 업데이트 가동 등록.
 
 			$('#endBtn').on('click', function (e) {
-				if (selRow == 999) {
-					alert('수정할 데이터가 없습니다.')
-				} else {
+				// if (selRow == 999) {
+				// 	alert('수정할 데이터가 없습니다.')
+				// } else {
 					
 					console.log($('#addForm').serialize())
 					$.ajax({
@@ -455,8 +490,9 @@
 						success: function (result) {
 							console.log(result);
 							alert('수정되었습니다');
+							grid.resetData(result)
 							const setData = result
-							grid.setRow(selRow, setData);
+							//grid.setRow(selRow, setData);
 							selRow = '';
 						},
 						error: function (reject) {
@@ -467,8 +503,9 @@
 					$('.empty').val('');
 					// 셀렉트 리셋해줌
 					$('#operType').val('').prop("selected", true);
-
-				}
+					// 라디오 버튼 초기화
+					$('#equStat').val('').prop("checked", true);
+			//	}
 			})
 
 
@@ -500,7 +537,8 @@
 					$('.empty').val('');
 					// 셀렉트 리셋해줌
 					$('#operType').val('').prop("selected", true);
-
+					// 라디오 버튼 초기화
+					$('#equStat').val('').prop("checked", true);
 				}
 			})
 
@@ -532,7 +570,10 @@
 							$('.empty').val('');
 							// 셀렉트 리셋해줌
 							$('#operType').val('').prop("selected", true);
-							//	$("input:radio[name='equStat']:radio[value='Y']").prop('checked', true);
+							// 라디오 버튼 초기화
+							$("input:radio[name='equStat']:radio[value='STAT-1']").prop('checked', true);
+						
+							
 						},
 						error: function (reject) {
 							console.log('설비 삭제 중 오류가 발생했습니다.');

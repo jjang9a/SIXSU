@@ -53,7 +53,51 @@
   	
   	<!-- 설비조회(검색) -->
   	<select id="equFilterList" resultType="EquConVO" parameterType="EquSearchDTO">
-  	 WITH oper as ( 
+  	
+  	WITH oper as ( 
+	   SELECT e.equ_code, e.oper_start, e.oper_fnish, e.oper_note, e.oper_type
+	    FROM equ_oper e
+	    JOIN(   SELECT equ_code, MAX(oper_code) oper_code
+	              FROM equ_oper
+	             Group By equ_code)o
+	    ON(e.equ_code = o.equ_code AND e.oper_code = o.oper_code)
+	   ),
+	CHECKVIEW AS (
+	  SELECT e.equ_code, e.equ_suit, e.check_date, e.check_next, e.check_type, e.check_info
+	    FROM equ_insp e 
+	    JOIN (SELECT equ_code, MAX(check_date) check_date
+	            FROM equ_insp
+	           GROUP BY equ_code) o
+	      ON (e.equ_code = o.equ_code AND e.check_date = o.check_date)
+	)
+	    SELECT  c.equ_code, 
+	  	        c.proc_id, 
+	  	        c.equ_name, 
+	  	        c.equ_model, 
+	  	        c.equ_stat, 
+	  	        c.equ_line, 
+	  	        c.equ_check, 
+	  	        i.equ_suit, 
+	  	        to_char(i.check_date, 'yyyy-mm-dd') as check_date, 
+	  	        to_char(i.check_next, 'yyyy-mm-dd') as check_next , 
+	  	        i.check_type, 
+	            i.check_info, 
+	            c.c_temp, 
+	  	        to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start, 
+	  	        to_char(o.oper_fnish, 'yyyy-mm-dd - hh:mm') as oper_fnish,
+	  	        o.oper_type, 
+	            o.oper_note, 
+	  	        to_char(c.add_date, 'yyyy-mm-dd') as add_date , 
+	  	        c.emp_id  
+		  FROM equ_con c 
+		  LEFT OUTER JOIN CHECKVIEW i
+	        ON c.equ_code = i.equ_code
+		  LEFT OUTER JOIN oper o
+		    ON c.equ_code = o.equ_code
+		 ORDER BY c.equ_code 
+  	
+  	
+  	<!--  WITH oper as ( 
 	   SELECT e.equ_code, e.oper_start, e.oper_fnish, e.oper_note, e.oper_type
 	    FROM equ_oper e
 	    JOIN(   SELECT equ_code, MAX(oper_code) oper_code
@@ -92,7 +136,7 @@
 		  LEFT OUTER JOIN CHECKVIEW i
 	        ON c.equ_code = i.equ_code
 		  LEFT OUTER JOIN oper o
-		    ON c.equ_code = o.equ_code 
+		    ON c.equ_code = o.equ_code  -->
 	   <where>
 		
 		<if test='code != null and code != ""'>
@@ -137,6 +181,18 @@
 	<delete id="equDel" parameterType="EquConVO">
 		delete from equ_con where equ_code = #{equCode}
 	</delete>
+	
+	<!-- 점검에서 설비(삭제) -->
+	<delete id="equcheckDel" parameterType="EquConVO">
+		delete from equ_insp where equ_code = #{equCode}
+	</delete>
+	
+	<!-- 비가동에서 설비(삭제) -->
+	<delete id="equoperDel" parameterType="EquConVO">
+		delete from equ_oper where equ_code = #{equCode}
+	</delete>
+	
+	
 	
 	<!-- 점검 리스트 -->
 	<select id="equCheckList" resultType="EquInspVO" parameterType="EquSearchDTO">
@@ -312,14 +368,14 @@
 	<!-- 비가동 관리 비가동 종료버튼(가동 등록) -->
   	<update id="fnishIn" parameterType="EquOperVO">
 		UPDATE equ_oper
-		SET oper_fnish = to_date(#{operFnish}, 'yyyy-MM-dd')
+		SET oper_fnish = (SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul')
 		WHERE oper_code = #{operCode}
 	</update>   
 	
 	<!-- 비가동 관리 설비상태 가동(수정) -->
 	<update id="fnishUp" parameterType="EquConVO">
 		UPDATE equ_con
-		SET equ_code=#{equCode}, equ_stat= 'STAT-1'
+		SET equ_code = #{equCode}, equ_stat= 'STAT-1'
 		WHERE equ_code=#{equCode}
 	</update> 
 	
