@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>불량품 관리</title>
+	<title>불량 자재 관리</title>
 	<style>
 		h1 {
 			margin-bottom: 10px;
@@ -22,7 +22,7 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">불량품 관리</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">불량 자재 관리</h1>
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">불량처리 대기 목록</h3>
 		<div id="grid"></div>
 		<button type="button" class="sixBtn4" id="returnBtn">반품등록</button>
@@ -234,6 +234,7 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
+						alert("반품 등록 완료");
 						$.ajax({
 							url: "/materials/matdmgwaitlist",
 							method: "GET",
@@ -266,6 +267,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
+						alert("반품 등록 실패");
 					}
 					
 				});
@@ -283,6 +285,7 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
+						alert("폐기 등록 완료");
 						$.ajax({
 							url: "/materials/matdmgwaitlist",
 							method: "GET",
@@ -315,6 +318,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
+						alert("폐기 등록 실패");
 					}
 					
 				});
