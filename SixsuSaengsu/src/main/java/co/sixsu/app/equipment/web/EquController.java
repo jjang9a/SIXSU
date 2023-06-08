@@ -35,8 +35,9 @@ public class EquController {
 	
 	// 설비 관리 페이지 - 관리페이지 기능은 /equCon - 수행.
 	@GetMapping("equConpage") 
-	public void equCon() {
-		
+	public void equCon(Model model) {
+		String key = "EQU_STAT";
+		model.addAttribute("equStat", basicService.commGroupList(key));
 	}
 	
 	@GetMapping("EquInfo") // 설비 조회 페이지
@@ -206,14 +207,14 @@ public class EquController {
 
 	@ResponseBody 
 	@PostMapping("fnishIn") // 비가동 관리 비가동 종료버튼(가동 등록) 
-	public EquOperVO fnishIn(EquOperVO data) { 
-		
-		 LocalDate now = LocalDate.now(); String date = now.toString();
-		 data.setOperFnish(date); System.out.println(data); equService.fnishIn(data);
-		 return data;
+	public List<EquOperVO> fnishIn(EquOperVO data) { 
+		 //equService.fnishIn(data);
+		 //LocalDate now = LocalDate.now(); String date = now.toString();
+		 //data.setOperFnish(date); System.out.println(data); 
+		 return equService.fnishIn(data);
 		 
 		/*
-		 * equService.fnishIn(data); return data;
+		 *; return data;
 		 */
 	}
 	
