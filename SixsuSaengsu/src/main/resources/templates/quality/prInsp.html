@@ -781,6 +781,13 @@
 						width: 110,
 						name: 'resVal',
 						editor: 'text',
+						formatter: ({ value }) => {
+							if(value != null){
+								return value.toLocaleString();
+							}else{
+								return 0;
+							}
+						},
 						align: 'center'
 					},
 					 {
@@ -788,7 +795,15 @@
 						width: 110,
 						name: 'nsuitQt',
 						editor: 'text',
+						formatter: ({ value }) => {
+							if(value != null){
+								return value.toLocaleString();
+							}else{
+								return 0;
+							}
+						},
 						align: 'center'
+						
 					}, 
 					{
 						header: '적합여부',
