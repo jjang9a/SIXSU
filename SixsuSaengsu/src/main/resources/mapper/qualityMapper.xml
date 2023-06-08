@@ -458,7 +458,7 @@ LEFT OUTER JOIN prod_rev r
              ON p.cp_lot_id = r.cp_lot_id
 LEFT OUTER JOIN process_performance f 
              ON r.prcs_pfmc_id = f.prcs_pfmc_id
-		order by cp_ship_stat
+		order by cp_ship_stat, insp_date desc
 	</select>
 	
 	<!-- 완제품 출고 관리 리스트 -->
