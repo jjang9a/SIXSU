@@ -170,7 +170,10 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public boolean delInsp(QuaVO qua) {
 		QuaVO vo = new QuaVO();
+		String reqId = qua.getMatReqId();
 		vo.setMatReqStat("A");
+		vo.setMatReqId(reqId);
+		System.out.println("vo확인"+vo);
 		quaMapper.mUpdate(vo);
 		return quaMapper.delInsp(qua) >= 1;
 	}

@@ -89,7 +89,7 @@
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-5">
+				<div class="col-lg-6">
 
 					<!-- 토스트 그리드 코드 -->
 					<!-- 발주 번호 검색 버튼 -->
@@ -173,7 +173,7 @@
 
 
 				<!-- 자재 검사 결과 등록 폼 -->
-				<div class="col-lg-7" id="formDiv">
+				<div class="col-lg-6" id="formDiv">
 					<form action="" method="post" id="prInspForm">
 						<!-- display: none;  -->
 
@@ -357,11 +357,25 @@
 				}, {
 					header: '발주 수량',
 					name: 'matReqQt',
-					align: 'center'
+					align: 'center',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}, {
 					header: '검사 대기 수량',
 					name: 'inspQt',
-					align: 'center'
+					align: 'center',
+					formatter: ({ value }) => {
+						if(value != null){
+							return value.toLocaleString();
+						}else{
+							return 0;
+						}
+					}
 				}]
 			});
 
@@ -486,14 +500,14 @@
 					header: '기준값',
 					width: 'auto',
 					name: 'stdVal',
-					align: 'center',
+					align: 'center'
 					
 				}, {
 					header: '결과값',
 					width: 'auto',
 					name: 'resVal',
 					editor: 'text',
-					align: 'center',
+					align : 'right',
 					formatter: ({ value }) => {
 						if(value != null){
 							return value.toLocaleString();
@@ -507,7 +521,7 @@
 					width: 'auto',
 					name: 'nsuitQt',
 					editor: 'text',
-					align: 'center',
+					align : 'right',
 					formatter: ({ value }) => {
 						if(value != null){
 							return value.toLocaleString();
@@ -573,7 +587,7 @@
 				}, {
 					header: '발주 수량',
 					name: 'matReqQt',
-					align: 'center',
+					align : 'right',
 					formatter: ({ value }) => {
 						if(value != null){
 							return value.toLocaleString();
@@ -585,7 +599,7 @@
 				{
 					header: '검사 수량',
 					name: 'inspQt',
-					editor: 'text',
+					align : 'right',
 					formatter: ({ value }) => {
 						if(value != null){
 							return value.toLocaleString();
@@ -641,6 +655,7 @@
 					name: 'inspQt',
 					editor: 'text',
 					
+					
 				}]
 			});
 
@@ -667,9 +682,9 @@
 			// 모달 등록
 			$('#regBtn').on('click', function (e) {
 			    // 등록할 데이터
-			    let data = grid2.getModifiedRows().updatedRows;
+			    let checkedRows = grid2.getCheckedRows();
 			
-			    if (data.length === 0) {
+			    if (checkedRows.length === 0) {
 			        alert('검사를 등록해주세요.');
 			        return false;
 			    } else {
@@ -678,7 +693,7 @@
 			            url: "/quality/prRegister",
 			            method: "POST",
 			            contentType: 'application/json',
-			            data: JSON.stringify(grid2.getModifiedRows().updatedRows),
+			            data: JSON.stringify(grid2.getCheckedRows()),
 			            success: function (result) {
 			                // 결과 데이터를 확인하여 검사 수량이 발주 수량보다 많은지 검사
 			                const appendedData = result;
@@ -757,7 +772,7 @@
 				}, {
 					header: '검사수량',
 					name: 'inspQt',
-					align: 'center',
+					align : 'right',
 					formatter: ({ value }) => {
 							if(value != null){
 								return value.toLocaleString();
@@ -768,7 +783,7 @@
 				}, {
 					header: '부적합 수량',
 					name: 'nsuitQt',
-					align: 'center',
+					align : 'right',
 					formatter: ({ value }) => {
 						if(value != null){
 							return value.toLocaleString();
