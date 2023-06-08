@@ -21,7 +21,6 @@ h1 {
 	width: 230px;
 }
 
-
 #cpTable td {
 	padding: 4px 20px;
 	text-align: center;
@@ -43,49 +42,61 @@ h1 {
 			<table id="cpTable">
 				<tr>
 					<td>완제품 출고 코드</td>
-					<td><input type="text" name="cpShipId" id="cpShipId" readonly class="empty"></td>
+					<td><input type="text" name="cpShipId" id="cpShipId" readonly
+						class="empty"></td>
 					<td>LOT번호</td>
-					<td><input type="text" name="cpLotId" id="cpLotId" readonly class="empty"></td>
+					<td><input type="text" name="cpLotId" id="cpLotId" readonly
+						class="empty"></td>
 					<td>검사번호</td>
-					<td><input type="text" name="inspNum" id="inspNum" readonly class="empty"></td>
+					<td><input type="text" name="inspNum" id="inspNum" readonly
+						class="empty"></td>
 				</tr>
 				<tr>
 					<td>제품명</td>
-					<td><input type="text" name="cpName" id="cpName" readonly class="empty"></td>
+					<td><input type="text" name="cpName" id="cpName" readonly
+						class="empty"></td>
 					<td>제품 코드</td>
-					<td><input type="text" name="cpId" id="cpId" readonly class="empty"></td>
+					<td><input type="text" name="cpId" id="cpId" readonly
+						class="empty"></td>
 					<td>요청 수량</td>
-					<td><input type="text" name="cpShipQt" id="cpShipQt" readonly class="empty"></td>
+					<td><input type="text" name="cpShipQt" id="cpShipQt" readonly
+						class="empty"></td>
 				</tr>
 				<tr>
 					<td>제조 일자</td>
-					<td><input type="text" name="wkEnd" id="wkEnd" readonly class="empty"></td>
+					<td><input type="text" name="wkEnd" id="wkEnd" readonly
+						class="empty"></td>
 					<td>유통 기한</td>
-					<td><input type="text" name="expDate" id="expDate" readonly class="empty"></td>
+					<td><input type="text" name="expDate" id="expDate" readonly
+						class="empty"></td>
 					<td>적합 여부</td>
 					<td><select name="resStat" id="resStat" class="empty">
-						<option value="">선택</option>
-						<option value="STAT-A">적합</option>
-						<option value="STAT-B">부적합</option>
+							<option value="">선택</option>
+							<option value="STAT-A">적합</option>
+							<option value="STAT-B">부적합</option>
 					</select></td>
 				</tr>
 
 				<tr>
 					<td>부적합 사유</td>
-					<td><input type="text" name="detailNote"
-						id="detailNote" class="empty"></td>
-						<!-- <td colspan="3">  style="width: 660px;"-->
+					<td><input type="text" name="detailNote" id="detailNote"
+						class="empty"></td>
+					<!-- <td colspan="3">  style="width: 660px;"-->
 					<td>검사자</td>
-					<td><input th:value='${#authentication.principal.empName}' type="text" name="empName" id="empName" readonly>
+					<td><input th:value='${#authentication.principal.empName}'
+						type="text" name="empName" id="empName" readonly>
 					<td>검수 상태</td>
-					<td><input type="text" name="cpShipStat" id="cpShipStat" class="empty" readonly></td>
+					<td><input type="text" name="cpShipStat" id="cpShipStat"
+						class="empty" readonly></td>
 				</tr>
-				
+
 				<tr>
-					<td><input type="hidden" name="cpShipReqDate" id="cpShipReqDate" class="empty"></td>
-					<td><input type="hidden" name="inspDate" id="inspDate" class="empty"></td>
+					<td><input type="hidden" name="cpShipReqDate"
+						id="cpShipReqDate" class="empty"></td>
+					<td><input type="hidden" name="inspDate" id="inspDate"
+						class="empty"></td>
 				</tr>
-				
+
 			</table>
 		</form>
 		<div class="divBtn">
@@ -123,6 +134,9 @@ h1 {
 						useClient : true,
 						perPage : 10
 					},
+					
+					rowHeight: 45,
+					
 					columns : [ {
 						header : '완제품 출고 코드',
 						name : 'cpShipId',
@@ -157,7 +171,15 @@ h1 {
 					}, {
 						header : '요청수량',
 						name : 'cpShipQt',
-						align : 'center'
+						align : 'center',
+						formatter: ({ value }) => {
+							if(value != null){
+								return value.toLocaleString();
+							}else{
+								return 0;
+							}
+						}
+						
 					}, {
 						header : '검수상태',
 						name : 'cpShipStat',
@@ -219,7 +241,17 @@ h1 {
 							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
 							//grid.setRow(selRow, setData);
 							
-							grid.setRow(result);
+							//grid.setRow(result);
+							$.ajax({
+								url : "/quality/shInspList",
+								method : "GET",
+								dataType : "JSON",
+								success : function(result) {
+									grid.resetData(result);
+									//initData = result;
+									//nowData = result;
+								}
+							});
 						},
 						error : function() {
 							alert('출고 검사 결과 등록 중 오류가 발생했습니다.');
@@ -231,6 +263,7 @@ h1 {
 					$('#resStat')
 							.val('')
 							.prop("selected", true);
+
 				});
 
 				// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
@@ -280,6 +313,9 @@ h1 {
 													dataType : 'json',
 													success : function(result) {
 														alert('출고 검사가 성공적으로 수정되었습니다');
+														
+	
+														
 														//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
 														const setData = result
 														grid.setRow(selRow, setData);
@@ -288,40 +324,17 @@ h1 {
 														$('.empty').val('');
 														$('#resStat').val('').prop("selected",true);
 														
+														
 													},
 													error : function() {
 														alert('완제품 수정 중 오류가 발생했습니다!');
 													}
 												});
+																							
+
 									}
 								})
 								
-				// 삭제 버튼 이벤트
-				$('#delBtn').on('click', function(e){
-					if (selRow == '') {
-						alert('삭제할 데이터가 없습니다.')
-					} else{
-						$.ajax({
-							url : '/quality/shipInspDel',
-							type : 'post',
-							data: {
-								inspNum: selInspNum // 삭제할 로우의 키 값을 전달
-							},
-							success : function(result){
-								alert('출고 검사 결과가 삭제되었습니다.');
-								grid.removeRow(selRow);
-								selRow = '';
-								$('#cpqForm input').val('');
-								$('#resStat')
-										.val('')
-										.prop("selected", true);
-							},
-							error : function(reject){
-								alert('출고 검사 결과 삭제 중 에러가 발생했습니다.');
-							}
-						})
-					}
-				})
 				
 				// 검색 버튼 이벤트
 				let searchType = '';

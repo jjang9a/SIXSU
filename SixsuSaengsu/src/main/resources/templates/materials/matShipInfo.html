@@ -4,28 +4,48 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>자재출고조회</title>
+	<title>자재 출고 조회</title>
+	<style>
+		#matShipTable{
+			margin: 20px auto;
+		}
+		#matShipTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}	
+      .inputR {
+			width: 210px;
+			padding-left : 5px
+		}	
+		#divRadio input{
+			width:30px
+		}
+		.divBtn{
+			text-align:center;
+			padding : 10px 0 30px;
+		}
+		#divRadio{
+			padding-right : 180px;
+		}	
+	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재출고조회</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 출고 조회</h1>
 		<form action="" method="post" id="matShipForm">
 				<table id="matShipTable">
 					<tr>
 						<td>공정실적코드</td>
-						<td><input type="text" name="pNum" id="pNum" class="empty" placeholder="검색"></td>
+						<td><input type="text" name="pNum" id="pNum" class="inputR" placeholder="검색"></td>
+						<td>출고일자</td>
+						<td>
+							<input type="date" id="matShipDate" class="inputR"> ~ <input type="date" id="matShipDatee" class="inputR">
+						</td>
 					</tr>				
 					<tr>
 						<td>자재LOT번호</td>
-						<td><input type="text" name="mlot" id="mlot" class="empty" placeholder="검색"></td>
-					</tr>
-					<tr>
-						<td>자재명</td>
-						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색"></td>
-						
-					</tr>
-					<tr>
+						<td><input type="text" name="mlot" id="mlot" class="inputR" placeholder="검색"></td>
 						<td>출고유형</td>
 						<td>
 							<div id="divRadio">
@@ -39,16 +59,14 @@
 						</td>
 					</tr>
 					<tr>
-						<td>출고일자</td>
-						<td>
-							<input type="date" id="matShipDate"> ~ <input type="date" id="matShipDatee">
-						</td>
+						<td>자재명</td>
+						<td><input type="text" name="mname" id="mname" class="inputR" placeholder="검색"></td>
 					</tr>
 				</table>
 			</form>
-			<div id="left">
-				<button class="sixBtn2" id="check">조회</button>
-				<button class="sixBtn4" id="reset">초기화</button>
+			<div class="divBtn">
+				<button class="sixBtn2" id="check">검색</button>
+				<button class="sixBtn3" id="reset">초기화</button>
 			</div>
 			
 			<div id="gridm"></div>
@@ -117,32 +135,49 @@
 					useClient: true,
 					perPage: 10
 				},
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['rowNum'],
 				columns : [ 
 					{
 					header : '공정실적코드',
 					name : 'prcsPfmcId',
+	                align: 'center'
 				}, {
 					header : '자재LOT번호',
-					name : 'matLotId'
+					name : 'matLotId',
+	                align: 'center'
 				}, {
 					header : '자재명',
-					name : 'matName'
+					name : 'matName',
+	                align: 'center'
 				}, {
 					header : '출고량',
-					name : 'matShipQt'
+					name : 'matShipQt',
+	                align: 'right',
+	                formatter: ({ value }) => {
+	              	  if(value != null){
+	                 		return value.toLocaleString()
+	                  }else{
+	              	 		return ''
+	                  } 
+	                }
 				}, {
 					header : '출고일자',
-					name : 'matShipDate'
+					name : 'matShipDate',
+	                align: 'center'
 				}, {
 					header : '출고유형',
-					name : 'matShipType'
+					name : 'matShipType',
+	                align: 'center'
 				}, {
 					header : '담당자',
-					name : 'empName'
+					name : 'empName',
+	                align: 'center'
 				}, {
 					header : '비고',
-					name : 'matShipNote'
+					name : 'matShipNote',
+	                align: 'center'
 				}]
 			});
 			

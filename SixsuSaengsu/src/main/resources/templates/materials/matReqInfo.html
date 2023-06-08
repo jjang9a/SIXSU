@@ -2,53 +2,74 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/template}">
 <head>
-<meta charset="UTF-8">
-<title>자재발주조회</title>
+	<meta charset="UTF-8">
+	<title>자재 발주 조회</title>
+	<style>
+      .inputR {
+			width: 210px;
+			padding-left : 5px
+		}
+
+		#reqTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}
+		#radio input{
+			width:30px
+		}
+		#reqTable{
+			margin: 20px auto;
+		}
+		.divBtn{
+			text-align:center;
+			padding : 10px 0 30px;
+		}		
+	</style>
 </head>
 <body>
-	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">자재 발주 조회</h1>
-		<form action="" method="post" id="reqForm">
-				<table id="reqTable">
-					<tr>
-						<td>발주번호</td>
-						<td><input type="text" name="matReqId" id="matReqId" class="empty" placeholder="검색"></td>
-					</tr>
-					<tr>
-						<td>자재명</td>
-						<td><input type="text" name="matName" id="matName" class="empty" placeholder="검색">
-						</td>
-					</tr>
-					<tr>
-						<td>거래처명</td>
-						<td><input type="text" name="busName" id="busName" class="empty" placeholder="검색">
-						</td>
-					</tr>
-					<tr>
-						<td>발주등록일자</td>
-						<td>
-							<input type="date" id="matInSDate"> ~ <input type="date" id="matInEDate">
-						</td>
-					</tr>
-					<tr>
-						<td>발주상태</td> 
-						<td>
-						<input type="radio" id="matReqStat1" name="matReqStat" value="">
-								<label for="matHoldStat1">전체</label>
-						<input type="radio" th:each="req: ${REQSTAT}" th:value="${req.value}" th:text="${req.text}" name="matReqStat" id="matReqStat"></td> 
-					</tr>
-					<tr>
-						<td>납기일자</td>
-						<td>
-							<input type="date" id="matEndSDate"> ~ <input type="date" id="matEndEDate">
-						</td>
-					</tr>
-				</table>
-			</form>
-			<div class="divBtn">
-				<button type="button" class="sixBtn2" id="check">조회</button>
-				<button type="button" class="sixBtn3" id="reset">초기화</button>
-			</div>
+   <div layout:fragment="content">
+      <h1 class="mt-4" style="font-family: 'MaruBuri';">자재 발주 조회</h1>
+      <form action="" method="post" id="reqForm">
+         <table id="reqTable">
+            <tr>
+               <td>발주번호</td>
+               <td><input type="text" name="matReqId" id="matReqId" class="inputR" placeholder="검색"></td>
+               <td>발주등록일자</td>
+               <td>
+                  <input type="date" id="matInSDate" class="inputR"> ~ <input type="date" id="matInEDate" class="inputR">
+               </td>
+              
+            </tr>
+            <tr>
+            <td>자재명</td>
+               <td><input type="text" name="matName" id="matName" class="inputR" placeholder="검색">
+               </td>
+               
+               <td>납기일자</td>
+               <td>
+                  <input type="date" id="matEndSDate" class="inputR"> ~ <input type="date" id="matEndEDate" class="inputR">
+               </td>
+            </tr>
+            <tr>
+             <td>거래처명</td>
+               <td><input type="text" name="busName" id="busName" class="inputR" placeholder="검색">
+               </td>
+               <td>발주상태</td>
+               <td>
+	               <div id="radio">
+	                  <input type="radio" id="matReqStat1" name="matReqStat" value="" checked>
+	                  <label for="matHoldStat1">전체</label>
+	                  <input type="radio" th:each="req: ${REQSTAT}" th:value="${req.value}" th:text="${req.text}"
+	                     name="matReqStat">
+	               </div>
+               </td>
+            </tr>
+         </table>
+      </form>
+      <div class="divBtn">
+         <button type="button" class="sixBtn2" id="check">검색</button>
+         <button type="button" class="sixBtn3" id="reset">초기화</button>
+      </div>
 
 		<!-- 발주 목록 그리드 -->
 		<div id="grid"></div>
@@ -116,48 +137,61 @@
 					useClient: true,
 					perPage: 10
 				},
-
-
-				
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['rowNum'],
-
-
 				columns: [{
 						header: '발주번호',
-						name: 'matReqId'
+						name: 'matReqId',
+		                align: 'center'
 					},
 					{
 						header: '자재코드',
-						name: 'matId'
+						name: 'matId',
+		                align: 'center'
 					},
 					{
 						header: '자재명',
-						name: 'matName'
+						name: 'matName',
+		                align: 'center'
 					},
 					{
 						header: '규격',
-						name: 'matSize'
+						name: 'matSize',
+		                align: 'center'
 					},
 					{
 						header: '발주량',
-						name: 'matReqQt'
+						name: 'matReqQt',
+		                align: 'right',
+		                formatter: ({ value }) => {
+		              	  if(value != null){
+		                 		return value.toLocaleString()
+		                  }else{
+		              	 		return ''
+		                  } 
+		                }
 					},
 					{
 						header: '거래처코드',
-						name: 'busId'
+						name: 'busId',
+		                align: 'center'
 						
 					},
 					{
 						header: '거래처명',
-						name: 'busName'
+						name: 'busName',
+		                align: 'center'
 					},
 					{
 						header: '발주일',
-						name: 'matReqDate'
+						name: 'matReqDate',
+		                align: 'center'
 					},
 					{
 						header: '발주상태',
 						name: 'matReqStat',
+						align: 'center',
 						formatter: 'listItemText',
 				          editor: 
 				          {

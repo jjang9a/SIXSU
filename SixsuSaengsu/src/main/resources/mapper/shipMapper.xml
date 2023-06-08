@@ -16,7 +16,7 @@
 	
 	
 <select id="orderingList" resultType= "OrdVO">
-	select b.bus_name, to_char(s.ord_date, 'yyyy-MM-dd') ord_date, to_char(d.ord_end_date, 'yyyy-MM-dd') ord_end_date, s.ord_id, d.ord_det_id, p.cp_id, p.cp_name, d.ord_qt
+	select b.bus_name, to_char(s.ord_date, 'yyyy-MM-dd') ord_date, to_char(d.ord_end_date, 'yyyy-MM-dd') ord_end_date, s.ord_id, d.ord_det_id, p.cp_id, p.cp_name, d.ord_qt,  p.cp_lot
 	from det_ord d 
 	left outer join sorder s 
 	on d.ord_id = s.ord_id
@@ -28,8 +28,9 @@
 	on b.bus_id = s.bus_id
 	where t.cp_ship_id is null
 	<include refid="tite"></include>
-	order by s.ord_date desc
+	order by d.ord_det_id desc
 </select>
+
 <select id="lotProducts" resultType="LotVO">
 <!--  select* 
 from prod_lot l, complete_prod p, prod_rev R
@@ -50,7 +51,7 @@ order by r.cp_rec_date-->
 		WHERE l.cp_lot_qt_ck = 'LOT_Y'
 		and l.cp_lot_qt != 0
 		and l.cp_id= #{keyword}
-		order by r.cp_rec_date
+		order by TO_NUMBER(SUBSTR(l.cp_lot_id, 11))
 
 </select>
 <!-- 모달창에 자동으로 총수량이 뜨도록 하는기능 -->
@@ -86,10 +87,12 @@ order by r.cp_rec_date-->
     on d.ord_id = s.ord_id
     Left OUTER JOIN BUSINESS b
     on s.bus_id = b.bus_id
-	where p.cp_ship_stat = 'CP_SHIP_COMP'
+	where p.cp_ship_stat = 'CP_SHIP_CHECK'
+	or p.cp_ship_stat = 'CP_SHIP_COMP'
 	<if test="keyword != null and keyword !=''">
 	and d.ord_det_id = #{keyword}
 	</if>
+	order by p.cp_ship_stat , p.ord_det_id desc , p.cp_ship_id desc
 	</select>
 	
 	<select id="completeShip" statementType="CALLABLE">
@@ -133,6 +136,7 @@ order by r.cp_rec_date-->
         where (t.cp_ship_stat ='CP_SHIP_C'
         or t.cp_ship_stat ='CP_SHIP_COMP')
   		<include refid="criteria"></include>
+  		order by t.cp_ship_id desc
   </select>
   
   

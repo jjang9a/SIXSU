@@ -18,9 +18,9 @@ public class ShipServiceImpl implements ShipService {
 @Autowired ShipMapper mapper;
 
 @Override//페이지 주문중인 목록 (품질요청 전 그리드 테이블)
-public List<OrdVO> orderingList() {
+public List<OrdVO> orderingList(OrdVO vo) {
 	
-	return mapper.orderingList();
+	return mapper.orderingList(vo);
 }
 
 @Override //모달창 품목별 lot 재고현황
@@ -44,10 +44,10 @@ public List<ShipVO> shipPro(OrdVO ord) {
 	int lot = ord.getCpLot();  //chdwp
 	
 	List<LotVO> list = mapper.lotProducts(id);
-	System.out.println("---------------------------------------------------------------------");
+	System.out.println("---------------------------------맨 위------------------------------------");
 	System.out.println(list);
 	List<ShipVO> ship = new ArrayList<>(); // 출고목록을 담을 객체
-	
+	System.out.println("qt : "+qt + "lot : " + lot);
 	int i = 0;
 	
 	while (qt >= lot) {
@@ -69,12 +69,12 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		mapper.updateCpLot(list.get(i));
 		ship.add(vo);
 		qt -= lotQt;
-		System.out.println("---------------------------------------------------------------------" + i);
+		System.out.println("-----------------------------while문----------------------------------------" + i);
 		System.out.println(qt);
 		i++;
 	}
 	
-	if (qt != 0 ) {
+	if (qt < lot && qt != 0 ) {
 		System.out.println("-------------------------------탈출-----------------------------------" + i);
 		System.out.println("현재수량 : "+qt);
 		ShipVO vo = new ShipVO();

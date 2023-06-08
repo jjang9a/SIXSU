@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>불량품 관리</title>
+	<title>불량 자재 관리</title>
 	<style>
 		h1 {
 			margin-bottom: 10px;
@@ -22,7 +22,7 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">불량품 관리</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">불량 자재 관리</h1>
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">불량처리 대기 목록</h3>
 		<div id="grid"></div>
 		<button type="button" class="sixBtn4" id="returnBtn">반품등록</button>
@@ -93,35 +93,51 @@
 
 				columns: [{
 						header: '검사번호',
-						name: 'inspNum'
+						name: 'inspNum',
+		                align: 'center'
 					},
 					{
 						header: '자재코드',
-						name: 'matId'
+						name: 'matId',
+		                align: 'center'
 					},
 					{
 						header: '자재명',
-						name: 'matName'
+						name: 'matName',
+		                align: 'center'
 					},
 					{
 						header: '자재규격',
-						name: 'matSize'
+						name: 'matSize',
+		                align: 'center'
 					},
 					{
 						header: '불량수량',
-						name: 'resVal'
+						name: 'resVal',
+		                align: 'right',
+						editor : 'text',
+		                formatter: ({ value }) => {
+			              	  if(value != null){
+			                 		return value.toLocaleString()
+			                  }else{
+			              	 		return ''
+			                  } 
+			            }
 					},
 					{
 						header: '불량등록일자',
-						name: 'inspDate'
+						name: 'inspDate',
+		                align: 'center'
 					},
 					{
 						header: '담당자',
-						name: 'empName'
+						name: 'empName',
+		                align: 'center'
 					},
 					{
 						header: '비고',
-						name: 'dmatNote'
+						name: 'dmatNote',
+		                align: 'center'
 						
 					},
 					{
@@ -151,50 +167,68 @@
 					perPage: 5
 				},
 
-
-				minBodyHeight: 200, //한줄에 40으로 기억
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['rowNum'],
 
 
 				columns: [{
 						header: '불량등록번호',
-						name: 'dmatId'
+						name: 'dmatId',
+		                align: 'center'
 					},
 					{
 						header: '검사번호',
-						name: 'inspNum'
+						name: 'inspNum',
+		                align: 'center'
 					},
 					{
 						header: '자재코드',
-						name: 'matId'
+						name: 'matId',
+		                align: 'center'
 					},
 					{
 						header: '자재명',
-						name: 'matName'
+						name: 'matName',
+		                align: 'center'
 					},
 					{
 						header: '자재규격',
-						name: 'matSize'
+						name: 'matSize',
+		                align: 'center'
 					},
 					{
 						header: '불량수량',
-						name: 'resVal'
+						name: 'resVal',
+		                align: 'right',
+						editor : 'text',
+		                formatter: ({ value }) => {
+			              	  if(value != null){
+			                 		return value.toLocaleString()
+			                  }else{
+			              	 		return ''
+			                  } 
+			            }
 					},
 					{
 						header: '처리유형',
-						name: 'dmatStat'
+						name: 'dmatStat',
+		                align: 'center'
 					},
 					{
 						header: '등록일자',
-						name: 'dmatDate'
+						name: 'dmatDate',
+		                align: 'center'
 					},
 					{
 						header: '담당자',
-						name: 'empName'
+						name: 'empName',
+		                align: 'center'
 					},
 					{
 						header: '비고',
-						name: 'dmatNote'
+						name: 'dmatNote',
+		                align: 'center'
 					}
 					
 				]
@@ -234,6 +268,7 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
+						alert("반품 등록 완료");
 						$.ajax({
 							url: "/materials/matdmgwaitlist",
 							method: "GET",
@@ -266,6 +301,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
+						alert("반품 등록 실패");
 					}
 					
 				});
@@ -283,6 +319,7 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
+						alert("폐기 등록 완료");
 						$.ajax({
 							url: "/materials/matdmgwaitlist",
 							method: "GET",
@@ -315,6 +352,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
+						alert("폐기 등록 실패");
 					}
 					
 				});

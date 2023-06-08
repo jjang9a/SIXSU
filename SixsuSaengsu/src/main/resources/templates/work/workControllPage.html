@@ -185,17 +185,38 @@
 	      {
 	        header: '계획수량',
 	        name: 'detaQt',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+                if(value != null){
+              return value.toLocaleString()
+              }else{
+               return ''
+              } 
+             }
 	      },
 	      {
 	        header: '완료수량',
 	        name: 'goodQt',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+                if(value != null){
+              return value.toLocaleString()
+              }else{
+               return ''
+              } 
+             }
 	      },
 	      {
 	        header: '불량수량',
 	        name: 'dmatQt',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+                if(value != null){
+              return value.toLocaleString()
+              }else{
+               return ''
+              } 
+             }
 	      },
 	      {
 	          header: '상태',
@@ -448,7 +469,6 @@
         }
         
         searchData.statusCheckbox = statusCheckbox;
-        console.log(searchData);
         
         $.ajax({
 			url : "/ajax/workFilterAjax",

@@ -38,16 +38,12 @@ public class WorkServiceImpl implements WorkService{
 
 	@Override
 	public List<DetaProdPlanVO> getPlan() {
-		System.out.println("getPlan 통과함");
 		List<DetaProdPlanVO> list = mapper.getPlan();
-		System.out.println(list);
 		return list;
 	}
 
 	@Override
 	public List<DetaProdPlanVO> getPlanFilter(PlanDataVO data) {
-		System.out.println("WorkService로 들어온 데이터");
-		System.out.println(data);
 		List<DetaProdPlanVO> list = mapper.getPlanFilter(data);
 		return list;
 	}
@@ -65,11 +61,9 @@ public class WorkServiceImpl implements WorkService{
 	@Override
 	@Transactional
 	public int addPlan(List<addPlanVO> data) {
-		
 		String hireDate = data.get(0).getRegDate();
 		hireDate += "-";
 		String headId = mapper.getIdDateAndData(hireDate);
-		System.out.println("헤드데이터 : " + headId);
 		//생산계획의 ID 부여
 		data.get(0).setPlanHeadId(headId);
 		int result = mapper.addProdPlan(data.get(0));

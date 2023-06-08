@@ -14,6 +14,12 @@ h1 {
 	margin: auto;
 }
 
+#tdTable input, select {
+	margin: auto;
+	padding-left: 10px;
+	width: 120px;
+}
+
 #cpTable input, select {
 	padding-left: 10px;
 	width: 230px;
@@ -28,17 +34,22 @@ h1 {
 	padding: 4px 20px;
 }
 
-.divBtn {
-	text-align: center;
-	padding: 15px 0 30px 0;
+#busTable tr, input {
+	padding-left: 10px;
+	width: 250px;
 }
-.Btns{
+
+.divBtn {
 	text-align: center;
 	padding: 15px 0 30px 0;
 }
 
 .modal-body {
 	background: #e5edf5;
+}
+
+#gridp, #radio, #startDate, #endDate, #orderListGrid, #orderReadyGrid {
+	cursor: pointer;
 }
 </style>
 </head>
@@ -50,7 +61,7 @@ h1 {
 				<tr>
 					<td>상품명</td>
 					<td><input type="text" name="cpName" id="cpName"
-						style="width: 199px;" />
+						style="width: 199px;" readonly />
 						<button type="button" data-bs-toggle="modal" id="searchProductBtn"
 							class="sixBtn1" target="#searchModal">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
@@ -67,7 +78,7 @@ h1 {
 				</tr>
 				<tr>
 					<td>상품코드</td>
-					<td><input type="text" name="cpId" id="cpId" /></td>
+					<td><input type="text" name="cpId" id="cpId" readonly /></td>
 
 				</tr>
 			</table>
@@ -118,15 +129,25 @@ h1 {
 								aria-label="Close"></button>
 						</div>
 
+						<div class="modal-body">
 						<div class="btns">
-							상품명: <input type="text" name="cpOrdNameBox" id="cpOrdNameBox"
-								readonly /> <br /> 상품코드: <input type="text" name="cpOrdCode"
-								id="cpOrdCode" readonly /> <br /> 주문수량: <input type="text"
-								name="ordQt" id="cpOrdQt" readonly /><br /> 총재고량: <input
-								type="text" name="totalQt" id="totalQt" readonly /> <br />
+							<table id="tdTable">
+								<tr>
+									<td>상품명:</td>
+									<td><input type="text" name="cpOrdNameBox"
+										id="cpOrdNameBox" readonly /></td>
+									<td>상품코드:</td>
+									<td><input type="text" name="cpOrdCode" id="cpOrdCode"
+										readonly /></td>
+									<td>주문수량:</td>
+									<td><input type="text" name="ordQt" id="cpOrdQt" readonly /></td>
+									<td>총재고량:</td>
+									<td><input type="text" name="totalQt" id="totalQt"
+										readonly /></td>
+								</tr>
+							</table>
 						</div>
 
-						<div class="modal-body">
 							<div id="lotProductGrid"></div>
 							<button class="sixBtn4" id="readyShip">출고시작</button>
 
@@ -152,12 +173,27 @@ h1 {
 						</div>
 
 						<div class="btns">
-						거래처코드: <input type="text" name="busId" id="busId" readonly /> <br />
-						거래처명: <input type="text" name="busName" id="busName" readonly />
-						<br /> 사업자번호: <input type="text" name="busNum" id="busNum"
-							readonly /> <br /> 거래처주소: <input type="text" name="busAddr"
-							id="busAddr" readonly /><br /> 거래처전화번호: <input type="text"
-							name="busTell" id="busTell" readonly />
+							<table id="busTable">
+								<tr>
+									<td>거래처코드:</td>
+									<td><input type="text" name="busId" id="busId" readonly /></td>
+									<td>거래처명:</td>
+									<td><input type="text" name="busName" id="busName"
+										readonly /></td>
+								</tr>
+								<tr>
+									<td>사업자번호:</td>
+									<td><input type="text" name="busNum" id="busNum" readonly /></td>
+									<td>거래처전화번호:</td>
+									<td><input type="text" name="busTell" id="busTell"
+										readonly /></td>
+								</tr>
+								<tr>
+									<td>거래처주소:</td>
+									<td><input type="text" name="busAddr" id="busAddr"
+										readonly /></td>
+								</tr>
+							</table>
 						</div>
 						<div class="modal-body">
 							<div id="completeShipGrid"></div>
@@ -213,6 +249,7 @@ h1 {
           //data : gridData,
           scrollX: false,
           scrollY: false,
+          rowHeight: 45,
           pageOptions: {
             useClient: true,
             perPage: 10,
@@ -253,6 +290,7 @@ h1 {
           //data : gridData,
           scrollX: false,
           scrollY: false,
+          rowHeight: 45,
           pageOptions: {
             useClient: true,
             perPage: 10,
@@ -296,7 +334,10 @@ h1 {
             {
               header: "주문수량",
               name: "ordQt",
-              align:"center"
+              align : 'right',
+				formatter: ({ value }) => {
+				 return value.toLocaleString()
+				   }
             },
             {
               header: "관리 lot 수량",
@@ -357,7 +398,7 @@ h1 {
           //data : gridData,
           scrollX: false,
           scrollY: false,
-
+          rowHeight: 45,			
           pageOptions: {
             useClient: true,
             perPage: 10,
@@ -381,7 +422,10 @@ h1 {
             {
               header: "완제품 수량",
               name: "cpLotQt",
-              align:"center"
+              align : 'right',
+				formatter: ({ value }) => {
+				 return value.toLocaleString()
+				   }
             },
           ],
         });
@@ -389,7 +433,7 @@ h1 {
         //모달창 안에 있는 출고시작 버튼
         $('#readyShip').on('click', function(){
         	console.log(orderData);
-            orderData.cpLot=$('#totalQt').val();
+            //orderData.cpLot=$('#totalQt').val();
         	$.ajax({
 				url: "/sales/shipPro",
 				method: "POST",
@@ -434,7 +478,7 @@ h1 {
         	el: document.getElementById("orderReadyGrid"),
           	scrollX: false,
           	scrollY: false,
-
+          	rowHeight: 45,
           	pageOptions: {
 	            useClient: true,
 	            perPage: 10,
@@ -459,7 +503,10 @@ h1 {
 	            {
 	              header: "출고 수량",
 	              name: "cpShipQt",
-	              align:"center"
+	              align : 'right',
+					formatter: ({ value }) => {
+					 return value.toLocaleString()
+					   }
 	            },
 	            {
 	              header: "출고 요청일자",
@@ -482,7 +529,7 @@ h1 {
         
         //출고대기테이블 품목을 클릭시 출고를 완료하는기능        
         orderReadyGrid.on('click', ev =>{
-          	if(ev.columnName == 'ordDetId'){	
+          	
           	 	const focusCell = orderReadyGrid.getFocusedCell()
                	let dataRow = orderReadyGrid.getRow(ev.rowKey);
           	 	if(dataRow.cpShipStat == "출고검사전"){
@@ -508,7 +555,7 @@ h1 {
       		 			},
       			 	});	  
          	 	}// end of else if
-			} //end of if(ev.columnName == 'ordDetId')
+		
 		})
 		
 		//출고완료 버튼
@@ -530,6 +577,7 @@ h1 {
         el: document.getElementById("completeShipGrid"),
           scrollX: false,
           scrollY: false,
+          rowHeight: 45,
 
           pageOptions: {
             useClient: true,
@@ -550,7 +598,10 @@ h1 {
             {
               header: "출고 수량",
               name: "cpShipQt",
-              align:"center"
+              align : 'right',
+				formatter: ({ value }) => {
+				 return value.toLocaleString()
+				   }
             },
             {
               header: "출고진행상태",
@@ -561,9 +612,9 @@ h1 {
         });
         
         
-        lotProductGrid.setBodyHeight(400);
-		completeShipGrid.setBodyHeight(400);
-		orderReadyGrid.setBodyHeight(400);
+        lotProductGrid.setBodyHeight(450);
+		completeShipGrid.setBodyHeight(450);
+		orderReadyGrid.setBodyHeight(450);
 		tui.Grid.applyTheme('default', {
 			cell: {
 				header: {

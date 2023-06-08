@@ -149,15 +149,36 @@
 				}, {
 					header : '계획수량',
 					name : 'detaQt',
-					align : 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+	                     if(value != null){
+	                   return value.toLocaleString()
+	                   }else{
+	                    return ''
+	                   } 
+	                  }
 				}, {
 					header : '완료수량',
 					name : 'goodQt',
-					align : 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+	                     if(value != null){
+	                   return value.toLocaleString()
+	                   }else{
+	                    return ''
+	                   } 
+	                  }
 				}, {
 					header : '불량수량',
 					name : 'dmatQt',
-					align : 'center'
+					align : 'right',
+					formatter: ({ value }) => {
+	                     if(value != null){
+	                   return value.toLocaleString()
+	                   }else{
+	                    return ''
+	                   } 
+	                  }
 				}, {
 					header : '상태',
 					name : 'cmpltSt',
@@ -165,11 +186,13 @@
 				}, {
 					header : '착수일',
 					name : 'startDate',
-					align : 'center'
+					align : 'center',
+					width : 110
 				}, {
 					header : '완료일',
 					name : 'endDate',
-					align : 'center'
+					align : 'center',
+					width : 110
 				}, {
 					header : '작성자',
 					name : 'empName',

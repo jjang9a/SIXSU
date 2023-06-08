@@ -6,16 +6,46 @@
 <head>
 <meta charset="UTF-8">
 <title>재고현황</title>
+<style>
+h1 {
+	margin-bottom: 40px;
+}
+
+#section{
+width: 40%;
+float: left;
+padding: 5px;
+
+}
+#section1{
+width: 60%;
+float: right;
+padding: 5px;
+
+}
+
+#allProductGrid {
+cursor: pointer;
+}
+</style>
 </head>
+
 <body>
     <div layout:fragment="content">
 	<h1 class="mt-4" style="font-family: 'MaruBuri'">재고현황</h1>
-	<h3 class="mt-4" style="font-family: 'MaruBuri'">상품별 총 재고</h3>
 	
+	<div id="section">
+	<h3 class="mt-4" style="font-family: 'MaruBuri'">상품별 총 재고</h3>
 	<div id="allProductGrid"></div>
+	</div>
+	
+	
+	<div id="section1">
 	<h3 class="mt-4" style="font-family: 'MaruBuri'">LOT별 총 재고</h3>
 	<div id="lotProductGrid"></div>
-
+	</div>
+	
+	
 <script>
 	$.ajax({
 	    url: '/sales/inventorySearch',
@@ -35,7 +65,8 @@
 		//data : gridData,
 		scrollX : false,
 		scrollY : false,
-		minBodyHeight: 400,
+		rowHeight: 45,
+		minBodyHeight: 450,
 		
 		
 		columns : [ {
@@ -49,7 +80,10 @@
 		},{
 			header : '제품총수량',
 			name : 'totalProd',
-			align : 'center'
+			align : 'right',
+			formatter: ({ value }) => {
+			 return value.toLocaleString()
+			   }
 		}
 		]
 		});
@@ -92,7 +126,7 @@
           //data : gridData,
           scrollX: false,
           scrollY: false,
-
+          rowHeight: 45,
           pageOptions: {
             useClient: true,
             perPage: 10,
@@ -116,12 +150,15 @@
             {
               header: "완제품 수량",
               name: "cpLotQt",
-              align:"center"
+              align : 'right',
+  			formatter: ({ value }) => {
+  			 return value.toLocaleString()
+  			   }
             },
           ],
         });
-		allProductGrid.setBodyHeight(400);
-		lotProductGrid.setBodyHeight(400);
+		allProductGrid.setBodyHeight(450);
+		lotProductGrid.setBodyHeight(450);
 </script>	
 	
 	</div>

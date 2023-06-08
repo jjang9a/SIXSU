@@ -386,10 +386,10 @@ LEFT OUTER JOIN  work_bom b
 		         p.good_qt,
 		         p.dmat_qt,
 		         q.insp_num,
-		         to_char(p.wk_end, 'yyyy-MM-dd') wk_end,
+		         to_char(q.insp_date, 'yyyy-MM-dd') insp_date,
 		         b.proc_id,
 		         r.proc_name,
-                 get_emp_name(q.emp_id) emp_name
+                 get_emp_name(q.emp_id) emp_id
 		   from  process_performance p 
 LEFT OUTER JOIN  qua_com q 
              ON  p.PRCS_PFMC_ID = q.INSP_STD_ID
@@ -458,7 +458,7 @@ LEFT OUTER JOIN prod_rev r
              ON p.cp_lot_id = r.cp_lot_id
 LEFT OUTER JOIN process_performance f 
              ON r.prcs_pfmc_id = f.prcs_pfmc_id
-		order by cp_ship_stat
+		order by cp_ship_stat, insp_date desc
 	</select>
 	
 	<!-- 완제품 출고 관리 리스트 -->

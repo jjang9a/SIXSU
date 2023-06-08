@@ -5,6 +5,34 @@
 <head>
 	<meta charset="UTF-8">
 	<title>자재입고조회</title>
+	<style>
+		#recTable{
+			margin: 20px auto;
+		}
+      .inputR {
+			width: 210px;
+			padding-left : 5px
+		}
+	  .inputS {
+	  
+			width: 110px;
+		}
+	
+		#recTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}
+		#divRadio input{
+			width:30px
+		}
+		#divRadio{
+			padding-right : 180px;
+		}
+		.divBtn{
+			text-align:center;
+			padding : 10px 0 30px;
+		}		
+	</style>
 </head>
 
 <body>
@@ -14,19 +42,15 @@
 				<table id="recTable">
 					<tr>
 						<td>자재LOT번호</td>
-						<td><input type="text" name="matLotId" id="matLotId" class="empty" placeholder="검색"></td>
+						<td><input type="text" name="matLotId" id="matLotId" class="inputR" placeholder="검색"></td>
+						<td>입고일자</td>
+						<td>
+							<input type="date" id="matRecDate" class="inputR"> ~ <input type="date" id="matRecDatee" class="inputR">
+						</td>
 					</tr>
 					<tr>
 						<td>자재명</td>
-						<td><input type="text" name="matName" id="matName" class="empty" placeholder="검색"></td>
-						
-					</tr>
-					<tr>
-						<td>거래처명</td>
-						<td><input type="text" name="busName" id="busName" class="empty" placeholder="검색"></td>
-						
-					</tr>
-					<tr>
+						<td><input type="text" name="matName" id="matName" class="inputR" placeholder="검색"></td>
 						<td>입고유형</td>
 						<td>
 							<div id="divRadio">
@@ -40,14 +64,15 @@
 						</td>
 					</tr>
 					<tr>
-						<td>입고일자</td>
-						<td>
-							<input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
-						</td>
+						<td>거래처명</td>
+						<td><input type="text" name="busName" id="busName" class="inputR" placeholder="검색"></td>
 					</tr>
+
 				</table>
-				<button type="button" class="sixBtn2" id="check">조회</button>
-				<button type="button" class="sixBtn2" id="reset">초기화</button>
+				<div class="divBtn">
+					<button type="button" class="sixBtn2" id="check">검색</button>
+					<button type="button" class="sixBtn3" id="reset">초기화</button>
+				</div>
 			</form>
 		<div id="grids"></div>
 		
@@ -123,7 +148,8 @@
 					useClient: true,
 					perPage: 10
 				},
-
+				rowHeight: 45,
+				minBodyHeight: 200,
 
 				rowHeaders: ['rowNum'],
 
@@ -131,47 +157,64 @@
 				columns: [{
 						header: '자재입고번호',
 						name: 'matRecId',
-						hidden: true
+			            align: 'center'
 					},
 					{
 						header: '자재LOT번호',
-						name: 'matLotId'
+						name: 'matLotId',
+			            align: 'center'
 					},
 					{
 						header: '발주번호',
-						name: 'matReqId'
+						name: 'matReqId',
+			            align: 'center'
 					},
 					{
 						header: '자재명',
-						name: 'matName'
+						name: 'matName',
+			            align: 'center'
 					},
 					{
 						header: '입고수량',
-						name: 'matRecQt'
+						name: 'matRecQt',
+		                align: 'right',
+		                formatter: ({ value }) => {
+		              	  if(value != null){
+		                 		return value.toLocaleString()
+		                  }else{
+		              	 		return ''
+		                  } 
+		                }
 					},
 					{
 						header: '거래처명',
-						name: 'busName'
+						name: 'busName',
+			            align: 'center'
 					},
 					{
 						header: '검사일자',
-						name: 'inspDate'
+						name: 'inspDate',
+			            align: 'center'
 					},
 					{
 						header: '입고일자',
-						name: 'matRecDate'
+						name: 'matRecDate',
+			            align: 'center'
 					},
 					{
 						header: '입고유형',
-						name: 'matRecType'
+						name: 'matRecType',
+			            align: 'center'
 					},
 					{
 						header: '담당자',
-						name: 'empName'
+						name: 'empName',
+			            align: 'center'
 					},
 					{
 						header: '비고',
-						name: 'matRecNote'
+						name: 'matRecNote',
+			            align: 'center'
 					}
 					
 				]

@@ -5,7 +5,30 @@
 <head>
 	<meta charset="UTF-8">
 	<title>자재LOT조회</title>
-
+	<style>
+		#matLotTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}		
+		#matLotTable{
+			margin: 20px auto;
+		}
+      .inputR {
+			width: 210px;
+			padding-left : 5px
+		}
+		#divRadio{
+			padding-right : 130px;
+		}
+		#divRadio input{
+			width:30px;
+		}
+		#divBtn{
+			text-align:center;
+			padding: 10px 0 30px;
+		}			
+				
+	</style>
 </head>
 
 <body>
@@ -15,14 +38,15 @@
 				<table id="matLotTable">
 					<tr>
 						<td>자재LOT번호</td>
-						<td><input type="text" name="mlot" id="mlot" class="empty" placeholder="검색"></td>
-					</tr>
-					<tr>
-						<td>자재명</td>
-						<td><input type="text" name="mname" id="mname" class="empty" placeholder="검색">
+						<td><input type="text" name="mlot" id="mlot" class="inputR" placeholder="검색"></td>
+						<td>입고일자</td>
+						<td>
+							<input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
 						</td>
 					</tr>
 					<tr>
+						<td>자재명</td>
+						<td><input type="text" name="mname" id="mname" class="inputR" placeholder="검색"></td>
 						<td>홀드상태</td>
 						<td>
 							<div id="divRadio">
@@ -35,16 +59,10 @@
 							</div>
 						</td>
 					</tr>
-					<tr>
-						<td>입고일자</td>
-						<td>
-							<input type="date" id="matRecDate"> ~ <input type="date" id="matRecDatee">
-						</td>
-					</tr>
 				</table>
 			</form>
-			<div id="left">
-				<button class="sixBtn2" id="check">조회</button>
+			<div id="divBtn">
+				<button class="sixBtn2" id="check">검색</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
 		
@@ -54,8 +72,6 @@
 
 			];
 
-
-			
 				function mLotList(lot, mat, holdStat, sDate, eDate){
 					
 					$.ajax({
@@ -119,43 +135,55 @@
 				
 				scrollX: false,
 				scrollY: false,
+				rowHeight: 45,
 				pageOptions: {
 					useClient: true,
 					perPage: 10
 				},
 
-
+				rowHeight: 45,
+				minBodyHeight: 200,
 				
 				rowHeaders: ['rowNum'],
 
 
 				columns: [{
 						header: '자재LOT번호',
-						name: 'matLotId'
+						name: 'matLotId',
+						align : 'center'
 					},
 					{
 						header: '자재코드',
-						name: 'matId'
+						name: 'matId',
+						align : 'center'
 					},
 					{
 						header: '자재명',
-						name: 'matName'
+						name: 'matName',
+						align : 'center'
 					},
 					{
 						header: '규격',
-						name: 'matSize'
+						name: 'matSize',
+						align : 'center'
 					},
 					{
 						header: '재고량',
-						name: 'matQt'
+						name: 'matQt',
+						align : 'right',
+						formatter: ({ value }) => {
+							return value.toLocaleString()
+						}
 					},
 					{
 						header: '홀드상태',
-						name: 'matHoldStat'
+						name: 'matHoldStat',
+						align : 'center'
 					},
 					{
 						header: '입고일자',
-						name: 'matRecDate'
+						name: 'matRecDate',
+						align : 'center'
 					}
 				]
 				

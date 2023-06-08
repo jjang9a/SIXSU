@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>반제품조회</title>
+	<title>반제품 조회</title>
 	<style>
 		#gridm .redcolor {
 			background-color: #ffe4e4
@@ -23,7 +23,7 @@
 
 <body>
 	<div layout:fragment="content">
-		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품조회</h1>
+		<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 조회</h1>
 
 		<div id="left">
 			반제품명 <input type="text" id="spName" name="spName">
@@ -34,30 +34,7 @@
 		<div id="gridm"></div>
 
 		<script>
-<<<<<<< HEAD
-			function spList(spName) {
-				$.ajax({
-					url: "/materials/semiprodlist",
-					method: "GET",
-					data: {
-						spName: spName
-					},
-					success: function (result) {
-						gridm.resetData(result);
-					},
-					error: function (reject) {
-						console.log(reject);
-					}
-				});
-			}
 
-
-			let spName = null;
-			spList(spName);
-
-
-			const gridData = [
-=======
 		
 		function spList(spName){
 			$.ajax({
@@ -89,7 +66,6 @@
 		
 		
 		const gridData = [
->>>>>>> branch 'main' of https://github.com/jjang9a/SIXSU.git
 
 			];
 			window.onload = function () {
@@ -106,6 +82,8 @@
 					useClient: true,
 					perPage: 10
 				},
+				rowHeight: 45,
+				minBodyHeight: 200,
 				rowHeaders: ['rowNum'],
 				columns: [{
 					header: '반제품코드',
