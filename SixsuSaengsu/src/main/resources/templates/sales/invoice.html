@@ -202,7 +202,7 @@ window.onload = function() {
 		 	transPro=ev.rowKey; // 상품 조회 모달창에서 주문상세그리드 테이블에 값을 차례대로 넘기기위해서 변수 transPro 안에 ev.rowkey를 담아준다
 	   		$('#productModal').modal('show');
 			$.ajax({
-	    		url : "/sales/products",
+	    		url : "/sales/products.Ajax",
 	    		method : "get",
 	    		dataType : "JSON",
 	    		success : function(result){
@@ -225,7 +225,7 @@ window.onload = function() {
 	// 주문내역조회
 	function orderingList(){
 		$.ajax({
-			url : "/sales/orderingList",
+			url : "/sales/orderingList.Ajax",
 			method : "GET",
 			dataType : "JSON",
 			success : function(result) {
@@ -253,7 +253,7 @@ window.onload = function() {
 		let data ={ codeBox, ordDate, empName, empId, busName, busId, busNum, busAddr, busTel ,
 				    list:gridy.getModifiedRows().createdRows}
 		$.ajax({
-			url:'/sales/orderAdd',
+			url:'/sales/orderAdd.Ajax',
 			type:'post',
 			contentType : 'application/json',
 			data:JSON.stringify( data ),
@@ -274,7 +274,7 @@ window.onload = function() {
 	$('#orderModify').on('click',function(e){
 		//주문 마스터정보 수정	
 		$.ajax({
-			url:'/sales/orderMod',
+			url:'/sales/orderMod.Ajax',
 			type:'post',
 			data:$('#allOrderList').serialize(),
 			success:function(result){
@@ -298,7 +298,7 @@ window.onload = function() {
 		// 주문 상세 정보 수정
 		console.log(gridy.getModifiedRows())
 		$.ajax({
-			url:'/sales/ordDetMod',
+			url:'/sales/ordDetMod.Ajax',
 			type:'post',
 			data: 'json',
 			contentType : 'application/json',
@@ -322,7 +322,7 @@ window.onload = function() {
 	$("#deletComplete").on("click", function(e){
 		
 		$.ajax({
-			url:'/sales/orderModDel',
+			url:'/sales/orderModDel.Ajax',
 			type:'post',
 			data:$('#allOrderList').serialize(),
 			success:function(result){
@@ -604,7 +604,7 @@ window.onload = function() {
 		// 사원검색버튼
 		$('#searchModal').on('show.bs.modal',function(e){
 			$.ajax({
-				url : "/sales/emp1List",
+				url : "/sales/emp1List.Ajax",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
@@ -629,7 +629,7 @@ window.onload = function() {
 		const result = $("#search-text").val()
 		
 		$.ajax({
-			url : "/sales/emp1List",
+			url : "/sales/emp1List.Ajax",
 			method : "GET",
 			data : {'result' : result},
 			success : function(result) {
@@ -650,7 +650,7 @@ window.onload = function() {
 	// 모달사원조회 입력값 초기화
 	$('#reset-btn').on('click',function(e){
 		$.ajax({
-			url : "/sales/emp1List",
+			url : "/sales/emp1List.Ajax",
 			method : "GET",
 			dataType : "JSON",
 			success : function(result) {
@@ -709,7 +709,7 @@ window.onload = function() {
 		$('#search1Modal').on('show.bs.modal',function(e){
 			console.log ('거래처 모달');
 			$.ajax({
-				url : "/sales/busList",
+				url : "/sales/busList.Ajax",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
@@ -725,7 +725,7 @@ window.onload = function() {
 	  	$("#reset1-btn").on('click',function(e){
 	  		$("#search1-text").val("");
 	  		$.ajax({
-				url : "/sales/busList",
+				url : "/sales/busList.Ajax",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
@@ -742,7 +742,7 @@ window.onload = function() {
 		console.log($("#search1-text").val())
 		const result = $("#search1-text").val()
 		$.ajax({
-			url : "/sales/bus1List",
+			url : "/sales/bus1List.Ajax",
 			method : "GET",
 			data : {'result' : result},
 			success : function(result) {
@@ -808,7 +808,7 @@ window.onload = function() {
 		console.log(dataRow);
 
 		$.ajax({
-			url : "/sales/firstOrderingList",
+			url : "/sales/firstOrderingList.Ajax",
 			method : "GET",
 			data : {'result' : dataRow.ordId},
 			success : function(result) {
@@ -827,7 +827,7 @@ window.onload = function() {
 		})   
 		    
 	    $.ajax({
-	    	url:"/sales/secondOrderingList",
+	    	url:"/sales/secondOrderingList.Ajax",
 	    	method: "GET",
 	    	data : {'result' : dataRow.ordId},
 	    	success : function(result){

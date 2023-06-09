@@ -333,7 +333,7 @@
 			$('#eqBtn').on('click', function (e) {
 
 				$.ajax({
-					url: "equCon",
+					url: "equCon.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -364,7 +364,7 @@
 			function operList() {
 
 				$.ajax({
-					url: "equOperList",
+					url: "equOperList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -429,13 +429,13 @@
 
 					console.log($('#addForm').serialize())
 					$.ajax({
-						url: 'startIn',
+						url: 'startIn.Ajax',
 						type: 'post',
 						data: $('#addForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
 							
-							alert('등록되었습니다');
+							Msg.success('등록이 완료되었습니다.', 2000);
 
 							const appendedData = result
 							grid.prependRow(appendedData);
@@ -452,7 +452,7 @@
 							 setTimeout(() => orderingGrid.refreshLayout(), 1000);
 						},
 						error: function (reject) {
-							alert('등록 중 오류가 발생했습니다!');
+							Msg.error('등록 중 오류가 발생하였습니다.', 2000);
 							console.log(reject);
 						}
 					});
@@ -483,20 +483,20 @@
 					
 					console.log($('#addForm').serialize())
 					$.ajax({
-						url: 'fnishIn',
+						url: 'fnishIn.Ajax',
 						type: 'post',
 						data: $('#addForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
 							console.log(result);
-							alert('수정되었습니다');
+							Msg.success('수정이 완료되었습니다.', 2000);
 							grid.resetData(result)
 							const setData = result
 							//grid.setRow(selRow, setData);
 							selRow = '';
 						},
 						error: function (reject) {
-							alert('수정 중 오류가 발생했습니다!');
+							Msg.error('수정 중 오류가 발생하였습니다.', 2000);
 							console.log(reject);
 						}
 					});
@@ -513,24 +513,24 @@
 			// 비가동관리(수정) 
 			$('#modBtn').on('click', function (e) {
 				if (selRow == 999) {
-					alert('수정할 데이터가 없습니다.')
+					Msg.warning('수정할 데이터가 없습니다.');
 				} else {
 
 					console.log($('#addForm').serialize())
 					$.ajax({
-						url: 'oUpdate',
+						url: 'oUpdate.Ajax',
 						type: 'post',
 						data: $('#addForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
 							console.log(result);
-							alert('수정되었습니다');
+							Msg.success('수정이 완료되었습니다.', 2000);
 							const setData = result
 							grid.setRow(selRow, setData);
 							selRow = '';
 						},
 						error: function (reject) {
-							alert('수정 중 오류가 발생했습니다!');
+							Msg.error('수정 중 오류가 발생하였습니다.', 2000);
 							console.log(reject);
 						}
 					});
@@ -545,7 +545,7 @@
 			// 비가동 관리(삭제)
 			$('#delBtn').on('click', function (e) {
 				if (selRow == 999) {
-					alert('삭제 정보를 선택하시오.')
+					Msg.warning('삭제할 열이 선택되지 않았습니다.');
 				} else {
 
 					e.preventDefault();
@@ -553,7 +553,7 @@
 
 					var operCode = $('#operCode').val();
 					$.ajax({
-						url: 'oDel',
+						url: 'oDel.Ajax',
 						type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
 						contentType: "application/json",
 						data: JSON.stringify({
@@ -562,7 +562,7 @@
 						success: function (result) {
 							// 삭제 성공 시의 처리
 							console.log('설비가 성공적으로 삭제되었습니다.');
-							alert('설비정보가 성공적으로 삭제되었습니다.');
+							Msg.success('삭제가 완료되었습니다.', 2000);
 
 							grid.removeRow(selRow)
 							selRow = '';
@@ -578,7 +578,7 @@
 						error: function (reject) {
 							console.log('설비 삭제 중 오류가 발생했습니다.');
 							console.log('오류 메시지:', reject);
-							alert('설비 삭제 중 오류가 발생했습니다..');
+							Msg.error('삭제 중 오류가 발생하였습니다.', 2000);
 						}
 					});
 				}
