@@ -67,7 +67,7 @@
 					<td>안전재고량<span class="needStar"> *</span></td>
 					<td><input type="text" name="matSafe" id="matSafe" class="empty">
 					<td>단위<span class="needStar"> *</span></td>
-					<td><input type="text" name="matUnit" id="matUnit"></td>
+					<td><input type="text" name="matUnit" id="matUnit" class="empty"></td>
 				</tr>
 				<tr>
 					<td>비고</td>
@@ -207,6 +207,7 @@
 					$("input:radio[name='matStat']:radio[value='N']").prop('checked', true);
 				}
 				$('#matSize').val(dataRow.matSize);
+				$('#matUnit').val(dataRow.matUnit);
 			})
 
 			// 수정 버튼 이벤트

@@ -23,12 +23,20 @@
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
     <script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
     <script src="/js/scripts.js"></script>
-
+    
+    <script src="/js/bootstrap-msg.js"></script>
+    <link href="/css/bootstrap-msg.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css" />
+    
     <!-- <meta name="_csrf" th:content="${_csrf.token}"/>
 	<meta name="_csrf_header" th:content="${_csrf.headerName}"/> -->
 </head>
 
 <body class="sb-nav-fixed">
+<!-- alert 생성 -->
+<div id="msg" class="alert alert-success"><i
+				class="glyphicon glyphicon-ok-sign"></i> <span>알람창 띄우기</span></div>
+<!-- alert 끝 -->				
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-deepblue" style="height: 95px;">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-1" href="/top"><img src="/assets/img/logo5.png" style="height:65px"></a>

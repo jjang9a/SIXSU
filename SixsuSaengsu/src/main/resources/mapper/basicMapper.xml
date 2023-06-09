@@ -314,18 +314,18 @@
 </select>
 
 <select id="activeSpList" resultType="ProductVO">
-	SELECT sp_id as cp_id, sp_name as cp_name, sp_size as cp_size
+	SELECT sp_id as cp_id, sp_name as cp_name, sp_size as cp_size, sp_unit as cp_unit
 	FROM semi_prod
 	WHERE sp_stat = 'Y'
     UNION
-	SELECT mat_id cp_id, mat_name cp_name, mat_size cp_size
+	SELECT mat_id cp_id, mat_name cp_name, mat_size cp_size, mat_unit as cp_unit
 	FROM material
 	WHERE mat_id = 'M021'
 	ORDER BY cp_id
 </select>
 
 <select id="activeMatList" resultType="ProductVO">
-	SELECT mat_id as cp_id, mat_name as cp_name, mat_size as cp_size
+	SELECT mat_id as cp_id, mat_name as cp_name, mat_size as cp_size, mat_unit as cp_unit
 	FROM material
 	WHERE mat_stat = 'Y'
 	ORDER BY cp_id

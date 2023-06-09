@@ -259,7 +259,7 @@
 							alert('거래처가 성공적으로 등록되었습니다');
 							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
 							const appendedData = result
-							grid.appendRow(appendedData);
+							grid.prependRow(appendedData);
 							check = false;
 						},
 						error: function (reject) {
@@ -270,10 +270,10 @@
 				}
 			});
 
-			// 열을 더블클릭하면 위쪽 폼으로 데이터 가져오기
+			// 열을 클릭하면 위쪽 폼으로 데이터 가져오기
 			let selRow = 999;
 			grid.on('click', function (e) {
-				// 열을 더블클릭하면 열 정보를 변수에 저장
+				// 열을 클릭하면 열 정보를 변수에 저장
 				selRow = e.rowKey;
 				console.log(selRow)
 				let dataRow = grid.getRow(selRow);
