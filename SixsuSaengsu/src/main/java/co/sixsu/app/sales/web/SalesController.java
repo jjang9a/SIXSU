@@ -65,7 +65,7 @@ public class SalesController {
 
 
 //모달창 회원이름 조회
-	@RequestMapping("emp1List")
+	@RequestMapping("emp1ListAjax")
 	@ResponseBody
 	public List<EmpVO> emp1List(@RequestParam(required = false) String result) {
 		System.out.println(result);

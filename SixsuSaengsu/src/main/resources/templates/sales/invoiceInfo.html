@@ -65,7 +65,7 @@ h1 {
 						<td>주문일자</td>
 						<td colspan="3"><input type="date" name="ordSdate"
 							id="ordDate" style="width: 120px;"> ~ <input type="date"
-							name="ordFdate" id="ordFdate" style="width: 120px;"></td>
+							name="ordFdate" id="ordFdate" style="width: 120px;"  min="" disabled></td>
 					</tr>
 					<tr>
 						<td>거래처코드</td>
@@ -139,7 +139,14 @@ h1 {
 			</div>
 		</div>
 		<script>
-       
+	  	var startDate = document.getElementById("ordDate");
+	    var endDate= document.getElementById("ordFdate");
+
+	    startDate.addEventListener("input", function() {
+	    	endDate.min = startDate.value;
+	    	endDate.disabled = false;
+	       });
+	    
 		$.ajax({
 		    url : "/sales/searchOrder",
 		    method : "post",
@@ -262,6 +269,9 @@ h1 {
 					gridt.resetData(result);
 					$("#search1-text").val("");
 					setTimeout(()=>gridt.refreshLayout(),400);
+				},
+				error : function(reject){
+					console.log(reject);
 				}
 			});
 			
@@ -276,6 +286,10 @@ h1 {
 			success : function(result) {
 				gridt.resetData(result);
 				$("#search1-text").val("");
+
+			},
+			error : function(reject){
+				console.log(reject);
 			}
 		});   
 	})

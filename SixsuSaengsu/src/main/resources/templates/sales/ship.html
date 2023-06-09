@@ -74,7 +74,7 @@ h1 {
 					<td>주문일자</td>
 					<td><input type="date" name="startDate" id="startDate"
 						style="width: 120px;" /> <input type="date" name="endDate"
-						id="endDate" style="width: 120px;" /></td>
+						id="endDate" style="width: 120px;" min="" disabled/></td>
 				</tr>
 				<tr>
 					<td>상품코드</td>
@@ -204,6 +204,15 @@ h1 {
 			</div>
 		</div>
 		<script>
+		var startDate = document.getElementById("startDate");
+		var endDate= document.getElementById("endDate");
+		
+		startDate.addEventListener("input", function() {
+			endDate.min = startDate.value;
+			endDate.disabled = false;
+		   });
+   
+	    
       $("#search").on("click",(e) =>{
 			 $.ajax({
 	             url: '/sales/orderedList',
@@ -490,6 +499,12 @@ h1 {
 	              align:"center",
 	              rowSpan: true
 	            },
+	            {
+	              header: "완제품명",
+	              name: "cpId",
+	              align:"center",
+				  rowSpan: true
+	            },
 	        	{
 	              header: "완제품 출고코드",
 	              name: "cpShipId",
@@ -508,11 +523,7 @@ h1 {
 					 return value.toLocaleString()
 					   }
 	            },
-	            {
-	              header: "출고 요청일자",
-	              name: "cpShipReqDate",
-	              align:"center"
-	            },
+	          
 	            {
 	              header: "출고진행상태",
 	              name: "cpShipStat",
@@ -546,7 +557,7 @@ h1 {
 					console.log(dataRow.ordDetId);
     	             	
 					$.ajax({
-        				url: "/sales/readyShipList",
+        				url: "/sales/shipReady",
        					method: "get",
         				data: {'result' : dataRow.ordDetId},
         				success: function (result) {
@@ -560,6 +571,7 @@ h1 {
 		
 		//출고완료 버튼
 		$("#completeShip").on("click", function (e) {
+			if(e.columnName == 'ordDetId'){
 			$.ajax({
 				url: "/sales/completShip",
 				method: "post",
@@ -568,8 +580,14 @@ h1 {
 					alert ('출고가 완료되었습니다');
 					readyShipList() ;
                 },
+                error: function (reject) {
+					console.log(reject)
+					alert('출고 과정에서 에러가 발생하였습니다.')
+					
+				}
 			}); //end of ajax
 			$("#shipReadyModal").modal("hide");
+			}
 		});
 		
         //출고완료전 모달 테이블 그리드  

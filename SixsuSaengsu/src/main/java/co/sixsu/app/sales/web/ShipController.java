@@ -45,6 +45,16 @@ public class ShipController {
 		List<LotVO> list =service.lotProducts(result);
 		return list;
 	}
+	
+	
+	@RequestMapping("shipReady")
+	@ResponseBody
+	public List<LotVO> shipReady(@RequestParam String result){
+		System.out.println(result);
+		
+		List<LotVO> list =service.shipReady(result);
+		return list;
+	}
 	//모달창에 자동으로 총수량이 뜨는 기능
 	@RequestMapping("totalQt")
 	@ResponseBody

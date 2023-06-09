@@ -61,7 +61,7 @@ cursor: pointer;
 								</svg></button></td>
 								<td>입고일자</td>
 								<td><input type="date" name="startDate" id="startDate" style="width : 120px;"/> ~
-							<input type="date" name="endDate" id="endDate" style="width : 120px;"/></td>
+							<input type="date" name="endDate" id="endDate" style="width : 120px;" min="" disabled/></td>
 					</tr>
 					<tr>
 						<td>상품코드</td>
@@ -104,6 +104,15 @@ cursor: pointer;
 
 
 		<script>
+		
+	 	var startDate = document.getElementById("startDate");
+	    var endDate= document.getElementById("endDate");
+
+	    startDate.addEventListener("input", function() {
+	    	endDate.min = startDate.value;
+	    	endDate.disabled = false;
+	       });
+	    
 			$.ajax({
 				url: "/sales/searchReceive",
 				method: "GET",
