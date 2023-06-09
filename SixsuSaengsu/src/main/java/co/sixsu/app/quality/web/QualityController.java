@@ -269,25 +269,25 @@ public class QualityController {
 	
 	// 조회 아작스
 	@ResponseBody
-	@PostMapping("/quality/searchInsp") // 품질검사 조회
+	@PostMapping("/quality/searchInsp.Ajax") // 품질검사 조회
 	public List<QuaVO> searchInsp(QuaVO vo) {
 		return quaService.searchInsp(vo);
 	}
 	
 	@ResponseBody
-	@GetMapping("/quality/waterAjax") // 원천수 입고대기목록
+	@GetMapping("/quality/water.Ajax") // 원천수 입고대기목록
 	public List<QuaVO> waterAjax(){
 		return quaService.getWater();
 	}
 	
 	@ResponseBody
-	@GetMapping("/quality/resultInspList")
+	@GetMapping("/quality/resultInspList.Ajax")
 	public List<QuaVO> resultInspList(){ // 2주이내 검사결과 리스트
 		return quaService.resultInspList();
 	}
 	
 	@ResponseBody
-	@GetMapping("/quality/getDetail") // 품질검사 상세결과
+	@GetMapping("/quality/getDetail.Ajax") // 품질검사 상세결과
 	public List<QuaVO> getDetail(@RequestParam String inspNum){
 		return quaService.getDetail(inspNum);
 	}
