@@ -82,6 +82,8 @@
 					<td>점검일자<span class="needStar"> *</span></td> 
 					<td><input type="text" name="checkDate" id="checkDate" style="background: #ccdceb;" class="empty" readonly></td>
 					
+					<td>차기점검일<span class="needStar"> *</span></td> 
+					<td><input type="text" name="checkNext" id="checkNext" style="background: #ccdceb;" class="empty" readonly></td>
 					
 					<td>설비명<span class="needStar"> * </span></td>
 					<td><input type="text" name="equName" id="equName" class="empty"></td>		
@@ -110,8 +112,8 @@
 						
 						
 					<td>담당자<span class="needStar"> *</span></td>
-					<td><input type="text" name="empName" id="empName" class="empty" th:value='${#authentication.principal.empName}'></td> 
-					<input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'>
+					<td><input type="text" name="empName" id="empName" th:value='${#authentication.principal.empName}'></td> 
+					<input type="hidden" name="empId" id="empId" th:value='${#authentication.principal.empId}'>
 				</tr>
 					<!-- 점검주기 -->
 					<td><input type="hidden" name="equCheck" id="equCheck" class="empty"></td>
@@ -230,7 +232,8 @@
 						header: '담당자',
 						name: 'empName',
 						align: 'center'
-					},{
+					},
+					{
 						header: '담당사원',
 						name: 'empId',
 						hidden : true,
@@ -334,7 +337,7 @@
 
 
 			// 페이지가 열리면 기능작동 - 리스트 띄워주기.  
-			window.onload = function () {
+			function checkList() {
 
 				$.ajax({
 					url: "equCheckList",
@@ -346,6 +349,7 @@
 				});
 			};
 
+			checkList();
 
 			// 색 테마 적용
 			tui.Grid.applyTheme('default', {
@@ -423,7 +427,7 @@
 					}
 				});
 				// 인풋창을 비워줌
-				$('#addForm input').val('');
+				$('.empty').val('');
 				// 셀렉트 리셋해줌
 				$('#equSuit').val('').prop("selected", true);
 				$('#checkType').val('').prop("selected", true);
@@ -445,9 +449,10 @@
 					success: function (result) {
 						console.log(result);
 						alert('수정되었습니다');
-						const setData = result
-						grid.setRow(selRow, setData);
-						selRow = '';
+						
+						// 리스트 반환
+						checkList();
+						selRow = 999;
 					},
 					error: function (reject) {
 						alert('수정 중 오류가 발생했습니다!');
@@ -470,22 +475,26 @@
 				
 				e.preventDefault();
 				console.log(selRow);
-
-				var checkCode = $('#checkCode').val();
+				
+				let checkCode = $('#checkCode').val();
+				console.log(JSON.stringify({
+						checkCode: $('#checkCode').val()
+				}))
 				$.ajax({
 					url: 'cDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
 					type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
 					contentType: "application/json",
 					data: JSON.stringify({
-						checkCode: $('#checkCode').val()
+						checkCode: checkCode
 					}), // 삭제할 설비의 ID를 전송
 					success: function (result) {
 						// 삭제 성공 시의 처리
 						console.log('설비가 성공적으로 삭제되었습니다.');
 						alert('설비정보가 성공적으로 삭제되었습니다.');
+						checkList();
 
-						grid.removeRow(selRow)
-						selRow = '';
+						//grid.removeRow(selRow)
+						selRow = 999;
 						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주
 						$('.empty').val('');
 						// 셀렉트 리셋해줌
