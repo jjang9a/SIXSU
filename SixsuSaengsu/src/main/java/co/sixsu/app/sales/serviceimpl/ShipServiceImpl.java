@@ -28,7 +28,11 @@ public List<LotVO> lotProducts(String keyword) {
 	// TODO Auto-generated method stub
 	return mapper.lotProducts(keyword);
 }
-
+@Override //모달창 품목별 lot 재고현황
+public List<LotVO> shipReady(String keyword) {
+	// TODO Auto-generated method stub
+	return mapper.shipReady(keyword);
+}
 
 @Override//모달창에 자동으로 총수량이 뜨는 기능
 public int totalQt(String keyword) {

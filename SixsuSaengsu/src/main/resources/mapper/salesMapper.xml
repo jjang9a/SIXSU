@@ -94,7 +94,7 @@
 	<!-- 진행중인 주문서 조회 페이지 가장 하단 부분 -->
 	<select id="orderingList" resultType='InvVO'>
 	
-	select s.ord_id, TO_CHAR(s.ord_date, 'yyyy-MM-dd') as ord_date, b.bus_name, b.bus_id, b.bus_num, get_com_name(s.ord_stat) ord_stat_name
+	select s.ord_id, TO_CHAR(s.ord_date, 'yyyy-MM-dd') as ord_date, b.bus_name, b.bus_id, b.bus_num, get_com_name(s.ord_stat) ord_stat
 	from SORDER s, BUSINESS b
 	where s.bus_id = b.bus_id
 	and s.ord_stat = 'ORD_ING'
