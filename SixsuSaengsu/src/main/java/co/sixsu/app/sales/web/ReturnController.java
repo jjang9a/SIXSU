@@ -27,7 +27,7 @@ public class ReturnController {
 		
 	}
 	@ResponseBody
-	@RequestMapping("orderComplete")
+	@RequestMapping("orderComplete.Ajax")
 	public List<ShipCompVO> orderComplete(@RequestParam(required = false) String result){
 		List<ShipCompVO> list = service.orderComplete(result);
 		
@@ -36,7 +36,7 @@ public class ReturnController {
 	
 	
 	//반품 준비등록
-	@RequestMapping("returnRequest")
+	@RequestMapping("returnRequest.Ajax")
 	@ResponseBody
 	public boolean returnRequest(@RequestBody RetVO ret, Principal principal){
 		ret.setEmpId(principal.getName());
@@ -52,7 +52,7 @@ public class ReturnController {
 		
 	}
 	
-	@RequestMapping("searchReturn")
+	@RequestMapping("searchReturn.Ajax")
 	@ResponseBody
 	public List<RetVO> searchReturn(RetVO vo) {
 		List<RetVO> list = service.searchReturn(vo);

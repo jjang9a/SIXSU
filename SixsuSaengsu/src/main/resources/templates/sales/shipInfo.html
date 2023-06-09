@@ -126,7 +126,7 @@ h1 {
 	$("#search1Btn").on('click', function(e){
 	$('#productModal').modal('show');
 	 $.ajax({
-			url : "/sales/products",
+			url : "/sales/products.Ajax",
 			method : "get",
 			dataType : "JSON",
 			success : function(result){
@@ -167,7 +167,7 @@ h1 {
 	})
 
 	$.ajax({
-        url : "/sales/searchShip",
+        url : "/sales/searchShip.Ajax",
         method : "GET",
         dataType : "JSON",
         success : function(result) {
@@ -234,7 +234,7 @@ h1 {
 		
 		$("#search").on("click",(e) =>{
 			 $.ajax({
-	             url: '/sales/searchShip',
+	             url: '/sales/searchShip.Ajax',
 	             type: 'post',
 	             data: $('#searchForm').serialize(),
 	             dataType: 'json',
