@@ -36,14 +36,26 @@
 
 
 <style>
-
+body{
+	 background-color: #e5edf5;
+}
+.session_container{
+	background-color: white;
+	overflow: hidden;
+	margin-top: 20px;
+	margin-left: 40px;
+	margin-right: 40px;
+	 padding-right: 15px;
+	 padding-left: 15px;
+}
 .left_session {
 	width: 70%;
 	float: left;
 }
 
 .right_session {
-	width: 30%; height 100%;
+	width: 30%; 
+	height: 100%;
 	border: 1px black solid;
 	float: right;
 }
@@ -91,8 +103,9 @@
 </head>
 <body>
 
-
+	<div class="session_container">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">작업 KIOSK</h1>
+		
 		<div class="left_session">
 			<div id="grid1"></div>
 		</div>
@@ -102,6 +115,7 @@
 				<div id="workBomList"></div>
 			</div>
 			<div class="workLotList">
+				<a style="font-family: 'MaruBuri';">LOT LIST</a>
 				<div id="workLotList"></div>
 			</div>
 			
@@ -110,7 +124,7 @@
 				<button type="button" class="operBtn" id="endBtn">종료</button>
 			</div>
 		</div>
-
+	</div>
 		<script>
 			tui.Grid.applyTheme('default', {
 			    cell: {
@@ -283,7 +297,7 @@
 				}
 				]
 			});
-			workBomList.setBodyHeight(270);
+			workLotList.setBodyHeight(200);
 
 			
 

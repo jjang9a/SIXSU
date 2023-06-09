@@ -36,18 +36,20 @@
 	width: 200px;
 }
 
+.btn_container {
+	width: 100%;
+}
 
-.topContainer {
+.topConatiner {
 	width: 100% height: 450px;
-	margin-top: 20px;
 }
 
 .addContainer {
 	width: 40%;
 	height: 450px;
 	border: 1px solid black;
-	padding: 20px;
 	float: left;
+	padding: 100px;
 }
 
 .plan_monitor {
@@ -133,6 +135,9 @@
 
 .sel3 {
 	background-color: white;
+}
+.addAndDel{
+	margin-top: 20px;
 }
 </style>
 </head>
@@ -329,12 +334,26 @@
  	        header: '지시수량',
  	        name: 'detaQt',
  	        editor: 'text',
- 	        align : 'right'
+ 	        align : 'right',
+ 	       formatter: ({ value }) => {
+               if(value != null){
+             return value.toLocaleString()
+             }else{
+              return ''
+             } 
+            }
  	      },
  	      {
  	        header: '양품수량',
  	        name: 'goodQt',
- 	        align : 'right'
+ 	        align : 'right',
+ 	       formatter: ({ value }) => {
+               if(value != null){
+             return value.toLocaleString()
+             }else{
+              return ''
+             } 
+            }
  	      },
  	      {
  	        header: '생산일',
@@ -430,6 +449,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : modifyFirstList] please check the Console Log', 5000);
 				}
 			})
 			
@@ -454,6 +474,7 @@
 			},
 			error : function(reject){
 				console.log(reject);
+				Msg.error('[error : getDetaPlanList] please check the Console Log', 5000);
 			}
 		})
 	})
@@ -590,6 +611,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : getProductList] please check the Console Log', 5000);
 				}
 			})
 			
@@ -623,6 +645,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					Msg.error('[error : activeProcList] please check the Console Log', 5000);
 				}
 			});
 			
@@ -660,6 +683,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					Msg.error('[error : activeMatList] please check the Console Log', 5000);
 				}
 			});
 			
@@ -688,6 +712,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : addDetaWork] please check the Console Log', 5000);
 					}
 				})
 	})
@@ -789,6 +814,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : getWkBomList] please check the Console Log', 5000);
 				}
 			})
 		showBom()
@@ -818,6 +844,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : modifyDetaWorkList] please check the Console Log', 5000);
 					}
 				})
 		});
@@ -837,6 +864,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : plusBomList] please check the Console Log', 5000);
 					}
 				})
 		}
@@ -858,6 +886,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : delBomList] please check the Console Log', 5000);
 					}
 				})
 			
@@ -879,6 +908,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : plusMatList] please check the Console Log', 5000);
 					}
 				})
 		}
@@ -900,6 +930,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : delMatList] please check the Console Log', 5000);
 					}
 				})
 		}
@@ -929,6 +960,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : getWkMatList] please check the Console Log', 5000);
 				}
 			})
 	});
@@ -948,6 +980,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : modifyBomList] please check the Console Log', 5000);
 					}
 				})
 		});
@@ -984,6 +1017,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : modifyMatList] please check the Console Log', 5000);
 					}
 				})
 		});
@@ -1009,6 +1043,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : delDetWorkList] please check the Console Log', 5000);
 				}
 			})
 	})
@@ -1070,6 +1105,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					Msg.error('[error : activeCpList] please check the Console Log', 5000);
 				}
 			});
 		})
@@ -1088,6 +1124,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					Msg.error('[error : activeSpList] please check the Console Log', 5000);
 				}
 			});
 		})		
@@ -1108,6 +1145,7 @@
 						},
 						error: function (reject) {
 							console.log(reject)
+							Msg.error('[error : activeMatList] please check the Console Log', 5000);
 						}
 					});
 				})
@@ -1126,6 +1164,7 @@
 						},
 						error: function (reject) {
 							console.log(reject)
+							Msg.error('[error : activeSpList] please check the Console Log', 5000);
 						}
 					});
 				})
@@ -1146,6 +1185,7 @@
 			},
 			error: function(reject){
 				console.err(reject)
+				Msg.error('[error : addSubmit] please check the Console Log', 5000);
 			}
 		})
 	})		

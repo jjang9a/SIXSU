@@ -63,4 +63,6 @@ public interface WorkMapper {
 	public List<DetaWorkOrdrVO> getWorkListForProcess();
 	public List<bomMatVO> getBomMatList(String detaCode);
 	public List<MatLotVO> getLotInfoList(String bomMatId);
+	public void addWorkforPlan(List<DetaProdPlanVO> planData);
+	public void addLink(DetaWorkOrdrVO ob);
 }
