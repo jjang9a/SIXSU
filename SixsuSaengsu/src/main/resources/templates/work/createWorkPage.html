@@ -653,7 +653,7 @@
 			grid_process.setBodyHeight(520);
 			
 			$.ajax({
-				url: "/basic/activeProcList",
+				url: "/basic/activeProcList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -691,7 +691,7 @@
 		  });
 		
 			$.ajax({
-				url: "/basic/activeMatList",
+				url: "/basic/activeMatList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -1117,7 +1117,7 @@
 			$(this).addClass('sel3');
 			selType = '완제품';
 			$.ajax({
-				url: "/basic/activeCpList",
+				url: "/basic/activeCpList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -1136,7 +1136,7 @@
 			$(this).addClass('sel3');
 			selType = '반제품';
 			$.ajax({
-				url: "/basic/activeSpList",
+				url: "/basic/activeSpList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -1157,7 +1157,7 @@
 					$(this).addClass('sel3');
 					matType = '완제품';
 					$.ajax({
-						url: "/basic/activeMatList",
+						url: "/basic/activeMatList.Ajax",
 						method: "GET",
 						dataType: "JSON",
 						success: function (result) {
@@ -1176,7 +1176,7 @@
 					$(this).addClass('sel3');
 					matType = '반제품';
 					$.ajax({
-						url: "/basic/activeSpList",
+						url: "/basic/activeSpList.Ajax",
 						method: "GET",
 						dataType: "JSON",
 						success: function (result) {
