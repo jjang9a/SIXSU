@@ -85,5 +85,7 @@ public interface WorkService {
 
 	public List<MatLotVO> getLotInfoList(String bomMatId);
 
+	public List<DetaWorkOrdrVO> addWorkforPlan(List<DetaWorkOrdrVO> planData);
+
 
 }

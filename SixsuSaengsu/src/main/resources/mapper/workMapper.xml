@@ -145,8 +145,22 @@ with work as (
 
 <insert id="addDetaWork" parameterType="DetaWorkOrdrVO">
 	INSERT 
-		INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST, emp_id) 
-		values(#{wkHeadId},#{wkDetaId},'작성중', #{empId})
+		INTO DETA_WORK_ORDR (WK_HEAD_ID,WK_DETA_ID, CMPLT_ST, emp_id
+		<if test="detaQt != '' ">
+		, DETA_QT
+		</if>
+		<if test="cpId != '' ">
+		, cp_id
+		</if>
+		) 
+		values(#{wkHeadId},#{wkDetaId},'작성중', #{empId}
+		<if test="detaQt != '' ">
+		, #{detaQt}
+		</if>
+		<if test="cpId != '' ">
+		, #{cpId}
+		</if>
+		)
 </insert>
 <insert id="addWkBom">
 	INSERT 
@@ -156,17 +170,20 @@ with work as (
 </insert>
 	
 <select id="getDetaWorkHeadList" resultType="DetaWorkOrdrVO">
-	SELECT *
-		FROM DETA_WORK_ORDR a LEFT OUTER JOIN (SELECT CP_ID, CP_NAME
-		FROM complete_prod
+	SELECT a.WK_DETA_ID, a.WK_HEAD_ID, a.CP_ID, b.CP_NAME, a.DETA_QT, a.GOOD_QT, a.START_DATE, a.END_DATE, a.EMP_ID, c.EMP_NAME, d.PLAN_DETA_ID
+        FROM DETA_WORK_ORDR a LEFT OUTER JOIN 
+        
+         (SELECT CP_ID, CP_NAME
+		 FROM complete_prod
 		UNION ALL
-		
-	SELECT SP_ID AS CP_ID,SP_NAME AS CP_ID
-		FROM SEMI_PROD) b 
-			ON a.cp_ID = b.CP_ID
-	       LEFT OUTER JOIN employee c 
-	        ON a.emp_ID = c.emp_id
-			 WHERE WK_HEAD_ID = #{data}
+         SELECT SP_ID AS CP_ID,SP_NAME AS CP_ID
+         FROM SEMI_PROD
+         UNION ALL
+		SELECT MAT_ID AS CP_ID, MAT_NAME AS CP_NAME
+		FROM MATERIAL) b ON a.cp_ID = b.CP_ID
+	    LEFT OUTER JOIN employee c ON a.emp_ID = c.emp_id
+        LEFT OUTER JOIN PLAN_AND_WORKLINK d ON a.WK_DETA_ID = d.WK_DETA_ID
+			 WHERE a.WK_HEAD_ID = #{data}
 			 ORDER BY a.WK_DETA_ID
 </select>	
 
@@ -431,7 +448,11 @@ with work as (
 	                CONNECT BY REGEXP_SUBSTR(MAT_WORK_LOT_ID, '[^,]+',1,LEVEL) IS NOT NULL)
 </select>
 
-
+<insert id="addLink">
+	INSERT INTO PLAN_AND_WORKLINK (LINK_CODE, PLAN_DETA_ID, WK_DETA_ID,TYPE) 
+	   VALUES 
+		((LINK_CODE.NEXTVAL),#{planDetaId},#{wkDetaId},'작성중')
+</insert>
 
 
 
