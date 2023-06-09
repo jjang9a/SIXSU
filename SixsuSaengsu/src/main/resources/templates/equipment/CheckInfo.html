@@ -257,7 +257,7 @@
 	 window.onload = function(){
 	    	
 	    	$.ajax({
-	    		url : "equCheckList",
+	    		url : "equCheckList.Ajax",
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
@@ -316,7 +316,7 @@
     	
 					
 				$.ajax({
-					url: 'equCheckSearch',
+					url: 'equCheckSearch.Ajax',
 					type: 'get',
 					data: {
 						"code": $("#code").val(),
@@ -342,7 +342,7 @@
 				$('#name').val('');
 				
 				$.ajax({
-					url: "equCheckList",
+					url: "equCheckList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
