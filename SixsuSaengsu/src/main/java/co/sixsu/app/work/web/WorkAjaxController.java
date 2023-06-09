@@ -255,5 +255,12 @@ public class WorkAjaxController {
 		return service.getLotInfoList(bomMatId.getBomMatId());
 	}
 	
+	@RequestMapping("addWorkforPlan")
+	public List<DetaWorkOrdrVO> addWorkforPlan(@RequestBody List<DetaWorkOrdrVO> planData) {
+		System.err.println(planData);
+		List<DetaWorkOrdrVO> allList = service.addWorkforPlan(planData);
+		return allList;
+	}
+	
 	
 } 
