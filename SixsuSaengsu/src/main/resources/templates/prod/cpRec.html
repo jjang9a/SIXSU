@@ -36,7 +36,7 @@
 				<script>
 					window.onload = function () {
 						$.ajax({
-							url: "/prod/readyCpList",
+							url: "/prod/readyCpList.Ajax",
 							method: "GET",
 							success: function (result) {
 								readyGrid.resetData(result);
@@ -47,7 +47,7 @@
 						});
 
 						$.ajax({
-							url: "/prod/cpRecList",
+							url: "/prod/cpRecList.Ajax",
 							method: "GET",
 							success: function (result) {
 								grid.resetData(result);
@@ -205,7 +205,7 @@
 							alert('입고할 제품을 선택해주세요.')
 						} else {
 							$.ajax({
-								url: "/prod/cpRec",
+								url: "/prod/cpRec.Ajax",
 								method: "POST",
 								dataType: "JSON",
 								contentType: "application/json",
@@ -216,7 +216,7 @@
 									readyGrid.removeCheckedRows(false);
 									alert('입고가 완료되었습니다.')
 									$.ajax({
-										url: "/prod/cpRecList",
+										url: "/prod/cpRecList.Ajax",
 										method: "GET",
 										success: function (result) {
 											grid.resetData(result);

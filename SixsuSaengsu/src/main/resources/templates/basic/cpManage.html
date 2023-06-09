@@ -102,7 +102,7 @@
 				let initData = '';
 				let nowData = '';
 				$.ajax({
-					url: "/basic/cpList",
+					url: "/basic/cpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -191,21 +191,21 @@
 			// 등록 버튼 이벤트
 			$('#addBtn').on('click', function (e) {
 				if (selRow != '') {
-					alert('수정중에는 등록 할 수 없습니다. 초기화 후 등록해주세요.')
+					Msg.warning('수정중에는 등록 할 수 없습니다. 초기화 후 등록해주세요.');
 				} else {
 					$.ajax({
-						url: '/basic/addCp',
+						url: '/basic/addCp.Ajax',
 						type: 'post',
 						data: $('#cpForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
-							alert('완제품이 성공적으로 등록되었습니다');
+							Msg.success('등록이 완료되었습니다.', 2000);
 							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
 							const appendedData = result
 							grid.prependRow(appendedData);
 						},
 						error: function () {
-							alert('완제품 등록 중 오류가 발생했습니다!');
+							Msg.error('등록 중 오류가 발생하였습니다.', 2000);
 							$('.empty').val('');
 							$('#cpSize').val('').prop("selected", true);
 							$("input:radio[name='cpStat']:radio[value='Y']").prop('checked', true);
@@ -235,15 +235,15 @@
 			// 수정 버튼 이벤트
 			$('#modiBtn').on('click', function (e) {
 				if (selRow == '') {
-					alert('수정할 데이터가 없습니다.')
+					Msg.warning('수정할 정보가 없습니다.');
 				} else {
 					$.ajax({
-						url: '/basic/modifyCp',
+						url: '/basic/modifyCp.Ajax',
 						type: 'post',
 						data: $('#cpForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
-							alert('완제품이 성공적으로 수정되었습니다');
+							Msg.success('수정이 완료되었습니다.', 2000);
 							//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
 							const setData = result
 							grid.setRow(selRow, setData);
@@ -253,7 +253,7 @@
 							$("input:radio[name='cpStat']:radio[value='Y']").prop('checked', true);
 						},
 						error: function () {
-							alert('완제품 수정 중 오류가 발생했습니다!');
+							Msg.error('수정 중 오류가 발생하였습니다.', 2000);
 						}
 					});
 				}
@@ -265,10 +265,10 @@
 			$('#searchBtn').on('click', function (e) {
 				if ($('#cpId').val() == '' && $('#cpName').val() == '') {
 					if (initData == nowData) {
-						alert('완제품 코드 또는 제품명으로 검색이 가능합니다.')
+						Msg.info('완제품 코드 또는 제품명으로 검색이 가능합니다.');
 					} else {
 						$.ajax({
-							url: "/basic/cpList",
+							url: "/basic/cpList.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {
@@ -286,7 +286,7 @@
 					}
 
 					$.ajax({
-						url: '/basic/searchCp',
+						url: '/basic/searchCp.Ajax',
 						type: 'get',
 						data: {
 							"searchType": searchType,
@@ -298,7 +298,7 @@
 							nowData = result;
 						},
 						error: function () {
-							alert('완제품 검색 중 오류 발생!');
+							Msg.error('검색 중 오류가 발생하였습니다.', 2000);
 						}
 					})
 				}
@@ -319,7 +319,7 @@
 			// 초기화 버튼 이벤트
 			$('#initBtn').on('click', (e) => {
 				$.ajax({
-					url: "/basic/cpList",
+					url: "/basic/cpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {

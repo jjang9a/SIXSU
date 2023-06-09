@@ -215,7 +215,7 @@
 			// 사원목록 그리드 스크립트
 			window.onload = function () {
 				$.ajax({
-					url: "/basic/empList",
+					url: "/basic/empList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -395,19 +395,19 @@
 			// 모달 내 등록 ajax 이벤트
 			$('#addBtn').on('click', function (e) {
 				$.ajax({
-					url: '/basic/empAdd',
+					url: '/basic/empAdd.Ajax',
 					type: 'post',
 					data: $('#addForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
-						alert('사원이 성공적으로 등록되었습니다');
+						Msg.success('등록이 완료되었습니다.', 2000);
 						console.log(result);
 						//등록 버튼을 누르면 테이블에 들어갈 데이터 설정      
 						const appendedData = result
 						grid.prependRow(appendedData);
 					},
 					error: function () {
-						alert('사원 등록 중 오류가 발생했습니다!');
+						Msg.error('등록 중 오류가 발생하였습니다.', 2000);
 					}
 				});
 				$('#staticBackdrop input').val('');
@@ -419,7 +419,7 @@
 			$('#pwBtn').on('click', function (e) {
 				// 사원이 선택되지 않은 경우 알람 띄우기
 				if (selEmpId == '') {
-					alert('사원이 선택되지 않았습니다!');
+					Msg.warning('사원이 선택되지 않았습니다.');
 					// 특정 사원이 선택 된 경우 사원번호와 이름을 담아 모달 띄우기
 				} else {
 					$('#pwModal').modal('show');
@@ -432,15 +432,15 @@
 			// 모달 비밀번호 변경 이벤트
 			$('#pwUpdateBtn').on('click', function (e) {
 				$.ajax({
-					url: '/basic/empPw',
+					url: '/basic/empPw.Ajax',
 					type: 'post',
 					data: $('#pwForm').serialize(),
 					dataType: 'json',
 					success: function () {
-						alert('비밀번호가 성공적으로 업데이트 되었습니다');
+						Msg.success('비밀번호정보가 변경되었습니다.', 2000);
 					},
 					error: function () {
-						alert('비밀번호 변경 중 오류가 발생했습니다!');
+						Msg.error('비밀번호 변경 중 오류가 발생하였습니다.', 2000);
 					}
 				});
 				$('#pwModal input').val('');
@@ -452,16 +452,16 @@
 			$('#modiBtn').on('click', function () {
 				console.log(grid.getModifiedRows());
 				$.ajax({
-					url: '/basic/empModify',
+					url: '/basic/empModify.Ajax',
 					type: 'post',
 					data: JSON.stringify(grid.getModifiedRows().updatedRows),
 					contentType: 'application/json',
 					success: function () {
-						alert('성공적으로 업데이트 되었습니다');
+						Msg.success('수정이 완료되었습니다.', 2000);
 					},
 					error: function (r) {
 						console.log(r)
-						alert('사원 정보 변경 중 오류가 발생했습니다!');
+						Msg.error('수정 중 오류가 발생하였습니다.', 2000);
 					}
 				});
 
@@ -470,7 +470,7 @@
 			// 검색버튼 이벤트
 			$('#searchBtn').on('click', (e) => {
 				$.ajax({
-					url: '/basic/searchEmp',
+					url: '/basic/searchEmp.Ajax',
 					type: 'get',
 					data: $('#searchForm').serialize(),
 					dataType: 'json',
@@ -479,7 +479,7 @@
 					},
 					error: function (reject) {
 						console.log(reject)
-						alert('사원 조회 중 오류 발생!');
+						Msg.error('사원조회 중 오류가 발생하였습니다.', 2000);
 					}
 				})
 			})
@@ -495,7 +495,7 @@
 			// 초기화 버튼 이벤트
 			$('#initBtn').on('click', (e) => {
 				$.ajax({
-					url: "/basic/empList",
+					url: "/basic/empList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
