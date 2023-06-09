@@ -88,7 +88,7 @@
 			function matDmgList(dmatId, matName, sDate, eDate, dmatStat){
 				
 				$.ajax({
-					url: "/materials/matdmglist",
+					url: "/materials/matdmglist.Ajax",
 					method: "GET",
 					data : {dmatId : dmatId, matName : matName, sDate : sDate, eDate : eDate, dmatStat : dmatStat},
 					success: function (result) {

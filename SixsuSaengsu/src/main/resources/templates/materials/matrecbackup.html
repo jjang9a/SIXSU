@@ -78,15 +78,13 @@
 			</div>
 		</div>
 		<script>
-/* 		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content"); */
 			const gridData = [
 
 			];
 			window.onload = function () {
 			
 				$.ajax({
-					url: "/materials/matreclist",
+					url: "/materials/matreclist.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -101,7 +99,7 @@
 				
 				
 				$.ajax({
-					url: "/materials/matrecwait",
+					url: "/materials/matrecwait.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					
@@ -259,16 +257,9 @@
 			
 			//입고등록 모달에서 등록 버튼
  			$('#addBtn').on('click', function () {
-/* 				
-				var inspStdId = [];
-				console.log(grid.getCheckedRows());
-				for(var i=0; i<grid.getCheckedRows().length; i++){
-					inspStdId.push(grid.getCheckedRows()[i].inspStdId);
-				}
-				console.log(inspStdId); */
 				console.log(JSON.stringify(grid.getCheckedRows()))
 				$.ajax({
-					url: "/materials/insertmatrec",
+					url: "/materials/insertmatrec.Ajax",
 					method: "POST",
 					contentType: 'application/json',
 					data: JSON.stringify(grid.getCheckedRows()),
@@ -276,7 +267,7 @@
 						console.log(result);
 						$('#staticBackdrop').modal('hide');
 						$.ajax({
-							url: "/materials/matreclist",
+							url: "/materials/matreclist.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {
@@ -302,7 +293,7 @@
 			//체크된 항목 삭제	    
 			$('#delete').on("click", function () {
 				$.ajax({
-					url: "/materials/delmatrec",
+					url: "/materials/delmatrec.Ajax",
 					method: "POST",
 					contentType: 'application/json',
 					data: JSON.stringify(grids.getCheckedRows()),

@@ -79,7 +79,7 @@
 			function matShipList(prcsPfmcId, matLotId, matName, matShipType, sDate, eDate){
 				
 				$.ajax({
-					url : "/materials/matshiplist",
+					url : "/materials/matshiplist.Ajax",
 					method : "GET",
 					data : {prcsPfmcId : prcsPfmcId, matLotId : matLotId, matName : matName, matShipType : matShipType, sDate : sDate, eDate : eDate},
 					success : function(result) {

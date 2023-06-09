@@ -39,7 +39,7 @@
 			window.onload = function () {
 			
 				$.ajax({
-					url: "/materials/matreclist",
+					url: "/materials/matreclist.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -54,7 +54,7 @@
 				
 				
 				$.ajax({
-					url: "/materials/matrecwait",
+					url: "/materials/matrecwait.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					
@@ -251,16 +251,9 @@
 			
 			//입고등록 입고 버튼
  			$('#addBtn').on('click', function () {
-/* 				
-				var inspStdId = [];
-				console.log(grid.getCheckedRows());
-				for(var i=0; i<grid.getCheckedRows().length; i++){
-					inspStdId.push(grid.getCheckedRows()[i].inspStdId);
-				}
-				console.log(inspStdId); */
 				console.log(JSON.stringify(grid.getCheckedRows()))
 				$.ajax({
-					url: "/materials/insertmatrec",
+					url: "/materials/insertmatrec.Ajax",
 					method: "POST",
 					contentType: 'application/json',
 					data: JSON.stringify(grid.getCheckedRows()),
@@ -269,7 +262,7 @@
 						alert("입고 완료");
 						$('#staticBackdrop').modal('hide');
 						$.ajax({
-							url: "/materials/matrecwait",
+							url: "/materials/matrecwait.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							
@@ -283,7 +276,7 @@
 
 						});
 						$.ajax({
-							url: "/materials/matreclist",
+							url: "/materials/matreclist.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {

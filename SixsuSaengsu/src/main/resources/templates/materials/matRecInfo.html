@@ -84,7 +84,7 @@
 			function matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate){
 				
 				$.ajax({
-					url: "/materials/matrecsearch",
+					url: "/materials/matrecsearch.Ajax",
 					method: "GET",
 					data : {matLotId : matLotId, matName : matName, busName : busName, matRecType : matRecType, sDate : sDate, eDate : eDate},
 					success: function (result) {
