@@ -13,26 +13,19 @@
 			<if test="inspType != null and inspType != ''.toString()">
 				insp_type = #{inspType}
 			</if>
-			<trim prefix="and (" suffix=")" prefixOverrides="and">
-				<foreach collection="typeArr" item="type">
-					<trim prefix=" and ">
-						<if test="type == 'I'.toString() ">
-							insp_num like '%'||#{inspNum}||'%'
-						</if>
-						<if test="type == 'P'.toString()">
-							insp_item_id like '%'||#{inspItemId}||'%'
-						</if>
-						<if test="type == 'E'.toString()">
-							emp_id like like '%'||#{empId}||'%'
-						</if>
-						<if test="type == 'D'.toString()">
-							insp_date between to_date(#{inspDate}, 'YYYY-MM-DD')
-							and
-							to_date(#{inspDate2}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
-						</if>
-					</trim>
-				</foreach>
-			</trim>
+			<if test="inspNum != null and inspNum != ''.toString()">
+				and ( insp_num like '%'||#{inspNum}||'%' )
+			</if>
+			<if test="inspItemId != null and inspItemId != ''.toString()">
+				and ( insp_item_id = #{inspItemId} )
+			</if>
+			<if test="inspDate != null and inspDate != ''.toString() and inspDate2 != null and inspDate2 != ''.toString()">
+				and ( insp_date between to_date(#{inspDate}, 'YYYY-MM-DD') and
+								to_date(#{inspDate2}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
+			</if>
+			<if test="empId != null and empId != ''.toString()">
+				and ( emp_id = #{empId} )
+			</if>
 		</where>
 	</sql>
 		

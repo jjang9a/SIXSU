@@ -96,7 +96,7 @@
 
 		<script>
 			$.ajax({
-				url: "/prod/spRecList",
+				url: "/prod/spRecList.Ajax",
 				method: "GET",
 				success: function (result) {
 					grid.resetData(result);
@@ -203,7 +203,7 @@
 
 			$('#pdBtn').on('click', function (e) {
 				$.ajax({
-					url: "/basic/activeSpList",
+					url: "/basic/activeSpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -227,7 +227,7 @@
 			// 검색 버튼 이벤트
 			$('#searchBtn').on('click', (e) => {
 				$.ajax({
-					url: '/prod/spRecSearch',
+					url: '/prod/spRecSearch.Ajax',
 					type: 'post',
 					data: $('#searchForm').serialize(),
 					dataType: 'json',
@@ -244,7 +244,7 @@
 			// 초기화 버튼 이벤트
 			$('#initBtn').on('click', (e) => {
 				$.ajax({
-					url: "/prod/spRecList",
+					url: "/prod/spRecList.Ajax",
 					method: "GET",
 					success: function (result) {
 						grid.resetData(result);

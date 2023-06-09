@@ -47,28 +47,28 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@RequestMapping("/basic/empList") // 사원정보 목록 ajax
+	@RequestMapping("/basic/empList.Ajax") // 사원정보 목록 ajax
 	public List<EmpVO> empList() {
 		List<EmpVO> list = service.getEmpList();
 		return list;
 	}
 
 	@ResponseBody // 사원 등록 ajax
-	@RequestMapping(value = "/basic/empAdd", method = RequestMethod.POST)
+	@RequestMapping(value = "/basic/empAdd.Ajax", method = RequestMethod.POST)
 	public EmpVO empAdd(EmpVO emp) {
 		EmpVO result = service.addEmp(emp);
 		return result;
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/empPw") // 사원 비밀번호 변경 ajax
+	@PostMapping("/basic/empPw.Ajax") // 사원 비밀번호 변경 ajax
 	public boolean empPw(EmpVO emp, RedirectAttributes rttr) {
 		boolean result = service.updatePw(emp);
 		return result;
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/empModify") // 사원정보 수정 ajax
+	@PostMapping("/basic/empModify.Ajax") // 사원정보 수정 ajax
 	public boolean empModify(@RequestBody List<EmpVO> emp) {
 		System.out.println(emp);
 		service.updateEmp(emp);
@@ -76,7 +76,7 @@ public class BasicController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/basic/searchEmp") // 사원 조회
+	@GetMapping("/basic/searchEmp.Ajax") // 사원 조회
 	public List<EmpVO> searchEmp(SearchDTO dto) {
 		return service.searchEmp(dto);
 	}
@@ -88,27 +88,27 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/groupList")
+	@GetMapping("/basic/groupList.Ajax")
 	public List<CodeVO> groupList() { // 그룹 리스트
 		List<CodeVO> glist = service.groupList();
 		return glist;
 	}
 
 	@ResponseBody
-	@RequestMapping("/basic/commList") // 선택, 검색 기반 공통코드 조회
+	@RequestMapping("/basic/commList.Ajax") // 선택, 검색 기반 공통코드 조회
 	public List<CodeVO> commList(SearchDTO dto) {
 		List<CodeVO> clist = service.commList(dto);
 		return clist;
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifyCode") // 공통코드 등록, 수정
+	@PostMapping("/basic/modifyCode.Ajax") // 공통코드 등록, 수정
 	public boolean modifyCode(@RequestBody GridDataVO<CodeVO> list) {
 		return service.updateCode(list);
 	}
 	
 	@ResponseBody
-	@PostMapping("/basic/addGroup") // 그룹 등록
+	@PostMapping("/basic/addGroup.Ajax") // 그룹 등록
 	public CodeVO addGroup(CodeVO code) {
 		service.addGroup(code);
 		return code;
@@ -123,27 +123,27 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/cpList")
+	@GetMapping("/basic/cpList.Ajax")
 	public List<ProductVO> cpList() { // 완제품 목록
 		return service.cpList();
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/addCp")
+	@PostMapping("/basic/addCp.Ajax")
 	public ProductVO addCp(ProductVO prod) {
 		service.addCp(prod);
 		return prod;
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifyCp")
+	@PostMapping("/basic/modifyCp.Ajax")
 	public ProductVO modifyCp(ProductVO prod) {
 		service.updateCp(prod);
 		return prod;
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/searchCp") // 선택, 검색 기반 공통코드 조회
+	@GetMapping("/basic/searchCp.Ajax") // 선택, 검색 기반 공통코드 조회
 	public List<ProductVO> searchCp(SearchDTO dto) {
 		return service.searchCp(dto);
 	}
@@ -155,27 +155,27 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/spList")
+	@GetMapping("/basic/spList.Ajax")
 	public List<ProductVO> spList() { // 반제품 목록
 		return service.spList();
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/addSp")
+	@PostMapping("/basic/addSp.Ajax")
 	public ProductVO addSp(ProductVO prod) { // 반제품 등록
 		service.addSp(prod);
 		return prod;
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifySp")
+	@PostMapping("/basic/modifySp.Ajax")
 	public ProductVO modifySp(ProductVO prod) { // 반제품 수정
 		service.updateSp(prod);
 		return prod;
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/searchSp") // 반제품 검색
+	@GetMapping("/basic/searchSp.Ajax") // 반제품 검색
 	public List<ProductVO> searchSp(SearchDTO dto) {
 		return service.searchSp(dto);
 	}
@@ -187,27 +187,27 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/matList")
+	@GetMapping("/basic/matList.Ajax")
 	public List<MaterialVO> matList() { // 자재 목록
 		return service.matList();
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/addMat")
+	@PostMapping("/basic/addMat.Ajax")
 	public MaterialVO addMat(MaterialVO mat) { // 자재 등록
 		service.addMat(mat);
 		return mat;
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifyMat")
+	@PostMapping("/basic/modifyMat.Ajax")
 	public MaterialVO modifyMat(MaterialVO mat) { // 자재 수정
 		service.updateMat(mat);
 		return mat;
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/searchMat") // 자재 검색
+	@GetMapping("/basic/searchMat.Ajax") // 자재 검색
 	public List<MaterialVO> searchMat(SearchDTO dto) {
 		return service.searchMat(dto);
 	}
@@ -221,27 +221,27 @@ public class BasicController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/basic/procList")
+	@GetMapping("/basic/procList.Ajax")
 	public List<ProcessVO> procList() { // 공정 목록
 		return service.procList();
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/addProc")
+	@PostMapping("/basic/addProc.Ajax")
 	public ProcessVO addProc(ProcessVO prod) {
 		service.addProc(prod);
 		return prod;
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifyProc")
+	@PostMapping("/basic/modifyProc.Ajax")
 	public ProcessVO modifyProc(ProcessVO prod) {
 		service.updateProc(prod);
 		return prod;
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/searchProc") // 선택, 검색 기반 공통코드 조회
+	@GetMapping("/basic/searchProc.Ajax") // 선택, 검색 기반 공통코드 조회
 	public List<ProcessVO> searchProc(SearchDTO dto) {
 		return service.searchProc(dto);
 	}
@@ -255,20 +255,20 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/checkBusNum") // 사업자번호 중복 조회
+	@GetMapping("/basic/checkBusNum.Ajax") // 사업자번호 중복 조회
 	public boolean checkBusNum(@RequestParam String busNum) {
 		return service.checkBusNum(busNum);
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/busList")
+	@GetMapping("/basic/busList.Ajax")
 	public List<BusVO> busList() { // 거래처 목록
 		return service.busList();
 	}
 
 
 	@ResponseBody
-	@PostMapping("/basic/addBus")
+	@PostMapping("/basic/addBus.Ajax")
 	public BusVO addBus(BusVO bus) { // 거래처 등록
 		service.addBus(bus); 
 		return bus; 
@@ -276,14 +276,14 @@ public class BasicController {
 
 
 	@ResponseBody
-	@PostMapping("/basic/modifyBus")
+	@PostMapping("/basic/modifyBus.Ajax")
 	public BusVO modifyBus(BusVO bus) { // 거래처 수정
 		service.updateBus(bus);
 		return bus;
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/searchBus") // 거래처 검색
+	@PostMapping("/basic/searchBus.Ajax") // 거래처 검색
 	public List<BusVO> searchBus(BusVO bus) {
 		return service.searchBus(bus);
 	}
@@ -295,49 +295,49 @@ public class BasicController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/basic/bomList")
+	@GetMapping("/basic/bomList.Ajax")
 	public List<BomVO> bomList(@RequestParam String id) { // BOM 목록
 		return service.bomList(id);
 	}
 
 	@ResponseBody
-	@GetMapping("/basic/activeCpList")
+	@GetMapping("/basic/activeCpList.Ajax")
 	public List<ProductVO> activeCpList() { // 활성화된 완제품 목록
 		return service.activeCpList();
 	}
 	
 	@ResponseBody
-	@GetMapping("/basic/activeSpList")
+	@GetMapping("/basic/activeSpList.Ajax")
 	public List<ProductVO> activeSpList() { // 활성화된 반제품 목록
 		return service.activeSpList();
 	}
 	
 	@ResponseBody
-	@GetMapping("/basic/activeMatList")
+	@GetMapping("/basic/activeMatList.Ajax")
 	public List<ProductVO> activeMatList() { // 활성화된 자재 목록
 		return service.activeMaterialList();
 	}
 	
 	@ResponseBody
-	@GetMapping("/basic/activeProcList")
+	@GetMapping("/basic/activeProcList.Ajax")
 	public List<ProcessVO> activeProcList() { // 활성화된 공정 목록
 		return service.activeProcList();
 	}
 	
 	@ResponseBody
-	@PostMapping("/basic/addBom") // BOM 등록
+	@PostMapping("/basic/addBom.Ajax") // BOM 등록
 	public boolean addBom(@RequestBody List<BomVO> list) {
 		return service.addBom(list);
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifyBom") // BOM 수정
+	@PostMapping("/basic/modifyBom.Ajax") // BOM 수정
 	public boolean modifyBom(@RequestBody GridDataVO<BomVO> list) {
 		return service.updateBom(list);
 	}
 	
 	@ResponseBody
-	@PostMapping("/basic/deleteBom") // BOM 수정
+	@PostMapping("/basic/deleteBom.Ajax") // BOM 수정
 	public boolean deleteBom(@RequestBody List<BomVO> list) {
 		return service.deleteBom(list);
 	}
@@ -350,13 +350,13 @@ public class BasicController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/basic/flowList") // 제품별 공정흐름도
+	@GetMapping("/basic/flowList.Ajax") // 제품별 공정흐름도
 	public List<FlowVO> flowList(@RequestParam String id){
 		return service.flowList(id);
 	}
 
 	@ResponseBody
-	@PostMapping("/basic/modifyFlow") // 제품공정 등록, 수정, 삭제
+	@PostMapping("/basic/modifyFlow.Ajax") // 제품공정 등록, 수정, 삭제
 	public boolean modifyFlow(@RequestBody GridDataVO<FlowVO> list) {
 		return service.updateFlow(list);
 	}

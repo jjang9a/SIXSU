@@ -31,11 +31,11 @@ public class SecurityConfig{
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> 
 		requests
-			.antMatchers("/top","/login", "/", "/work/workKiosk").permitAll()
-			.antMatchers("/basic/**","/**/*Info").authenticated()
+			.antMatchers("/top","/login", "/", "/work/workKiosk", "/ajax/**").permitAll()
+			.antMatchers("/basic/**","/**/*Info", "/prod/*.Ajax", "/sales/*.Ajax", "/work/*.Ajax", "/material/*.Ajax", "/equipment/*.Ajax", "/quality/*.Ajax").authenticated()
 			.antMatchers("/sales/**", "/prod/cpRec").hasAnyAuthority("ROLE_B", "ROLE_A")
 			.antMatchers("/work/**").hasAnyAuthority("ROLE_C", "ROLE_A")
-			.antMatchers("/material/**", "/prod/spRec", "/prod/spRecInfo").hasAnyAuthority("ROLE_D", "ROLE_A")
+			.antMatchers("/materials/**", "/prod/spRec", "/prod/spRecInfo").hasAnyAuthority("ROLE_D", "ROLE_A")
 			.antMatchers("/equipment/**").hasAnyAuthority("ROLE_E", "ROLE_A")
 			.antMatchers("/quality/**").hasAnyAuthority("ROLE_F", "ROLE_A")
 			.anyRequest().authenticated())

@@ -172,7 +172,7 @@
 		<script>
 			window.onload = function () {
 				$.ajax({
-					url: "/quality/resultInspList",
+					url: "/quality/resultInspList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -279,7 +279,7 @@
 
 			$('#pdBtn').on('click', function (e) {
 				$.ajax({
-					url: "/basic/activeCpList",
+					url: "/basic/activeCpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -362,11 +362,12 @@
 			var searchType = '';
 			let searchKey = '';
 			$('#searchBtn').on('click', function (e) {
-				if ($('#inspNum').val() != '' && $('#inspItemId').val() != '' && $('#empId').val() != '' && $('#inspDate').val() != '' && $('#inspDate2').val() != '') {
-					alert('검색조건을 입력해주세요.')
-				}else {
+				if ($('#inspNum').val() != '' && $('#inspItemId').val() != '' && $('#empId').val() != '' && $(
+						'#inspDate').val() != '' && $('#inspDate2').val() != '') {
+					Msg.warning('검색조건을 입력 해 주세요.');
+				} else {
 					$.ajax({
-						url: '/quality/searchInsp',
+						url: '/quality/searchInsp.Ajax',
 						type: 'post',
 						data: $('#searchForm').serialize(),
 						dataType: 'json',
@@ -375,7 +376,7 @@
 							aiGrid.resetData(searchData);
 						},
 						error: function () {
-							alert('검색 중 오류가 발생했습니다!');
+							Msg.error('검색 중 오류가 발생하였습니다.', 2000);
 						}
 					});
 				}
@@ -384,7 +385,7 @@
 			// 초기화 버튼 이벤트
 			$('#initBtn').on('click', (e) => {
 				$.ajax({
-					url: "/quality/resultInspList",
+					url: "/quality/resultInspList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -426,7 +427,7 @@
 			aiGrid.on('click', e => {
 				let key = aiGrid.getRow(e.rowKey).inspNum
 				$.ajax({
-					url: '/quality/getDetail',
+					url: '/quality/getDetail.Ajax',
 					type: 'get',
 					data: {
 						"inspNum": key

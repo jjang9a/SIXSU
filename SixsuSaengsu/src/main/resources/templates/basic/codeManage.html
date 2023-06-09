@@ -200,7 +200,7 @@
 			// 공통코드 그리드 스크립트
 			window.onload = function () {
 				$.ajax({
-					url: "/basic/groupList",
+					url: "/basic/groupList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -331,7 +331,7 @@
 
 				// 오른쪽 그리드 데이터 불러올 ajax호출
 				$.ajax({
-					url: '/basic/commList',
+					url: '/basic/commList.Ajax',
 					type: 'get',
 					data: {
 						"searchType": "group",
@@ -344,7 +344,7 @@
 						//oldCount = commGrid.getRowCount();
 					},
 					error: function () {
-						alert('공통코드 조회 중 오류 발생!');
+						Msg.error('조회 중 오류가 발생하였습니다.', 2000);
 					}
 				})
 			});
@@ -359,7 +359,7 @@
 			// 검색버튼 클릭 시 알맞은 데이터 불러오기
 			$('#searchForm button').on('click', function (e) {
 				$.ajax({
-					url: '/basic/commList',
+					url: '/basic/commList.Ajax',
 					type: 'get',
 					data: $('#searchForm').serialize(),
 					dataType: 'json',
@@ -369,7 +369,7 @@
 						commGrid.resetData(result);
 					},
 					error: function () {
-						alert('공통코드 조회 중 오류 발생!');
+						Msg.error('조회 중 오류가 발생하였습니다.', 2000);
 					}
 				})
 			})
@@ -386,7 +386,7 @@
 			//let newCount = '';
 			$('#addBtn').on('click', function (e) {
 				if (groupKey == '') {
-					alert('그룹코드가 선택되지 않았습니다!');
+					Msg.warning('그룹이 선택되지 않았습니다.');
 					// 그룹이 선택되어 있는 경우 그 빈 줄을 띄워 그 그룹에 새 공통코드 추가
 				} else {
 					const newData = { // 빈 데이터 열 생성
@@ -413,17 +413,17 @@
 				// 수정된 열이 0개가 아니라면 update ajax 호출
 				if (commGrid.getModifiedRows().length != 0) {
 					$.ajax({
-						url: "/basic/modifyCode",
+						url: "/basic/modifyCode.Ajax",
 						method: "POST",
 						dataType: "JSON",
 						contentType: "application/json",
 						data: JSON.stringify(commGrid.getModifiedRows()),
 						success: function (result) {
-							alert('코드정보가 저장되었습니다.')
+							Msg.success('코드정보가 저장되었습니다.', 2000);
 						},
 						error: function (reject) {
 							console.log(reject);
-							alert('업데이트 과정에서 에러가 발생하였습니다.')
+							Msg.error('업데이트 중 오류가 발생하였습니다.', 2000);
 						}
 					})
 				}
@@ -435,12 +435,12 @@
 			})
 			$('#gAddBtn').on('click', (e) => {
 				$.ajax({
-					url: '/basic/addGroup',
+					url: '/basic/addGroup.Ajax',
 					type: 'post',
 					data: $('#groupAddForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
-						alert('그룹이 성공적으로 등록되었습니다');
+						Msg.success('등록이 완료되었습니다.', 2000);
 						const appendedData = result
 						grid.appendRow(appendedData);
 						$('#groupAddModal input').val('');

@@ -134,7 +134,7 @@
 			window.onload = function () {
 				// 초기데이터(전체조회)
 				$.ajax({
-					url: "/quality/getInspList",
+					url: "/quality/getInspList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -215,7 +215,7 @@
 
 			$('#pdBtn').on('click', function (e) {
 				$.ajax({
-					url: "/basic/activeCpList",
+					url: "/basic/activeCpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -235,7 +235,7 @@
 				$('.sel2').removeClass('sel3');
 				$(this).addClass('sel3');
 				$.ajax({
-					url: "/basic/activeCpList",
+					url: "/basic/activeCpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -253,7 +253,7 @@
 				$('.sel1').removeClass('sel3');
 				$(this).addClass('sel3');
 				$.ajax({
-					url: "/basic/activeSpList",
+					url: "/basic/activeSpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -271,7 +271,7 @@
 				$('.sel1').removeClass('sel3');
 				$(this).addClass('sel3');
 				$.ajax({
-					url: "/basic/activeMatList",
+					url: "/basic/activeMatList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -303,12 +303,12 @@
 			// 등록버튼 이벤트
 			$('#addBtn').on('click', (e) => {
 				$.ajax({
-					url: '/quality/addInspList',
+					url: '/quality/addInspList.Ajax',
 					type: 'post',
 					data: $('#inspForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
-						alert('성공적으로 등록되었습니다.')
+						Msg.success('등록이 완료되었습니다.', 2000);
 						const setData = result
 						grid.appendRow(setData);
 						$('.empty').val('');
@@ -336,12 +336,12 @@
 			// 수정버튼 이벤트
 			$('#modiBtn').on('click', (e) => {
 				$.ajax({
-					url: '/quality/updateInspList',
+					url: '/quality/updateInspList.Ajax',
 					type: 'post',
 					data: $('#inspForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
-						alert('성공적으로 수정되었습니다.')
+						Msg.success('수정이 완료되었습니다.', 2000);
 						const setData = result
 						grid.setRow(selRow, setData);
 						selRow = '';
