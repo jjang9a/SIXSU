@@ -17,5 +17,6 @@ public class EquOperVO { // 비가동 관리
 	String operStart; // 비가동 시작(일시분) 
 	String operFnish; // 비가동 종료(일시분)
 	String operNote; // 비가동 비고
+	String empName; // 사원이름
 	
 }

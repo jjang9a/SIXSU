@@ -168,11 +168,6 @@
 									</tr>
 									<tr>
 										
-										<td>점검사유<span class="needStar"> *</span></td>
-										<td><input type="text" name="checkInfo" id="checkInfo"></td>
-									</tr>
-									<tr>
-										
 										<td>비가동시간<span class="needStar"> *</span></td>
 										<td><input type="text" name="operStart" id="operStart"></td>
 									</tr>
@@ -295,7 +290,7 @@
 			},
           {
              header: '담당자',
-             name: 'empId',
+             name: 'empName',
              align: 'center'
           },
           {
@@ -334,17 +329,12 @@
 			}
           },  
           {
-              header: '점검사유',
-              name: 'checkInfo',
-              hidden : true
-          },
-          {
               header: '비가동시간',
               name: 'operStart',
               hidden : true
           },
           {
-              header: '비사동사유',
+              header: '비가동 비고',
               name: 'operNote',
               hidden : true
           },
