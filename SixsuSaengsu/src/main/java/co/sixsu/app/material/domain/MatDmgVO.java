@@ -20,4 +20,7 @@ public class MatDmgVO {
 	int resVal;
 	String empId;
 	String empName;
+	
+	String sDate;
+	String eDate;
 }

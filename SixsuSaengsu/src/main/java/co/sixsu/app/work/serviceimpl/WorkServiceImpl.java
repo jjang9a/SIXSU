@@ -3,6 +3,7 @@ package co.sixsu.app.work.serviceimpl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -212,13 +213,7 @@ public class WorkServiceImpl implements WorkService{
 		List<Object> allList = new ArrayList<>();
 		allList.add(mapper.getDetaWorkHeadList(data.getWkHeadId()));
 		boolean test = data.getSingle() == "Y";
-		System.out.println("================ 시작전 =====================================");
-		System.out.println("불린 결과값 : == Y" + test + " getSingle = " + data.getSingle());
-		System.out.println(data.getSingle());
 		if("Y".equals(data.getSingle())) {
-			System.out.println("================ 작동되었음 ! =====================================");
-			System.out.println(data.getWkDetaId());
-			System.out.println(data.getCpId());
 			mapper.getProductBomList(data);
 			
 		}
@@ -339,6 +334,28 @@ public class WorkServiceImpl implements WorkService{
 	@Override
 	public List<MatLotVO> getLotInfoList(String bomMatId) {
 		return mapper.getLotInfoList(bomMatId);
+	}
+
+	@Override
+	public List<DetaWorkOrdrVO> addWorkforPlan(List<DetaWorkOrdrVO> planData) {
+		
+		for(DetaWorkOrdrVO vo : planData) {
+			System.err.println(planData.size());
+			//세부지시에 쓸 ID가져오기
+			String subData = vo.getWkHeadId().substring(2) ;
+			String detaCode = mapper.getDetaCode(subData);
+			
+			DetaWorkOrdrVO ob = vo;
+			ob.setWkDetaId(detaCode);
+			//세부지시 INSERT
+			mapper.addDetaWork(ob);
+			
+			//생산계획과 LINK하기
+			mapper.addLink(ob);
+		}
+		
+		List<DetaWorkOrdrVO> allList = mapper.getDetaWorkHeadList(planData.get(0).getWkHeadId());
+		return allList;
 	}
 
 	

@@ -31,5 +31,7 @@ public class ShipInspVO {
 	 public String inspId; // 검사 항목코드
 	 public String inspType; // 검사유형
 	 
+	 public String quaComNote; // 검사 부적합 사유
+	 
 
 }
