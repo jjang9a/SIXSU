@@ -89,7 +89,11 @@ public class QualityServiceImpl implements QualityService {
 	// 검사 항목 가져오기
 	@Override
 	public List<QuaVO> inspItem(String matId) {
-		return quaMapper.inspItem(matId);
+		List<QuaVO> list = quaMapper.inspItem(matId);
+		for(QuaVO vo : list) {
+			vo.setInspItemId(matId);
+		}
+		return list;
 	}
 
 	// 자재 입고 검사 결과 등록(삭제 예정)
@@ -112,7 +116,8 @@ public class QualityServiceImpl implements QualityService {
 				qua.setResVal(un);
 			}
 			;
-
+			
+			
 			count += quaMapper.insertQuaDet(list.get(i));
 			System.out.println(count);
 
@@ -149,6 +154,7 @@ public class QualityServiceImpl implements QualityService {
 
 			qua.setDetInspNum(detNum);
 			System.out.println(detNum);
+			System.out.println("상세insert:"+list);
 
 			count += quaMapper.insertQuaDet(qua);
 		}
@@ -179,7 +185,7 @@ public class QualityServiceImpl implements QualityService {
 	}
 	
 
-
+	
 	// 수정시 검사 항목 리스트
 	@Override
 	public List<QuaVO> modInspItem(String inspNum) {
@@ -230,6 +236,7 @@ public class QualityServiceImpl implements QualityService {
 	public boolean prdComUpdate(PrdInspVO prd) {
 		int count = 0; // update 발생 횟수
 		System.out.println("qua_com 업데이트 vo" + prd);
+		
 		count = quaMapper.prdComUpdate(prd);
 
 		return count >= 1 ;

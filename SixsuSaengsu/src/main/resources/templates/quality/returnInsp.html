@@ -106,7 +106,7 @@ h1 {
 				//let initData = '';
 				//let nowData = '';
 				$.ajax({
-					url : "/quality/returnList",
+					url : "/quality/returnList.Ajax",
 					method : "GET",
 					dataType : "JSON",
 					success : function(result) {
@@ -200,7 +200,7 @@ h1 {
 				// 등록 버튼 이벤트
 				$('#addBtn').on('click', function(e) {
 					$.ajax({
-						url : '/quality/returnInspAdd',
+						url : '/quality/returnInspAdd.Ajax',
 						type : 'post',
 						data : $('#returnForm').serialize(),
 						success : function(result) {
@@ -247,7 +247,7 @@ h1 {
 									} else {
 										$
 												.ajax({
-													url : '/quality/returnInspMod',
+													url : '/quality/returnInspMod.Ajax',
 													type : 'post',
 													data : $('#returnForm')
 															.serialize(),
