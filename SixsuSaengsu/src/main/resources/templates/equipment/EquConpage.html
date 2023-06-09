@@ -233,7 +233,7 @@
 			function equList() {
 
 				$.ajax({
-					url: "equCon",
+					url: "equCon.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -300,7 +300,7 @@
 			$('#pdBtn').on('click', function (e) {
 
 				$.ajax({
-					url: "/basic/procList",
+					url: "/basic/procList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -361,7 +361,7 @@
 				if(code == null){
 					
 					$.ajax({
-						url: 'equAdd',
+						url: 'equAdd.Ajax',
 						type: 'post',
 						data: $('#addForm').serialize(),
 						dataType: 'json',
@@ -397,7 +397,7 @@
 				
 				console.log($('#addForm').serialize())
 				$.ajax({
-					url: 'equUpdate',
+					url: 'equUpdate.Ajax',
 					type: 'post',
 					data: $('#addForm').serialize(),
 					dataType: 'json',
@@ -428,7 +428,7 @@
 				e.preventDefault();
 				console.log(selRow);
 
-				var equCode = $('#equCode').val();
+				var equCode = $('#equCode.Ajax').val();
 				$.ajax({
 					url: 'equDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
 					type: 'POST', // HTTP 요청 메서드 (GET, POST 등)

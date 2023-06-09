@@ -363,7 +363,7 @@
 	    window.onload = function(){
 	    	
 	    	$.ajax({
-	    		url : "equCon",
+	    		url : "equCon.Ajax",
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
@@ -435,7 +435,7 @@
     $('#searchBtn').on('click', function(){
     
 			$.ajax({
-					url: 'equFilterAjax',
+					url: 'equFilterAjax.Ajax',
 					type: 'get',
 					data: {
 						"code": $("#code").val(),
@@ -459,7 +459,7 @@
 				$('#name').val('');
 				
 				$.ajax({
-					url: "equCon",
+					url: "equCon.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {

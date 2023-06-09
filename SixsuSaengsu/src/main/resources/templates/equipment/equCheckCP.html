@@ -304,7 +304,7 @@
 			$('#eqBtn').on('click', function (e) {
 
 				$.ajax({
-					url: "equCon",
+					url: "equCon.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -340,7 +340,7 @@
 			function checkList() {
 
 				$.ajax({
-					url: "equCheckList",
+					url: "equCheckList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -405,7 +405,7 @@
 				
 				console.log($('#addForm').serialize())
 				$.ajax({
-					url: 'checkAdd',
+					url: 'checkAdd.Ajax',
 					type: 'post',
 					data: $('#addForm').serialize(),
 					dataType: 'json',
@@ -442,7 +442,7 @@
 				
 				console.log($('#addForm').serialize())
 				$.ajax({
-					url: 'cUpdate',
+					url: 'cUpdate.Ajax',
 					type: 'post',
 					data: $('#addForm').serialize(),
 					dataType: 'json',
@@ -481,7 +481,7 @@
 						checkCode: $('#checkCode').val()
 				}))
 				$.ajax({
-					url: 'cDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
+					url: 'cDel.Ajax', // 삭제 요청을 처리하는 서버 API의 엔드포인트
 					type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
 					contentType: "application/json",
 					data: JSON.stringify({
