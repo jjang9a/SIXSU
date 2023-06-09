@@ -191,8 +191,8 @@
  			            data: JSON.stringify(gridm.getCheckedRows()),
  			            success: function (result) {
  			                console.log(result);
- 			                alert('출고 완료');
- 			                matAdjList(matLotId);
+ 			                //alert('출고 완료');
+ 			               Msg.success('출고 완료', 2000);
  			            },
  			            error: function (reject) {
  			                console.log(reject);
