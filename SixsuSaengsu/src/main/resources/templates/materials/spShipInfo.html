@@ -79,7 +79,7 @@
 			function spShipList(prcsPfmcId, spLotId, spName, spShipType, sDate, eDate){
 				
 				$.ajax({
-					url : "/materials/spshiplist",
+					url : "/materials/spshiplist.Ajax",
 					method : "GET",
 					data : {prcsPfmcId : prcsPfmcId, spLotId : spLotId, spName : spName, spShipType : spShipType, sDate : sDate, eDate : eDate},
 					success : function(result) {

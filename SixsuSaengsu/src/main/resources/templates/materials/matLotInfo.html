@@ -75,7 +75,7 @@
 				function mLotList(lot, mat, holdStat, sDate, eDate){
 					
 					$.ajax({
-						url: "/materials/matlotlist",
+						url: "/materials/matlotlist.Ajax",
 						method: "GET",
 						data:{matLotId : lot, matName : mat, matHoldStat : holdStat, sDate: sDate, eDate:eDate},
 						success: function (result) {

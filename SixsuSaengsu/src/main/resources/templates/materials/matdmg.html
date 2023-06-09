@@ -29,7 +29,6 @@
 		<button type="button" class="sixBtn4" id="dropBtn">폐기등록</button>
 		<h3 class="mt-4" style="font-family: 'MaruBuri';">불량처리 완료 목록</h3>
 		<div id="grids"></div>
-		<button type="button" class="sixBtn4" id="delBtn">내역삭제</button>
 		
 
 		
@@ -41,7 +40,7 @@
 			function matDmgList(dmatId, matName, sDate, eDate, dmatStat){
 				
 				$.ajax({
-					url: "/materials/matdmglist",
+					url: "/materials/matdmglist.Ajax",
 					method: "GET",
 					data : {dmatId : dmatId, matName : matName, sDate : sDate, eDate : eDate, dmatStat : dmatStat},
 					success: function (result) {
@@ -59,7 +58,7 @@
 			function matDmgWaitList() {
 				
 				$.ajax({
-					url: "/materials/matdmgwaitlist",
+					url: "/materials/matdmgwaitlist.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					
@@ -269,7 +268,7 @@
 				console.log(grid.getCheckedRows().length);
 				console.log(JSON.stringify(grid.getCheckedRows()));
 				$.ajax({
-					url: "/materials/insertMatDmg",
+					url: "/materials/insertMatDmg.Ajax",
 					method: "POST",
 					contentType: 'application/json',
 					data: JSON.stringify(grid.getCheckedRows()),
@@ -277,7 +276,7 @@
 						console.log(result);
 						alert("반품 등록 완료");
 						$.ajax({
-							url: "/materials/matdmgwaitlist",
+							url: "/materials/matdmgwaitlist.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							
@@ -291,7 +290,7 @@
 
 						});
 						$.ajax({
-							url: "/materials/matdmglist",
+							url: "/materials/matdmglist.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {
@@ -320,7 +319,7 @@
 				console.log(grid.getCheckedRows().length);
 				console.log(JSON.stringify(grid.getCheckedRows()));
 				$.ajax({
-					url: "/materials/insertMatDmg",
+					url: "/materials/insertMatDmg.Ajax",
 					method: "POST",
 					contentType: 'application/json',
 					data: JSON.stringify(grid.getCheckedRows()),
@@ -328,7 +327,7 @@
 						console.log(result);
 						alert("폐기 등록 완료");
 						$.ajax({
-							url: "/materials/matdmgwaitlist",
+							url: "/materials/matdmgwaitlist.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							
@@ -342,7 +341,7 @@
 
 						});
 						$.ajax({
-							url: "/materials/matdmglist",
+							url: "/materials/matdmglist.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {
@@ -364,30 +363,6 @@
 					
 				});
 			})
-			
-			//체크된 항목 삭제	    
-			$('#delBtn').on("click", function () {
-/* 				$.ajax({
-					url: "/materials/delmatrec",
-					method: "POST",
-					contentType: 'application/json',
-					data: JSON.stringify(grids.getCheckedRows()),
-					//data : {list : JSON.stringify(matReqIds)},
-					//data :{matReqId : grid.getCheckedRows()[0].matReqId},
-					success: function (result) {
-						console.log(result);
-					},
- 					error: function(reject){
-						console.log(reject);
-					}
-				}) */
-
-				grids.removeCheckedRows(false);
-				
-				grids.blur();
-				
-				
-			});
 			
 		</script>
 

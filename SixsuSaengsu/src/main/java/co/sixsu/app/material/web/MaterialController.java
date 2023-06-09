@@ -177,7 +177,7 @@ public class MaterialController {
 	
 	//입고대기 리스트 모달
 	@ResponseBody
-	@RequestMapping("matrecwait")
+	@RequestMapping("matrecwait.Ajax")
 	public List<MatrecWaitVO> selectMatRecWaitList(){
 		List<MatrecWaitVO> list = service.getMatRecWaitList();
 		return list;
@@ -186,7 +186,7 @@ public class MaterialController {
 	
 	//입고 리스트
 	@ResponseBody
-	@RequestMapping("matreclist")
+	@RequestMapping("matreclist.Ajax")
 	public List<MatrecVO> selectMatRecList(){
 		List<MatrecVO> list = service.getMatRecList();
 		System.out.println(list);
@@ -195,14 +195,14 @@ public class MaterialController {
 	
 	//입고 리스트
 	@ResponseBody
-	@RequestMapping("matrecsearch")
+	@RequestMapping("matrecsearch.Ajax")
 	public List<MatrecVO> getMatRecSearch(MatrecVO vo){
 		List<MatrecVO> list = service.getMatRecSearch(vo);
 		return list;
 	}
 	
 	//입고등록
-	@PostMapping("insertmatrec")
+	@PostMapping("insertmatrec.Ajax")
     @ResponseBody
     public void insertMatRec(@RequestBody List<MatrecVO> vo, Principal principal) {
 		System.out.println(vo);
@@ -221,7 +221,7 @@ public class MaterialController {
 	}
 
 	//입고 삭제 컨트롤
-	@PostMapping("delmatrec")
+	@PostMapping("delmatrec.Ajax")
     @ResponseBody
     public void delMatRec(@RequestBody List<MatrecVO> vo) {
 		System.out.println(vo);
@@ -231,7 +231,7 @@ public class MaterialController {
 	
 	//자재 lot 리스트
 	@ResponseBody
-	@RequestMapping("matlotlist")
+	@RequestMapping("matlotlist.Ajax")
 	public List<MatLotVO> mLotList(MatLotVO vo){
 		System.err.println(vo);
 		List<MatLotVO> list = service.mLotList(vo);
@@ -240,7 +240,7 @@ public class MaterialController {
 	
 	//자재 출고 리스트
 	@ResponseBody
-	@RequestMapping("matshiplist")
+	@RequestMapping("matshiplist.Ajax")
 	public List<MatShipVO> getMatShipList(MatShipVO vo){
 		List<MatShipVO> list = service.getMatShipList(vo);
 		return list;
@@ -248,7 +248,7 @@ public class MaterialController {
 	
 	//자재 조정 리스트
 	@ResponseBody
-	@RequestMapping("matadjlist")
+	@RequestMapping("matadjlist.Ajax")
 	public List<MatAdjVO> getMatAdjList(@RequestParam String matLotId){
 		List<MatAdjVO> list = service.getMatAdjList(matLotId);
 		System.out.println(list);
@@ -256,7 +256,7 @@ public class MaterialController {
 	}
 	
 	//자재 조정 입고 컨트롤
-	@PostMapping("matrecadj")
+	@PostMapping("matrecadj.Ajax")
     @ResponseBody
     public void matRecAdj(@RequestBody List<MatAdjVO> vo, Principal principal) {
 		vo.get(0).setEmpId(principal.getName());
@@ -266,7 +266,7 @@ public class MaterialController {
 	}
 	
 	//자재 조정 출고 컨트롤
-	@PostMapping("matshipadj")
+	@PostMapping("matshipadj.Ajax")
     @ResponseBody
     public void matShipAdj(@RequestBody List<MatAdjVO> vo, Principal principal) {
 		vo.get(0).setEmpId(principal.getName());
@@ -276,7 +276,7 @@ public class MaterialController {
 	
 	//반제품 재고조정 리스트
 	@ResponseBody
-	@RequestMapping("spadjlist")
+	@RequestMapping("spadjlist.Ajax")
 	public List<SpAdjVO> getSpAdjList(String spLotId){
 		List<SpAdjVO> list = service.getSpAdjList(spLotId);
 		return list;
@@ -285,14 +285,14 @@ public class MaterialController {
 
 	//반제품 출고 리스트
 	@ResponseBody
-	@RequestMapping("spshiplist")
+	@RequestMapping("spshiplist.Ajax")
 	public List<SpShipVO> getSpShipList(SpShipVO vo){
 		List<SpShipVO> list = service.getSpShipList(vo);
 		return list;
 	}
 	
 	//반제품 조정 입고 컨트롤
-	@PostMapping("sprecadj")
+	@PostMapping("sprecadj.Ajax")
     @ResponseBody
     public void spRecAdj(@RequestBody List<SpAdjVO> vo, Principal principal) {
 		vo.get(0).setEmpId(principal.getName());
@@ -302,7 +302,7 @@ public class MaterialController {
 	}
 	
 	//반제품 조정 출고 컨트롤
-	@PostMapping("spshipadj")
+	@PostMapping("spshipadj.Ajax")
     @ResponseBody
     public void spShipAdj(@RequestBody List<SpAdjVO> vo, Principal principal) {
 		vo.get(0).setEmpId(principal.getName());
@@ -312,7 +312,7 @@ public class MaterialController {
 	
 	//반제품 리스트
 	@ResponseBody
-	@RequestMapping("semiprodlist")
+	@RequestMapping("semiprodlist.Ajax")
 	public List<SpVO> getSpList(@RequestParam String spName){
 		List<SpVO> list = service.getSpList(spName);
 		return list;
@@ -320,7 +320,7 @@ public class MaterialController {
 	
 	//불량품 처리대기 리스트
 	@ResponseBody
-	@RequestMapping("matdmgwaitlist")
+	@RequestMapping("matdmgwaitlist.Ajax")
 	public List<MatDmgVO> getMatDmgWaitList(){
 		List<MatDmgVO> list = service.getMatDmgWaitList();
 		return list;
@@ -328,7 +328,7 @@ public class MaterialController {
 	
 	//불량품 리스트
 	@ResponseBody
-	@RequestMapping("matdmglist")
+	@RequestMapping("matdmglist.Ajax")
 	public List<MatDmgVO> getMatDmgList(MatDmgVO vo){
 		List<MatDmgVO> list = service.getMatDmgList(vo);
 		return list;
@@ -336,7 +336,7 @@ public class MaterialController {
 	
 
 	 //자재 불량처리
-	 @PostMapping("insertMatDmg")
+	 @PostMapping("insertMatDmg.Ajax")
 	 @ResponseBody 
 	 public void insertMatDmg2(@RequestBody List<MatDmgVO> vo, Principal principal) {
 		 vo.get(0).setEmpId(principal.getName()); // 로그인 아이디 가져오기
@@ -345,7 +345,7 @@ public class MaterialController {
 	 
 	//반제품 LOT 리스트
 	@ResponseBody
-	@RequestMapping("splotlist")
+	@RequestMapping("splotlist.Ajax")
 	public List<SpLotVO> getSpLotList(SpLotVO vo){
 		List<SpLotVO> list = service.getSpLotList(vo);
 		return list;
