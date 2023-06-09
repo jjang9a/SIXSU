@@ -30,7 +30,7 @@
 	  	        c.equ_model, 
 	  	        c.equ_stat, 
 	  	        c.equ_line, 
-	  	        c.equ_check, 
+	  	        c.equ_check || '개월' as equ_check, 
 	  	        i.equ_suit, 
 	  	        to_char(i.check_date, 'yyyy-mm-dd') as check_date, 
 	  	        to_char(i.check_next, 'yyyy-mm-dd') as check_next , 
@@ -42,13 +42,18 @@
 	  	        o.oper_type, 
 	            o.oper_note, 
 	  	        to_char(c.add_date, 'yyyy-mm-dd') as add_date , 
-	  	        c.emp_id  
+	  	        get_emp_name(e.emp_id) emp_name
+	  	        
+	  	        
+	  	        
 		  FROM equ_con c 
 		  LEFT OUTER JOIN CHECKVIEW i
 	        ON c.equ_code = i.equ_code
 		  LEFT OUTER JOIN oper o
 		    ON c.equ_code = o.equ_code
-		 ORDER BY c.equ_code 
+		  LEFT OUTER JOIN employee e
+		   on e.emp_id = c.emp_id
+		ORDER BY c.equ_code desc 
   	</select>
   	
   	<!-- 설비조회(검색) -->
@@ -88,55 +93,19 @@
 	  	        o.oper_type, 
 	            o.oper_note, 
 	  	        to_char(c.add_date, 'yyyy-mm-dd') as add_date , 
-	  	        c.emp_id  
+	  	        get_emp_name(c.emp_id) emp_name
+	  	        
+	  	         
+	  	        
 		  FROM equ_con c 
 		  LEFT OUTER JOIN CHECKVIEW i
 	        ON c.equ_code = i.equ_code
 		  LEFT OUTER JOIN oper o
 		    ON c.equ_code = o.equ_code
-		 
+		  LEFT OUTER JOIN employee e
+		    on e.emp_id = c.emp_id
   	
   	
-  	<!--  WITH oper as ( 
-	   SELECT e.equ_code, e.oper_start, e.oper_fnish, e.oper_note, e.oper_type
-	    FROM equ_oper e
-	    JOIN(   SELECT equ_code, MAX(oper_code) oper_code
-	              FROM equ_oper
-	             Group By equ_code)o
-	    ON(e.equ_code = o.equ_code AND e.oper_code = o.oper_code)
-	   ),
-	CHECKVIEW AS (
-	  SELECT e.equ_code, e.equ_suit, e.check_date, e.check_next, e.check_type, e.check_info
-	    FROM equ_insp e 
-	    JOIN (SELECT equ_code, MAX(check_date) check_date
-	            FROM equ_insp
-	           GROUP BY equ_code) o
-	      ON (e.equ_code = o.equ_code AND e.check_date = o.check_date)
-	)
-	    SELECT  c.equ_code, 
-	  	        c.proc_id, 
-	  	        c.equ_name, 
-	  	        c.equ_model, 
-	  	        c.equ_stat, 
-	  	        c.equ_line, 
-	  	        c.equ_check, 
-	  	        i.equ_suit, 
-	  	        to_char(i.check_date, 'yyyy-mm-dd') as check_date, 
-	  	        to_char(i.check_next, 'yyyy-mm-dd') as check_next, 
-	  	        i.check_type, 
-	            i.check_info, 
-	            c.c_temp, 
-	  	        to_char(o.oper_start, 'yyyy-mm-dd / hh:mm') as oper_start, 
-	  	        o.oper_fnish, 
-	  	        o.oper_type, 
-	            o.oper_note, 
-	  	        to_char(c.add_date, 'yyyy-mm-dd') as add_date, 
-	  	        c.emp_id  
-		  FROM equ_con c 
-		  LEFT OUTER JOIN CHECKVIEW i
-	        ON c.equ_code = i.equ_code
-		  LEFT OUTER JOIN oper o
-		    ON c.equ_code = o.equ_code  -->
 	   <where>
 		
 		<if test='code != null and code != ""'>
@@ -163,17 +132,17 @@
 	select 'EQU_' || LPAD(EQU_SEQ.nextval, 3, '0') from dual
 	</selectKey>
 		INSERT INTO equ_con (equ_code, proc_id, equ_name, equ_model, equ_stat, equ_line, emp_id, equ_check, add_date, c_temp)
-		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, to_date(#{addDate},'yyyy-MM-dd' )
+		VALUES(#{equCode}, #{procId}, #{equName}, #{equModel}, #{equStat}, #{equLine}, #{empId}, #{equCheck}, to_date(#{addDate},'yyyy-MM-dd')
 		<if test="ctemp != ''">
 			, #{ctemp}
 		</if>
-		)
+		) 
 	</insert>
 	
 	<!-- 설비관리(수정) -->																																								
 	<update id="equUpdate" parameterType="EquConVO">
 		UPDATE equ_con
-		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_stat=#{equStat}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date = to_date(#{addDate},'yyyy-MM-dd'), c_temp=#{ctemp}
+		SET equ_code=#{equCode}, proc_id=#{procId}, equ_name=#{equName}, equ_model=#{equModel}, equ_line=#{equLine}, emp_id=#{empId}, equ_check=#{equCheck}, add_date = to_date(#{addDate},'yyyy-MM-dd'), c_temp=#{ctemp}
 		WHERE equ_code=#{equCode}
 	</update>
 	
@@ -196,7 +165,7 @@
 	
 	<!-- 점검 리스트 -->
 	<select id="equCheckList" resultType="EquInspVO" parameterType="EquSearchDTO">
-	  SELECT i.check_code,
+	  SELECT 	   i.check_code,
 	  			   o.oper_code,
 		  		   c.equ_code,
 		  		   c.equ_name,
@@ -210,31 +179,37 @@
 		  		   to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start,
 		  		   i.emp_id,
 		  		   get_emp_name(i.emp_id) emp_name
-			  FROM equ_con c LEFT OUTER JOIN equ_insp i
+		  		   
+			  FROM equ_con c JOIN equ_insp i
 				ON c.equ_code = i.equ_code
-			  LEFT OUTER JOIN equ_oper o
+			  left JOIN equ_oper o
 				ON c.equ_code = o.equ_code
+			  ORDER BY i.check_code desc
   	</select>
   	
   	<!-- 점검조회 (검색) -->
 	<select id="equCheckSearch" resultType="EquInspVO" parameterType="EquSearchDTO">
-  		SELECT i.check_code,
-  			   o.oper_code,
-	  		   c.equ_code,
-	  		   c.equ_name,
-	  		   c.equ_check,
-	  		   i.equ_suit,
-	  		   i.check_type,
-	  		   to_char(i.check_date, 'yyyy-mm-dd') as check_date,
-	  		   to_char(i.check_next, 'yyyy-mm-dd') as check_next ,
-	  		   i.check_info, i.check_com,
-	  		   i.check_note,
-	  		   to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start,
-	  		   i.emp_id  
-		  FROM equ_con c LEFT OUTER JOIN equ_insp i
-			ON c.equ_code = i.equ_code
-		  LEFT OUTER JOIN equ_oper o
-			ON c.equ_code = o.equ_code
+  		SELECT 	   i.check_code,
+	  			   o.oper_code,
+		  		   c.equ_code,
+		  		   c.equ_name,
+		  		   c.equ_check,
+		  		   i.equ_suit,
+		  		   i.check_type,
+		  		   to_char(i.check_date, 'yyyy-mm-dd') as check_date,
+		  		   to_char(i.check_next, 'yyyy-mm-dd') as check_next ,
+		  		   i.check_info, i.check_com,
+		  		   i.check_note,
+		  		   to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start,
+		  		   i.emp_id,
+		  		   get_emp_name(i.emp_id) emp_name
+		  		   
+			  FROM equ_con c JOIN equ_insp i
+				ON c.equ_code = i.equ_code
+			  left JOIN equ_oper o
+				ON c.equ_code = o.equ_code
+			  ORDER BY i.check_code desc
+		 
 			<where> 
 				<!-- <if test='searchType.equals("code")'>
 					c.equ_code like '%'||#{searchKey}||'%' OR lower(c.equ_code) like '%'||#{searchKey}||'%'
@@ -257,18 +232,19 @@
   	<insert id="checkAdd" parameterType="EquInspVO" >
   	<selectKey keyColumn="check_code,check_date,check_next" keyProperty="checkCode,checkDate,checkNext" resultType="map" order="BEFORE">
   		select 'CHECK_' || LPAD(CHECK_SEQ.nextval, 3, '0') as "check_code",
-		  		to_char(sysdate,'YYYY/MM/dd') as "check_date", 
-		  		to_char(add_months(sysdate, #{equCheck}), 'YYYY/MM/dd') as "check_next"       
+		  		to_char(sysdate,'yyyy-MM-dd') as "check_date", 
+		  		to_char(add_months(sysdate, #{equCheck}), 'yyyy-MM-dd') as "check_next"       
   		from dual
   	</selectKey>
 		INSERT INTO equ_insp (check_code, equ_code, equ_name, check_date, check_next, equ_check, equ_suit, check_type, check_info, check_com, check_note, emp_id)
-		VALUES(#{checkCode}, #{equCode}, #{equName}, #{checkDate}, #{checkNext}, #{equCheck}||'개월', #{equSuit}, #{checkType}, #{checkInfo}, #{checkCom}, #{checkNote}, #{empId})
+		VALUES(#{checkCode}, #{equCode}, #{equName}, to_date(#{checkDate},'yyyy-MM-dd'), to_date(#{checkNext},'yyyy-MM-dd'), #{equCheck}, #{equSuit}, #{checkType}, #{checkInfo}, #{checkCom}, #{checkNote}, #{empId})
 	</insert>
+														
 	
 	<!-- 점검 관리(수정) -->
 	<update id="cUpdate" parameterType="EquInspVO">
 		UPDATE equ_insp
-		SET check_code=#{checkCode}, equ_code=#{equCode}, equ_name=#{equName}, check_date= to_date(#{checkDate}), check_next = to_date(#{checkNext}), equ_check=#{equCheck}, equ_suit=#{equSuit}, check_type=#{checkType}, check_info=#{checkInfo}, check_com=#{checkCom}, check_note=#{checkNote}, emp_id=#{empId}
+		SET check_code=#{checkCode}, equ_code=#{equCode}, equ_name=#{equName}, check_date= to_date(#{checkDate},'yyyy-MM-dd'), check_next = to_date(#{checkNext},'yyyy-MM-dd'), equ_check=#{equCheck}, equ_suit=#{equSuit}, check_type=#{checkType}, check_info=#{checkInfo}, check_com=#{checkCom}, check_note=#{checkNote}, emp_id=#{empId}
 		WHERE check_code=#{checkCode}
 	</update> 														
 						
@@ -287,13 +263,15 @@
   	        o.oper_type, 
   	        to_char(o.oper_start, 'yyyy-MM-dd - hh:mm') as oper_start, 
   	        to_char(o.oper_fnish, 'yyyy-MM-dd - hh:mm') as oper_fnish, 
-  	        c.emp_id, 
+  	        get_emp_name(c.emp_id) as empName, 
   	        o.oper_note, 
   	        c.equ_stat
+  	       
 	   FROM equ_con c
 	   JOIN equ_oper o
 		 ON c.equ_code = o.equ_code
-		 ORDER BY o.oper_code 
+	  ORDER BY o.oper_code
+	   
   	</select>
   	
   
@@ -318,6 +296,9 @@
 	        		 and ( oper_start between to_date(#{operStart}, 'YYYY-MM-DD') and
 	                     to_date(#{operFnish}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
 	      		</if>
+	      		<if test="operCode != null and operCode != ''. toString()">
+	      			(o.oper_code like '%'||#{operCode}||'%' OR lower(o.oper_code) like '%'||#{operCode}||'%')
+	      		</if>
 			</where>		
   	</sql>
   	
@@ -333,11 +314,14 @@
   	        c.emp_id, 
   	        o.oper_note, 
   	        c.equ_stat
+  	        
 	   FROM equ_con c
 	   JOIN equ_oper o
 		 ON c.equ_code = o.equ_code
+	   
 		 
-		 <include refid="criteria"></include>	
+		 <include refid="criteria"></include>
+		 	
   	</select>
   	
   	<!-- 비가동 관리(수정) -->
@@ -353,11 +337,13 @@
 	</delete>
 	
 	<!-- 비가동 관리 비가동 시작버튼(비가동 등록) -->
-	
-  	<!-- <selectkey keyColumn="oper_code,oper_type,oper_start,oper_fnish,oper_note," keyProperty="operCode,operType,operStart,operFnish,operNote" resultType="map" order="BEFORE"></select> -->
   	<insert id="startIn" parameterType="EquOperVO">
+  	   <selectKey  keyProperty="operCode" resultType="String" order="BEFORE">
+  	   	select 'OPER_' || LPAD(OPER_SEQ.nextval, 3, '0') from dual
+  	   </selectKey>
+  		
 		INSERT INTO equ_oper (oper_code, equ_code, oper_type, oper_start, oper_note, emp_id)
-		VALUES('OPER_' || LPAD(OPER_SEQ.nextval, 3, '0'), #{equCode}, #{operType}, current_date, #{operNote}, #{empId})
+		VALUES( #{operCode}, #{equCode}, #{operType}, current_date, #{operNote}, #{empId})
 	</insert>   
 	
 	<!-- 비가동 관리 설비상태 비가동(수정) -->

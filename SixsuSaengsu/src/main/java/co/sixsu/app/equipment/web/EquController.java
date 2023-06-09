@@ -85,27 +85,27 @@ public class EquController {
 	}
    
 	@ResponseBody
-	@GetMapping("equCon") //설비 리스트 ajax
+	@GetMapping("equCon.Ajax") //설비 리스트 ajax
 	public List<EquConVO> equList(){
 		List<EquConVO> list = equService.equConList();
 		return list;
 	}
 	
 	@ResponseBody 
-	@PostMapping("equAdd") // 설비관리(등록) 
+	@PostMapping("equAdd.Ajax") // 설비관리(등록) 
 	public EquConVO equAdd(EquConVO data) { 
 		equService.equAdd(data);
 		return data;
 	}
 	
 	@ResponseBody
-	@GetMapping("activePdList") // 설비관리 공정코드(조회)
+	@GetMapping("activePdList.Ajax") // 설비관리 공정코드(조회)
 	public List<ProductVO> activePdList() {
 		return equService.activePdList();
 	}
 	
 	@ResponseBody 
-	@PostMapping("equUpdate") // 설비관리(수정) 
+	@PostMapping("equUpdate.Ajax") // 설비관리(수정) 
 	public EquConVO equUpdate(EquConVO data) {
 		System.out.println("컨트롤러 : "+ data);
 		equService.equUpdate(data);
@@ -114,14 +114,14 @@ public class EquController {
 
 	// [설비 관리 페이지] - 삭제
 	@ResponseBody 
-	@PostMapping("equDel")  // 설비관리(삭제)
+	@PostMapping("equDel.Ajax")  // 설비관리(삭제)
 	public boolean equdel(@RequestBody EquConVO equCode) {
 	    System.err.println(equCode);
 		 return equService.equDel(equCode);
 	} 
 	 
 	@ResponseBody // 설비조회(검색) 
-	@RequestMapping("equFilterAjax")
+	@RequestMapping("equFilterAjax.Ajax")
 	public List<EquConVO> equFilterList(EquSearchDTO dto) {
 		System.out.println("데이터");
 		System.out.println(dto);
@@ -130,21 +130,21 @@ public class EquController {
 	}
 	
 	@ResponseBody // 점검조회(검색) 
-	@RequestMapping("equCheckSearch")
+	@RequestMapping("equCheckSearch.Ajax")
 	public List<EquInspVO> equCheckSearch(EquSearchDTO dto) {
 		List<EquInspVO> list = equService.equCheckSearch(dto);
 		return list;
 	}
 	
 	@ResponseBody
-	@GetMapping("equCheckList") //// 점검 조회 리스트 
+	@GetMapping("equCheckList.Ajax") //// 점검 조회 리스트 
 	public List<EquInspVO> equCheckList(){
 		List<EquInspVO> list = equService.equCheckList();
 		return list;
 	}
 	
 	@ResponseBody 
-	@PostMapping("checkAdd") // 점검관리(등록) 
+	@PostMapping("checkAdd.Ajax") // 점검관리(등록) 
 	public EquInspVO checkAdd(EquInspVO data) { 
 		System.out.println(data);
 		equService.checkAdd(data);
@@ -152,29 +152,29 @@ public class EquController {
 	} 
 	
 	@ResponseBody 
-	@PostMapping("cUpdate") // 점검관리(수정) 
+	@PostMapping("cUpdate.Ajax") // 점검관리(수정) 
 	public EquInspVO cUpdate(EquInspVO data) {
-		System.out.println("컨트롤러 : "+ data);
+		//System.err.println("컨트롤러 : "+ data);
 		equService.cUpdate(data);
 		return data;
 	}
 	
 	@ResponseBody 
-	@PostMapping("cDel")  // 점검관리(삭제)
+	@PostMapping("cDel.Ajax")  // 점검관리(삭제)
 	public boolean cDel(@RequestBody EquInspVO checkCode) {
-	    System.out.println(checkCode);
+	    System.err.println("컨트롤러 : "+ checkCode);
 		 return equService.cDel(checkCode);
 	} 
 	
 	@ResponseBody
-	@GetMapping("equOperList") //// 비가동 조회 리스트 ajax
+	@GetMapping("equOperList.Ajax") //// 비가동 조회 리스트 ajax
 	public List<EquOperVO> equOperList(){
 		List<EquOperVO> list = equService.equOperList();
 		return list;
 	}
 	
 	@ResponseBody // 비가동 검색 기능 / 아작스로 데이터를 요청 리스트로 받음
-	@RequestMapping("equOperSearch")
+	@RequestMapping("equOperSearch.Ajax")
 	public List<EquOperVO> equOperSearch(EquOperVO vo) {
 		System.out.println("데이터");
 		System.out.println(vo);
@@ -183,7 +183,7 @@ public class EquController {
 	}
 	
 	@ResponseBody 
-	@PostMapping("oUpdate") // 비가동 관리(수정) 
+	@PostMapping("oUpdate.Ajax") // 비가동 관리(수정) 
 	public EquOperVO oUpdate(EquOperVO data) {
 		System.out.println(data);
 		equService.oUpdate(data);
@@ -191,22 +191,24 @@ public class EquController {
 	}
 	
 	@ResponseBody 
-	@PostMapping("oDel")  // 비가동 관리(삭제)
+	@PostMapping("oDel.Ajax")  // 비가동 관리(삭제)
 	public boolean oDel(@RequestBody EquOperVO operCode) {
 	    System.out.println(operCode);
 		 return equService.oDel(operCode);
 	} 
 	
 	@ResponseBody 
-	@PostMapping("startIn") // 비가동 관리 비가동 시작버튼(비가동 등록) 
+	@PostMapping("startIn.Ajax") // 비가동 관리 비가동 시작버튼(비가동 등록) 
 	public EquOperVO startIn(EquOperVO data) { 
 		System.out.println(data);
 		equService.startIn(data);
-		return data;
+		EquOperVO vo = new EquOperVO();
+		vo.setOperCode(data.getOperCode());
+		return equService.equOperSearch(vo).get(0);
 	} 
 
 	@ResponseBody 
-	@PostMapping("fnishIn") // 비가동 관리 비가동 종료버튼(가동 등록) 
+	@PostMapping("fnishIn.Ajax") // 비가동 관리 비가동 종료버튼(가동 등록) 
 	public List<EquOperVO> fnishIn(EquOperVO data) { 
 		 //equService.fnishIn(data);
 		 //LocalDate now = LocalDate.now(); String date = now.toString();

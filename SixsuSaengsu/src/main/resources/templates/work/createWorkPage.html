@@ -458,6 +458,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					실패알람()
 				}
 			})
 		}
@@ -480,6 +481,7 @@
 			},
 			error : function(reject){
 				console.log(reject);
+				실패알람()
 			}
 		})
 	})
@@ -612,6 +614,7 @@
 			}]
 		});
 		grid_product.setBodyHeight(520);
+		
 			$.ajax({
 				url : "/ajax/getProductList",
 				method : "GET",
@@ -623,6 +626,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					실패알람()
 				}
 			})
 			
@@ -647,8 +651,9 @@
 			}]
 		  });
 			grid_process.setBodyHeight(520);
+			
 			$.ajax({
-				url: "/basic/activeProcList",
+				url: "/basic/activeProcList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -656,6 +661,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					실패알람()
 				}
 			});
 			
@@ -685,7 +691,7 @@
 		  });
 		
 			$.ajax({
-				url: "/basic/activeMatList",
+				url: "/basic/activeMatList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -693,6 +699,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					실패알람()
 				}
 			});
 			
@@ -715,11 +722,11 @@
 				data : JSON.stringify({wkHeadId : WorkCode,
 										empId : empId}),
 				success : function(result){
-					console.dir(result);
 					grid1.resetData(result);
 					},
 					error : function(reject){
 						console.log(reject)
+						실패알람()
 					}
 				})
 	})
@@ -732,13 +739,13 @@
 	
 	
 	
-	let grid1_unique_code = 10;
 	
 	$('.moveBtn').on('click', function(){
 		let swith = false;
+		let dataAry = [];
  		for(let i of plan_search2.getCheckedRows()){
  			let addswith = true;
- 			for(let j of grid1_data){
+ 			for(let j of grid1.getData()){
 					if(i.planDetaId == j.planDetaId && addswith == true){
 						console.log('일치 하였음')
 						swith = true;
@@ -746,26 +753,36 @@
 					}
 				}
  			if(addswith == true){
- 				let ob = {
- 					planDetaId : i.planDetaId,
- 					cpId : i.cpId,
- 					cpName : i.cpName,
- 					detaQt : i.detaQt,
- 					ordQt : i.ordQt,
- 					cmpLtSt : i.cmpLtSt,
- 					planUnique : grid1_unique_code
- 				}
- 				grid1_unique_code *= 2
-				grid1_data.splice(grid1_data.length-1, 0, ob)
- 				console.log('grid1_data')
-				console.log(grid1_data);
+ 				i.wkHeadId = orderCode;
+ 				i.empId = empId;
+				dataAry.push(i);
  			}
  		}
  		if(swith == true){
- 			alert('중복되는 세부계획이 존재합니다')
+ 			Msg.error('중복되는 세부계획이 존재합니다', 2000);
+ 		}else if(dataAry.length != 0){
+ 			console.log(dataAry)
+ 			$.ajax({
+				url : "/ajax/addWorkforPlan",
+				method : "POST",
+				contentType : "application/json",
+				data : JSON.stringify(dataAry),
+				success : function(result) {
+					grid1.resetData(result);
+					Msg.success('등록이 완료되었습니다.', 2000);
+				},
+				error : function(reject) {
+					console.err(reject)
+					실패알람()
+				}
+			})
+ 			
+ 		}else{
+ 			Msg.warning('생산계획을 선택하세요', 2000);
  		}
- 		grid1.resetData(grid1_data);
+ 			
  		plan_search2.blur();
+ 		
  	})
  	
  	
@@ -795,6 +812,7 @@
 	let grid1Ev
 	grid1.on('click',ev => {
 		let columnName = ev.columnName;
+		console.log(grid1.getRow(columnName))
 		if (columnName === 'cpId'){
 			console.log(ev.columnName);
 		    console.log(ev.columnIndex);
@@ -820,6 +838,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					실패알람()
 				}
 			})
 		showBom()
@@ -846,6 +865,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						실패알람()
 					}
 				});
 		});
@@ -865,6 +885,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						실패알람()
 					}
 				})
 		}
@@ -886,6 +907,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						실패알람()
 					}
 				})
 			
@@ -906,6 +928,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						실패알람()
 					}
 				})
 		}
@@ -927,6 +950,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						실패알람()
 					}
 				})
 		}
@@ -954,6 +978,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					실패알람()
 				}
 			})
 	});
@@ -974,6 +999,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						실패알람()
 					}
 				})
 		});
@@ -1011,6 +1037,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						실패알람()
 					}
 				})
 		});
@@ -1036,6 +1063,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					실패알람()
 				}
 			})
 	})
@@ -1089,7 +1117,7 @@
 			$(this).addClass('sel3');
 			selType = '완제품';
 			$.ajax({
-				url: "/basic/activeCpList",
+				url: "/basic/activeCpList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -1097,6 +1125,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					실패알람()
 				}
 			});
 		})
@@ -1107,7 +1136,7 @@
 			$(this).addClass('sel3');
 			selType = '반제품';
 			$.ajax({
-				url: "/basic/activeSpList",
+				url: "/basic/activeSpList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -1115,6 +1144,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					실패알람()
 				}
 			});
 		})		
@@ -1127,7 +1157,7 @@
 					$(this).addClass('sel3');
 					matType = '완제품';
 					$.ajax({
-						url: "/basic/activeMatList",
+						url: "/basic/activeMatList.Ajax",
 						method: "GET",
 						dataType: "JSON",
 						success: function (result) {
@@ -1135,6 +1165,7 @@
 						},
 						error: function (reject) {
 							console.log(reject)
+							실패알람()
 						}
 					});
 				})
@@ -1145,7 +1176,7 @@
 					$(this).addClass('sel3');
 					matType = '반제품';
 					$.ajax({
-						url: "/basic/activeSpList",
+						url: "/basic/activeSpList.Ajax",
 						method: "GET",
 						dataType: "JSON",
 						success: function (result) {
@@ -1153,6 +1184,7 @@
 						},
 						error: function (reject) {
 							console.log(reject)
+							실패알람()
 						}
 					});
 				})
@@ -1170,15 +1202,15 @@
 					 empId : empId,
 					 cmpltSt : $('#inputGroupSelect01').val()}),
 			success: function (result){
-				console.log('RESULT : ');
-				console.log(result);
-				alert(result);
 				if(result == '등록되었습니다 !'){
+					alert(result);
 					location.href = '/work/workControllPage';
 				}
+				Msg.error(result, 5000);
 			},
 			error: function(reject){
 				console.err(reject)
+				Msg.error('[error : addSubmit] please check the Console Log', 5000);
 			}
 		})
 	})		
@@ -1203,28 +1235,38 @@
 			},
 			error: function(reject){
 				console.err(reject)
+				Msg.error('[error : workDataDelete] please check the Console Log', 5000);
 			}
 		})
 	}
 	
+	//작업지시를 클릭 하지 않고, 공정을 추가 하는경우
 	function 세부계획선택여부(){
 		if(selectDetWorkCode === ''){
-			alert('작업지시를 먼저 선택하세요')
+			워닝알람('작업지시를 먼저 선택하세요')
 			return false
 		}else{
 			return true
 		}
 	}
 	
+	//공정을 클릭 하지 않고, 자재를 추가하려는 경우.
 	function 공정코드선택여부(){
 		if(selectBomWorkCode === ''){
-			alert('공정을 먼저 선택하세요')
+			워닝알람('공정을 먼저 선택하세요')
 			return false
 		}else{
 			return true
 		}
 	}
 	
+	function 워닝알람(text){
+		Msg.warning(text, 2000);
+	}
+	
+	function 실패알람(){
+		Msg.error('[error] please check the Console Log', 5000);
+	}
 	
 	tui.Grid.applyTheme('default', {
         cell: {

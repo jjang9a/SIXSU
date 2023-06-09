@@ -65,7 +65,7 @@
 				<tr>
 					<td>설비코드<span class="needStar"> * </span></td>
 					<td><input type="text" name="equCode" id="equCode"
-						style="background: #ccdceb;" class="empty"></td>
+						style="background: #ccdceb;" class="empty" readonly></td>
 				
 					<td>설비명<span class="needStar"> * </span></td>
 					<td><input type="text" name="equName" id="equName"
@@ -75,7 +75,6 @@
 					<td><input type="text" name="equModel" id="equModel"
 						class="empty"></td>
 				</tr>
-			
 				<tr>
 					<td>설비라인<span class="needStar"> *</span></td>
 					<td><input type="text" name="equLine" id="equLine"
@@ -100,8 +99,8 @@
 				
 					<td>담당자<span class="needStar"> *</span></td>
 					
-					<td><input type="text" name="empName" id="empName" class="empty" th:value='${#authentication.principal.empName}'></td> .
-					<!-- <input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'> -->
+					<td><input type="text" name="empName" id="empName" th:value='${#authentication.principal.empName}'></td> 
+					<td><input type="hidden" name="empId" id="empId" th:value='${#authentication.principal.empId}'></td>
 				</tr>
 			</table>
 
@@ -217,8 +216,13 @@
 						align: 'center'
 					},
 					{
-						header: '담당자',
+						header: '담당사원',
 						name: 'empId',
+						hidden : true,
+					},
+					{
+						header: '담당자',
+						name: 'empName',
 						align: 'center'
 					}
 				]
@@ -229,7 +233,7 @@
 			function equList() {
 
 				$.ajax({
-					url: "equCon",
+					url: "equCon.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -296,7 +300,7 @@
 			$('#pdBtn').on('click', function (e) {
 
 				$.ajax({
-					url: "/basic/procList",
+					url: "/basic/procList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -343,36 +347,46 @@
 				$('#equCheck').val(dataRow.equCheck);
 				$('#addDate').val(dataRow.addDate);
 				$('#empId').val(dataRow.empId);
+				
 				$('#ctemp').val(dataRow.ctemp);
+
 				
 			});
 
 			// 등록버튼 기능 구현
 			$('#addBtn').on('click', function (e) {
 				console.log($('#addForm').serialize())
-				$.ajax({
-					url: 'equAdd',
-					type: 'post',
-					data: $('#addForm').serialize(),
-					dataType: 'json',
-					success: function (result) {
-						alert('설비정보가 등록되었습니다');
-						console.log('result : ');
-						console.log(result);
-						//등록 버튼을 누르면 리스트에 삽입된다.     
-						const appendedData = result
-						grid.prependRow(appendedData);
-						// 리스트를 리셋. 등록데이터가 바로 뜸.
-						grid.resetData(result);
-						setTimeout(() => orderingGrid.refreshLayout(), 1000);
-					},
-					error: function (reject) {
-						alert('설비 등록 중 오류가 발생했습니다!');
-						console.log(reject);
-					}
-				});
+
+				var code = $('#equCode').val();
+				if(code == null){
+					
+					$.ajax({
+						url: 'equAdd.Ajax',
+						type: 'post',
+						data: $('#addForm').serialize(),
+						dataType: 'json',
+						success: function (result) {
+							alert('설비정보가 등록되었습니다');
+							console.log('result : ');
+							console.log(result);
+							//등록 버튼을 누르면 리스트에 삽입된다.     
+							// const appendedData = result
+							// grid.prependRow(appendedData);
+							// // 리스트를 리셋. 등록데이터가 바로 뜸.
+							// grid.resetData(result);
+							// setTimeout(() => orderingGrid.refreshLayout(), 1000);
+							equList();
+						},
+						error: function (reject) {
+							alert('설비 등록 중 오류가 발생했습니다!');
+							console.log(reject);
+						}
+					});
+					$('.empty').val('');
+				}else{
+					alert('등록불가능한설비입니다.');
+				}
 				// 인풋창을 비워줌
-				$('#addForm input').val('');
 			});
 			
 			// 설비정보 수정 
@@ -383,15 +397,16 @@
 				
 				console.log($('#addForm').serialize())
 				$.ajax({
-					url: 'equUpdate',
+					url: 'equUpdate.Ajax',
 					type: 'post',
 					data: $('#addForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
 						console.log(result);
 						alert('설비정보가 수정되었습니다');
-						const setData = result
-						grid.setRow(selRow, setData);
+						
+						// 리스트 반환
+						equList();
 						selRow = 999;
 					},
 					error: function (reject) {
@@ -399,7 +414,7 @@
 						console.log(reject);
 					}
 				});
-				$('#addForm input').val('');
+				$('.empty').val('');
 				
 			  }
 			})
@@ -413,7 +428,7 @@
 				e.preventDefault();
 				console.log(selRow);
 
-				var equCode = $('#equCode').val();
+				var equCode = $('#equCode.Ajax').val();
 				$.ajax({
 					url: 'equDel', // 삭제 요청을 처리하는 서버 API의 엔드포인트
 					type: 'POST', // HTTP 요청 메서드 (GET, POST 등)

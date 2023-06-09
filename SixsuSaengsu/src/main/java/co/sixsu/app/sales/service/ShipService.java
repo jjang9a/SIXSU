@@ -19,4 +19,5 @@ public interface ShipService {
 	
 	void completeShip(ShipVO vo);
 	List<ShipVO> searchShip(ShipVO vo);
+	List<LotVO> shipReady(String keyword);
 }

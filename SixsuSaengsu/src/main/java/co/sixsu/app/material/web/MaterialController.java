@@ -125,7 +125,7 @@ public class MaterialController {
 	
 	//발주내역 리스트
 	@ResponseBody
-	@RequestMapping("matreqlist")
+	@RequestMapping("matreqlist.Ajax")
 	public List<MatreqVO> getmatreqList(){
 		List<MatreqVO> list = service.getMatReqList();
 		return list;
@@ -133,7 +133,7 @@ public class MaterialController {
 	
 	//발주조회 컨트롤
 	@ResponseBody
-	@RequestMapping("matreqsearch")
+	@RequestMapping("matreqsearch.Ajax")
 	public List<MatreqVO> getMatReqSearch(MatreqVO vo){
 		List<MatreqVO> list = service.getMatReqSearch(vo);
 		return list;
@@ -141,7 +141,7 @@ public class MaterialController {
 	
 	//발주제거 컨트롤
 	@ResponseBody
-	@PostMapping("delmatreq")
+	@PostMapping("delmatreq.Ajax")
 	public void delMatReq(@RequestBody List<MatreqVO> vo) {
 		System.out.println(vo);
 		service.deleteMatReq(vo);
@@ -149,7 +149,7 @@ public class MaterialController {
 	
 	//발주등록 컨트롤
 	@ResponseBody
-	@PostMapping("insertmatreq")
+	@PostMapping("insertmatreq.Ajax")
 	public MatreqVO insertMatReq(@RequestBody MatreqVO vo, Principal principal) {		
 		System.out.println(vo);
 		String id = principal.getName();
@@ -162,14 +162,14 @@ public class MaterialController {
 	
 	//발주수정 컨트롤
 	@ResponseBody
-	@PostMapping("updatematreq")
-	public void updateMatReq(@RequestBody List<MatreqVO> vo) {		
+	@PostMapping("updatematreq.Ajax")
+	public void updateMatReq(@RequestBody List<MatreqVO> vo) {	
 		service.updateMatReq(vo);
 	}
 	
 	//발주 거래처 리스트
 	@ResponseBody
-	@RequestMapping("matreqbuslist")
+	@RequestMapping("matreqbuslist.Ajax")
 	public List<BusVO> matReqBusList(){
 		List<BusVO> list = service.matReqBusList();
 		return list;
@@ -212,7 +212,7 @@ public class MaterialController {
 	
 	//자재 리스트
 	@ResponseBody
-	@RequestMapping("matlist")
+	@RequestMapping("matlist.Ajax")
 	public List<MatVO> selectMatList(MatVO vo){
 		System.err.println(vo);
 		List<MatVO> list = service.selectMatList(vo);
@@ -329,8 +329,8 @@ public class MaterialController {
 	//불량품 리스트
 	@ResponseBody
 	@RequestMapping("matdmglist")
-	public List<MatDmgVO> getMatDmgList(){
-		List<MatDmgVO> list = service.getMatDmgList();
+	public List<MatDmgVO> getMatDmgList(MatDmgVO vo){
+		List<MatDmgVO> list = service.getMatDmgList(vo);
 		return list;
 	}
 	

@@ -14,7 +14,7 @@
 		}
 		#addForm {
 			margin: auto;
-		    margin-left: 200px;
+		    margin-left: 150px;
 		}
 		#addForm td {
 			height: 30px;
@@ -32,7 +32,7 @@
 		.operBtn {
 			margin-top: 50px;
 			margin-right: 50px;
-		    margin-left: 200px; 
+		    margin-left: 140px; 
 			height: 190px;
 			width: 190px;
 			border-radius: 35px;
@@ -81,7 +81,7 @@
 		
 		<!-- 인풋창 -->
 		<form action="mt-4" method="post" id="addForm">
-			<input type="hidden" name="operFnish" id="operType">
+			
 
 
 			<table>
@@ -148,8 +148,8 @@
 								<td><input type="text" name="operNote" id="operNote" class="empty"></td>
 							
 								<td>담당자<span class="needStar"> *</span></td>
-								<td><input type="text" name="empName" id="empName" class="empty" th:value='${#authentication.principal.empName}'></td> 
-								<input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'>
+								<td><input type="text" name="empName" id="empName" th:value='${#authentication.principal.empName}'></td> 
+								<input type="hidden" name="empId" id="empId" th:value='${#authentication.principal.empId}'>
 							</tr>
 							
 						</table>
@@ -168,8 +168,8 @@
 					<td colspan="2">	
 						<!-- 수정 삭제 버튼 -->
 						<div class="divBtn">
-							<button type="button" class="sixBtn2" id="delBtn">삭제</button>
 							<button type="button" class="sixBtn2" id="modBtn">수정</button>
+							<button type="button" class="sixBtn2" id="delBtn">삭제</button>
 						</div>
 					</td>
 				</tr>
@@ -280,6 +280,11 @@
 						header: '비고',
 						name: 'operNote',
 						align: 'center'
+					},
+					{
+						header: '담당자',
+						name: 'empName',
+						align: 'center'
 					}
 				]
 			});
@@ -356,7 +361,6 @@
 				$('#equCode').val(dataRow.equCode);
 				$('#equName').val(dataRow.equName);
 				$('#equStat').val(dataRow.equStat);
-
 				$('#eqModal').modal('hide');
 			})
 
@@ -457,7 +461,7 @@
 						}
 					});
 					// 인풋창을 비워줌
-					$('#addForm input').val('');
+					$('.empty').val('');
 
 					// 셀렉트 리셋해줌
 					$('#operType').val('').prop("selected", true);
@@ -527,6 +531,8 @@
 							Msg.success('수정이 완료되었습니다.', 2000);
 							const setData = result
 							grid.setRow(selRow, setData);
+							//리스트 반환operList();
+							
 							selRow = '';
 						},
 						error: function (reject) {

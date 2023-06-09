@@ -25,7 +25,7 @@ public void receive() {
 
 //생산완료 입고전 품목 조회 하기
 @ResponseBody
-@RequestMapping("/sales/completeList")
+@RequestMapping("/sales/completeList.Ajax")
 public List<RecVO> completeList(){
 	List<RecVO> list= service.completeList();
 	
@@ -33,12 +33,12 @@ public List<RecVO> completeList(){
 }
 	
 //입고 조회 페이지 열어주기	
-	@GetMapping("/sales/receiveInfo")
+	@GetMapping("/sales/receiveInfo.Ajax")
 	public void invoice(Model model) {
 		
 	
 }
-@RequestMapping("/sales/searchReceive")
+@RequestMapping("/sales/searchReceive.Ajax")
 @ResponseBody
 public List<RecVO> searchOrder(RecVO vo) {
 	List<RecVO> list = service.searchReceive(vo);

@@ -25,12 +25,12 @@
 			<option value="day">일별</option>
 		</select>
 
+		<!-- 제품별 판매금액 원형 차트 -->
 		<div class="row">
-			<!-- 제품별 판매 개수 막대 차트 -->
-			<div id="chart_div" style="width: 55%; height: 500px;"></div>
-
-			<!-- 제품별 판매금액 원형 차트 -->
 			<div id="piechart" style="width: 40%; height: 500px;"></div>
+
+			<!-- 제품별 판매 개수 막대 차트 -->
+			<div id="chart_div" style="width: 60%; height: 500px;"></div>
 		</div>
 
 		<!-- 월별 매출액 막대 차트 -->
@@ -39,7 +39,7 @@
 		<script>
 			window.onload = function () {
 				// 날짜 인풋상자 기본데이터 현재시간~2주전 으로 세팅
-				document.getElementById('date1').value = get_date(-30).toLocaleDateString();
+				document.getElementById('date1').value = get_date(-14).toLocaleDateString();
 				document.getElementById('date2').value = new Date().toLocaleDateString();
 			}
 
@@ -74,6 +74,7 @@
 									width: '80%',
 									height: '80%'
 								},
+								titlePosition: 'in',
 								axisTitlesPosition: 'in',
 								hAxis: {
 									textPosition: 'in'
@@ -93,7 +94,7 @@
 			// 상품별 판매수량 조회 막대차트
 			function drawBasic() {
 				$.getJSON({
-					url: "/sales/getSaleCount.Ajax",
+					url: "/sales/getSalePrice.Ajax",
 					method: "GET",
 					data: $('#searchForm').serialize(),
 					success: function (result) {

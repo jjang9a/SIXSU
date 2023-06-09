@@ -23,7 +23,7 @@
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 <!-- 타임리프 -->
 
-<html xmlns:th="http://www.thymeleaf.org"></html>
+<!-- <html xmlns:th="http://www.thymeleaf.org"></html> -->
 <!-- 페이징 눼이쉔~ -->
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -53,14 +53,12 @@
 #left_search {
 	width: 48%;
 	float: left;
-	text-align: right;
 }
 
 #right_search {
 	width: 50%;
 	float: left;
 	margin-left: 20px;
-	text-align: right;
 }
 </style>
 
@@ -79,11 +77,13 @@
 
 		<div class="bom_monitor">
 			<div id="left_search">
-				<div id="bom_search1"></div>
+				<h4 style="font-family: 'MaruBuri';">공정정보</h4>
+				<div id="workBomList"></div>
 			</div>
 
 			<div id="right_search">
-				<div id="bom_search2"></div>
+				<h4 style="font-family: 'MaruBuri';">LOT정보</h4>
+				<div id="workLotList"></div>
 			</div>
 		</div>
 
@@ -280,76 +280,78 @@
 				},
 				error : function(reject){
 					console.err(reject)
+					Msg.error('[error : getWorkList] please check the Console Log', 5000);
 				}
 			})
 		}
-	$(window).unload( function () {
-		
-		$.ajax({
-			url : "/ajax/testemp",
-			method : "GET",
-			dataType : "JSON",
-			success : function(result){
-				console.log("첫 출력값 > ")
-				console.dir(result);
-			}
-		})
-	} );
 	
-	var bom_search1 = new tui.Grid({
-	    el: document.getElementById('bom_search1'),
-	    scrollX: false,
-	    scrollY: true,
-	    rowHeaders: ['rowNum'],
-	    columns: [
- 	      {
- 	        header: '공정구분',
- 	        name: 'comName',
+	var workBomList = new tui.Grid({
+		el : document.getElementById('workBomList'),
+		scrollX : false,
+		scrollY : true,
+		rowHeaders : [ 'rowNum' ],
+		columns : [ {
+			header : '공정구분',
+			name : 'comName',
 			align : 'center'
- 	      },
- 	      {
- 	        header: '공정코드',
- 	        name: 'procId',
+		}, {
+			header : '공정코드',
+			name : 'procId',
 			align : 'center'
- 	      },
- 	      {
- 	        header: '공정명',
- 	        name: 'procName',
+		}, {
+			header : '공정명',
+			name : 'procName',
 			align : 'center'
- 	      }
-	    ]
-	  });
-	bom_search1.setBodyHeight(270);		
+		}, {
+			header : '자재코드',
+			name : 'matId',
+			align : 'center'
+		}, {
+			header : '자재명',
+			name : 'matName',
+			align : 'center'
+		}, {
+			header : '개수',
+			name : 'cpQt',
+			align : 'center'
+		}
+		]
+	});
+	workBomList.setBodyHeight(270);		
 		
-	var bom_search2 = new tui.Grid({
-	    el: document.getElementById('bom_search2'),
-	    scrollX: false,
-	    scrollY: true,
-	    rowHeaders: ['rowNum'],
-	    columns: [
-    	  {
- 	        header: '코드',
- 	        name: 'matId',
+	var workLotList = new tui.Grid({
+		el : document.getElementById('workLotList'),
+		scrollX : false,
+		scrollY : true,
+		rowHeaders : [ 'rowNum' ],
+		columns : [ {
+			header : '자재코드',
+			name : 'matId',
 			align : 'center'
- 	      },
- 	      {
- 	        header: '자재명',
- 	        name: 'matName',
+		}, {
+			header : '자재명',
+			name : 'matName',
 			align : 'center'
- 	      },
- 	      {
- 	        header: '규격',
- 	        name: 'matSize',
+		}, {
+			header : '보유수량',
+			name : 'matQt',
 			align : 'center'
- 	      },
- 	      {
- 	        header: '개수',
- 	        name: 'cpQt',
+		}, {
+			header : '필요수량',
+			name : 'cpQt',
 			align : 'center'
- 	        }
-	    ]
-	  });
-	bom_search2.setBodyHeight(270);	
+		}, {
+			header : '크기',
+			name : 'matSize',
+			align : 'center'
+		}, {
+			header : 'LOT',
+			name : 'matLotId',
+			align : 'center'
+		}
+		]
+	});
+	workLotList.setBodyHeight(270);
 	
 	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -456,14 +458,14 @@
         
         if(searchData.makeFrom != '' || searchData.makeTo != ''){
 	        if(searchData.makeFrom > searchData.makeTo || searchData.makeFrom == ''){
-	        	alert('생성일자 범위를 수정해주세요')
+	        	Msg.warning('생성일자 범위를 수정해주세요', 2000);
 	        	return;
 	        }
         }
         
         if(searchData.workFrom != '' || searchData.workTo != ''){
 	        if(searchData.workFrom > searchData.workTo || searchData.workFrom == ''){
-	        	alert('착수일 범위를 수정해주세요')
+	        	Msg.warning('착수일 범위를 수정해주세요', 2000);
 	        	return;
 	        }
         }
@@ -476,13 +478,12 @@
 			contentType: "application/json",
 			data: JSON.stringify(searchData),
 			success : function(result){
-				console.log('RESULT :');
-				console.log(result);
 				grid1.resetData(result);
 				그리드초기수정();
 			},
 			error : function(reject){
 				console.err(reject)
+				Msg.error('[error : workFilterAjax] please check the Console Log', 5000);
 			}
 		})
         let readyToText = '';
@@ -544,12 +545,14 @@
 		    console.log('오호홓ㅎㅎ 수정클릭되었다');
 		    
 		    if(grid1.getRow(ev.rowKey).cmpltSt === '완료'){
+		    	/* Msg.error('완료된 작업지시는 수정할 수 없습니다.', 2000);
+		    	return; */
 		    	if(confirm(" 완료된 지시 입니다. 정말 수정하시겠습니까? \n\n 세부지시Code : " + grid1.getRow(ev.rowKey).wkDetaId) == true){
 		    		location.href = link;
 		    	}else{
 		    		return;
 		    	}
-		    }	
+		    }
 		    location.href = link;
 		    return;
 		}
@@ -562,13 +565,14 @@
 			data : { data: grid1.getRow(ev.rowKey).wkDetaId },
 			success : function(result){
 				console.dir(result);
-				bom_search1.resetData(result);
+				workBomList.resetData(result);
 				},
 				error : function(reject){
-					console.log(reject)
+					console.err(reject)
+					Msg.error('[error : getWkBomList] please check the Console Log', 5000);
 				}
 			})
-		bom_search2.resetData();
+		workLotList.resetData([]);
 	});
 	
 	let selKey = '';
@@ -580,25 +584,30 @@
 		selKey = ev.rowKey;
 	});
 	
-	
-	
-	bom_search1.on('click',ev => {
+	workBomList.on('click', function(ev){
+		console.log(workBomList.getRow(ev.rowKey))
+		let dataRow = workBomList.getRow(ev.rowKey);
+		workLotList.clear();
 		$.ajax({
-			url : "/ajax/getWkMatList",
-			method : "GET",
-			dataType : "JSON",
+			url : "/ajax/getLotInfoList",
+			method : "POST",
 			contentType: "application/json",
-			data : { data: bom_search1.getRow(ev.rowKey).wkBomId},
+			data : JSON.stringify({bomMatId : dataRow.bomMatId}),
 			success : function(result){
-				console.dir(result);
-				bom_search2그리드출력(result)
-				},
-				errer : function(reject){
-					console.log(reject)
+				if(result.length != 0){
+					console.log(result)							
+					result[0].cpQt = (grid1.getRow(selRowKey).detaQt * dataRow.cpQt)
+					workLotList.resetData(result)
 				}
-			})
-	});
-	 
+			},
+			error : function(reject){
+				console.err(reject)
+				Msg.error('[error : getLotInfoList] please check the Console Log', 5000);
+			}
+		});
+		
+	})
+	
 	tui.Grid.applyTheme('default', {
 	    cell: {
 	        header: {

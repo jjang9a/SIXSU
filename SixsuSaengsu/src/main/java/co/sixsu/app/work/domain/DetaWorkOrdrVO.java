@@ -20,4 +20,6 @@ public class DetaWorkOrdrVO {
 	String empId;
 	String empName;
 	String single;
+	
+	String planDetaId; //생산계획코드 (FK)
 }

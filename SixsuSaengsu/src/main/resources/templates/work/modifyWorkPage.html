@@ -7,47 +7,42 @@
 <meta charset="UTF-8">
 <title>수정</title>
 <!-- 토스트~ -->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 <!-- 부트스트라프 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+<script 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 	crossorigin="anonymous"></script>
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 <!-- 타임리프 -->
-<html xmlns:th="http://www.thymeleaf.org">
 <!-- 페이징 눼이쉔~ -->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script type="text/javascript"
-	src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
-<script type="text/javascript"
-	src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
+<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <style>
 .input-group {
 	width: 200px;
 }
 
+.btn_container {
+	width: 100%;
+}
 
-.topContainer {
+.topConatiner {
 	width: 100% height: 450px;
-	margin-top: 20px;
 }
 
 .addContainer {
 	width: 40%;
 	height: 450px;
 	border: 1px solid black;
-	padding: 20px;
 	float: left;
+	padding: 100px;
 }
 
 .plan_monitor {
@@ -133,6 +128,9 @@
 
 .sel3 {
 	background-color: white;
+}
+.addAndDel{
+	margin-top: 20px;
 }
 </style>
 </head>
@@ -329,12 +327,26 @@
  	        header: '지시수량',
  	        name: 'detaQt',
  	        editor: 'text',
- 	        align : 'right'
+ 	        align : 'right',
+ 	       formatter: ({ value }) => {
+               if(value != null){
+             return value.toLocaleString()
+             }else{
+              return ''
+             } 
+            }
  	      },
  	      {
  	        header: '양품수량',
  	        name: 'goodQt',
- 	        align : 'right'
+ 	        align : 'right',
+ 	       formatter: ({ value }) => {
+               if(value != null){
+             return value.toLocaleString()
+             }else{
+              return ''
+             } 
+            }
  	      },
  	      {
  	        header: '생산일',
@@ -430,6 +442,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : modifyFirstList] please check the Console Log', 5000);
 				}
 			})
 			
@@ -454,6 +467,7 @@
 			},
 			error : function(reject){
 				console.log(reject);
+				Msg.error('[error : getDetaPlanList] please check the Console Log', 5000);
 			}
 		})
 	})
@@ -590,6 +604,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : getProductList] please check the Console Log', 5000);
 				}
 			})
 			
@@ -615,7 +630,7 @@
 		  });
 			grid_process.setBodyHeight(520);
 			$.ajax({
-				url: "/basic/activeProcList",
+				url: "/basic/activeProcList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -623,6 +638,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					Msg.error('[error : activeProcList] please check the Console Log', 5000);
 				}
 			});
 			
@@ -652,7 +668,7 @@
 		  });
 		grid_mat.setBodyHeight(520);
 			$.ajax({
-				url: "/basic/activeMatList",
+				url: "/basic/activeMatList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -660,6 +676,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					Msg.error('[error : activeMatList] please check the Console Log', 5000);
 				}
 			});
 			
@@ -688,6 +705,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : addDetaWork] please check the Console Log', 5000);
 					}
 				})
 	})
@@ -789,6 +807,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : getWkBomList] please check the Console Log', 5000);
 				}
 			})
 		showBom()
@@ -818,6 +837,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : modifyDetaWorkList] please check the Console Log', 5000);
 					}
 				})
 		});
@@ -837,6 +857,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : plusBomList] please check the Console Log', 5000);
 					}
 				})
 		}
@@ -858,6 +879,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : delBomList] please check the Console Log', 5000);
 					}
 				})
 			
@@ -879,6 +901,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : plusMatList] please check the Console Log', 5000);
 					}
 				})
 		}
@@ -900,6 +923,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : delMatList] please check the Console Log', 5000);
 					}
 				})
 		}
@@ -929,6 +953,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : getWkMatList] please check the Console Log', 5000);
 				}
 			})
 	});
@@ -948,6 +973,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : modifyBomList] please check the Console Log', 5000);
 					}
 				})
 		});
@@ -984,6 +1010,7 @@
 					},
 					error : function(reject){
 						console.log(reject)
+						Msg.error('[error : modifyMatList] please check the Console Log', 5000);
 					}
 				})
 		});
@@ -1009,6 +1036,7 @@
 				},
 				error : function(reject){
 					console.log(reject)
+					Msg.error('[error : delDetWorkList] please check the Console Log', 5000);
 				}
 			})
 	})
@@ -1062,7 +1090,7 @@
 			$(this).addClass('sel3');
 			selType = '완제품';
 			$.ajax({
-				url: "/basic/activeCpList",
+				url: "/basic/activeCpList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -1070,6 +1098,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					Msg.error('[error : activeCpList] please check the Console Log', 5000);
 				}
 			});
 		})
@@ -1080,7 +1109,7 @@
 			$(this).addClass('sel3');
 			selType = '반제품';
 			$.ajax({
-				url: "/basic/activeSpList",
+				url: "/basic/activeSpList.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -1088,6 +1117,7 @@
 				},
 				error: function (reject) {
 					console.log(reject)
+					Msg.error('[error : activeSpList] please check the Console Log', 5000);
 				}
 			});
 		})		
@@ -1100,7 +1130,7 @@
 					$(this).addClass('sel3');
 					matType = '완제품';
 					$.ajax({
-						url: "/basic/activeMatList",
+						url: "/basic/activeMatList.Ajax",
 						method: "GET",
 						dataType: "JSON",
 						success: function (result) {
@@ -1108,6 +1138,7 @@
 						},
 						error: function (reject) {
 							console.log(reject)
+							Msg.error('[error : activeMatList] please check the Console Log', 5000);
 						}
 					});
 				})
@@ -1118,7 +1149,7 @@
 					$(this).addClass('sel3');
 					matType = '반제품';
 					$.ajax({
-						url: "/basic/activeSpList",
+						url: "/basic/activeSpList.Ajax",
 						method: "GET",
 						dataType: "JSON",
 						success: function (result) {
@@ -1126,6 +1157,7 @@
 						},
 						error: function (reject) {
 							console.log(reject)
+							Msg.error('[error : activeSpList] please check the Console Log', 5000);
 						}
 					});
 				})
@@ -1146,6 +1178,7 @@
 			},
 			error: function(reject){
 				console.err(reject)
+				Msg.error('[error : addSubmit] please check the Console Log', 5000);
 			}
 		})
 	})		
