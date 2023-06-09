@@ -254,7 +254,7 @@
 
 			$('#pdBtn').on('click', function (e) {
 				$.ajax({
-					url: "/basic/activeCpList",
+					url: "/basic/activeCpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -273,7 +273,7 @@
 				$('.sel2').removeClass('sel3');
 				$(this).addClass('sel3');
 				$.ajax({
-					url: "/basic/activeCpList",
+					url: "/basic/activeCpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -290,7 +290,7 @@
 				$('.sel1').removeClass('sel3');
 				$(this).addClass('sel3');
 				$.ajax({
-					url: "/basic/activeSpList",
+					url: "/basic/activeSpList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
