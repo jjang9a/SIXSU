@@ -207,6 +207,9 @@ public class BasicServiceImpl implements BasicService, UserDetailsService {
 
 	@Override // 거래처 수정
 	public boolean updateBus(BusVO bus) {
+		if (bus.getBusAddrDet() != null || !bus.getBusAddrDet().equals("")) {
+			bus.setBusAddr(bus.getBusAddr() + " " + bus.getBusAddrDet());
+		}
 		return mapper.updateBus(bus) == 1;
 	}
 

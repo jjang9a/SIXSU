@@ -419,6 +419,10 @@
 					header: '규격',
 					name: 'cpSize',
 					align: 'center'
+				}, {
+					header: '단위',
+					name: 'cpUnit',
+					hidden: true
 				}]
 			});
 
@@ -563,22 +567,25 @@
 				grid.setValue(selRow, 'procName', procData.procName, false);
 				$('#procModal').modal('hide');
 			})
-
 			// 저장 버튼 이벤트
 			$('#saveBtn').on('click', function (e) {
 				// 필수항목 빈칸체크
+				let all = grid.getData();
 				let checkBlank = 0;
 				for (let i = 0; i < grid.getRowCount(); i++) {
-					if (grid.getRow(i).bomMat == '' || grid.getRow(i).bomNum == '') {
+					let check = all[i];
+					if (grid.getRow(i).bomMat == '' || grid.getRow(i).bomMat == null || grid.getRow(i).bomNum == '' ||
+						grid.getRow(i).bomNum == null) {
 						checkBlank += 1;
 						break;
 					}
 				}
 				if (checkBlank > 0) {
-					alert('소요품목 또는 소요량이 입력되지 않은 열이있습니다.');
+					Msg.warning('소요품목 또는 소요량이 입력되지 않은 열이있습니다.', 2000);
 					checkBlank = 0;
 					// 필수항목이 다 입력 된 경우에만 통신
 				} else {
+					console.log(grid.getModifiedRows());
 					// 수정된 열이 0개가 아니라면 update ajax 호출
 					if (grid.getModifiedRows().length != 0) {
 						$.ajax({
@@ -588,11 +595,11 @@
 							contentType: "application/json",
 							data: JSON.stringify(grid.getModifiedRows()),
 							success: function (result) {
-								alert('BOM정보가 저장되었습니다.');
+								Msg.success('BOM정보가 저장되었습니다.', 2000);
 							},
 							error: function (reject) {
 								console.log(reject)
-								alert('업데이트 과정에서 에러가 발생하였습니다.')
+								Msg.error('업데이트 과정에서 에러가 발생하였습니다.')
 							}
 						})
 					}
@@ -620,7 +627,6 @@
 						console.log(reject)
 					}
 				});
-				$('#infoTbl input').val('')
 			})
 
 			// 다운로드 버튼 이벤트
@@ -639,9 +645,6 @@
 					grid.export('xlsx', options);
 				}
 			})
-
-			// 윈도우 온 로드 닫는 괄호
-			//}
 		</script>
 
 	</div>

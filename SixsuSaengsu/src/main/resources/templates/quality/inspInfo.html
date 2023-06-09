@@ -362,21 +362,9 @@
 			var searchType = '';
 			let searchKey = '';
 			$('#searchBtn').on('click', function (e) {
-				if ($('#inspNum').val() != '') {
-					searchType += 'I'
-				}
-				if ($('#inspItemId').val() != '') {
-					searchType += 'P'
-				}
-				if ($('#empId').val() != '') {
-					searchType += 'E'
-				}
-				if ($('#inspDate').val() != '' && $('#inspDate2').val() != '') {
-					searchType += 'D'
-				}
-				if (searchType != '') {
-					console.log(searchType)
-					$('#searchType').val(searchType);
+				if ($('#inspNum').val() != '' && $('#inspItemId').val() != '' && $('#empId').val() != '' && $('#inspDate').val() != '' && $('#inspDate2').val() != '') {
+					alert('검색조건을 입력해주세요.')
+				}else {
 					$.ajax({
 						url: '/quality/searchInsp',
 						type: 'post',
@@ -385,7 +373,6 @@
 						success: function (result) {
 							const searchData = result
 							aiGrid.resetData(searchData);
-							let searchType = '';
 						},
 						error: function () {
 							alert('검색 중 오류가 발생했습니다!');
