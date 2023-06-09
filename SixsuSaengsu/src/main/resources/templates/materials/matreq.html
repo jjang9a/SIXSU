@@ -95,6 +95,9 @@
          <div class="modal-dialog modal-lg">
             <div class="modal-dialog">
                <div class="modal-content">
+	              <div class="modal-header">
+					<h1 class="modal-title fs-5" id="searchModalLabel">자재 조회</h1>
+				  </div>
                   <div class="modal-body">
                      <div id="gridm"></div>
                   </div>
@@ -103,11 +106,14 @@
          </div>
       </div>
 
-      <!-- 모달창 거래조회  -->
+      <!-- 모달창 거래처조회  -->
       <div class="modal fade" id="search1Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
          <div class="modal-dialog modal-lg">
             <div class="modal-dialog">
                <div class="modal-content">
+           	      <div class="modal-header">
+					<h1 class="modal-title fs-5" id="searchModalLabel">거래처 조회</h1>
+				  </div>
                   <div class="modal-body">
                      <div id="gridt"></div>
                   </div>
@@ -343,7 +349,8 @@
                   editor: {
                      type: 'datePicker',
                      options: {
-                        format: 'yyyy-MM-dd'
+                        format: 'yyyy-MM-dd',
+                        selectableRanges : [[new Date(), new Date(2099,11,31)] ]
                      }
                   }
                },
@@ -493,6 +500,7 @@
 	                               grid.setValue(0, 'matReqStat', "A", false);
 	                               grid.setValue(0, 'busId', grid.getRow(1).busId, false);
 	                               grid.setValue(0, 'busName', grid.getRow(1).busName, false);
+	                               setRowDisabled(grid);
 	                            },
 	                            error: function (reject) {
 	                               console.log(reject);

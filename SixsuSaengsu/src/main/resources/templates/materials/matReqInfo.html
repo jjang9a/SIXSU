@@ -36,7 +36,7 @@
                <td><input type="text" name="matReqId" id="matReqId" class="inputR" placeholder="검색"></td>
                <td>발주등록일자</td>
                <td>
-                  <input type="date" id="matInSDate" class="inputR"> ~ <input type="date" id="matInEDate" class="inputR">
+                  <input type="date" id="matInSDate" class="inputR"> ~ <input type="date" id="matInEDate" class="inputR" min=minDate>
                </td>
               
             </tr>
@@ -47,7 +47,7 @@
                
                <td>납기일자</td>
                <td>
-                  <input type="date" id="matEndSDate" class="inputR"> ~ <input type="date" id="matEndEDate" class="inputR">
+                  <input type="date" id="matEndSDate" class="inputR" > ~ <input type="date" id="matEndEDate" class="inputR" >
                </td>
             </tr>
             <tr>
@@ -241,6 +241,7 @@
 				matInEDate = $('#matInEDate').val();
 				matEndSDate = $('#matEndSDate').val();
 				matEndEDate = $('#matEndEDate').val();
+				
 				matReqSearch(matReqId, matName, busName, matReqStat, matInSDate, matInEDate, matEndSDate, matEndSDate, matEndEDate);
 				
 			});
@@ -260,6 +261,8 @@
 				
 			});
 	    	
+			
+			let minDate = $('#matInSDate').val();
 		</script>
 	</div>
 </body>

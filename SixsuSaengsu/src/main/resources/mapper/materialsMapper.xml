@@ -187,6 +187,30 @@
 	</where>
 </sql>
 
+
+<!-- 불량 조회 조건 -->
+<sql id="criteria7">
+			<if test="dmatId != null and dmatId != ''.toString()">
+		 		and a.dmat_id like '%'|| upper(#{dmatId}) || '%'
+		 	</if>
+		 	<if test="dmatId == null and dmatId == ''.toString()">
+		 	</if>
+		 	<if test="dmatStat != null and dmatStat != ''.toString()">
+		 		and a.dmat_stat like '%'|| upper(#{dmatStat}) || '%'
+		 	</if>
+		 	<if test="dmatStat == null and dmatStat == ''.toString()">
+		 	</if>
+		 	<if test="matName != null and matName != ''.toString()">
+		 		and m.mat_name like '%'|| upper(#{matName}) || '%'
+		 	</if>
+		 	<if test="matName == null and matName == ''.toString()">
+		 	</if>
+		 	<if test= "sDate != ''.toString() and eDate != ''.toString()">
+		 		and a.dmat_date  between to_date(#{sDate}, 'yyyy-MM-dd') and to_date(#{eDate}||' 23:59:59' , 'yyyy-MM-dd HH24:MI:SS')
+		 	</if>
+		 	<if test= "sDate == ''.toString() and eDate == ''.toString()">
+		 	</if>
+</sql>
 	<!-- 발주리스트 -->
 	<select id="getMatReqList" resultType="MatreqVO">
 		select m.mat_req_id, 
@@ -348,8 +372,8 @@
 		<include refid="criteria2"></include>
 		order by c.mat_rec_id desc
 	</select>
-	
-	<!-- 입고등록 -->
+
+	<!-- 자재 입고등록 -->
 	<insert id="insertMatRec" parameterType="MatrecVO">
     <![CDATA[
 	    CALL IN_MAT_REC(
@@ -573,7 +597,7 @@
 	</select>
 	
 	<!-- 불량자재 처리 리스트 -->
-	<select id="getMatDmgList" resultType="MatDmgVO">
+	<select id="getMatDmgList" resultType="MatDmgVO" parameterType="MatDmgVO">
         select a.dmat_id, a.insp_num, a.dmat_stat, to_char(a.dmat_date, 'yyyy-MM-dd') as dmat_date, to_number(d.res_val) as res_val, a.dmat_note ,m.mat_id, m.mat_name, m.mat_size, get_emp_name(a.emp_id) as emp_name
 		from damaged_mat a 
 		left JOIN qua_details d
@@ -587,9 +611,13 @@
 		left JOIN material m 
 		 ON b.mat_id = m.mat_id
     	WHERE c.insp_type = 'INSP-B'
+    	
+		
 		 AND d.insp_id = (SELECT insp_id
 		                  FROM QUA_INSP_LIST
 		                  WHERE insp_name = '자재불량')
+		<!-- 조건 -->
+		<include refid="criteria7"></include>
 		order by a.dmat_date desc
 	</select>
 	

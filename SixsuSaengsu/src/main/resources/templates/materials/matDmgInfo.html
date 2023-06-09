@@ -17,13 +17,65 @@
 		button{
 			margin: 8px;
 		}
+		
+		 .inputR {
+			width: 210px;
+			padding-left : 5px
+		}
+
+		#matDmgTable td {
+			padding: 3px 20px 10px;
+			text-align: center;
+		}
+		#divRadio{
+			padding-right : 130px;
+		}
+		#radio input{
+			width:30px
+		}
+		#matDmgTable{
+			margin: 20px auto;
+		}
+		.divBtn{
+			text-align:center;
+		}
 	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">불량 자재 조회</h1>
-		
+		<form action="" method="post" id="matDmgForm">
+				<table id="matDmgTable">
+					<tr>
+						<td>불량등록번호</td>
+						<td><input type="text" name="dmatId" id="dmatId" class="inputR" placeholder="검색"></td>
+						<td>등록일자</td>
+						<td>
+							<input type="date" id="dmatDate"> ~ <input type="date" id="dmatDatee">
+						</td>
+					</tr>
+					<tr>
+						<td>자재명</td>
+						<td><input type="text" name="matName" id="matName" class="inputR" placeholder="검색"></td>
+						<td>처리유형</td>
+						<td>
+							<div id="divRadio">
+								<input type="radio" id="dmatStat0" name="dmatStat" value="">
+								<label for="matHoldStat0">전체</label>
+								<input type="radio" id="dmatStat1" name="dmatStat" value="반품">
+								<label for="dmatStat1">반품</label>
+								<input type="radio" id="dmatStat2" name="dmatStat" value="폐기">
+								<label for="dmatStat2">폐기</label>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div class="divBtn">
+				<button class="sixBtn2" id="check">검색</button>
+				<button class="sixBtn4" id="reset">초기화</button>
+			</div>
 
 		<div id="grids"></div>
 		<script>
@@ -31,12 +83,14 @@
 			const gridData = [
 
 			];
-			window.onload = function () {
 			
+			
+			function matDmgList(dmatId, matName, sDate, eDate, dmatStat){
+				
 				$.ajax({
 					url: "/materials/matdmglist",
 					method: "GET",
-					dataType: "JSON",
+					data : {dmatId : dmatId, matName : matName, sDate : sDate, eDate : eDate, dmatStat : dmatStat},
 					success: function (result) {
 						grids.resetData(result);
 						//console.log(result);
@@ -47,8 +101,17 @@
 					
 				});
 				
-				
-			};
+			}
+			
+			let dmatId = '';
+			let matName = '';
+			let sDate = '';
+			let eDate = '';
+			let dmatStat = '';
+			
+			matDmgList(dmatId, matName, sDate, eDate, dmatStat);
+			
+			
 			
 			// 불량처리완료 리스트
  			const gridDataa = [
@@ -134,7 +197,32 @@
 				}
 			});
 			
+			//검색 버튼
+			$('#check').click(function(){
+				dmatId = $('#dmatId').val();
+				matName = $('#matName').val();
+				dmatStat = $("input[name='dmatStat']:checked").val();
+				sDate = $('#dmatDate').val();
+				eDate = $('#dmatDatee').val();
+				matDmgList(dmatId, matName, sDate, eDate, dmatStat);
+
+			})
 			
+			$('#reset').click(function(){
+				$('#dmatId').val('');
+				$('#matName').val('');
+				$("input[name='dmatStat']:checked").val('');
+				$('#dmatDate').val('');
+				$('#dmatDatee').val('');
+				dmatId = $('#dmatId').val();
+				matName = $('#matName').val();
+				dmatStat = $("input[name='dmatStat']:checked").val();
+				sDate = $('#dmatDate').val();
+				eDate = $('#dmatDatee').val();
+				$('input[type="radio"]').prop('checked', false);
+				matDmgList(dmatId, matName, sDate, eDate, dmatStat);
+
+			})
 			
 			
 		</script>

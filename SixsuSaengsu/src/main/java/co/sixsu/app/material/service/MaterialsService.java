@@ -91,7 +91,7 @@ public interface MaterialsService {
 	List<MatDmgVO> getMatDmgWaitList();
 	
 	//불량자재 리스트
-	List<MatDmgVO> getMatDmgList();
+	List<MatDmgVO> getMatDmgList(MatDmgVO vo);
 	
 	//불량자재 불량 처리
 	void insertMatDmg(List<MatDmgVO> vo);
