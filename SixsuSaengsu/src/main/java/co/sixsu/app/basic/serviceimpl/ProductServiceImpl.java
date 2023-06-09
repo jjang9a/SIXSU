@@ -171,6 +171,7 @@ public class ProductServiceImpl implements ProductService{
 				ReceiveVO lotInfo = new ReceiveVO();
 				lotInfo.setCpId(cp);
 				mapper.procCpLotInfo(lotInfo); // 마지막 LOT번호
+				System.out.println(lotInfo);
 				int ableQt = lot-(lotInfo.getCpLotQt()); // LOT에 더 들어갈 수 있는 수량
 				int qt = vo.getGoodQt();
 				if(ableQt == lot) { // 적재수량이 LOT규격과 같다 = 새 LOT생성

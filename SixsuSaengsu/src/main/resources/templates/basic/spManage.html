@@ -67,7 +67,7 @@
 					<td>관리LOT수량</td>
 					<td><input type="text" name="spLot" id="spLot" class="empty">
 					<td>단위<span class="needStar"> *</span></td>
-					<td><input type="text" name="spUnit" id="spUnit" value="PCS"></td>
+					<td><input type="text" name="spUnit" id="spUnit" class="empty"></td>
 				</tr>
 				<tr>
 					<td>비고</td>
@@ -207,6 +207,7 @@
 				$('#spLot').val(dataRow.spLot);
 				$('#spSize').val(dataRow.spSize);
 				$('#spNote').val(dataRow.spNote);
+				$('#spUnit').val(dataRow.spUnit);
 				if (dataRow.spStat == 'Y') {
 					$("input:radio[name='spStat']:radio[value='Y']").prop('checked', true);
 				} else {
