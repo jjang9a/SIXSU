@@ -30,14 +30,14 @@ public class ShipController {
 	
 	//페이지 주문중인 목록 (품질요청 전 그리드 테이블)
 	@ResponseBody
-	@RequestMapping("orderedList")
+	@RequestMapping("orderedList.Ajax")
 	public List<OrdVO> orderingList(OrdVO vo){
 		List<OrdVO> list = service.orderingList(vo);
 		
 		return list;
 	}
 	//모달창 품목별 lot 재고현황
-	@RequestMapping("lotProducts")
+	@RequestMapping("lotProducts.Ajax")
 	@ResponseBody
 	public List<LotVO> lotProducts(@RequestParam String result){
 		System.out.println(result);
@@ -45,8 +45,18 @@ public class ShipController {
 		List<LotVO> list =service.lotProducts(result);
 		return list;
 	}
+	
+	
+	@RequestMapping("shipReady.Ajax")
+	@ResponseBody
+	public List<LotVO> shipReady(@RequestParam String result){
+		System.out.println(result);
+		
+		List<LotVO> list =service.shipReady(result);
+		return list;
+	}
 	//모달창에 자동으로 총수량이 뜨는 기능
-	@RequestMapping("totalQt")
+	@RequestMapping("totalQt.Ajax")
 	@ResponseBody
 	public int totalQt(@RequestParam String result) {
 		System.out.println(result);
@@ -56,14 +66,14 @@ public class ShipController {
 	}
 	
 	@ResponseBody//////출고등록
-	@PostMapping("shipPro")
+	@PostMapping("shipPro.Ajax")
 	public List<ShipVO> shipPro(@RequestBody OrdVO ord, Principal principal){
 		ord.setEmpId(principal.getName());
 		return service.shipPro(ord);
 	}
 	
 	@ResponseBody
-	@RequestMapping("readyShipList")
+	@RequestMapping("readyShipList.Ajax")
 	public List<ShipVO> readyShipList(@RequestParam(required = false) String result){
 		List<ShipVO> list = service.readyShipList(result);
 		
@@ -71,17 +81,17 @@ public class ShipController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("completShip")
+	@RequestMapping("completShip.Ajax")
 	public List<ShipVO> compeletShip(ShipVO vo){
 		
 		service.completeShip(vo);
 		return null;
 	}
-	@GetMapping("shipInfo")
+	@GetMapping("shipInfo.Ajax")
 	public void shipInfo() {
 		
 	}
-	@RequestMapping("searchShip")
+	@RequestMapping("searchShip.Ajax")
 	@ResponseBody
 	public List<ShipVO> searchShip(ShipVO vo) {
 		List<ShipVO> list = service.searchShip(vo);

@@ -24,5 +24,7 @@ public interface ShipMapper {
 	public void completeShip(String ordDetId);
 	public List<ShipVO> searchShip(ShipVO vo);
 	
+	public List<LotVO> shipReady(String keyword);
+	
 	
 }

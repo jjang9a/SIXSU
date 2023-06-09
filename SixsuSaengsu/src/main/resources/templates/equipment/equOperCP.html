@@ -14,7 +14,7 @@
 		}
 		#addForm {
 			margin: auto;
-		    margin-left: 200px;
+		    margin-left: 150px;
 		}
 		#addForm td {
 			height: 30px;
@@ -32,7 +32,7 @@
 		.operBtn {
 			margin-top: 50px;
 			margin-right: 50px;
-		    margin-left: 200px; 
+		    margin-left: 140px; 
 			height: 190px;
 			width: 190px;
 			border-radius: 35px;
@@ -81,7 +81,7 @@
 		
 		<!-- 인풋창 -->
 		<form action="mt-4" method="post" id="addForm">
-			<input type="hidden" name="operFnish" id="operType">
+			
 
 
 			<table>
@@ -148,8 +148,8 @@
 								<td><input type="text" name="operNote" id="operNote" class="empty"></td>
 							
 								<td>담당자<span class="needStar"> *</span></td>
-								<td><input type="text" name="empName" id="empName" class="empty" th:value='${#authentication.principal.empName}'></td> 
-								<input type="hidden" name="empId" id="empId" class="empty" th:value='${#authentication.principal.empId}'>
+								<td><input type="text" name="empName" id="empName" th:value='${#authentication.principal.empName}'></td> 
+								<input type="hidden" name="empId" id="empId" th:value='${#authentication.principal.empId}'>
 							</tr>
 							
 						</table>
@@ -168,8 +168,8 @@
 					<td colspan="2">	
 						<!-- 수정 삭제 버튼 -->
 						<div class="divBtn">
-							<button type="button" class="sixBtn2" id="delBtn">삭제</button>
 							<button type="button" class="sixBtn2" id="modBtn">수정</button>
+							<button type="button" class="sixBtn2" id="delBtn">삭제</button>
 						</div>
 					</td>
 				</tr>
@@ -280,6 +280,11 @@
 						header: '비고',
 						name: 'operNote',
 						align: 'center'
+					},
+					{
+						header: '담당자',
+						name: 'empName',
+						align: 'center'
 					}
 				]
 			});
@@ -333,7 +338,7 @@
 			$('#eqBtn').on('click', function (e) {
 
 				$.ajax({
-					url: "equCon",
+					url: "equCon.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -356,7 +361,6 @@
 				$('#equCode').val(dataRow.equCode);
 				$('#equName').val(dataRow.equName);
 				$('#equStat').val(dataRow.equStat);
-
 				$('#eqModal').modal('hide');
 			})
 
@@ -364,7 +368,7 @@
 			function operList() {
 
 				$.ajax({
-					url: "equOperList",
+					url: "equOperList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -429,13 +433,13 @@
 
 					console.log($('#addForm').serialize())
 					$.ajax({
-						url: 'startIn',
+						url: 'startIn.Ajax',
 						type: 'post',
 						data: $('#addForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
 							
-							alert('등록되었습니다');
+							Msg.success('등록이 완료되었습니다.', 2000);
 
 							const appendedData = result
 							grid.prependRow(appendedData);
@@ -452,12 +456,12 @@
 							 setTimeout(() => orderingGrid.refreshLayout(), 1000);
 						},
 						error: function (reject) {
-							alert('등록 중 오류가 발생했습니다!');
+							Msg.error('등록 중 오류가 발생하였습니다.', 2000);
 							console.log(reject);
 						}
 					});
 					// 인풋창을 비워줌
-					$('#addForm input').val('');
+					$('.empty').val('');
 
 					// 셀렉트 리셋해줌
 					$('#operType').val('').prop("selected", true);
@@ -483,20 +487,20 @@
 					
 					console.log($('#addForm').serialize())
 					$.ajax({
-						url: 'fnishIn',
+						url: 'fnishIn.Ajax',
 						type: 'post',
 						data: $('#addForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
 							console.log(result);
-							alert('수정되었습니다');
+							Msg.success('수정이 완료되었습니다.', 2000);
 							grid.resetData(result)
 							const setData = result
 							//grid.setRow(selRow, setData);
 							selRow = '';
 						},
 						error: function (reject) {
-							alert('수정 중 오류가 발생했습니다!');
+							Msg.error('수정 중 오류가 발생하였습니다.', 2000);
 							console.log(reject);
 						}
 					});
@@ -513,24 +517,26 @@
 			// 비가동관리(수정) 
 			$('#modBtn').on('click', function (e) {
 				if (selRow == 999) {
-					alert('수정할 데이터가 없습니다.')
+					Msg.warning('수정할 데이터가 없습니다.');
 				} else {
 
 					console.log($('#addForm').serialize())
 					$.ajax({
-						url: 'oUpdate',
+						url: 'oUpdate.Ajax',
 						type: 'post',
 						data: $('#addForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
 							console.log(result);
-							alert('수정되었습니다');
+							Msg.success('수정이 완료되었습니다.', 2000);
 							const setData = result
 							grid.setRow(selRow, setData);
+							//리스트 반환operList();
+							
 							selRow = '';
 						},
 						error: function (reject) {
-							alert('수정 중 오류가 발생했습니다!');
+							Msg.error('수정 중 오류가 발생하였습니다.', 2000);
 							console.log(reject);
 						}
 					});
@@ -545,7 +551,7 @@
 			// 비가동 관리(삭제)
 			$('#delBtn').on('click', function (e) {
 				if (selRow == 999) {
-					alert('삭제 정보를 선택하시오.')
+					Msg.warning('삭제할 열이 선택되지 않았습니다.');
 				} else {
 
 					e.preventDefault();
@@ -553,7 +559,7 @@
 
 					var operCode = $('#operCode').val();
 					$.ajax({
-						url: 'oDel',
+						url: 'oDel.Ajax',
 						type: 'POST', // HTTP 요청 메서드 (GET, POST 등)
 						contentType: "application/json",
 						data: JSON.stringify({
@@ -562,7 +568,7 @@
 						success: function (result) {
 							// 삭제 성공 시의 처리
 							console.log('설비가 성공적으로 삭제되었습니다.');
-							alert('설비정보가 성공적으로 삭제되었습니다.');
+							Msg.success('삭제가 완료되었습니다.', 2000);
 
 							grid.removeRow(selRow)
 							selRow = '';
@@ -578,7 +584,7 @@
 						error: function (reject) {
 							console.log('설비 삭제 중 오류가 발생했습니다.');
 							console.log('오류 메시지:', reject);
-							alert('설비 삭제 중 오류가 발생했습니다..');
+							Msg.error('삭제 중 오류가 발생하였습니다.', 2000);
 						}
 					});
 				}

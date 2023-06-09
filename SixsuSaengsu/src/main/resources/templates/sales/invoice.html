@@ -11,7 +11,8 @@
 		
 
 h1 {
-margin-bottom: 40px;
+margin-bottom: 15px;
+
 }
 
 #cpTable {
@@ -36,7 +37,7 @@ text-align: center;
 
 .divBtn {
 text-align: center;
-padding: 15px 0 30px 0;
+padding: 15px 0 15px 0;
 }
 .modal-body {
 background: #e5edf5;
@@ -184,6 +185,8 @@ background: #e5edf5;
 
 		
 let transPro = ''; // 상품 조회 모달창에서 주문상세그리드 테이블에 값을 넘기기위해 변수선언
+	let eName = [[${#authentication.principal.empName}]];
+	let eId = [[${#authentication.principal.empId}]];
 
 window.onload = function() {
 	
@@ -192,7 +195,6 @@ window.onload = function() {
 	searchEmp();        //사원검색 버튼 핸들러
 	searchBus();        //거래처검색 버튼 핸들러
 	
-
 	
 	/*--------------------------------
 	// 주문서 입력후 상세주문서에 상품 검색
@@ -202,13 +204,16 @@ window.onload = function() {
 		 	transPro=ev.rowKey; // 상품 조회 모달창에서 주문상세그리드 테이블에 값을 차례대로 넘기기위해서 변수 transPro 안에 ev.rowkey를 담아준다
 	   		$('#productModal').modal('show');
 			$.ajax({
-	    		url : "/sales/products",
+	    		url : "/sales/products.Ajax",
 	    		method : "get",
 	    		dataType : "JSON",
 	    		success : function(result){
 	    			gridp.resetData(result);
 	    			console.log ('거래처 모달');
 	    			setTimeout(()=>gridp.refreshLayout(),1000);
+    			},
+    			error : function(reject){
+    				console.log(reject);
     			}
     		})
 		} 
@@ -225,7 +230,7 @@ window.onload = function() {
 	// 주문내역조회
 	function orderingList(){
 		$.ajax({
-			url : "/sales/orderingList",
+			url : "/sales/orderingList.Ajax",
 			method : "GET",
 			dataType : "JSON",
 			success : function(result) {
@@ -239,7 +244,7 @@ window.onload = function() {
 	//주문서완료 버튼 핸들러
 	---------------------------------*/	
 	$('#orderComplete').on('click',function(e){
-			
+		if (!$('#codeBox').val()){		
 		let codeBox =  $('#codeBox').val();
 		let ordDate = $('#ordDate').val();
 		let empName = $('#orderName').val();
@@ -253,18 +258,35 @@ window.onload = function() {
 		let data ={ codeBox, ordDate, empName, empId, busName, busId, busNum, busAddr, busTel ,
 				    list:gridy.getModifiedRows().createdRows}
 		$.ajax({
-			url:'/sales/orderAdd',
+			url:'/sales/orderAdd.Ajax',
 			type:'post',
 			contentType : 'application/json',
 			data:JSON.stringify( data ),
 			dataType:'JSON',
 			success:function(result){
-				location.reload();
+				console.log(result)
+				 $('#codeBox').val(null);
+				 $('#ordDate').val(null);
+				 $('#orderName').val(null);
+				 $('#orderNum').val(null);
+				 $('#busName').val(null);
+				 $('#busCode').val(null);
+				 $('#busNum').val(null);
+				 $('#busAddr').val(null);
+				 $('#busTel').val(null);
+				 
+				 gridy.clear();
+				orderingList();
+				////////////////////////////////////////////////////////////////////////////
+			
 			},
 			error:function(result){
 				alert('주문서등록과정에서 에러가 발생하였습니다.')
 			}
 		})
+		} else{
+			Msg.warning('주문서 수정, 삭제만 가능합니다.', 2000);
+		}
 	})
 
 
@@ -274,7 +296,7 @@ window.onload = function() {
 	$('#orderModify').on('click',function(e){
 		//주문 마스터정보 수정	
 		$.ajax({
-			url:'/sales/orderMod',
+			url:'/sales/orderMod.Ajax',
 			type:'post',
 			data:$('#allOrderList').serialize(),
 			success:function(result){
@@ -288,6 +310,7 @@ window.onload = function() {
 				 $('#busNum').val(null);
 				 $('#busAddr').val(null);
 				 $('#busTel').val(null);
+				 gridy.clear();
 			},
 			error:function(reject){
 				console.log(reject);
@@ -298,20 +321,30 @@ window.onload = function() {
 		// 주문 상세 정보 수정
 		console.log(gridy.getModifiedRows())
 		$.ajax({
-			url:'/sales/ordDetMod',
+			url:'/sales/ordDetMod.Ajax',
 			type:'post',
 			data: 'json',
 			contentType : 'application/json',
 			data:JSON.stringify(gridy.getModifiedRows()),
 			success:function(result){
 				alert('주문서 수정이 성공적으로 처리되었습니다.')
-				location.reload();
+				 $('#codeBox').val(null);
+				 $('#ordDate').val(null);
+				 $('#orderName').val(null);
+				 $('#orderNum').val(null);
+				 $('#busName').val(null);
+				 $('#busCode').val(null);
+				 $('#busNum').val(null);
+				 $('#busAddr').val(null);
+				 $('#busTel').val(null);
+				 gridy.clear();
 				
 			},
 			error:function(reject){
 				console.log(reject);
 				alert('주문서상세등록과정에서 에러가 발생하였습니다.')
 			}
+			
 		})   
 	})
 
@@ -322,27 +355,33 @@ window.onload = function() {
 	$("#deletComplete").on("click", function(e){
 		
 		$.ajax({
-			url:'/sales/orderModDel',
+			url:'/sales/orderModDel.Ajax',
 			type:'post',
 			data:$('#allOrderList').serialize(),
 			success:function(result){
 				console.log(result)
+				orderingList();
+				 
+				 gridy.clear();
 				 $('#codeBox').val(null);
-				 $('#ordDate').val(null);
-				 $('#orderName').val(null);
-				 $('#orderNum').val(null);
+				 makeDate()
 				 $('#busName').val(null);
 				 $('#busCode').val(null);
 				 $('#busNum').val(null);
 				 $('#busAddr').val(null);
 				 $('#busTel').val(null);
+				 $('#orderName').val(eName);
+				 $('#orderNum').val(eId);
+				 
+				 
 			},
 			error:function(reject){
 				console.log(reject);
 				alert('주문서삭제과정 에러가 발생하였습니다.')
 			}
+			
 		})
-		location.reload();
+		
 	}) 
 	 
 	
@@ -368,7 +407,8 @@ window.onload = function() {
                 		ordStatDetName:''
               		
                 };
-  			gridy.appendRow(newData); 
+  			gridy.appendRow(newData);
+  			gridy.blur();
   		}
   	})
   	
@@ -391,7 +431,7 @@ window.onload = function() {
 		el : document.getElementById('gridy'),
 		
 		scrollX : false,
-		scrollY : false,
+		scrollY : true,
 		rowHeight: 45,
 	    
 		 rowHeaders: ['checkbox','rowNum'],
@@ -448,7 +488,7 @@ window.onload = function() {
 			}
 		},
 		  {
-			header : '상품가격',
+			header : '상품가격(ea)',
 			name : 'ordDetPrice',
 		    editor: 'text',
 		    align : 'right',
@@ -456,7 +496,7 @@ window.onload = function() {
 				if(value == null){
 					return ''
 				}else{
-			 return value.toLocaleString()
+			 return `${value}원`;
 				}
 			}
 		},
@@ -468,7 +508,7 @@ window.onload = function() {
 				if(value == null){
 					return ''
 				}else{
-			 return value.toLocaleString()
+			 return `${value}원`;
 				}
 			}
 		   
@@ -480,9 +520,11 @@ window.onload = function() {
 			editor: {
 			      type: 'datePicker',
 			      options: {
-			        format: 'yyyy/MM/dd'
+			        format: 'yyyy/MM/dd',
+			        selectableRanges:[[new Date(), new Date(2099,11,31)] ]	
 			      }
 			    }
+		 	
 		},
 		
 		
@@ -497,7 +539,7 @@ window.onload = function() {
   	
   	
   	
-	gridy.setBodyHeight(450);
+	gridy.setBodyHeight(225);
 	tui.Grid.applyTheme('default', {
 		cell: {
 			header: {
@@ -604,7 +646,7 @@ window.onload = function() {
 		// 사원검색버튼
 		$('#searchModal').on('show.bs.modal',function(e){
 			$.ajax({
-				url : "/sales/emp1List",
+				url : "/sales/emp1List.Ajax",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
@@ -629,7 +671,7 @@ window.onload = function() {
 		const result = $("#search-text").val()
 		
 		$.ajax({
-			url : "/sales/emp1List",
+			url : "/sales/emp1List.Ajax",
 			method : "GET",
 			data : {'result' : result},
 			success : function(result) {
@@ -650,7 +692,7 @@ window.onload = function() {
 	// 모달사원조회 입력값 초기화
 	$('#reset-btn').on('click',function(e){
 		$.ajax({
-			url : "/sales/emp1List",
+			url : "/sales/emp1List.Ajax",
 			method : "GET",
 			dataType : "JSON",
 			success : function(result) {
@@ -709,7 +751,7 @@ window.onload = function() {
 		$('#search1Modal').on('show.bs.modal',function(e){
 			console.log ('거래처 모달');
 			$.ajax({
-				url : "/sales/busList",
+				url : "/sales/busList.Ajax",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
@@ -725,7 +767,7 @@ window.onload = function() {
 	  	$("#reset1-btn").on('click',function(e){
 	  		$("#search1-text").val("");
 	  		$.ajax({
-				url : "/sales/busList",
+				url : "/sales/busList.Ajax",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
@@ -742,7 +784,7 @@ window.onload = function() {
 		console.log($("#search1-text").val())
 		const result = $("#search1-text").val()
 		$.ajax({
-			url : "/sales/bus1List",
+			url : "/sales/bus1List.Ajax",
 			method : "GET",
 			data : {'result' : result},
 			success : function(result) {
@@ -792,23 +834,25 @@ window.onload = function() {
 			align: 'center'
 		},{
 			header : '진행상태',
-			name : 'ordStatName',
+			name : 'ordStat',
 			align: 'center'
 			
 		},
 		]
 	});		
-	orderingGrid.setBodyHeight(450);
+	orderingGrid.setBodyHeight(260);
     
     
 	//진행중인 주문서를 클릭시 모든 상세정보들이 주문서와 주문서 상세페이지에 뜨도록 구현
+	let choosenRow = '';
 	orderingGrid.on('click', ev=> {
 		const focusCell = orderingGrid.getFocusedCell()
 		let dataRow = orderingGrid.getRow(ev.rowKey);
+		choosenRow = ev.rowKey;
 		console.log(dataRow);
 
 		$.ajax({
-			url : "/sales/firstOrderingList",
+			url : "/sales/firstOrderingList.Ajax",
 			method : "GET",
 			data : {'result' : dataRow.ordId},
 			success : function(result) {
@@ -827,7 +871,7 @@ window.onload = function() {
 		})   
 		    
 	    $.ajax({
-	    	url:"/sales/secondOrderingList",
+	    	url:"/sales/secondOrderingList.Ajax",
 	    	method: "GET",
 	    	data : {'result' : dataRow.ordId},
 	    	success : function(result){

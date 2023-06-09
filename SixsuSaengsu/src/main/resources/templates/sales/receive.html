@@ -169,7 +169,7 @@ button {
 	$("#searchProductBtn").on('click', function(e){
 	$('#productModal').modal('show');
 	 $.ajax({
-    		url : "/sales/products",
+    		url : "/sales/products.Ajax",
     		method : "get",
     		dataType : "JSON",
     		success : function(result){
@@ -183,7 +183,7 @@ button {
 	$("#searchProductBtn1").on('click', function(e){
 	$('#productModal').modal('show');
 	 $.ajax({
-    		url : "/sales/products",
+    		url : "/sales/products.Ajax",
     		method : "get",
     		dataType : "JSON",
     		success : function(result){
@@ -302,7 +302,7 @@ button {
 		 $("#recRegister").on('click', function(e){
 				$('#comProductModel').modal('show');
 				 $.ajax({
-			    		url : "/sales/completeList",
+			    		url : "/sales/completeList.Ajax",
 			    		method : "get",
 			    		dataType : "JSON",
 			    		success : function(result){

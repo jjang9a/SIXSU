@@ -26,7 +26,7 @@ public class EquConVO {
 		String empId; // 사원코드
 		Integer ctemp; // 기준온도
 		String addDate; // 등록일자
-	
+		String empName;
 		
 		
 }

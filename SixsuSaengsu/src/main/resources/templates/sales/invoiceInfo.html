@@ -65,7 +65,7 @@ h1 {
 						<td>주문일자</td>
 						<td colspan="3"><input type="date" name="ordSdate"
 							id="ordDate" style="width: 120px;"> ~ <input type="date"
-							name="ordFdate" id="ordFdate" style="width: 120px;"></td>
+							name="ordFdate" id="ordFdate" style="width: 120px;"  min="" disabled></td>
 					</tr>
 					<tr>
 						<td>거래처코드</td>
@@ -139,9 +139,16 @@ h1 {
 			</div>
 		</div>
 		<script>
-       
+	  	var startDate = document.getElementById("ordDate");
+	    var endDate= document.getElementById("ordFdate");
+
+	    startDate.addEventListener("input", function() {
+	    	endDate.min = startDate.value;
+	    	endDate.disabled = false;
+	       });
+	    
 		$.ajax({
-		    url : "/sales/searchOrder",
+		    url : "/sales/searchOrder.Ajax",
 		    method : "post",
 		    dataType : "JSON",
 		    success : function(result) {
@@ -255,13 +262,16 @@ h1 {
 		$('#search1Modal').on('show.bs.modal',function(e){
 			console.log ('거래처 모달');
 			$.ajax({
-				url : "/sales/busList",
+				url : "/sales/busList.Ajax",
 				method : "GET",
 				dataType : "JSON",
 				success : function(result) {
 					gridt.resetData(result);
 					$("#search1-text").val("");
 					setTimeout(()=>gridt.refreshLayout(),400);
+				},
+				error : function(reject){
+					console.log(reject);
 				}
 			});
 			
@@ -270,12 +280,16 @@ h1 {
 		// 모달거래처조회 입력값 초기화
 	$("#reset1-btn").on('click',function(e){
 		$.ajax({
-			url : "/sales/busList",
+			url : "/sales/busList.Ajax",
 			method : "GET",
 			dataType : "JSON",
 			success : function(result) {
 				gridt.resetData(result);
 				$("#search1-text").val("");
+
+			},
+			error : function(reject){
+				console.log(reject);
 			}
 		});   
 	})
@@ -286,7 +300,7 @@ h1 {
 		console.log($("#search1-text").val())
 		const result = $("#search1-text").val()
 		$.ajax({
-			url : "/sales/bus1List",
+			url : "/sales/bus1List.Ajax",
 			method : "GET",
 			data : {'result' : result},
 			success : function(result) {
@@ -301,7 +315,7 @@ h1 {
 
 	$("#search").on("click",(e) =>{
 		 $.ajax({
-             url: '/sales/searchOrder',
+             url: '/sales/searchOrder.Ajax',
              type: 'post',
              data: $('#searchForm').serialize(),
              dataType: 'json',
@@ -340,7 +354,7 @@ h1 {
 			return}
 		$('#orderDetail').modal('show');
 	    $.ajax({
-	    	url:"/sales/secondOrderingList",
+	    	url:"/sales/secondOrderingList.Ajax",
 	    	method: "GET",
 	    	data : {'result' : dataRow.ordId},
 	    	success : function(result){

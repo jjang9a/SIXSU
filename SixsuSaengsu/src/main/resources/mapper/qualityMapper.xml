@@ -13,26 +13,19 @@
 			<if test="inspType != null and inspType != ''.toString()">
 				insp_type = #{inspType}
 			</if>
-			<trim prefix="and (" suffix=")" prefixOverrides="and">
-				<foreach collection="typeArr" item="type">
-					<trim prefix=" and ">
-						<if test="type == 'I'.toString() ">
-							insp_num like '%'||#{inspNum}||'%'
-						</if>
-						<if test="type == 'P'.toString()">
-							insp_item_id like '%'||#{inspItemId}||'%'
-						</if>
-						<if test="type == 'E'.toString()">
-							emp_id like like '%'||#{empId}||'%'
-						</if>
-						<if test="type == 'D'.toString()">
-							insp_date between to_date(#{inspDate}, 'YYYY-MM-DD')
-							and
-							to_date(#{inspDate2}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
-						</if>
-					</trim>
-				</foreach>
-			</trim>
+			<if test="inspNum != null and inspNum != ''.toString()">
+				and ( insp_num like '%'||#{inspNum}||'%' )
+			</if>
+			<if test="inspItemId != null and inspItemId != ''.toString()">
+				and ( insp_item_id = #{inspItemId} )
+			</if>
+			<if test="inspDate != null and inspDate != ''.toString() and inspDate2 != null and inspDate2 != ''.toString()">
+				and ( insp_date between to_date(#{inspDate}, 'YYYY-MM-DD') and
+								to_date(#{inspDate2}|| ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') )
+			</if>
+			<if test="empId != null and empId != ''.toString()">
+				and ( emp_id = #{empId} )
+			</if>
 		</where>
 	</sql>
 		
@@ -142,7 +135,7 @@
 
 	<!-- 검사 항목 리스트 -->
 	<select id="inspItem" resultType="QuaVO">
-		select *
+		select insp_id, insp_sep, insp_name, insp_exp, std_val, insp_note
      	from qua_insp_list
      	where insp_item_id like '%'||#{inspItemId}||'%'
 	</select>
@@ -413,7 +406,7 @@ LEFT OUTER JOIN  work_bom b
 	<!-- 출고 검사 결과 등록 시 검사 공통 등록 -->
   	<insert id="insertShipCom" parameterType="ShipInspVO">
 		INSERT INTO qua_com (insp_num, insp_std_id, insp_item_id, insp_type, insp_date, emp_id, insp_qt, nsuit_qt, suit_qt, qua_com_note) 
-    	values (#{inspNum}, #{cpShipId}, #{cpId}, 'INSP-C', sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{note})
+    	values (#{inspNum}, #{cpShipId}, #{cpId}, 'INSP-C', sysdate, #{empId},#{cpShipQt},  #{nsuitQt}, #{suitQt}, #{quaComNote})
 	</insert>  
 	
 	<!-- 출고 검사 결과 등록시 검사 세부 등록 -->

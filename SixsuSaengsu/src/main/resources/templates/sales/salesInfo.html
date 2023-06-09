@@ -54,7 +54,7 @@
 			// 상품별 판매액 조회 원형차트
 			function drawChart() {
 				$.getJSON({
-					url: "/sales/getSalePrice",
+					url: "/sales/getSalePrice.Ajax",
 					method: "GET",
 					data: $('#searchForm').serialize(),
 					success: function (result) {
@@ -94,7 +94,7 @@
 			// 상품별 판매수량 조회 막대차트
 			function drawBasic() {
 				$.getJSON({
-					url: "/sales/getSalePrice",
+					url: "/sales/getSalePrice.Ajax",
 					method: "GET",
 					data: $('#searchForm').serialize(),
 					success: function (result) {
@@ -124,7 +124,7 @@
 			// 월별 매출액 추이
 			function drawMonthly() {
 				$.getJSON({
-					url: "/sales/getMonthlySales",
+					url: "/sales/getMonthlySales.Ajax",
 					method: "GET",
 					data: $('#searchForm').serialize(),
 					success: function (result) {
