@@ -83,7 +83,7 @@
 			];
 				function matReqList(){
 					$.ajax({
-						url: "/materials/matreqlist",
+						url: "/materials/matreqlist.Ajax",
 						method: "GET",
 						dataType: "JSON",
 						success: function (result) {
@@ -99,7 +99,7 @@
 
 				function matReqSearch(matReqId, matName, busName, matReqStat, matInSDate, matInEDate, matEndSDate, matEndSDate, matEndEDate){
 					$.ajax({
-						url: "/materials/matreqsearch",
+						url: "/materials/matreqsearch.Ajax",
 						method: "GET",
 						data : {matReqId : matReqId, matName : matName, busName : busName, matReqStat : matReqStat, matInSDate : matInSDate,
 								matInEDate : matInEDate, matEndSDate : matEndSDate, matEndSDate : matEndSDate, matEndEDate : matEndEDate},
