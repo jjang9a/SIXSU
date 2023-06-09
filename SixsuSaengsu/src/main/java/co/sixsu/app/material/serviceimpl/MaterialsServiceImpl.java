@@ -200,8 +200,8 @@ public class MaterialsServiceImpl implements MaterialsService{
 		
 		//불량자재 리스트
 		@Override
-		public List<MatDmgVO> getMatDmgList() {
-			return mapper.getMatDmgList();
+		public List<MatDmgVO> getMatDmgList(MatDmgVO vo) {
+			return mapper.getMatDmgList(vo);
 		}
 		
 		//불량자재 불량처리

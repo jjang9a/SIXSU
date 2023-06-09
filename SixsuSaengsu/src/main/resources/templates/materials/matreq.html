@@ -95,6 +95,9 @@
          <div class="modal-dialog modal-lg">
             <div class="modal-dialog">
                <div class="modal-content">
+	              <div class="modal-header">
+					<h1 class="modal-title fs-5" id="searchModalLabel">자재 조회</h1>
+				  </div>
                   <div class="modal-body">
                      <div id="gridm"></div>
                   </div>
@@ -103,11 +106,14 @@
          </div>
       </div>
 
-      <!-- 모달창 거래조회  -->
+      <!-- 모달창 거래처조회  -->
       <div class="modal fade" id="search1Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
          <div class="modal-dialog modal-lg">
             <div class="modal-dialog">
                <div class="modal-content">
+           	      <div class="modal-header">
+					<h1 class="modal-title fs-5" id="searchModalLabel">거래처 조회</h1>
+				  </div>
                   <div class="modal-body">
                      <div id="gridt"></div>
                   </div>
@@ -137,7 +143,7 @@
 
          function matReqList() {
             $.ajax({
-               url: "/materials/matreqlist",
+               url: "/materials/matreqlist.Ajax",
                method: "GET",
                dataType: "JSON",
                success: function (result) {
@@ -156,7 +162,7 @@
          function matReqSearch(matReqId, matName, busName, matReqStat, matInSDate, matInEDate, matEndSDate, matEndSDate,
             matEndEDate) {
             $.ajax({
-               url: "/materials/matreqsearch",
+               url: "/materials/matreqsearch.Ajax",
                method: "GET",
                data: {
                   matReqId: matReqId,
@@ -194,7 +200,7 @@
 
          //모달창 전체 거래처 리스트
          $.ajax({
-            url: "/materials/matreqbuslist",
+            url: "/materials/matreqbuslist.Ajax",
             method: "GET",
             dataType: "JSON",
             success: function (result) {
@@ -217,7 +223,7 @@
 
          //모달창 전체 자재명 리스트
          $.ajax({
-            url: "/materials/matlist",
+            url: "/materials/matlist.Ajax",
             method: "GET",
             dataType: "JSON",
             success: function (result) {
@@ -343,7 +349,8 @@
                   editor: {
                      type: 'datePicker',
                      options: {
-                        format: 'yyyy-MM-dd'
+                        format: 'yyyy-MM-dd',
+                        selectableRanges : [[new Date(), new Date(2099,11,31)] ]
                      }
                   }
                },
@@ -471,7 +478,7 @@
             if(inMatId != null && inMatReqQt != null && inBusId != null && inMatEndDate != null && inMatReqQt != 0){
             	
 	            $.ajax({
-	               url: "/materials/insertmatreq",
+	               url: "/materials/insertmatreq.Ajax",
 	               type: "POST",
 	               data: insertData,
 	               contentType: 'application/json',
@@ -479,20 +486,21 @@
 	                  console.log(result);
 	                  alert('발주 등록 완료');
 	                  $.ajax({
-	                      url: "/materials/matreqlist",
+	                      url: "/materials/matreqlist.Ajax",
 	                      method: "GET",
 	                      dataType: "JSON",
 	                      success: function (result) {
 	                         grid.resetData(result);
 	                         gridInsertRow();
 	                         $.ajax({
-	                            url: "/materials/matreqlist",
+	                            url: "/materials/matreqlist.Ajax",
 	                            method: "GET",
 	                            dataType: "JSON",
 	                            success: function (result) {
 	                               grid.setValue(0, 'matReqStat', "A", false);
 	                               grid.setValue(0, 'busId', grid.getRow(1).busId, false);
 	                               grid.setValue(0, 'busName', grid.getRow(1).busName, false);
+	                               setRowDisabled(grid);
 	                            },
 	                            error: function (reject) {
 	                               console.log(reject);
@@ -523,7 +531,7 @@
          $('#delete').on("click", function () {
 
             $.ajax({
-               url: "/materials/delmatreq",
+               url: "/materials/delmatreq.Ajax",
                type: "POST",
                contentType: 'application/json',
                data: JSON.stringify(grid.getCheckedRows()),
@@ -548,7 +556,7 @@
          $('#updateBtn').on('click', function () {
         	 grid.blur();
             $.ajax({
-               url: "/materials/updatematreq",
+               url: "/materials/updatematreq.Ajax",
                type: "POST",
                contentType: 'application/json',
                data: JSON.stringify(grid.getCheckedRows()),
@@ -556,7 +564,7 @@
                   alert('발주 수정 완료');
                   console.log(result);
                   $.ajax({
-                     url: "/materials/matreqlist",
+                     url: "/materials/matreqlist.Ajax",
                      method: "GET",
                      dataType: "JSON",
                      success: function (result) {

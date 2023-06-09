@@ -12,6 +12,7 @@ public class DetaProdPlanVO {
 	String type;
 	String planDetaId; //생산계획코드 (FK)
 	String matId; //제품코드
+	String cpId;
 	String cpName; //제품이름
 	int detaQt; //지시수량
 	int goodQt; //양품수량
@@ -27,7 +28,7 @@ public class DetaProdPlanVO {
 	String ordDetId;
 	int ordQt;
 	String ordStatDet;
-	String cpId;
+
 	String ordId;
 	int ordDetPrice;
 	int ordSalePrice;
