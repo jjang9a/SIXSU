@@ -31,8 +31,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			width: 750px;
 			height: 361px
 		}
-		#grid1,#grid3{
+		#grid1{
 			margin-bottom: 50px;
+		}
+		#grid3{
+			margin-bottom: 20px;
 		}
 		#grid1{
 			border: 1px solid black;
@@ -42,6 +45,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		}
 		#grid_product{
 			width: 750px;
+		}
+		.btn_container{
+			text-align: center;
 		}
 	  .form-row {
 	    display: flex;
@@ -85,13 +91,16 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 			
 			<button class="sixBtn2 regSubmit">저장</button>
 		</div>
-		<button class="searchBtn sixBtn4">검색예정</button>
+		<h5 style="font-family: 'MaruBuri';">주문서</h5>
 		<div id="grid2"></div>
 	</div>
 	<div id="gridContainer2">
 		<div id="grid3"></div>
-		<button class="moveBtn sixBtn4">선택</button>
-		<button class="removeBtn sixBtn4">삭제</button>
+		<div class="btn_container">
+			<button class="moveBtn sixBtn2">▲</button>
+			<button class="removeBtn sixBtn2">▼</button>
+		</div>
+		<h5 style="font-family: 'MaruBuri';, float: left;">주문서상세</h5>
 		<div id="grid4"></div>
 	</div>
 	
@@ -210,16 +219,16 @@ while (defaultData.length < 8){
 		
 		var isEmpty = false;
 		if(data.type == ''){
-			alert('분류를 입력하세요')
+			Msg.warning('분류를 입력하세요', 2000);
 			isEmpty = true;
 		} else if (data.startDate == ''){
-			alert('계획기간을 입력하세요')
+			Msg.warning('계획기간을 입력하세요', 2000);
 			isEmpty = true;
 		} else if (data.endDate == ''){
-			alert('계획기간을 입력하세요')
+			Msg.warning('계획기간을 입력하세요', 2000);
 			isEmpty = true;
 		} else if (dataArr[1] == null){
-			alert('계획된 작업이 없습니다')
+			Msg.warning('계획된 작업이 없습니다', 2000);
 			isEmpty = true;
 		}
 		
@@ -235,11 +244,13 @@ while (defaultData.length < 8){
 				contentType: "application/json",
 				data: JSON.stringify(dataArr), 
 				success : function(result){
+					Msg.success('등록이 완료되었습니다', 2000);
 					console.dir(result);
 					location.href = '/work/workControllPage';
 					},
 				error(reject){
 						console.err(reject)
+						Msg.error('[error : addPlanAjax] please check the Console Log', 5000);
 					}
 				})
 			
@@ -301,6 +312,10 @@ while (defaultData.length < 8){
 					console.log("첫 출력값 > ")
 					console.dir(result);
 					grid2.resetData(result);
+				},
+				error(reject){
+					console.err(reject)
+					Msg.error('[error : sorderListAjax] please check the Console Log', 5000);
 				}
 			})
 		}
@@ -321,6 +336,10 @@ while (defaultData.length < 8){
 					result.push({});
 				}
 				grid4.resetData(result);
+			},
+			error(reject){
+				console.err(reject)
+				Msg.error('[error : detOrdListAjax] please check the Console Log', 5000);
 			}
 		})
 	})
@@ -421,6 +440,10 @@ while (defaultData.length < 8){
 				console.log("첫 출력값 > ")
 				console.dir(result);
 				grid_product.resetData(result);
+			},
+			error(reject){
+				console.err(reject)
+				Msg.error('[error : getProductList] please check the Console Log', 5000);
 			}
 		})
 	
