@@ -112,6 +112,7 @@ public class QualityController {
 	@ResponseBody
 	@PostMapping("/quality/priRegister")
 	public int priRegister(@RequestBody List<QuaVO> list) {
+		
 		System.out.println(list);
 		// return quaService.insertPri(list);insertQuaDet(List<QuaVO> list)
 		return quaService.insertQuaDet(list);

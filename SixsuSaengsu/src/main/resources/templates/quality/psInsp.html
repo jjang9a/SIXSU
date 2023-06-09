@@ -80,7 +80,7 @@ h1 {
 				<tr>
 					<td>부적합 사유</td>
 					<td><input type="text" name="detailNote" id="detailNote"
-						class="empty"></td>
+						class="empty" placeholder="포장 불량, 제품 상태 불량 등"></td>
 					<!-- <td colspan="3">  style="width: 660px;"-->
 					<td>검사자</td>
 					<td><input th:value='${#authentication.principal.empName}'
@@ -111,6 +111,7 @@ h1 {
 
 		<script th:inline="javascript">
 		let inspResStat = [[${inspResStat}]];
+		let cpShipStat = [[${inspResStat}]];
 		
 			window.onload = function() {
 				//let initData = '';
@@ -299,88 +300,52 @@ h1 {
 								function(e) {
 									if (selRow == '') {
 										alert('수정할 데이터가 없습니다.')
-									} else if($('#cpShipStat').val != 'CP_SHIP_COMP'){
-										alert('출고검사 완료건만 수정할 수 있습니다.')
+									} else if($('#cpShipStat').val() != '출고준비'){
+										
+										alert('출고준비 건만 수정할 수 있습니다.')
 										$('.empty').val('');
 										$('#resStat').val('').prop("selected",true);
 									} else {
 									
+										$.ajax({
+											url : '/quality/shipInspMod',
+											type : 'post',
+											data : $('#cpqForm')
+													.serialize(),
+											dataType : 'json',
+											success : function(result) {
+												alert('출고 검사가 성공적으로 수정되었습니다');
+												
 												$.ajax({
-													url : '/quality/shipInspMod',
-													type : 'post',
-													data : $('#cpqForm')
-															.serialize(),
-													dataType : 'json',
+													url : "/quality/shInspList",
+													method : "GET",
+													dataType : "JSON",
 													success : function(result) {
-														alert('출고 검사가 성공적으로 수정되었습니다');
-														
-	
-														
-														//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
-														const setData = result
-														grid.setRow(selRow, setData);
-														selRow = '';
-														//$('#cpqForm input').val('');
-														$('.empty').val('');
-														$('#resStat').val('').prop("selected",true);
-														
-														
-													},
-													error : function() {
-														alert('완제품 수정 중 오류가 발생했습니다!');
+														grid.resetData(result);
+														//initData = result;
+														//nowData = result;
 													}
 												});
+												
+												//등록 버튼을 누르면 테이블에 들어갈 데이터 설정 
+												const setData = result
+												selRow = '';
+												//$('#cpqForm input').val('');
+												$('.empty').val('');
+												$('#resStat').val('').prop("selected",true);
+												
+												
+											},
+											error : function() {
+												alert('출고 검사 수정 중 오류가 발생했습니다!');
+											}
+										});	
 																							
 
 									}
 								})
 								
 				
-				// 검색 버튼 이벤트
-				let searchType = '';
-				let searchKey = '';
-				$('#searchBtn').on('click', function(e) {
-					if ($('#cpId').val() == '' && $('#cpName').val() == '') {
-						if (initData == nowData) {
-							alert('완제품 코드 또는 제품명으로 검색이 가능합니다.')
-						} else {
-							$.ajax({
-								url : "/basic/cpList",
-								method : "GET",
-								dataType : "JSON",
-								success : function(result) {
-									grid.resetData(result);
-								}
-							});
-						}
-					} else {
-						if ($('#cpId').val() != '') {
-							searchType = 'id';
-							searchKey = $('#cpId').val()
-						} else {
-							searchType = 'name';
-							searchKey = $('#cpName').val()
-						}
-
-						$.ajax({
-							url : '/',
-							type : 'get',
-							data : {
-								"searchType" : searchType,
-								"searchKey" : searchKey
-							},
-							dataType : 'json',
-							success : function(result) {
-								grid.resetData(result);
-								nowData = result;
-							},
-							error : function() {
-								alert('완제품 검색 중 오류 발생!');
-							}
-						})
-					}
-
-				})
 
 				//윈도우 온 로드 종료
 			}
