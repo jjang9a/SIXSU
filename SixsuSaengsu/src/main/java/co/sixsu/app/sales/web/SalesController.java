@@ -47,7 +47,7 @@ public class SalesController {
 	
 	}
 	@ResponseBody
-	@RequestMapping("inventorySearch")
+	@RequestMapping("inventorySearch.Ajax")
 	public List<OrdVO> inventorySearch() {
 		List<OrdVO> list = service.inventorySearch();
 		return list;
@@ -56,7 +56,7 @@ public class SalesController {
 	
 	
 	
-	@RequestMapping("searchOrder")
+	@RequestMapping("searchOrder.Ajax")
 	@ResponseBody 
 	public List<InvVO> searchOrder(InvVO vo) { 
 		List<InvVO> list = service.searchOrder(vo); 
@@ -65,7 +65,7 @@ public class SalesController {
 
 
 //모달창 회원이름 조회
-	@RequestMapping("emp1ListAjax")
+	@RequestMapping("emp1List.Ajax")
 	@ResponseBody
 	public List<EmpVO> emp1List(@RequestParam(required = false) String result) {
 		System.out.println(result);
@@ -76,14 +76,14 @@ public class SalesController {
 
 //거래처 관리 사원정보 조회 하기
 	@ResponseBody
-	@RequestMapping("busList")
+	@RequestMapping("busList.Ajax")
 	public List<BusVO> busList() {
 		List<BusVO> list = service.getBusList();
 		return list;
 	}
 	
 //모달창 거래처이름 조회
-	@RequestMapping("bus1List")
+	@RequestMapping("bus1List.Ajax")
 	@ResponseBody
 	public List<BusVO> bus1List(@RequestParam(required = false) String result) {
 		System.out.println(result);
@@ -95,7 +95,7 @@ public class SalesController {
 
 
 //자동으로 상세주문 등록하는방법
-	@RequestMapping("detailOrd")
+	@RequestMapping("detailOrd.Ajax")
 	@ResponseBody
 	public List<OrdVO> ordList() {
 		List<OrdVO> list = service.getOrdList();
@@ -103,7 +103,7 @@ public class SalesController {
 	}
 
 //상품명을 주문등록페이지로 이동하기위해 json타입으로 데이터를 불러오기
-	@RequestMapping("products")
+	@RequestMapping("products.Ajax")
 	@ResponseBody
 	public List<ProductVO> prodList() {
 		List<ProductVO> list = service.getProdList();
@@ -112,7 +112,7 @@ public class SalesController {
 
 //주문서만 등록
 	@ResponseBody
-	@RequestMapping(value = "orderAdd", method = RequestMethod.POST)
+	@RequestMapping(value = "orderAdd.Ajax", method = RequestMethod.POST)
 	public InvVO orderAdd(@RequestBody InvVO inv) {
 
 		service.orderAdd(inv);

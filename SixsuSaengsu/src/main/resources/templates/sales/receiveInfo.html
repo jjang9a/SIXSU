@@ -114,7 +114,7 @@ cursor: pointer;
 	       });
 	    
 			$.ajax({
-				url: "/sales/searchReceive",
+				url: "/sales/searchReceive.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -176,7 +176,7 @@ cursor: pointer;
 			$("#search1Btn").on('click', function (e) {
 				$('#productModal').modal('show');
 				$.ajax({
-					url: "/sales/products",
+					url: "/sales/products.Ajax",
 					method: "get",
 					dataType: "JSON",
 					success: function (result) {
@@ -218,7 +218,7 @@ cursor: pointer;
 
 			$("#search").on("click", (e) => {
 				$.ajax({
-					url: '/sales/searchReceive',
+					url: '/sales/searchReceive.Ajax',
 					type: 'post',
 					data: $('#searchForm').serialize(),
 					dataType: 'json',

@@ -215,7 +215,7 @@ h1 {
 	    
       $("#search").on("click",(e) =>{
 			 $.ajax({
-	             url: '/sales/orderedList',
+	             url: '/sales/orderedList.Ajax',
 	             type: 'post',
 	             data: $('#searchForm').serialize(),
 	             dataType: 'json',
@@ -243,7 +243,7 @@ h1 {
         $("#searchProductBtn").on("click", function (e) {
           $("#productModal").modal("show");
           $.ajax({
-            url: "/sales/products",
+            url: "/sales/products.Ajax",
             method: "get",
             dataType: "JSON",
             success: function (result) {
@@ -357,7 +357,7 @@ h1 {
           ],
         });
         $.ajax({
-          url: "/sales/orderedList",
+          url: "/sales/orderedList.Ajax",
           method: "get",
           dataType: "JSON",
           success: function (result) {
@@ -375,7 +375,7 @@ h1 {
           let dataRow = orderListGrid.getRow(ev.rowKey);
           orderData = dataRow;
           $.ajax({
-            url: "/sales/lotProducts",
+            url: "/sales/lotProducts.Ajax",
             method: "get",
             data: { result: dataRow.cpId },
             success: function (result) {
@@ -391,7 +391,7 @@ h1 {
           });          
          //lot 별재고 현황에서 완제품 총재고량 띄우는 기능
           $.ajax({
-            url: "/sales/totalQt",
+            url: "/sales/totalQt.Ajax",
             method: "GET",
             data: { result: dataRow.cpId },
             success: function (result) {
@@ -444,7 +444,7 @@ h1 {
         	console.log(orderData);
             //orderData.cpLot=$('#totalQt').val();
         	$.ajax({
-				url: "/sales/shipPro",
+				url: "/sales/shipPro.Ajax",
 				method: "POST",
 				dataType: "JSON",
 				contentType: "application/json",
@@ -469,7 +469,7 @@ h1 {
         //출고대기 테이블의 품목 (검사요청과, 검사완료가 보여지는 테이블)
         function  readyShipList() {
         	$.ajax({
-				url: "/sales/readyShipList",
+				url: "/sales/readyShipList.Ajax",
 				method: "get",
 				dataType: "JSON",
 				success: function (result) {
@@ -557,7 +557,7 @@ h1 {
 					console.log(dataRow.ordDetId);
     	             	
 					$.ajax({
-        				url: "/sales/shipReady",
+        				url: "/sales/shipReady.Ajax",
        					method: "get",
         				data: {'result' : dataRow.ordDetId},
         				success: function (result) {
@@ -573,7 +573,7 @@ h1 {
 		$("#completeShip").on("click", function (e) {
 			if(e.columnName == 'ordDetId'){
 			$.ajax({
-				url: "/sales/completShip",
+				url: "/sales/completShip.Ajax",
 				method: "post",
 				data: {ordDetId:orderReadyGrid.getFocusedCell().value},      //?ored=SEL             
 				success: function (result) {

@@ -122,7 +122,7 @@
 	$("#searchBusModal").on("click", function(e){
 		$('#busModal').modal("show");
 		$.ajax({
-			url: "/sales/bus1List",
+			url: "/sales/bus1List.Ajax",
 			method :"get",
 			dataType: "JSON",
 			success : function(result){
@@ -141,7 +141,7 @@
 		const result = $("#search-text").val()
 		
 		$.ajax({
-			url : "/sales/bus1List",
+			url : "/sales/bus1List.Ajax",
 			method : "GET",
 			data : {'result' : result},
 			success : function(result) {
@@ -162,7 +162,7 @@
 	// 모달거래처조회 입력값 초기화
 	$('#reset-btn').on('click',function(e){
 		$.ajax({
-			url : "/sales/bus1List",
+			url : "/sales/bus1List.Ajax",
 			method : "GET",
 			dataType : "JSON",
 			success : function(result) {
@@ -204,7 +204,7 @@
 	// 완료된 출고 현황표
 	---------------------------------*/	
 	$.ajax({
-		url: "/sales/orderComplete",
+		url: "/sales/orderComplete.Ajax",
 		method: "GET",
 		success : function (result){
 			orderCompleteGrid.resetData(result);
@@ -288,7 +288,7 @@
 		else {
 			console.log("통과")
 			$.ajax({
-				url: "/sales/returnRequest",
+				url: "/sales/returnRequest.Ajax",
 				method: "POST",
 				data: $('#searchForm').serialize(),
 				success: function(result){
