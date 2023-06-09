@@ -37,7 +37,7 @@
 
 					<!-- 발주 번호 검색 버튼 -->
 					<label style="font-family: 'MaruBuri';">공정 실적 코드 조회</label>
-					<button id="modalBtn" class="sixBtn1" data-bs-toggle="modal" data-bs-target="#detWorkModal">
+					<button id="modalBtn" class="sixBtn1" >
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
 							class="bi bi-search" viewBox="0 2 16 16">
 							<path
@@ -68,8 +68,8 @@
 
 									<div class="modal-footer">
 										<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
-										<button type="button" class="sixBtn2" id="addBtn"
-											data-bs-dismiss="modal">등록</button>
+										<button type="button" class="sixBtn2" id="addBtn">등록</button>
+											
 									</div>
 								</div>
 							</div>
@@ -202,7 +202,7 @@
 			window.onload = function () {
 				//검사 결과 등록 전 리스트
 				$.ajax({
-					url: "/quality/prwList",
+					url: "/quality/prwList.Ajax",
 					method: "GET",
 					success: function (result) {
 						beforeGrid.resetData(result);
@@ -215,7 +215,7 @@
 				
 				// 검사 등록 완료 리스트
 				$.ajax({
-					url: "/quality/prdComList",
+					url: "/quality/prdComList.Ajax",
 					method: "GET",
 					success: function (result) {
 						afterGrid.resetData(result);
@@ -230,11 +230,12 @@
 				// 지시 세부 코드 조회 클릭 시 모달창 오픈
 				$('#modalBtn').on('click', function (e) {
 					$.ajax({
-						url: "/quality/bpAddList",
+						url: "/quality/bpAddList.Ajax",
 						method: "GET",
 						success: function (result) {
+							$('#detWorkModal').modal('show');
 							dwGrid.resetData(result);
-							setTimeout(() => dwGrid.refreshLayout(), 100);
+							setTimeout(() => dwGrid.refreshLayout(), 500);
 						},
 						error: function (reject) {
 							console.log(reject);
@@ -249,27 +250,27 @@
 					let checkedRows = dwGrid.getCheckedRows();
 
 					if (checkedRows.length === 0) {
-						alert('검사를 선택 후 등록해주세요.');
+						Msg.warning('검사를 선택 후 등록해주세요.', 2000);
+						//alert('검사를 선택 후 등록해주세요.');
 					} else {
 						// Ajax를 통해 데이터를 서버로 전송하고 등록 성공 후 처리
 						$.ajax({
-							url: "/quality/bpdAdd",
+							url: "/quality/bpdAdd.Ajax",
 							method: "POST",
 							contentType: 'application/json',
 							data: JSON.stringify(dwGrid.getCheckedRows()),
 							success: function (result) {
-								alert('공정 검사가 등록되었습니다.');
+								//alert('공정 검사가 등록되었습니다.');
+								Msg.success('등록이 완료되었습니다.', 2000);
 								console.log(result);
 								const appendedData = result;
 								beforeGrid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
-								console.log('숨김 전')
 								$('#detWorkModal').modal('hide');
-								console.log('숨김 후')
 								dwGrid.removeCheckedRows(false);
 
 								// 업데이트 된 데이터 출력
 								$.ajax({
-									url: "/quality/prwList",
+									url: "/quality/prwList.Ajax",
 									method: "GET",
 									dataType: "JSON",
 									success: function (result) {
@@ -281,7 +282,8 @@
 								});
 							},
 							error: function (reject) {
-								alert('공정 검사 등록 중 에러가 발생하였습니다.');
+								//alert('공정 검사 등록 중 에러가 발생하였습니다.');
+								Msg.error('공정 검사 등록 중 에러가 발생하였습니다.', 2000);
 							}
 						});
 					}
@@ -340,7 +342,7 @@
 
 					// 검사 항목 ajax 호출
 					$.ajax({
-						url: "/quality/inspItem",
+						url: "/quality/inspItem.Ajax",
 						method: "GET",
 						data: {
 							'matId': selPdId
@@ -367,7 +369,7 @@
 					console.log( $('#prInspForm').serialize());
 
 					$.ajax({
-						url: '/quality/prdComUpdate',
+						url: '/quality/prdComUpdate.Ajax',
 						type: 'post',
 						data: $('#prInspForm').serialize(),
 						dataType: 'json',
@@ -377,7 +379,7 @@
 							
 							//2023.06.09
 							$.ajax({
-								url: "/quality/prdComList",
+								url: "/quality/prdComList.Ajax",
 								method: "GET",
 								success: function (result) {
 									afterGrid.resetData(result);
@@ -396,14 +398,15 @@
 					
 					//등록&update
 					$.ajax({
-						url: '/quality/priRegister',
+						url: '/quality/priRegister.Ajax',
 						type: 'post',
 						data: JSON.stringify(detailGrid.getData()),
 						contentType: 'application/json',
 						success: function (result) {
 
 							console.log("등록&업데이트:"+result);
-							alert('검사 결과값 등록이 완료되었습니다.');
+							Msg.success('등록이 완료되었습니다.', 2000);
+							//alert('검사 결과값 등록이 완료되었습니다.');
 							// 등록 완료 후 폼과 그리드 숨기고 초기화
 							$('.empty').val('');
 							//detailGrid.resetData();
@@ -414,13 +417,14 @@
 						},
 						error: function (reject) {
 							console.log(reject);
-							alert('검사 결과값 등록에 실패했습니다.')
+							//alert('검사 결과값 등록에 실패했습니다.')
+							Msg.error('제품 검사 등록 중 에러가 발생하였습니다.', 2000);
 						}
 					});
 					
 					// 검사 등록 완료 리스트 재출력
 					$.ajax({
-						url: "/quality/prdComList",
+						url: "/quality/prdComList.Ajax",
 						method: "GET",
 						success: function (result) {
 							afterGrid.resetData(result);
@@ -459,7 +463,8 @@
 				// 수정 버튼 클릭 시
 				$('#modBtn').on('click', function () {
 					if (aselKey === null) {
-						alert("수정할 검사를 선택하세요.");
+						//alert("수정할 검사를 선택하세요.");
+						Msg.warning('수정할 검사를 선택하세요.', 2000);
 						return;
 					}
 
@@ -485,7 +490,7 @@
 
 					// 검사 항목 ajax 호출
 					$.ajax({
-						url: "/quality/modInspItem",
+						url: "/quality/modInspItem.Ajax",
 						method: "GET",
 						data: {
 							'inspNum': afterInspNum
@@ -495,7 +500,7 @@
 							console.log(result);
 							detailGrid.resetData(result);
 							detailGrid.setColumnValues('inspNum', afterInspNum, false);
-							setTimeout(() => detailGrid.refreshLayout(), 300);
+							setTimeout(() => detailGrid.refreshLayout(), 500);
 
 						},
 						error: function (reject) {
@@ -864,7 +869,8 @@
 			    let totalNsuitQt = 0;
 			    totalNsuitQt += Number(row.nsuitQt || 0);
 			    if (totalNsuitQt > totNsuitQt) {
-			      alert('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.');
+			      //alert('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.');
+			      Msg.warning('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.', 2000);
 			      ev.stop();
 			    }
 			  }
@@ -879,14 +885,15 @@
 
 				// 검사 상세 업데이트 ajax
 				$.ajax({
-					url: '/quality/updateQd',
+					url: '/quality/updateQd.Ajax',
 					type: 'post',
 					data: JSON.stringify(detailGrid.getData()),
 					contentType: 'application/json',
 					success: function (result) {
 
 						console.log(result);
-						alert('검사 결과값 수정이 완료되었습니다.');
+						//alert('검사 결과값 수정이 완료되었습니다.');
+						Msg.success('수정이 완료되었습니다.', 2000);
 						
 						$('.empty').val('');
 						detailGrid.clear();
@@ -894,7 +901,7 @@
 					},
 					error: function (reject) {
 						console.log(reject);
-						alert('검사 결과값 수정에 실패했습니다.')
+						Msg.error('검사 결과값 수정에 실패했습니다.', 2000);
 					}
 				});
 
@@ -907,7 +914,7 @@
 				//qua_com update
 				console.log($('#prInspForm').serialize());
 				$.ajax({
-					url: '/quality/priRegUpdate',
+					url: '/quality/priRegUpdate.Ajax',
 					type: 'post',
 					data: $('#prInspForm').serialize(),
 					dataType: 'json',
@@ -962,7 +969,7 @@
 			// 수량 체크
 		  	const totNsuitQt = parseInt($('#totNsuitQt').val());
 		  	if (totalNsuitQt > totNsuitQt) {
-			    alert('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.');
+		  		Msg.warning('부적합 수량은 총 부적합 수량을 초과할 수 없습니다.', 2000);
 			    
 			    let cell = detailGrid.getFocusedCell();
 			    let prevNsuitQt = detailGrid.getValue(cell.rowKey, 'nsuitQt');

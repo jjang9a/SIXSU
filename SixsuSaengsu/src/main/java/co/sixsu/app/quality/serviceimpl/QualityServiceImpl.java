@@ -132,11 +132,11 @@ public class QualityServiceImpl implements QualityService {
 	public boolean priRegUpdate(QuaVO qua) {
 		int count = 0; // update 발생 횟수
 		System.out.println("qua_com 업데이트 vo" + qua);
-		//count = quaMapper.qComUpdate(qua);
+		count = quaMapper.qComUpdate(qua);
 
 		// 발주 상태 변경
 		qua.setMatReqStat("C");
-		//quaMapper.mUpdate(qua);
+		quaMapper.mUpdate(qua);
 		return count >= 1;
 	}
 

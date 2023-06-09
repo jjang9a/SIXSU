@@ -67,7 +67,7 @@ public class QualityController {
 	
 	// 입고 검사 대기 등록 리스트
 	@ResponseBody
-	@RequestMapping("/quality/proRecList")
+	@RequestMapping("/quality/proRecList.Ajax")
 	public List<QuaVO> proRecList() {
 		List<QuaVO> prList = quaService.proRecList();
 		return prList;
@@ -75,7 +75,7 @@ public class QualityController {
 
 	// 자재 입고 검사 등록 (프로시저 사용)
 	@ResponseBody
-	@PostMapping("/quality/prRegister")
+	@PostMapping("/quality/prRegister.Ajax")
 	public List<QuaVO> prRegister(@RequestBody List<QuaVO> list) {
 		System.out.println(list);
 		quaService.insertpro(list);
@@ -84,7 +84,7 @@ public class QualityController {
 
 	// 입고 검사 대기 리스트
 	@ResponseBody
-	@RequestMapping("/quality/prInspList")
+	@RequestMapping("/quality/prInspList.Ajax")
 	public List<QuaVO> prInspList() {
 		List<QuaVO> priList = quaService.prInspList();
 		System.out.println("리스트 출력 확인:" + priList);
@@ -93,7 +93,7 @@ public class QualityController {
 
 	// 입고 검사 항목 불러오기
 	@ResponseBody
-	@RequestMapping("/quality/inspItem")
+	@RequestMapping("/quality/inspItem.Ajax")
 	public List<QuaVO> inspItem(String matId) {
 		List<QuaVO> list = quaService.inspItem(matId);
 		return list;
@@ -101,7 +101,7 @@ public class QualityController {
 
 	// 수정 시 입고 검사 항목 불러오기
 	@ResponseBody
-	@RequestMapping("/quality/modInspItem")
+	@RequestMapping("/quality/modInspItem.Ajax")
 	public List<QuaVO> modInspItem(String inspNum) {
 		List<QuaVO> list = quaService.modInspItem(inspNum);
 		System.out.println("수정 항목 출력:" + list);
@@ -110,7 +110,7 @@ public class QualityController {
 
 	// 검사 결과 등록 => 검사 세부 insert
 	@ResponseBody
-	@PostMapping("/quality/priRegister")
+	@PostMapping("/quality/priRegister.Ajax")
 	public int priRegister(@RequestBody List<QuaVO> list) {
 		
 		System.out.println(list);
@@ -120,7 +120,7 @@ public class QualityController {
 
 	// 검사 결과 등록 시 검사 공통 업데이트
 	@ResponseBody
-	@PostMapping("/quality/priRegUpdate")
+	@PostMapping("/quality/priRegUpdate.Ajax")
 	public boolean qComUpdate(QuaVO qua, Principal principal) {
 		System.out.println(qua);
 		String id = principal.getName();
@@ -131,7 +131,7 @@ public class QualityController {
 
 	// 입고 검사 완료 리스트(2주 이내의 정보)
 	@ResponseBody
-	@RequestMapping("/quality/rAfterList")
+	@RequestMapping("/quality/rAfterList.Ajax")
 	public List<QuaVO> rAfterList() {
 		List<QuaVO> raList = quaService.afterReqList();
 		System.out.println("리스트 출력 확인:" + raList);
@@ -140,7 +140,7 @@ public class QualityController {
 
 	// 검사 완료 삭제
 	@ResponseBody
-	@PostMapping("/quality/delInsp")
+	@PostMapping("/quality/delInsp.Ajax")
 	public boolean delReqInsp(QuaVO qua) {
 		boolean result = quaService.delInsp(qua);
 		return result;
@@ -148,7 +148,7 @@ public class QualityController {
 
 	// 수정 시 qua_details 업데이트
 	@ResponseBody
-	@PostMapping("/quality/updateQd")
+	@PostMapping("/quality/updateQd.Ajax")
 	public List<QuaVO> updateQd(@RequestBody List<QuaVO> list) {
 		System.out.println("검사상세업데이트" + list);
 		return quaService.updateQd(list);
@@ -156,7 +156,7 @@ public class QualityController {
 
 	// 공정 검사 관리 - 검사 등록 리스트 출력
 	@ResponseBody
-	@GetMapping("/quality/bpAddList")
+	@GetMapping("/quality/bpAddList.Ajax")
 	public List<PrdInspVO> bpList() {
 		List<PrdInspVO> list = quaService.bpAddList();
 		return list;
@@ -164,7 +164,7 @@ public class QualityController {
 
 	// 공정 검사 등록
 	@ResponseBody
-	@PostMapping("/quality/bpdAdd")
+	@PostMapping("/quality/bpdAdd.Ajax")
 	public int bpdAdd(@RequestBody List<PrdInspVO> list) {
 		System.out.println(list);
 
@@ -173,7 +173,7 @@ public class QualityController {
 
 	// 공정 검사 관리 검사 대기 리스트
 	@ResponseBody
-	@GetMapping("/quality/prwList")
+	@GetMapping("/quality/prwList.Ajax")
 	public List<PrdInspVO> prwList() {
 		List<PrdInspVO> list = quaService.prwList();
 
@@ -183,7 +183,7 @@ public class QualityController {
 	
 	// 공정 검사 결과 등록
 	@ResponseBody
-	@PostMapping("/quality/prdComUpdate")
+	@PostMapping("/quality/prdComUpdate.Ajax")
 	public boolean prdComUpdate(PrdInspVO prd, Principal principal) {
 		System.out.println(prd);
 		String id = principal.getName();
@@ -194,7 +194,7 @@ public class QualityController {
 
 	// 제품 품질 검사 완료 리스트
 	@ResponseBody
-	@GetMapping("/quality/prdComList")
+	@GetMapping("/quality/prdComList.Ajax")
 	public List<PrdInspVO> prdComList() {
 		return quaService.prdComList();
 	}
@@ -203,7 +203,7 @@ public class QualityController {
 
 	// 출고 검사 목록 리스트
 	@ResponseBody
-	@GetMapping("/quality/shInspList")
+	@GetMapping("/quality/shInspList.Ajax")
 	public List<ShipInspVO> shInspList(Model model) {
 			model.addAttribute("inspResStat",bservice.commGroupList("INSP_RES_STAT"));
 		return quaService.shInspList();
@@ -211,7 +211,7 @@ public class QualityController {
 
 	// 출고 검사 결과 등록
 	@ResponseBody
-	@PostMapping("/quality/shipInspAdd")
+	@PostMapping("/quality/shipInspAdd.Ajax")
 	public ShipInspVO shipInspAdd(ShipInspVO ship, Principal principal) {
 		System.out.println("출고 검사 등록");
 		String id = principal.getName();
@@ -223,7 +223,7 @@ public class QualityController {
 	
 	// 출고 검사 결과 수정
 	@ResponseBody
-	@PostMapping("/quality/shipInspMod")
+	@PostMapping("/quality/shipInspMod.Ajax")
 	public ShipInspVO shipInspMod(ShipInspVO ship) {
 		System.out.println("수정:"+ship);
 		quaService.shipInspMod(ship);
@@ -232,7 +232,7 @@ public class QualityController {
 	
 	// 출고 검사 결과 삭제
 	@ResponseBody
-	@PostMapping("/quality/shipInspDel")
+	@PostMapping("/quality/shipInspDel.Ajax")
 	public boolean shipInspDel (QuaVO qua) {
 		boolean result = quaService.delShipInsp(qua);
 		return result;
@@ -240,14 +240,14 @@ public class QualityController {
 	
 	// 반품 검사 목록 리스트
 	@ResponseBody
-	@GetMapping("/quality/returnList")
+	@GetMapping("/quality/returnList.Ajax")
 	public List<ReturnInspVO> returnList() {
 		return quaService.returnList();
 	}
 	
 	// 반품 검사 결과 등록
 	@ResponseBody
-	@PostMapping("/quality/returnInspAdd")
+	@PostMapping("/quality/returnInspAdd.Ajax")
 	public ReturnInspVO returnInspAdd(ReturnInspVO ret, Principal principal) {
 		System.out.println("반품 검사 등록");
 		String id = principal.getName();
@@ -258,7 +258,7 @@ public class QualityController {
 	
 	// 반품 검사 결과 수정
 	@ResponseBody
-	@PostMapping("/quality/returnInspMod")
+	@PostMapping("/quality/returnInspMod.Ajax")
 	public ReturnInspVO returnInspMod(ReturnInspVO ret){
 		quaService.returnInspMod(ret);
 		return ret;

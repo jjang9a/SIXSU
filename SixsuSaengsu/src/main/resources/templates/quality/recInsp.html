@@ -94,7 +94,7 @@
 					<!-- 토스트 그리드 코드 -->
 					<!-- 발주 번호 검색 버튼 -->
 					<label style="font-family: 'MaruBuri';">입고검사 등록</label>
-					<button class="sixBtn1" data-bs-toggle="modal" data-bs-target="#regModal">
+					<button id="modalBtn" class="sixBtn1" >
 						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" fill="currentColor"
 							class="bi bi-search" viewBox="0 2 16 16">
 							<path
@@ -148,7 +148,8 @@
 								<div class="modal-footer">
 									<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
 									<button type="button" class="sixBtn2" id="regBtn"
-										data-bs-dismiss="modal">등록</button>
+										>등록</button>
+										<!-- data-bs-dismiss="modal" -->
 								</div>
 							</div>
 						</div>
@@ -269,15 +270,15 @@
 
 		<script th:inline="javascript">
 		let inspResStat = [[${inspResStat}]];
-		
-			$('#regModal').on('show.bs.modal', function (e) {
+			$('#modalBtn').on('click', function (e) {
 				$.ajax({
-					url: "/quality/proRecList",
+					url: "/quality/proRecList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
+						$('#regModal').modal('show');
 						grid2.resetData(result);
-						setTimeout(() => grid2.refreshLayout(), 100);
+						setTimeout(() => grid2.refreshLayout(), 700);
 					},
 					error: function (reject) {
 						console.log(reject);
@@ -291,7 +292,7 @@
 			let gridData = [];
 			window.onload = function () {
 				$.ajax({
-					url: "/quality/prInspList",
+					url: "/quality/prInspList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -303,7 +304,7 @@
 				});
 				//검사 완료 리스트 출력
 				$.ajax({
-					url: "/quality/rAfterList",
+					url: "/quality/rAfterList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -429,7 +430,7 @@
 
 				// 검사 항목 ajax 호출
 				$.ajax({
-					url: "/quality/inspItem",
+					url: "/quality/inspItem.Ajax",
 					method: "GET",
 					data: {
 						'matId': matId
@@ -615,7 +616,7 @@
 
 			// 원수 탭 그리드
 			$.ajax({
-				url: "/quality/waterAjax",
+				url: "/quality/waterAjax.Ajax",
 				method: "GET",
 				dataType: "JSON",
 				success: function (result) {
@@ -687,12 +688,13 @@
 			    let checkedRows = grid2.getCheckedRows();
 			
 			    if (checkedRows.length === 0) {
-			        alert('검사를 선택 후 등록해주세요.');
-			        return false;
+			    	Msg.warning('검사를 선택 후 등록해주세요.', 2000);
+			    	//alert('검사를 선택 후 등록해주세요.');
+			        //return false;
 			    } else {
 			        // Ajax를 통해 데이터를 서버로 전송하고 등록 성공 후 처리
 			        $.ajax({
-			            url: "/quality/prRegister",
+			            url: "/quality/prRegister.Ajax",
 			            method: "POST",
 			            contentType: 'application/json',
 			            data: JSON.stringify(grid2.getCheckedRows()),
@@ -701,7 +703,7 @@
 			                const appendedData = result;
 			                for (let i = 0; i < appendedData.length; i++) {
 			                    if (appendedData[i].inspQt > appendedData[i].matReqQt) {
-			                        alert('검사 수량이 발주 수량보다 많습니다.');
+			                        alert('검사 수량이 발주 수량보다 많습니다.', 2000);
 			                        return;
 			                    }
 			                }
@@ -710,12 +712,12 @@
 			                Msg.success('입고 검사가 등록되었습니다.', 2000);
 			                console.log(result);
 			                grid.appendRow(appendedData); // 완료된 후 본문 그리드에 append
-			                $('#regModal').modal('hide');
 			                grid2.removeCheckedRows(false);
+			                $('#regModal').modal('hide');
 			
 			                // 업데이트 된 데이터 출력
 			                $.ajax({
-			                    url: "/quality/prInspList",
+			                    url: "/quality/prInspList.Ajax",
 			                    method: "GET",
 			                    dataType: "JSON",
 			                    success: function (result) {
@@ -837,7 +839,8 @@
 			// 삭제 버튼 클릭 시 삭제 기능 호출
 			$("#delBtn").click(function () {
 				if (aselKey === null) {
-					alert("삭제할 검사를 선택하세요.");
+					//alert("삭제할 검사를 선택하세요.");
+					Msg.warning('삭제할 검사를 선택하세요.', 2000);
 					return;
 				}
 				//aiData 수정
@@ -846,17 +849,17 @@
 
 				// 삭제 ajax 호출
 				$.ajax({
-					url: "/quality/delInsp",
+					url: "/quality/delInsp.Ajax",
 					method: "POST",
 					data: {
 						inspNum: aselInspNum // 삭제할 로우의 키 값을 전달
 					},
 					success: function (result) {
-						alert('검사 결과 삭제가 완료되었습니다.')
+						Msg.success('삭제가 완료되었습니다.', 2000)
 						aiGrid.resetData(aiData); // 그리드를 업데이트하여 삭제된 로우를 반영
 						// 업데이트 된 데이터 출력
 						$.ajax({
-							url: "/quality/rAfterList",
+							url: "/quality/rAfterList.Ajax",
 							method: "GET",
 							dataType: "JSON",
 							success: function (result) {
@@ -878,7 +881,7 @@
 			// 수정 버튼 클릭 시
 			$('#modBtn').on('click', function () {
 				if (aselKey === null) {
-					alert("수정할 검사를 선택하세요.");
+					Msg.warning("수정할 검사를 선택하세요.", 2000);
 					return;
 				}
 
@@ -899,7 +902,7 @@
 
 				// 검사 항목 ajax 호출
 				$.ajax({
-					url: "/quality/modInspItem",
+					url: "/quality/modInspItem.Ajax",
 					method: "GET",
 					data: {
 						'inspNum': aselInspNum
@@ -949,17 +952,17 @@
 
 			    // 등록&update
 			    $.ajax({
-			        url: '/quality/priRegister',
+			        url: '/quality/priRegister.Ajax',
 			        type: 'post',
 			        data: JSON.stringify(detailGrid.getData()),
 			        contentType: 'application/json',
 			        success: function (result) {
 			            console.log(result);
-			            alert('검사 결과값 등록이 완료되었습니다.');
+			            Msg.success('등록이 완료되었습니다.');
 			            grid.removeRow(selRowKey);
 			            // aiGrid에 등록된 값 표시
 			            $.ajax({
-			                url: "/quality/rAfterList",
+			                url: "/quality/rAfterList.Ajax",
 			                method: "GET",
 			                dataType: "JSON",
 			                success: function (result) {
@@ -979,7 +982,8 @@
 			        },
 			        error: function (reject) {
 			            console.log(reject);
-			            alert('검사 결과값 등록에 실패했습니다.')
+			            //alert('검사 결과값 등록에 실패했습니다.')
+			            Msg.error('검사 결과값 등록에 실패했습니다.', 2000);
 			        }
 			    });
 			});
@@ -1030,14 +1034,14 @@
 
 				// 검사 상세 업데이트 ajax
 				$.ajax({
-					url: '/quality/updateQd',
+					url: '/quality/updateQd.Ajax',
 					type: 'post',
 					data: JSON.stringify(detailGrid.getData()),
 					contentType: 'application/json',
 					success: function (result) {
 
 						console.log(result);
-						alert('검사 결과값 수정이 완료되었습니다.');
+						Msg.success('수정이 완료되었습니다.', 2000);
 
 						$('.empty').val('');
 						detailGrid.clear();
@@ -1046,7 +1050,7 @@
 					},
 					error: function (reject) {
 						console.log(reject);
-						alert('검사 결과값 수정에 실패했습니다.')
+						Msg.error('검사 결과값 수정에 실패했습니다.', 2000);
 					}
 				});
 
@@ -1064,7 +1068,7 @@
 				//qua_com update
 				console.log($('#prInspForm').serialize());
 				$.ajax({
-					url: '/quality/priRegUpdate',
+					url: '/quality/priRegUpdate.Ajax',
 					type: 'post',
 					data: $('#prInspForm').serialize(),
 					dataType: 'json',
