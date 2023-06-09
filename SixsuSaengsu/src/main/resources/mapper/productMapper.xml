@@ -60,7 +60,7 @@
 	on r.sp_id = s.sp_id
 	LEFT OUTER join employee e
 	on r.emp_id = e.emp_id
-	order by sp_rec_date desc
+	order by to_number(substr(sp_rec_id, 6, 6)) desc, to_number(substr(sp_rec_id, -3)) desc
 </select>
 <!-- 반제품 입고관리 끝 -->
 
@@ -85,7 +85,7 @@
 	from prod_rev r join prod_lot l on r.cp_lot_id = l.cp_lot_id
 	join complete_prod s 
 	on l.cp_id = s.cp_id
-    order by cp_rec_date desc
+    order by to_number(substr(cp_rec_id, 6, 6)) desc, to_number(substr(cp_rec_id, -3)) desc
 </select>
 
 <select id="procCpLotInfo" parameterType="ReceiveVO" statementType="CALLABLE">
