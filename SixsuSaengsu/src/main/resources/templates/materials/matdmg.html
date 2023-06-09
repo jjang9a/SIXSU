@@ -38,12 +38,12 @@
 			const gridData = [
 
 			];
-			window.onload = function () {
-			
+			function matDmgList(dmatId, matName, sDate, eDate, dmatStat){
+				
 				$.ajax({
 					url: "/materials/matdmglist",
 					method: "GET",
-					dataType: "JSON",
+					data : {dmatId : dmatId, matName : matName, sDate : sDate, eDate : eDate, dmatStat : dmatStat},
 					success: function (result) {
 						grids.resetData(result);
 						//console.log(result);
@@ -54,6 +54,9 @@
 					
 				});
 				
+			}
+				
+			function matDmgWaitList() {
 				
 				$.ajax({
 					url: "/materials/matdmgwaitlist",
@@ -69,11 +72,15 @@
 					}
 
 				});
+			}
 				
-				
-			};
-
-
+			let dmatId = '';
+			let matName = '';
+			let sDate = '';
+			let eDate = '';
+			let dmatStat = '';
+			matDmgList(dmatId, matName, sDate, eDate, dmatStat);
+			matDmgWaitList();
 
 			//불량품 처리대기 리스트
 			const grid = new tui.Grid({

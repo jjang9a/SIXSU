@@ -329,8 +329,8 @@ public class MaterialController {
 	//불량품 리스트
 	@ResponseBody
 	@RequestMapping("matdmglist")
-	public List<MatDmgVO> getMatDmgList(){
-		List<MatDmgVO> list = service.getMatDmgList();
+	public List<MatDmgVO> getMatDmgList(MatDmgVO vo){
+		List<MatDmgVO> list = service.getMatDmgList(vo);
 		return list;
 	}
 	
