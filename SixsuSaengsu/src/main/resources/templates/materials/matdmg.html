@@ -274,40 +274,14 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
-						alert("반품 등록 완료");
-						$.ajax({
-							url: "/materials/matdmgwaitlist.Ajax",
-							method: "GET",
-							dataType: "JSON",
-							
-							success: function (result) {
-								grid.resetData(result);
-								//console.log(result);
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-
-						});
-						$.ajax({
-							url: "/materials/matdmglist.Ajax",
-							method: "GET",
-							dataType: "JSON",
-							success: function (result) {
-								grids.resetData(result);
-								grids.refreshLayout();
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-							
-						});
-						
+						Msg.success('반품 등록 완료되었습니다.', 2000);
+						matDmgList(dmatId, matName, sDate, eDate, dmatStat);
+						matDmgWaitList();
 						
 					},
 					error : function(reject){
 						console.log(reject);
-						alert("반품 등록 실패");
+						Msg.error('반품 등록중 오류가 발생하였습니다.', 2000);
 					}
 					
 				});
@@ -325,40 +299,15 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
-						alert("폐기 등록 완료");
-						$.ajax({
-							url: "/materials/matdmgwaitlist.Ajax",
-							method: "GET",
-							dataType: "JSON",
-							
-							success: function (result) {
-								grid.resetData(result);
-								//console.log(result);
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-
-						});
-						$.ajax({
-							url: "/materials/matdmglist.Ajax",
-							method: "GET",
-							dataType: "JSON",
-							success: function (result) {
-								grids.resetData(result);
-								grids.refreshLayout();
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-							
-						});
+						Msg.success('페기 등록 완료되었습니다.', 2000);
+						matDmgList(dmatId, matName, sDate, eDate, dmatStat);
+						matDmgWaitList();
 						
 						
 					},
 					error : function(reject){
 						console.log(reject);
-						alert("폐기 등록 실패");
+						Msg.error('폐기 등록중 오류가 발생하였습니다.', 2000);
 					}
 					
 				});
