@@ -12,6 +12,8 @@
 		select cp_name, cp_id, get_total_product_num(cp_id) total_prod
 		from complete_prod
 	</select>
+
+
 	<!--모달창 이름별 사원조회 -->
 	<select id="emp1List"
 		resultType='EmpVO'>
