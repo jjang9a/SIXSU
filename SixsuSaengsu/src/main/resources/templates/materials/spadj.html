@@ -18,7 +18,7 @@
 			<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 재고 조정</h1>
 			<div id="left">
 				반제품LOT번호 <input type="text" id="spLotId" name="spLotId">
-				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn2" id="check">검색</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
 			<div class="rightBtn">
@@ -141,12 +141,12 @@
 					data: JSON.stringify(gridm.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
-						alert('입고 완료');
+						Msg.success('입고 완료되었습니다.', 2000);
 						spAdjList(spLotId);
 					},
 					error : function(reject){
 						console.log(reject);
-						alert('입고 실패');
+						Msg.error('입고중 오류가 발생하였습니다.', 2000);
 					}
  				})
  			});
@@ -168,12 +168,12 @@
 						data: JSON.stringify(gridm.getCheckedRows()),
 						success: function (result) {
 							console.log(result);
-							alert('출고 완료');
+							Msg.success('출고 완료되었습니다.', 2000);
 							spAdjList(spLotId);
 						},
 						error : function(reject){
 							console.log(reject);
-							alert('출고 실패');
+							Msg.error('출고중 오류가 발생하였습니다.', 2000);
 						}
 	 				})
  			    }

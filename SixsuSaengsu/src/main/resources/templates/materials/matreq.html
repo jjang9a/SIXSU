@@ -124,7 +124,10 @@
       <script th:inline="javascript">
          let reqStat = [[${REQSTAT}]];
          let transPro = '';
-
+			
+         let icon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search icon" viewBox="0 0 16 16" style="color:#a6a6a6">
+             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+             </svg>`
          const gridData = [
 
          ];
@@ -150,6 +153,8 @@
                   grid.resetData(result);
                   gridInsertRow();
                   grid.setValue(0, 'matReqStat', "A", false);
+                  grid.setValue(0, 'matId', icon, false);
+                  grid.setValue(0, 'busId', icon, false);
                   setRowDisabled(grid);
                },
                error: function (reject) {
@@ -211,7 +216,6 @@
             }
          });
          $('#search1Modal').on('show.bs.modal', function (e) {
-            console.log('거래처 모달');
             setTimeout(() => gridt.refreshLayout(), 200);
             // 모달거래처행 클릭시 자동으로 조회 거래처명에 값이 입력이됨
             gridt.on('click', ev => {
@@ -252,7 +256,6 @@
             }
          });
          $('#msearchModal').on('show.bs.modal', function (e) {
-            console.log('자재 모달');
             setTimeout(() => gridm.refreshLayout(), 200);
             // 모달자재행 클릭시 자동으로 조회 자재명에 값이 입력이됨
             gridm.on('click', ev => {
@@ -484,7 +487,7 @@
 	               contentType: 'application/json',
 	               success: function (result) {
 	                  console.log(result);
-	                  alert('발주 등록 완료');
+	                  Msg.success('발주 등록 완료되었습니다.', 2000);
 	                  $.ajax({
 	                      url: "/materials/matreqlist.Ajax",
 	                      method: "GET",
@@ -500,6 +503,7 @@
 	                               grid.setValue(0, 'matReqStat', "A", false);
 	                               grid.setValue(0, 'busId', grid.getRow(1).busId, false);
 	                               grid.setValue(0, 'busName', grid.getRow(1).busName, false);
+	                               grid.setValue(0, 'matId', icon, false);
 	                               setRowDisabled(grid);
 	                            },
 	                            error: function (reject) {
@@ -516,12 +520,12 @@
 	               },
 	               error: function (reject) {
 	                  console.log(reject);
-	                  alert('발주 등록 실패');
+	                  Msg.error('발주 등록 중 오류가 발생하였습니다.', 2000);
 	               }
 	
 	            })
             }else{
-            	alert("발주 양식 오류");
+            	Msg.error('발주 양식에서 오류가 발생하였습니다.', 2000);
             }
 
 
@@ -537,11 +541,11 @@
                data: JSON.stringify(grid.getCheckedRows()),
                success: function (result) {
                   console.log(result);
-                  alert('발주 삭제 완료');
+                  Msg.success('발주 삭제 완료되었습니다.', 2000);
                },
                error: function (reject) {
                   console.log(reject);
-                  alert('발주 삭제 실패');
+                  Msg.error('발주 삭제 중 오류가 발생하였습니다.', 2000);
                }
             })
 
@@ -561,7 +565,7 @@
                contentType: 'application/json',
                data: JSON.stringify(grid.getCheckedRows()),
                success: function (result) {
-                  alert('발주 수정 완료');
+            	   Msg.success('발주 수정 완료되었습니다.', 2000);
                   console.log(result);
                   $.ajax({
                      url: "/materials/matreqlist.Ajax",
@@ -571,11 +575,13 @@
                         grid.resetData(result);
                         gridInsertRow();
                         grid.setValue(0, 'matReqStat', "A", false);
+                        grid.setValue(0, 'matId', icon, false);
+                        grid.setValue(0, 'busId', icon, false);
                         setRowDisabled(grid);
 
                      },
                      error: function (reject) {
-                    	 alert('발주 수정 실패');
+                    	 Msg.error('발주 수정 중 오류가 발생하였습니다.', 2000);
                      }
 
                   });

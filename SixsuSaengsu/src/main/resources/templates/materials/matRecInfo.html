@@ -64,10 +64,9 @@
 						</td>
 					</tr>
 					<tr>
-						<td>거래처명</td>
-						<td><input type="text" name="busName" id="busName" class="inputR" placeholder="검색"></td>
+						<td>발주번호</td>
+						<td><input type="text" name="matReqId" id="matReqId" class="inputR" placeholder="검색"></td>
 					</tr>
-
 				</table>
 				<div class="divBtn">
 					<button type="button" class="sixBtn2" id="check">검색</button>
@@ -81,12 +80,12 @@
 			const gridData = [
 
 			];
-			function matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate){
+			function matRecInfo(matLotId, matName, matReqId, matRecType, sDate, eDate){
 				
 				$.ajax({
 					url: "/materials/matrecsearch.Ajax",
 					method: "GET",
-					data : {matLotId : matLotId, matName : matName, busName : busName, matRecType : matRecType, sDate : sDate, eDate : eDate},
+					data : {matLotId : matLotId, matName : matName, matReqId : matReqId, matRecType : matRecType, sDate : sDate, eDate : eDate},
 					success: function (result) {
 						grids.resetData(result);
 						//console.log(result);
@@ -100,38 +99,38 @@
 			
 			let matLotId = null;
 			let matName = null;
-			let busName = null;
+			let matReqId = null;
 			let matRecType = null;
 			let sDate = null;
 			let eDate = null;
 			
-			matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate);	
+			matRecInfo(matLotId, matName, matReqId, matRecType, sDate, eDate);	
 			
 			$('#check').click(function(){
 				matLotId = $('#matLotId').val();
 				matName = $('#matName').val();
-				busName = $('#busName').val();
+				matReqId = $('#matReqId').val();
 				matRecType = $("input[name='matRecType']:checked").val();
 				sDate = $('#matRecDate').val();
 				eDate = $('#matRecDatee').val();
-				matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate);
+				matRecInfo(matLotId, matName, matReqId, matRecType, sDate, eDate);
 			})
 			
 			$('#reset').click(function(){
 				$('#matLotId').val('');
 				$('#matName').val('');
-				$('#busName').val('');
+				$('#matReqId').val('');
 				$("input[name='matRecType']:checked").val('');
 				$('#matRecDate').val('');
 				$('#matRecDatee').val('');
 				matLotId = $('#matLotId').val();
 				matName = $('#matName').val();
-				busName = $('#busName').val();
+				matReqId = $('#matReqId').val();
 				matRecType = $("input[name='matRecType']:checked").val();
 				sDate = $('#matRecDate').val();
 				eDate = $('#matRecDatee').val();
 				$('input[type="radio"]').prop('checked', false);
-				matRecInfo(matLotId, matName, busName, matRecType, sDate, eDate);
+				matRecInfo(matLotId, matName, matReqId, matRecType, sDate, eDate);
 			})
 			
 			// 입고목록 리스트
@@ -187,14 +186,10 @@
 		                }
 					},
 					{
-						header: '거래처명',
-						name: 'busName',
-			            align: 'center'
-					},
-					{
 						header: '검사일자',
 						name: 'inspDate',
-			            align: 'center'
+			            align: 'center',
+			            hidden: true
 					},
 					{
 						header: '입고일자',
