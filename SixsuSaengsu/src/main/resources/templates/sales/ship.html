@@ -454,12 +454,12 @@ h1 {
 					
 					readyShipList() ;
 		        	$('#lotModal').modal('hide'); 
-		        	alert('출고요청이 완료되었습니다.')
+		        	Msg.success('출고요청이 완료되었습니다.', 2000);
 					$("#search").click();
 				},
 				error: function (reject) {
 					console.log(reject)
-					alert('출고 과정에서 에러가 발생하였습니다.')
+					Msg.error('출고요청중 오류가 발생하였습니다.', 2000);
 					$('#lotModal').modal('hide'); 
 				}
 			
@@ -544,11 +544,10 @@ h1 {
           	 	const focusCell = orderReadyGrid.getFocusedCell()
                	let dataRow = orderReadyGrid.getRow(ev.rowKey);
           	 	if(dataRow.cpShipStat == "출고검사전"){
-          	 		alert("아직 모든 물품이 출고검사가 끝나지 않았습니다.")
+          	 		Msg.warning('아직 모든 물품이 출고검사가 끝나지 않았습니다.');
           	 	} else if(dataRow.cpShipStat == "출고준비"){
           	 		
-         	 		$("#shipReadyModal").modal("show");
-         	 		
+         	 		$("#shipReadyModal").modal("show");	
 					$("#busAddr").val(dataRow.busAddr);
 					$("#busId").val(dataRow.busId);
 					$("#busNum").val(dataRow.busNum);
@@ -571,23 +570,23 @@ h1 {
 		
 		//출고완료 버튼
 		$("#completeShip").on("click", function (e) {
-			if(e.columnName == 'ordDetId'){
+			
 			$.ajax({
 				url: "/sales/completShip.Ajax",
 				method: "post",
 				data: {ordDetId:orderReadyGrid.getFocusedCell().value},      //?ored=SEL             
 				success: function (result) {
-					alert ('출고가 완료되었습니다');
+					Msg.success('출고가 완료되었습니다');
 					readyShipList() ;
                 },
                 error: function (reject) {
 					console.log(reject)
-					alert('출고 과정에서 에러가 발생하였습니다.')
+					Msg.error('출고 과정에서 에러가 발생하였습니다.')
 					
 				}
 			}); //end of ajax
 			$("#shipReadyModal").modal("hide");
-			}
+			
 		});
 		
         //출고완료전 모달 테이블 그리드  
