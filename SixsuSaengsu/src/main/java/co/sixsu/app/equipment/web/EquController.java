@@ -24,7 +24,7 @@ import co.sixsu.app.equipment.service.EquService;
 /*
  * 고대준
  * 설비관리
- * 0530
+ * 0611
  */
 @Controller
 @RequestMapping("/equipment/")
@@ -94,6 +94,7 @@ public class EquController {
 	@ResponseBody 
 	@PostMapping("equAdd.Ajax") // 설비관리(등록) 
 	public EquConVO equAdd(EquConVO data) { 
+		System.err.println(data);
 		equService.equAdd(data);
 		return data;
 	}
