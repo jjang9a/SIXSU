@@ -328,7 +328,7 @@
 						nowData = result;
 					},
 					error: function () {
-						alert('오류가 발생했습니다!');
+						Msg.error('검색 중 오류가 발생하였습니다.', 2000);
 					}
 				})
 
@@ -351,6 +351,7 @@
 					},
  					error: function(reject){
 						console.log(reject);
+						Msg.error('오류가 발생하였습니다.', 2000);
 					}
 				});
 				
