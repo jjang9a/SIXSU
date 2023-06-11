@@ -988,44 +988,6 @@
 			    });
 			});
 
-
-			/* // 검사 결과 등록 클릭 이벤트
-			$('#inspBtn').on('click', function () {
-				console.log(detailGrid.getData())
-				console.log('확인')
-				let formData = $('#prInspForm').serialize();
-
-				// 검사 공통 업데이트 ajax 실행
-				quaComUpdateAjax();
-
-				//등록&update
-				$.ajax({
-					url: '/quality/priRegister',
-					type: 'post',
-					data: JSON.stringify(detailGrid.getData()),
-					contentType: 'application/json',
-					success: function (result) {
-
-						console.log(result);
-						alert('검사 결과값 등록이 완료되었습니다.');
-						// 등록 완료 후 폼과 그리드 숨기고 초기화
-						$('#prInspForm').css('display', 'none');
-						$('.detail').css('display', 'none');
-						$('#prInspForm input').val('');
-
-
-					},
-					error: function (reject) {
-						console.log(reject);
-						alert('검사 결과값 등록에 실패했습니다.')
-					}
-				});
-
-
-
-			} // on click event 끝
-			) */
-
 			// 수정하기 버튼 클릭 이벤트
 			$('#modifyBtn').on('click', function () {
 
@@ -1041,6 +1003,18 @@
 					success: function (result) {
 
 						console.log(result);
+						$.ajax({
+							url: "/quality/rAfterList.Ajax",
+							method: "GET",
+							dataType: "JSON",
+							success: function (result) {
+								aiGrid.resetData(result);
+								setTimeout(() => aiGrid.refreshLayout(), 200);
+							},
+							error: function (reject) {
+								console.log(reject);
+							}
+						});
 						Msg.success('수정이 완료되었습니다.', 2000);
 
 						$('.empty').val('');
