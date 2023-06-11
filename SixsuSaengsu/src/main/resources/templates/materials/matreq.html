@@ -31,6 +31,9 @@
 		.divBtn{
 			text-align:center;
 		}
+		#grid .greycolor {
+			background-color: #b5b0b0c4;
+		}
    </style>
 </head>
 
@@ -140,6 +143,7 @@
             rowList.forEach((obj) => {
                if (obj.matReqStat != 'A') {
                   grid.disableRow(obj.rowKey, true);
+                  grid.addRowClassName(obj.rowKey,'greycolor');
                }
             });
          }
