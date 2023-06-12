@@ -178,7 +178,7 @@ with work as (
 </insert>
 	
 <select id="getDetaWorkHeadList" resultType="DetaWorkOrdrVO">
-	SELECT a.WK_DETA_ID, a.WK_HEAD_ID, a.CP_ID, b.CP_NAME, a.DETA_QT, a.GOOD_QT, a.START_DATE, a.END_DATE, a.EMP_ID, c.EMP_NAME, d.PLAN_DETA_ID
+	SELECT a.WK_DETA_ID, a.WK_HEAD_ID, a.CP_ID, b.CP_NAME, a.DETA_QT, a.GOOD_QT, a.START_DATE, a.END_DATE, a.EMP_ID, c.EMP_NAME, d.PLAN_DETA_ID, a.CMPLT_ST
         FROM DETA_WORK_ORDR a LEFT OUTER JOIN 
         
          (SELECT CP_ID, CP_NAME
