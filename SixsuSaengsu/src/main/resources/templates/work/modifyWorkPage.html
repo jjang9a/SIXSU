@@ -6,133 +6,103 @@
 <head>
 <meta charset="UTF-8">
 <title>수정</title>
-<!-- 토스트~ -->
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<!-- 부트스트라프 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-	crossorigin="anonymous">
-<script 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-	crossorigin="anonymous"></script>
-<!-- 제이쿼리 -->
-<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-<!-- 타임리프 -->
-<!-- 페이징 눼이쉔~ -->
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
-<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<style>
-.input-group {
-	width: 200px;
-}
-
-.btn_container {
-	width: 100%;
-}
-
-.topConatiner {
-	width: 100% height: 450px;
-}
-
-.addContainer {
-	width: 40%;
-	height: 450px;
-	border: 1px solid black;
-	float: left;
-	padding: 100px;
-}
-
-.plan_monitor {
-	width: 60%;
-	height: 450px;
-	border: 1px solid black;
-	padding: 20px;
-	float: left;
-	display: none;
-}
-
-#plan_search1 {
-	width: 45%;
-	height: 100%;
-	float: left;
-}
-
-#plan_search2 {
-	width: 53%;
-	height: 500px;
-	float: left;
-	margin-left: 20px;
-}
-
-.bom_monitor {
-	width: 60%;
-	height: 450px;
-	border: 1px solid black;
-	padding: 20px;
-	float: left;
-}
-
-#left_search {
-	width: 48%;
-	height: 100%;
-	float: left;
-	text-align: right;
-}
-
-#right_search {
-	width: 50%;
-	height: 500px;
-	float: left;
-	margin-left: 20px;
-	text-align: right;
-}
-
-.topBtnContainer {
-	width: 100%;
-	height: 40px;
-}
-
-#leftBtn {
-	margin-bottom: 10px;
-	float: left;
-}
-
-#rightBtn {
-	float: right;
-	margin-right: 40px;
-	margin-bottom: 10px;
-}
-
-.modal-body {
-	background: #e5edf5;
-}
-
-.sel {
-	width: 232.5px;
-	text-align: center;
-	padding: 10px;
-	font-size: 15px;
-	font-weight: bold;
-}
-
-.sel1 {
-	float: left;
-}
-
-.sel2 {
-	float: right;
-}
-
-.sel3 {
-	background-color: white;
-}
-.addAndDel{
-	margin-top: 20px;
-}
-</style>
+	<style>
+		.input-group {
+			width: 200px;
+		}
+		
+		.btn_container {
+			width: 100%;
+		}
+		
+		.topConatiner {
+			width: 100% height: 450px;
+		}
+		
+		.addContainer {
+			width: 30%;
+			height: 450px;
+			border: 1px solid black;
+			float: left;
+			padding: 100px;
+		}
+		
+		.plan_monitor {
+			width: 70%;
+			height: 450px;
+			border: 1px solid black;
+			padding: 20px;
+			float: left;
+			display: none;
+		}
+		
+		
+		.bom_monitor {
+			width: 70%;
+			height: 450px;
+			border: 1px solid black;
+			padding: 20px;
+			float: left;
+		}
+		
+		#left_search {
+			width: 48%;
+			height: 100%;
+			float: left;
+			text-align: right;
+		}
+		
+		#right_search {
+			width: 50%;
+			height: 500px;
+			float: left;
+			margin-left: 20px;
+			text-align: right;
+		}
+		
+		.topBtnContainer {
+			width: 100%;
+			height: 40px;
+		}
+		
+		#leftBtn {
+			margin-bottom: 10px;
+			float: left;
+		}
+		
+		#rightBtn {
+			float: right;
+			margin-right: 40px;
+			margin-bottom: 10px;
+		}
+		
+		.modal-body {
+			background: #e5edf5;
+		}
+		
+		.sel {
+			width: 232.5px;
+			text-align: center;
+			padding: 10px;
+			font-size: 15px;
+			font-weight: bold;
+		}
+		
+		.sel1 {
+			float: left;
+		}
+		
+		.sel2 {
+			float: right;
+		}
+		
+		.sel3 {
+			background-color: white;
+		}
+		.addAndDel{
+			margin-top: 20px;
+		}
+	</style>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -188,17 +158,25 @@
 
 
 			<div class="plan_monitor">
-				<div id="plan_search1"></div>
-				<div id="plan_search2"></div>
+				<div id="left_search">
+					<span style="font-family: 'MaruBuri';">계획</span>
+					<div id="plan_search1"></div>
+				</div>
+				<div id="right_search">
+					<span style="font-family: 'MaruBuri';">세부계획</span>
+					<div id="plan_search2"></div>
+				</div>
 			</div>
 			<div class="bom_monitor">
 				<div id="left_search">
+					<span style="font-family: 'MaruBuri';">공정</span>
 					<button class="plusBomBtn sixBtn1">+</button>
 					<button class="delBomBtn sixBtn1">-</button>
 					<div id="bom_search1"></div>
 				</div>
 
 				<div id="right_search">
+					<span style="font-family: 'MaruBuri';">자재</span>
 					<button class="plusMatBtn sixBtn1">+</button>
 					<button class="delMatBtn sixBtn1">-</button>
 					<div id="bom_search2"></div>

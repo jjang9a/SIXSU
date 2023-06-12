@@ -89,11 +89,11 @@ body{
 	float: right;
 }
 .set_color_false {
-	background-color: #DADDDE
+	background-color: #DADDDE !important;
 }
 
 .set_color_true {
-	background-color: #ECECEC
+	background-color: #ECECEC !important;
 }
 </style>
 </head>
@@ -399,6 +399,7 @@ body{
 					},
 					error : function(reject){
 						console.err(reject)
+						Msg.error('[error : getBomMatList] please check the Console Log', 5000);
 					}
 				});
 				workLotList.clear();
@@ -422,6 +423,7 @@ body{
 					},
 					error : function(reject){
 						console.err(reject)
+						Msg.error('[error : getLotInfoList] please check the Console Log', 5000);
 					}
 				});
 				
@@ -452,14 +454,16 @@ body{
 				let target_ary_true = [];
 				
 				for (let i in allGrid) {
-				    if (allGrid[i].wkHeadId == deleteHead) {
+				    if (allGrid[i].wkHeadId == deleteHead && allGrid[i].wkHeadId != null) {
 				      allGrid[i].wkHeadId =  '\"';
 				      if (color_count == false) {
 				        target_ary_false.push(i);
 				      } else {
 				        target_ary_true.push(i);
 				      }
-				    } else {
+				    } else if(allGrid[i].wkHeadId == null){
+				    	target_ary_false.push(i);
+				    }else {
 				      deleteHead = allGrid[i].wkHeadId;
 				      if (color_count == true) {
 				        color_count = false;
