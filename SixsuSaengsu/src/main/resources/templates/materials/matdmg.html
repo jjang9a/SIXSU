@@ -274,7 +274,7 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
-						alert("반품 등록 완료");
+						Msg.success('반품 등록 완료되었습니다.', 2000);
 						$.ajax({
 							url: "/materials/matdmgwaitlist.Ajax",
 							method: "GET",
@@ -307,7 +307,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
-						alert("반품 등록 실패");
+						Msg.error('반품 등록 중 오류가 발생하였습니다.', 2000);
 					}
 					
 				});
@@ -325,7 +325,7 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
-						alert("폐기 등록 완료");
+						Msg.success('폐기 등록 완료되었습니다.', 2000);
 						$.ajax({
 							url: "/materials/matdmgwaitlist.Ajax",
 							method: "GET",
@@ -358,7 +358,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
-						alert("폐기 등록 실패");
+						Msg.error('폐기 등록 중 오류가 발생하였습니다.', 2000);
 					}
 					
 				});

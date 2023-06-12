@@ -145,13 +145,13 @@
 					contentType: 'application/json',
 					data: JSON.stringify(gridm.getCheckedRows()),
 					success: function (result) {
-						alert('입고 완료');
+						Msg.success('입고 완료되었습니다.', 2000);
 						matAdjList(matLotId);
 						
 					},
 					error : function(reject){
 						console.log(reject);
-						alert('입고 실패');
+						Msg.error('입고 등록 중 오류가 발생하였습니다.', 2000);
 					}
  				})
  			});
@@ -177,12 +177,13 @@
  			//자재조정출고버튼
  			$('#adjdelete').on('click', function(){
  				gridm.blur();
+ 				//출고 조건
  			    var checkedRows = gridm.getCheckedRows();
  			    var invalidRows = checkedRows.filter(function(row) {
  			        return parseInt(row.matAdjQt) > parseInt(row.matQt);
  			    });
  			    if (invalidRows.length > 0) {
- 			        alert('출고 수량이 현재 수량보다 많습니다');
+ 			    	Msg.error('출고 수량이 현재 수량보다 많습니다.', 2000);
  			    } else {
  			        $.ajax({
  			            url: "/materials/matshipadj.Ajax",
@@ -192,11 +193,11 @@
  			            success: function (result) {
  			                console.log(result);
  			                //alert('출고 완료');
- 			               Msg.success('출고 완료', 2000);
+ 			               Msg.success('출고 완료되었습니다.', 2000);
  			            },
  			            error: function (reject) {
  			                console.log(reject);
- 			               alert('출고 실패');
+ 			               Msg.error('출고 등록 중 오류가 발생하였습니다.', 2000);
  			            }
  			        });
  			    }
