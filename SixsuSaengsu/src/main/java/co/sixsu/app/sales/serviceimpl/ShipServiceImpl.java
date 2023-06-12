@@ -43,13 +43,15 @@ public int totalQt(String keyword) {
 @Override
 @Transactional
 public List<ShipVO> shipPro(OrdVO ord) {
-	String id = ord.getCpId();
-	int qt = ord.getOrdQt();
-	int lot = ord.getCpLot();  
-	List<LotVO> list = mapper.lotProducts(id);
-	List<ShipVO> ship = new ArrayList<>(); // 출고목록을 담을 객체
-	int i = 0;
+	String id = ord.getCpId(); // 제품코드를 id에 담아준다
+	int qt = ord.getOrdQt(); // 출고해야할 주문수량을 qt에 담아준다
+	int lot = ord.getCpLot();  // 해당제품의 lot관리 수량을 lot를 담아준다
+	List<LotVO> list = mapper.lotProducts(id); // 해당제품의 재고가있는 lot목록을 list에 담아준다
+	List<ShipVO> ship = new ArrayList<>(); // 출고목록을 ship에 담아준다 vo값을 모두 담을 그릇
+	int i = 0; 
 	while (qt >= lot) {
+		
+		
 		
 		ShipVO vo = new ShipVO();
 		vo.setOrdDetId(ord.getOrdDetId());
