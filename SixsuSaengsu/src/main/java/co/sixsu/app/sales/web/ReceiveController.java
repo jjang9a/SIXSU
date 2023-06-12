@@ -33,7 +33,7 @@ public List<RecVO> completeList(){
 }
 	
 //입고 조회 페이지 열어주기	
-	@GetMapping("/sales/receiveInfo")
+	@GetMapping("/sales/receiveInfo.Ajax")
 	public void invoice(Model model) {
 		
 	

@@ -21,12 +21,11 @@ public class ReturnInspVO {
 	private String expDate; // 유통기한
 	private String cpLotId; // LOT번호
 	
-	private int nsuitQt; // 부적합 수량
-	private int suitQt; // 적합 수량
-	private String resVal; //결과값
-	private String resStat; // 적합여부
-	private String inspId; // 검사 항목코드
-	private String inspType; // 검사유형
-	private String detInspNum; // 세부 검사 번호
-	
+	 public int nsuitQt; // 부적합 수량
+	 public int suitQt; // 적합 수량
+	 public String resVal; //결과값
+	 public String resStat; // 적합여부
+	 public String inspId; // 검사 항목코드
+	 public String inspType; // 검사유형
+	 public String detInspNum; // 세부 검사 번호
 }

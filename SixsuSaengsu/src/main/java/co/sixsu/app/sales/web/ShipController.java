@@ -87,7 +87,7 @@ public class ShipController {
 		service.completeShip(vo);
 		return null;
 	}
-	@GetMapping("shipInfo")
+	@GetMapping("shipInfo.Ajax")
 	public void shipInfo() {
 		
 	}
