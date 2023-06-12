@@ -261,7 +261,7 @@
 					data: JSON.stringify(grid.getCheckedRows()),
 					success: function (result) {
 						console.log(result);
-						alert("입고 완료");
+						Msg.success('입고 완료되었습니다.', 2000);
 						$('#staticBackdrop').modal('hide');
 						$.ajax({
 							url: "/materials/matrecwait.Ajax",
@@ -295,7 +295,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
-						alert("입고 실패");
+						Msg.error('입고 등록 중 오류가 발생하였습니다.', 2000);
 					}
 					
 				});
