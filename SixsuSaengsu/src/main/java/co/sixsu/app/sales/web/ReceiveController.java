@@ -33,7 +33,7 @@ public List<RecVO> completeList(){
 }
 	
 //입고 조회 페이지 열어주기	
-	@GetMapping("/sales/receiveInfo.Ajax")
+	@GetMapping("/sales/receiveInfo")
 	public void invoice(Model model) {
 		
 	
@@ -46,3 +46,4 @@ public List<RecVO> searchOrder(RecVO vo) {
 }
 	
 }
+
