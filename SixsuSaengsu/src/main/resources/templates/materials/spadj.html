@@ -134,21 +134,29 @@
  			//반제품조정입고버튼
  			$('#adjinsert').on('click', function() {
  				gridm.blur();
- 				$.ajax({
-					url: "/materials/sprecadj.Ajax",
-					method: "POST",
-					contentType: 'application/json',
-					data: JSON.stringify(gridm.getCheckedRows()),
-					success: function (result) {
-						console.log(result);
-						Msg.success('입고 완료되었습니다.', 2000);
-						spAdjList(spLotId);
-					},
-					error : function(reject){
-						console.log(reject);
-						Msg.error('입고중 오류가 발생하였습니다.', 2000);
-					}
- 				})
+ 				var checkedRows = gridm.getCheckedRows();
+ 				var checkedQt = checkedRows.filter(function(row){
+ 			 		return parseInt(row.spAdjQt) == 0;
+ 			 	});
+ 				if(checkedQt.length > 0){
+ 			    	Msg.error('입고 수량은 0이 될 수 없습니다.', 2000);
+ 			    }else{
+	 				$.ajax({
+						url: "/materials/sprecadj.Ajax",
+						method: "POST",
+						contentType: 'application/json',
+						data: JSON.stringify(gridm.getCheckedRows()),
+						success: function (result) {
+							console.log(result);
+							Msg.success('입고 완료되었습니다.', 2000);
+							spAdjList(spLotId);
+						},
+						error : function(reject){
+							console.log(reject);
+							Msg.error('입고중 오류가 발생하였습니다.', 2000);
+						}
+	 				})
+ 			    }
  			});
  			
  			//반제품조정출고버튼
@@ -158,9 +166,14 @@
  			    var invalidRows = checkedRows.filter(function(row) {
  			        return parseInt(row.spAdjQt) > parseInt(row.spQt);
  			    });
+ 			   	var checkedQt = checkedRows.filter(function(row){
+			 		return parseInt(row.spAdjQt) == 0;
+			 	});
  			    if (invalidRows.length > 0) {
  			        alert('출고 수량이 현재 수량보다 많습니다');
- 			    } else {
+ 			    }else if(checkedQt.length > 0){
+ 			    	Msg.error('출고 수량은 0이 될 수 없습니다.', 2000);
+ 			    }else {
 	 				$.ajax({
 						url: "/materials/spshipadj.Ajax",
 						method: "POST",
