@@ -20,13 +20,6 @@
 			padding: 15px 5px 30px 20px;
 			text-align: left;
 		}
-		/* #Btn { 
-			padding: 0.5em;
-			text-align: right;
-			height: 50px;
-			margin-top: 65px;
-			margin-bottom: 3px;
-		} */
 		.center {
 			text-align: center;
 		}
@@ -86,7 +79,6 @@
 
 
 		<!-- 점검조회 상세정보 모달창 -->
-
 		<!-- Modal 시작 -->
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
 			data-bs-keyboard="false" tabindex="-1"
@@ -139,11 +131,7 @@
 			</div>
 		</div>
 		<!-- Modal 끝 -->
-		
-		
-
-
-		
+	
 
 		<script th:inline="javascript">
 
@@ -163,17 +151,16 @@
         rowHeaders: ['rowNum'],
         columns: [
           {
-               header: '설비코드',
-               name: 'equCode',
-               sortable : true,
-               align: 'center'
+            header: '설비코드',
+            name: 'equCode',
+            sortable : true,
+            align: 'center'
           },
           {
-               header: '설비명',
-             name: 'equName',
-             align: 'center'
+            header: '설비명',
+            name: 'equName',
+            align: 'center'
           },
-        	
           {
             header: '점검코드',
             name: 'checkCode',
@@ -195,9 +182,16 @@
              align: 'center'
           },
 		  {
-             header: '점검주기',
-             name: 'equCheck',
-             align: 'center'
+        	header: '점검주기',
+			name: 'equCheck',
+			align: 'center',
+			formatter: ({ value }) => {
+				if(value == null){
+					return ''
+				}else{
+					return `${value}개월`;
+				}
+			}
           },
           {
 			 header: '판정',
@@ -266,7 +260,7 @@
 	    	});
 	  
 	    };
-      
+
      tui.Grid.applyTheme('default', {
         cell: {
             header: {
@@ -297,24 +291,19 @@
     
     	// 한 열을 클릭시 모달창 띄우기.
     	$('#staticBackdrop').modal('show');
-    	
+
     	$('#checkCode').val(dataRow.checkCode); // 점검코드
-	      $('#equName').val(dataRow.equName); // 설비명
-		  $('#checkInfo').val(dataRow.checkInfo); // 점검사유
-	      $('#checkCom').val(dataRow.checkCom); // 조치내역
-	      $('#checkNote').val(dataRow.checkNote); // 비고
+	    $('#equName').val(dataRow.equName); // 설비명
+		$('#checkInfo').val(dataRow.checkInfo); // 점검사유
+	    $('#checkCom').val(dataRow.checkCom); // 조치내역
+	    $('#checkNote').val(dataRow.checkNote); // 비고
 	      
       });
 
-	
-	
-					
     let searchType = '';
     let searchKey = '';
     // 검색기능
     $('#searchBtn').on('click', function(){
-    	
-					
 				$.ajax({
 					url: 'equCheckSearch.Ajax',
 					type: 'get',
@@ -331,10 +320,7 @@
 						Msg.error('검색 중 오류가 발생하였습니다.', 2000);
 					}
 				})
-
 		})
-		
-		
 
 	   //초기화 버튼 기능
 	   $('#reset').on("click", function (e) {
@@ -354,10 +340,7 @@
 						Msg.error('오류가 발생하였습니다.', 2000);
 					}
 				});
-				
 			});
-
-
 
 	</script> 
     </div>
