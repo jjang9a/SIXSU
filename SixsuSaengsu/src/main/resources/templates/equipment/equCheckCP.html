@@ -410,7 +410,7 @@
 					data: $('#addForm').serialize(),
 					dataType: 'json',
 					success: function (result) {
-						alert('등록되었습니다');
+						Msg.success('등록이 완료되었습니다.', 2000);
 						console.log('result : ');
 						console.log(result);
 						//등록 버튼을 누르면 리스트에 삽입된다.     
@@ -422,7 +422,7 @@
 						
 					},
 					error: function (reject) {
-						alert('등록 중 오류가 발생했습니다!');
+						Msg.error('등록 중 오류가 발생하였습니다.', 2000);
 						console.log(reject);
 					}
 				});
@@ -437,7 +437,7 @@
 			// 점검 수정 
 			$('#modBtn').on('click', function (e) {
 				if (selRow == 999) {
-					alert('수정할 데이터가 없습니다.')
+					Msg.error('수정할 데이터가 없습니다.', 2000);
 				} else {
 				
 				console.log($('#addForm').serialize())
@@ -448,14 +448,14 @@
 					dataType: 'json',
 					success: function (result) {
 						console.log(result);
-						alert('수정되었습니다');
+						Msg.success('수정이 완료되었습니다.', 2000);
 						
 						// 리스트 반환
 						checkList();
 						selRow = 999;
 					},
 					error: function (reject) {
-						alert('수정 중 오류가 발생했습니다!');
+						Msg.error('수정 중 오류가 발생하였습니다.', 2000);
 						console.log(reject);
 					}
 				});
@@ -470,7 +470,7 @@
 			// 점검 삭제
 			$('#delBtn').on('click', function (e) {
 				if (selRow == 999) {
-					alert('삭제 정보를 선택하시오.')
+					Msg.error('삭제 정보를 선택하시오.', 2000);
 				} else {
 				
 				e.preventDefault();
@@ -490,7 +490,7 @@
 					success: function (result) {
 						// 삭제 성공 시의 처리
 						console.log('설비가 성공적으로 삭제되었습니다.');
-						alert('설비정보가 성공적으로 삭제되었습니다.');
+						Msg.success('점검내역이 성공적으로 삭제되었습니다.', 2000);
 						checkList();
 
 						//grid.removeRow(selRow)
@@ -504,7 +504,7 @@
 					error: function (reject) {
 						console.log('설비 삭제 중 오류가 발생했습니다.');
 						console.log('오류 메시지:', reject);
-						alert('설비 삭제 중 오류가 발생했습니다..');
+						Msg.error('삭제 중 오류가 발생했습니다.', 2000);
 					}
 				});
 				}

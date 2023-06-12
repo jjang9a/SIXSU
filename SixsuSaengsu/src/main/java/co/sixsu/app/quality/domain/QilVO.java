@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class QilVO {
 	//품질 검사 항목 VO
-	String inspId; // 검사 항목 코드
-	String inspSep; // 검사 구분
-	String inspName; // 검사 항목 명
-	String inspExp; //검사 항목 설명
-	String stdVal; // 기준값
-	String inspItemId; //검사 제품 코드
-	String inspNote; // 비고
+	private String inspId; // 검사 항목 코드
+	private String inspSep; // 검사 구분
+	private String inspName; // 검사 항목 명
+	private String inspExp; //검사 항목 설명
+	private String stdVal; // 기준값
+	private String inspItemId; //검사 제품 코드
+	private String inspNote; // 비고
 }
