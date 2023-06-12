@@ -45,15 +45,10 @@ public int totalQt(String keyword) {
 public List<ShipVO> shipPro(OrdVO ord) {
 	String id = ord.getCpId();
 	int qt = ord.getOrdQt();
-	int lot = ord.getCpLot();  //chdwp
-	
+	int lot = ord.getCpLot();  
 	List<LotVO> list = mapper.lotProducts(id);
-	System.out.println("---------------------------------맨 위------------------------------------");
-	System.out.println(list);
 	List<ShipVO> ship = new ArrayList<>(); // 출고목록을 담을 객체
-	System.out.println("qt : "+qt + "lot : " + lot);
 	int i = 0;
-	
 	while (qt >= lot) {
 		
 		ShipVO vo = new ShipVO();
@@ -63,28 +58,19 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		vo.setCpShipQt(list.get(i).getCpLotQt()); //지금 LOT안의 수량을 출고수량으로 설정
 		list.get(i).setCpHold(list.get(i).getCpLotQt()); // 현재 수량을 홀드수량에 셋팅
 		list.get(i).setCpLotQt(0);// 현재수량을 0으로 만듦
-		
-		
 		list.get(i).setCpLotQtCk("LOT_ING");// 현재 lot가 출고 진행중인 상태로 셋팅
 		vo.setEmpId(ord.getEmpId());
 		vo.setCpShipStat("CP_SHIP_CHECK");
-		System.out.println(vo);
 		mapper.insertProShip(vo);
 		mapper.updateCpLot(list.get(i));
 		ship.add(vo);
 		qt -= lotQt;
-		System.out.println("-----------------------------while문----------------------------------------" + i);
-		System.out.println(qt);
 		i++;
 	}
 	
 	if (qt < lot && qt != 0 ) {
-		System.out.println("-------------------------------탈출-----------------------------------" + i);
-		System.out.println("현재수량 : "+qt);
 		ShipVO vo = new ShipVO();
 		vo.setOrdDetId(ord.getOrdDetId()); //여러건이 발생하고 있음
-		
-		
 		vo.setCpLotId(list.get(i).getCpLotId()); // LOT번호
 		vo.setCpShipQt(qt); //지금 LOT안의 수량을 출고수량으로 설정
 		list.get(i).setCpHold(qt); // 현재 수량을 홀드수량에 셋팅
@@ -92,7 +78,6 @@ public List<ShipVO> shipPro(OrdVO ord) {
 		list.get(i).setCpLotQtCk("LOT_ING");// 현재 lot가 출고 진행중인 상태로 셋팅
 		vo.setEmpId(ord.getEmpId());
 		vo.setCpShipStat("CP_SHIP_CHECK");
-		System.out.println(i + "==============vo : " + vo);
 		mapper.insertProShip(vo);
 		mapper.updateCpLot(list.get(i));
 		ship.add(vo);}	
