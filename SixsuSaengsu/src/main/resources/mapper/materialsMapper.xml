@@ -46,10 +46,10 @@
 		 	</if>
 		 	<if test="matName == null and matName == ''.toString()">
 		 	</if>
-		 	<if test="matReqId != null and matReqId != ''.toString()">
-		 		and c.mat_req_id like '%'|| upper(#{matReqId}) || '%'
+		 	<if test="busName != null and busName != ''.toString()">
+		 		and b.bus_name like '%'|| upper(#{busName}) || '%'
 		 	</if>
-		 	<if test="matReqId == null and matReqId == ''.toString()">
+		 	<if test="busName == null and busName == ''.toString()">
 		 	</if>
 		 	<if test="matRecType != null and matRecType != ''.toString()">
 		 		and c.mat_rec_type = #{matRecType}
@@ -354,13 +354,16 @@
 	       to_char(c.mat_rec_date, 'yyyy-MM-dd') as mat_rec_date, 
 	       c.mat_rec_note, 
 	       c.mat_lot_id,
-	       l.mat_name,
+	       l.mat_name, 
+	       b.bus_name, 
 	       GET_EMP_NAME(c.emp_id) as emp_name
 		from mat_rec c 
 		left join mat_req q
 		 on c.mat_req_id = q.mat_req_id
 		left join qua_com u
 		 on c.insp_num = u.insp_num
+		left join business b
+		 on q.bus_id = b.bus_id 
 		left join mat_lot t
 		 on c.mat_lot_id = t.mat_lot_id 
 		left join material l
@@ -631,7 +634,7 @@
 		select p.*, s.sp_qt_sum from semi_prod p left join splotsum s on p.sp_id = s.sp_id
 		where p.sp_stat = 'Y' 
 		<if test="spName != null and spName != ''.toString()">
-			and p.sp_name like '%' || upper(#{spName}) || '%'
+			and p.sp_name like '%' || #{spName} || '%'
 		</if>
 		<if test="spName == null and spName == ''.toString()">
 		</if>

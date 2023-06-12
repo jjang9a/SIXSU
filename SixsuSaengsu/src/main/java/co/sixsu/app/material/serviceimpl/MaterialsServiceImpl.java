@@ -88,7 +88,6 @@ public class MaterialsServiceImpl implements MaterialsService{
 		@Override
 		public void insertMatRec(List<MatrecVO> vo) {
 			String id = vo.get(0).getEmpId();
-			
 			for(MatrecVO i : vo) {
 				i.setEmpId(id);
 				mapper.insertMatRec(i);
@@ -208,7 +207,9 @@ public class MaterialsServiceImpl implements MaterialsService{
 		//불량자재 불량처리
 		@Override
 		public void insertMatDmg(List<MatDmgVO> vo) {
+			//첫번째의 처리유형(폐기or반품)을 받아 모든 리스트의 처리유형을 똑같이 적용한다.
 			String stat = vo.get(0).getDmatResult();
+			//컨트롤러에서 보낸 세션 로그인 id값을 등록하는 모든 id값에 똑같이 적용한다.
 			String id = vo.get(0).getEmpId();
 			for(MatDmgVO i : vo) {
 				i.setDmatStat(stat);
@@ -224,9 +225,6 @@ public class MaterialsServiceImpl implements MaterialsService{
 			return mapper.getSpLotList(vo);
 		}
 		
-
-
-
 
 
 		
