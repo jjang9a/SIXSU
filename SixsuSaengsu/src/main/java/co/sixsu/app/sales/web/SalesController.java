@@ -133,7 +133,7 @@ public class SalesController {
 //
 
 //페이지 하단부분에있는 진행중인 주문서 조회
-	@RequestMapping("orderingList")
+	@RequestMapping("orderingList.Ajax")
 	@ResponseBody
 	public List<InvVO> orderingList() {
 		List<InvVO> list = service.getOrderingList();
@@ -141,7 +141,7 @@ public class SalesController {
 	}
 
 //진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 
-	@RequestMapping("firstOrderingList")
+	@RequestMapping("firstOrderingList.Ajax")
 	@ResponseBody
 	public InvVO firstOrderingList(@RequestParam String result) {
 
@@ -152,7 +152,7 @@ public class SalesController {
 	}
 
 //진행중인 주문서 행을 클릭을 하게되면 거기에 맞는 주문서가 화면에 나오도록 
-	@RequestMapping("secondOrderingList")
+	@RequestMapping("secondOrderingList.Ajax")
 	@ResponseBody
 	public List<OrdVO> secondOrderingList(@RequestParam String result) {
 		System.out.println(result);
@@ -163,7 +163,7 @@ public class SalesController {
 
 //주문서 수정
 	@ResponseBody
-	@PostMapping("orderMod") // 사원정보 수정 ajax
+	@PostMapping("orderMod.Ajax") // 사원정보 수정 ajax
 	public String orderMod(InvVO inv) {
 
 		System.out.println(inv);
@@ -173,7 +173,7 @@ public class SalesController {
 
 //상세주문서 수정
 	@ResponseBody
-	@PostMapping("ordDetMod") // 상세 주문서 등록
+	@PostMapping("ordDetMod.Ajax") // 상세 주문서 등록
 	public boolean ordDetMod(@RequestBody GridDataVO<OrdVO> list) {
 
 		System.out.println(list);
@@ -195,7 +195,7 @@ public class SalesController {
 	 * return "productDel"; }
 	 */
 	@ResponseBody
-	@PostMapping("orderModDel") // 사원정보 수정 ajax
+	@PostMapping("orderModDel.Ajax") // 사원정보 수정 ajax
 	public String orderModDel(InvVO inv) {
 
 		System.out.println(inv);
