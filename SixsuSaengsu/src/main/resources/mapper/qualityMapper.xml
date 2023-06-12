@@ -119,7 +119,7 @@
 		     
 		   where r.mat_req_stat='B'
 		   
-		order by insp_std_id
+		order by TO_NUMBER(SUBSTR(mat_req_id, INSTR(mat_req_id, '-') + 1))
 	</select>
 
 
@@ -191,7 +191,11 @@ left outer join qua_insp_list l
 		update qua_com 
 		   set
 			    suit_qt    = (#{inspQt}-#{totNsuitQt}),
-				nsuit_qt   = #{totNsuitQt}
+				nsuit_qt   = #{totNsuitQt},
+				insp_date  = sysdate,
+				emp_id     = #{empId},
+				insp_type	  = 'INSP-A'
+				
 		where
 			    insp_num   = #{inspNum}
 			
@@ -472,6 +476,10 @@ LEFT OUTER JOIN process_performance f
 		update qua_com
 		  set  suit_qt       = #{suitQt},
 			   nsuit_qt      =  #{nsuitQt}
+				insp_date  = sysdate,
+				emp_id     = #{empId},
+				insp_type  = 'INSP-C',
+			qua_com_note   = #{quaComNote}
 		 where
 		        insp_num      = #{inspNum}
  
@@ -514,12 +522,32 @@ LEFT OUTER JOIN process_performance f
 	
 	<!-- 반품 리스트 가조회 -->
 	<select id="returnList" resultType="ReturnInspVO">
+
+		select ret_id,
+			   cp_lot_id,
+			   cp_id,
+			   cp_name,
+			   to_char(wk_end, 'yyyy-MM-dd') wk_end,
+			   to_char(exp_date, 'yyyy-MM-dd') exp_date,
+			   ret_qt,
+			   to_char(insp_date, 'yyyy-MM-dd') ret_date,
+			   to_char(insp_date, 'yyyy-MM-dd') insp_date,
+			   ret_stat,
+			   insp_num,
+			   emp_id,
+			   res_stat
+		
+		from etc_data
+		order by ret_stat
+	</select>
+	
+	<!-- <select id="returnList" resultType="ReturnInspVO">
 		select r.* from ret_prod r
 		LEFT OUTER JOIN pro_ship s ON r.cp_ship_id = s.cp_ship_id
 		LEFT OUTER JOIN prod_lot l ON s.cp_ship_id = l.cp_lot_id
 		LEFT OUTER JOIN qua_com q ON r.insp_num = q.insp_num
 		LEFT OUTER JOIN qua_details d ON q.insp_num = d.insp_num
-	</select>
+	</select> -->
 	
 	<!-- 반품 검사 번호 자동 등록 -->
 	<select id="qrInspNum" resultType="String">

@@ -45,7 +45,7 @@ h1 {
 					<td><input type="text" name="cpShipId" id="cpShipId" readonly
 						class="empty"></td>
 					<td>LOT번호</td>
-					<td><input type="text" name="cpLotId" id="cpLotId" readonly
+					<td><input type="text" name="cpLotId" id="cpLotId" 
 						class="empty"></td>
 					<td>검사번호</td>
 					<td><input type="text" name="inspNum" id="inspNum" readonly
@@ -64,7 +64,7 @@ h1 {
 				</tr>
 				<tr>
 					<td>제조 일자</td>
-					<td><input type="text" name="wkEnd" id="wkEnd" readonly
+					<td><input type="text" name="wkEnd" id="wkEnd" 
 						class="empty"></td>
 					<td>유통 기한</td>
 					<td><input type="text" name="expDate" id="expDate" readonly
@@ -183,7 +183,7 @@ h1 {
 						
 					}, {
 						header : '검수상태',
-						name : 'cpShipStat',
+						name : 'retStat',
 						align : 'center',
 						filter : 'select'
 					}, {
@@ -202,7 +202,7 @@ h1 {
 						formatter: 'listItemText',
 	 			          editor: 
 				          {
-				            //type: 'select',
+				            type: 'select',
 				            options: {
 				              listItems:inspResStat
 				            }
