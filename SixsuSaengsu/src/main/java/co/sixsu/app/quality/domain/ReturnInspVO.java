@@ -14,10 +14,12 @@ public class ReturnInspVO {
 	private String empName; // 사원 이름
 	private String retStat; // 반품 진행 상태
 	private String retDate; //반품 일자
+	private String inspDate; // 검사일자
 	private String cpId; // 제품코드
 	private String cpName; // 제품명
-	private String endDate; // 제조일자
+	private String wkEnd; // 제조일자
 	private String expDate; // 유통기한
+	private String cpLotId; // LOT번호
 	
 	private int nsuitQt; // 부적합 수량
 	private int suitQt; // 적합 수량

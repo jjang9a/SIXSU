@@ -601,8 +601,8 @@
 					header: '공정실적코드',
 					name: 'prcsPfmcId',
 					align: 'center',
-					sortable: true
-					//width: 140
+					sortable: true,
+					width: 160
 				}, {
 					header: '제품코드',
 					name: 'pdId',
@@ -698,16 +698,22 @@
 				}, {
 					header: '제품명',
 					name: 'pdName',
-					align: 'center'
+					align: 'center',
+					width: 'auto',
+					minWidth: 100
 				}, {
 					header: '공정',
 					name: 'procName',
 					align: 'center',
+					width: 'auto',
+					minWidth: '130',
 					filter: 'select'
 				}, {
 					header: '검사수량',
 					name: 'detaQt',
 					align : 'right',
+					width: 'auto',
+					minWidth: 85,
 					
 					formatter: ({ value }) => {
 						if(value != null){
@@ -721,6 +727,8 @@
 					name: 'goodQt',
 					editor: 'text',
 					align : 'right',
+					width: 'auto',
+					minWidth: 85,
 					
 					formatter: ({ value }) => {
 						if(value != null){
@@ -751,6 +759,8 @@
 				}, {
 					header: '검사일자',
 					name: 'inspDate',
+					width: 'auto',
+					minWidth: 90,
 					sortable: true,
 					align: 'center'
 				}]
@@ -805,18 +815,18 @@
 					},
 					{
 						header: '설명',
-						width: 350,
 						name: 'inspExp',
 						align: 'center'
 					},
 					{
 						header: '기준값',
-						width: 110,
+						width: 'auto',
+						minWidth: 130,
 						name: 'stdVal',
 						align: 'center'
 					}, {
 						header: '결과값',
-						width: 110,
+						width: 'auto',
 						name: 'resVal',
 						editor: 'text',
 						formatter: ({ value }) => {
@@ -830,7 +840,7 @@
 					},
 					 {
 						header: '부적합 수량',
-						width: 110,
+						width: 'auto',
 						name: 'nsuitQt',
 						editor: 'text',
 						formatter: ({ value }) => {
