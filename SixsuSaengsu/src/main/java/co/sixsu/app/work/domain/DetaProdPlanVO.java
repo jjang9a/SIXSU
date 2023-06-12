@@ -34,5 +34,6 @@ public class DetaProdPlanVO {
 	int ordSalePrice;
 	String ordEndDate;
 	String cpSize;
+	String busName;
 
 }

@@ -15,17 +15,25 @@
 	SELECT *
 	  FROM PLAN_VIEW
 	 WHERE (cp_name = #{productName} OR #{productName} IS NULL)
-  	   AND (plan_deta_id = #{planNo} OR #{planNo} IS NULL)
-  	   AND (emp_name = #{writer} OR #{writer} IS NULL)
   	${statusFilter}
+  	<if test="planNo != ''">
+		AND plan_deta_id LIKE '%'||#{planNo}||'%'
+  	</if>
+  	<if test="writer != ''">
+		AND emp_name LIKE '%'||#{writer}||'%'
+  	</if>
   	<if test="planNo != ''">
 		AND PLAN_DETA_ID LIKE '%'||#{planNo}||'%'
   	</if>
   	<if test="planFrom != ''">
-  		AND START_DATE BETWEEN TO_DATE(#{planFrom}, 'yyyy-MM-dd') AND TO_DATE(#{planTo}, 'yyyy-MM-dd')
+  		AND START_DATE 
+  		 BETWEEN TO_DATE(#{planFrom}, 'yyyy-MM-dd') 
+  		  AND TO_DATE(#{planTo}, 'yyyy-MM-dd')
   	</if>
   	<if test="makeFrom != ''">
-  		AND TO_DATE(SUBSTR(PLAN_DETA_ID,0,6),'yyMMdd') BETWEEN TO_DATE(#{makeFrom}, 'yyyy-MM-dd') AND TO_DATE(#{makeTo}, 'yyyy-MM-dd')
+  		AND TO_DATE(SUBSTR(PLAN_DETA_ID,0,6),'yyMMdd') 
+  		 BETWEEN TO_DATE(#{makeFrom}, 'yyyy-MM-dd') 
+  		  AND TO_DATE(#{makeTo}, 'yyyy-MM-dd')
   	</if>
      ORDER BY plan_deta_id DESC
 </select>
@@ -61,7 +69,7 @@
 	                       PLAN_END)
 	values ( #{planHeadId}, 
 	         #{type}, 
-	         #{regDate}, 
+	         TO_DATE(#{regDate},'yyyyMMdd'),  
 	         #{empName}, 
 	         TO_DATE(#{startDate},'yyyy-MM-dd'), 
 	         TO_DATE(#{endDate},'yyyy-MM-dd'))
