@@ -41,6 +41,7 @@ public interface QualityService {
 		List<PrdInspVO> prwList(); // 공정 검사 대기 리스트
 		List<PrdInspVO> prdComList(); // 공정 검사 완료 리스트
 		boolean prdComUpdate(PrdInspVO prd); // 공정 검사 등록시 검사 공통 업데이트
+		int modPrdCom(QuaVO qua); // 공정 검사 수정시 검사 공통 업데이트
 		
 		
 		// 출고 검사 관련

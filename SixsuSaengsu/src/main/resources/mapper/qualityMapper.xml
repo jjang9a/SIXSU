@@ -191,13 +191,27 @@ left outer join qua_insp_list l
 		update qua_com 
 		   set
 			    suit_qt    = (#{inspQt}-#{totNsuitQt}),
-				nsuit_qt   = #{totNsuitQt}
+				nsuit_qt   = #{totNsuitQt},
+				insp_date  = sysdate,
+				emp_id     = #{empId},
+				insp_type  = 'INSP-A',
+			qua_com_note   = #{quaComNote}
 		where
 			    insp_num   = #{inspNum}
-			
 	</update>
 
-
+	<!-- 공정 검사 수정 공통 -->
+	<update id="modPrdCom" parameterType="QuaVO">
+		update qua_com
+		  set  suit_qt       = #{suitQt},
+			   nsuit_qt      =  #{nsuitQt},
+		       insp_date     = sysdate,
+				emp_id       = #{empId},
+				insp_type	 = 'INSP-B',
+				qua_com_note = #{quaComNote}
+		 where
+		        insp_num     = #{inspNum}
+	</update>
 
 	<!-- 검사 결과 등록 시 검사 공통 업데이트 -->
 	<update id="qComUpdate" parameterType="QuaVO">
@@ -469,10 +483,13 @@ LEFT OUTER JOIN process_performance f
 	<update id="modShipCom" parameterType="ShipInspVO">
 		update qua_com
 		  set  suit_qt       = #{suitQt},
-			   nsuit_qt      =  #{nsuitQt}
+			   nsuit_qt      =  #{nsuitQt},
+ 			   insp_date     = sysdate,
+				emp_id       = #{empId},
+				insp_type	 = 'INSP-C',
+				qua_com_note = #{quaComNote}
 		 where
-		        insp_num      = #{inspNum}
- 
+		        insp_num     = #{inspNum}
 	</update>
 	
 	<!-- 완제품 출고, 반품 수정 상세 -->

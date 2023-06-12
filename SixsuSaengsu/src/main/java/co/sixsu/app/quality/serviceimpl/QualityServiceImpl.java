@@ -248,6 +248,14 @@ public class QualityServiceImpl implements QualityService {
 		count = quaMapper.updateQc(list);
 		return count;
 	}
+	
+	// 공정 검사 수정시 검사 공통 업데이트
+	@Override
+	public int modPrdCom(QuaVO qua) {
+		int count = 0;
+		count = quaMapper.modPrdCom(qua);
+		return count;
+	}
 
 	// 수정시 검사 상세 업데이트
 
@@ -479,8 +487,5 @@ public class QualityServiceImpl implements QualityService {
 		return quaMapper.getDetail(inspNum);
 	}
 
-
-	
-	
 
 }
