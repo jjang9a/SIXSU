@@ -85,16 +85,16 @@
 					<td>차기점검일<span class="needStar"> *</span></td> 
 					<td><input type="text" name="checkNext" id="checkNext" style="background: #ccdceb;" class="empty" readonly></td>
 					
-					<td>설비명<span class="needStar"> * </span></td>
-					<td><input type="text" name="equName" id="equName" class="empty"></td>		
 				</tr>
 				<tr>
 					<td id="select">판정<span class="needStar"> *</span></td>
 					<td>
 						<select id="equSuit" name="equSuit">
-						<option value=''>===== 선택 =====</option>
-						<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}"></option>
-					</td>
+							<option value=''>===== 선택 =====</option>
+							<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}"></option>
+						</td>
+					<td>설비명<span class="needStar"> * </span></td>
+					<td><input type="text" name="equName" id="equName" class="empty"></td>		
 					 
 				</tr>
 				</tr>	 	
@@ -200,7 +200,14 @@
 					{
 						header: '점검주기',
 						name: 'equCheck',
-						align: 'center'
+						align: 'center',
+						formatter: ({ value }) => {
+							if(value == null){
+								return ''
+							}else{
+						 return `${value}개월`;
+							}
+						}
 					},
 					{
 						header: '판정',
@@ -244,7 +251,7 @@
 						hidden : true,
 						align: 'center'
 					},
-					{
+					/* {
 						header: '점검사유',
 						name: 'checkInfo',
 						hidden : true,
@@ -255,7 +262,7 @@
 						name: 'checkCom',
 						hidden : true,
 						align: 'center'
-					},
+					}, */
 					{
 						header: '비고',
 						name: 'checkNote',

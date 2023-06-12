@@ -147,7 +147,8 @@ public class EquController {
 	@ResponseBody 
 	@PostMapping("checkAdd.Ajax") // 점검관리(등록) 
 	public EquInspVO checkAdd(EquInspVO data) { 
-		System.out.println(data);
+		
+		System.err.println(data);
 		equService.checkAdd(data);
 		return data;
 	} 
