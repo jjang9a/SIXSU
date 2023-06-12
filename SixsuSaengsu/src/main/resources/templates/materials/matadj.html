@@ -139,39 +139,30 @@
  			//자재조정입고버튼
  			$('#adjinsert').on('click', function() {
  				gridm.blur();
- 				$.ajax({
-					url: "/materials/matrecadj.Ajax",
-					method: "POST",
-					contentType: 'application/json',
-					data: JSON.stringify(gridm.getCheckedRows()),
-					success: function (result) {
-						Msg.success('입고 완료되었습니다.', 2000);
-						matAdjList(matLotId);
-						
-					},
-					error : function(reject){
-						console.log(reject);
-						Msg.error('입고중 오류가 발생하였습니다.', 2000);
-					}
- 				})
+ 				var checkedRows = gridm.getCheckedRows();
+ 				var checkedQt = checkedRows.filter(function(row){
+ 			 		return parseInt(row.matAdjQt) == 0;
+ 			 	});
+ 				if(checkedQt.length > 0){
+ 			    	Msg.error('입고 수량은 0이 될 수 없습니다.', 2000);
+ 			    }else{
+	 				$.ajax({
+						url: "/materials/matrecadj.Ajax",
+						method: "POST",
+						contentType: 'application/json',
+						data: JSON.stringify(gridm.getCheckedRows()),
+						success: function (result) {
+							Msg.success('입고 완료되었습니다.', 2000);
+							matAdjList(matLotId);
+							
+						},
+						error : function(reject){
+							console.log(reject);
+							Msg.error('입고중 오류가 발생하였습니다.', 2000);
+						}
+	 				})
+ 			    }
  			});
- 			
-/*  			//자재조정출고버튼
- 			$('#adjdelete').on('click', function(){
- 				$.ajax({
-					url: "/materials/matshipadj",
-					method: "POST",
-					contentType: 'application/json',
-					data: JSON.stringify(gridm.getCheckedRows()),
-					success: function (result) {
-						console.log(result);
-						matAdjList(matLotId);
-					},
-					error : function(reject){
-						console.log(reject);
-					}
- 				})
- 			}) */
  			
  			
  			//자재조정출고버튼
@@ -181,8 +172,13 @@
  			    var invalidRows = checkedRows.filter(function(row) {
  			        return parseInt(row.matAdjQt) > parseInt(row.matQt);
  			    });
+ 			   	var checkedQt = checkedRows.filter(function(row){
+			 		return parseInt(row.matAdjQt) == 0;
+			 	});
  			    if (invalidRows.length > 0) {
  			        alert('출고 수량이 현재 수량보다 많습니다');
+ 			    }else if(checkedQt.length > 0){
+ 			    	Msg.error('출고 수량은 0이 될 수 없습니다.', 2000);
  			    } else {
  			        $.ajax({
  			            url: "/materials/matshipadj.Ajax",
