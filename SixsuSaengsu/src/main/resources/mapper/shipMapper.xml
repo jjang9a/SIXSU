@@ -95,17 +95,18 @@ order by TO_NUMBER(SUBSTR(l.cp_lot_id, 11))
 	</update>
 	<!--출고대기 열에 나오는 품목 -->
 	<select id="readyShipList" resultType="ShipVO" >
-	Select p.ord_det_id, d.cp_id ,p.cp_ship_id, p.cp_lot_id, p.cp_ship_qt, to_char(p.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, get_com_name(p.cp_ship_stat) cp_ship_stat, b.bus_addr, b.bus_id, b.bus_name, b.bus_num, b.bus_tell
+	Select p.ord_det_id, c.cp_name ,p.cp_ship_id, p.cp_lot_id, p.cp_ship_qt, to_char(p.cp_ship_req_date, 'yyyy-MM-dd') cp_ship_req_date, get_com_name(p.cp_ship_stat) cp_ship_stat, b.bus_addr, b.bus_id, b.bus_name, b.bus_num, b.bus_tell
 	from pro_ship p 
 	left outer join det_ord d
     on p.ord_det_id = d.ord_det_id
+    left outer join complete_prod c
+    on c.cp_id = d.cp_id
     LEFT OUTER JOIN SORDER s
     on d.ord_id = s.ord_id
     Left OUTER JOIN BUSINESS b
     on s.bus_id = b.bus_id
 	where p.cp_ship_stat = 'CP_SHIP_CHECK'
 	or p.cp_ship_stat = 'CP_SHIP_COMP'
-	or p.cp_ship_stat = 'CP_SHIP_TRASH' 
 	<if test="keyword != null and keyword !=''">
 	and d.ord_det_id = #{keyword}
 	</if>
