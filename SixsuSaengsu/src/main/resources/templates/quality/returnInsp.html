@@ -91,12 +91,12 @@ h1 {
 		</form>
 		<div class="divBtn">
 			<!-- <button type="button" class="sixBtn2" id="searchBtn">검색</button> -->
-			<button type="button" class="sixBtn2" id="addBtn">검사 결과 입력</button>
-			<button type="button" class="sixBtn2" id="modiBtn">검사 결과 수정</button>
+			<button type="button" class="sixBtn2" id="addBtn">등록</button>
+			<button type="button" class="sixBtn2" id="modiBtn">수정</button>
 		</div>
 		<!-- 상단 폼 끝 -->
 
-		<!-- 반품 출고 검사 그리드 -->
+		<!-- 완제품 출고 검사 그리드 -->
 		<div id="grid"></div>
 
 		<script th:inline="javascript">
@@ -148,7 +148,7 @@ h1 {
 						align : 'center'
 					}, {
 						header : '제조일자',
-						name : 'endDate',
+						name : 'wkEnd',
 						align : 'center'
 					}, {
 						header : '유통기한',
@@ -176,7 +176,7 @@ h1 {
 				          }
 					},{
 						header : '반품일자',
-						name : ' ret_date',
+						name : 'retDate',
 						align : 'center'
 					}, {
 						header : '완료일자',

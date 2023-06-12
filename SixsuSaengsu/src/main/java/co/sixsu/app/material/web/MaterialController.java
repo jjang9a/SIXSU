@@ -193,7 +193,7 @@ public class MaterialController {
 		return list;
 	}
 	
-	//입고 리스트 조회
+	//입고 리스트
 	@ResponseBody
 	@RequestMapping("matrecsearch.Ajax")
 	public List<MatrecVO> getMatRecSearch(MatrecVO vo){

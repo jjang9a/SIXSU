@@ -241,8 +241,7 @@ public class QualityController {
 	// 반품 검사 목록 리스트
 	@ResponseBody
 	@GetMapping("/quality/returnList.Ajax")
-	public List<ReturnInspVO> returnList(Model model) {
-		model.addAttribute("inspResStat",bservice.commGroupList("INSP_RES_STAT"));
+	public List<ReturnInspVO> returnList() {
 		return quaService.returnList();
 	}
 	

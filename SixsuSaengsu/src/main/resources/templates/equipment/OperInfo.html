@@ -244,7 +244,7 @@
 	 window.onload = function(){
 	    	
 	    	$.ajax({
-	    		url : "equOperList.Ajax",
+	    		url : "equOperList.Ajax.Ajax",
 	    		method : "GET",
 	    		dataType : "JSON",
 	    		success : function(result){
@@ -302,7 +302,7 @@
 				$('#oname').val('');
 				
 				$.ajax({
-					url: "equOperList.Ajax",
+					url: "/equipment/equOperList.Ajax",
 					method: "GET",
 					dataType: "JSON",
 					success: function (result) {
@@ -311,7 +311,6 @@
 					},
  					error: function(reject){
 						console.log(reject);
-						Msg.error('오류가 발생하였습니다.', 2000);
 					}
 				});
 				

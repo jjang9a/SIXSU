@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -7,42 +8,44 @@
 <meta charset="UTF-8">
 <title>주문서관리</title>
 <style>
+		
+
 h1 {
-	margin-bottom: 15px;
+margin-bottom: 15px;
+
 }
 
 #cpTable {
-	margin: auto;
+margin: auto;
 }
 
-#cpTable input, select {
-	padding-left: 10px;
-	width: 230px;
+#cpTable input,
+select {
+padding-left: 10px;
+width: 230px;
 }
 
 #divRadio input {
-	padding-left: 7px;
-	width: 20px;
+padding-left: 7px;
+width: 20px;
 }
 
 #cpTable td {
-	padding: 4px 20px;
-	text-align: center;
+padding: 4px 20px;
+text-align: center;
 }
 
 .divBtn {
-	text-align: center;
-	padding: 15px 0 15px 0;
+text-align: center;
+padding: 15px 0 15px 0;
 }
-
 .modal-body {
-	background: #e5edf5;
+background: #e5edf5;
+}
+[data-column-name='cpId'],[data-column-name='ordQt'], [data-column-name='ordDetPrice'],[data-column-name='ordEndDate'], #gridt, #orderingGrid, #gridp {
+ cursor: pointer;
 }
 
-[data-column-name='cpId'], [data-column-name='ordQt'], [data-column-name='ordDetPrice'],
-	[data-column-name='ordEndDate'], #gridt, #orderingGrid, #gridp {
-	cursor: pointer;
-}
 </style>
 
 </head>
@@ -51,61 +54,51 @@ h1 {
 <body>
 	<div layout:fragment="content">
 		<div>
-			<h1 class="mt-4" style="font-family: 'MaruBuri';">주문서관리</h1>
-			<form action="" method="post" id="allOrderList" name="allOrderList">
+			
+				<h1 class="mt-4" style="font-family: 'MaruBuri';">주문서관리</h1>
+				<form action="" method="post" id="allOrderList" name="allOrderList">
 				<table id="cpTable">
-					<tr>
-						<td>주문번호</td>
-						<td><input type="text" name="ordId" id="codeBox" readonly></td>
-
-						<td>주문날짜</td>
-						<td><input type="text" name="ordDate" id="ordDate" readonly></td>
-					</tr>
-					<tr>
-						<td>주문자</td>
-						<td><input type="text" id="orderName" readonly
-							th:value='${#authentication.principal.empName}'></td>
-
-						<td>사원번호</td>
-						<td><input type="text" name="empId" id="orderNum" readonly
-							th:value='${#authentication.principal.empId}'></td>
-					</tr>
-					<tr>
-						<td>거래처명</td>
-						<td><input type="text" id="busName" style="width: 165px;"
-							readonly>
-							<button type="button" data-bs-toggle="modal" id="search1Btn"
-								class="sixBtn2" data-bs-target="#search1Modal">
-								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
-									fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
+				<tr>
+					<td>주문번호</td><td><input type="text" name="ordId" id="codeBox" readonly></td>
+					
+					<td>주문날짜</td><td><input type="text" name="ordDate" id="ordDate" readonly></td>
+				</tr>
+				<tr>
+					<td>주문자</td><td><input type="text"
+						id="orderName" readonly th:value='${#authentication.principal.empName}' ></td>
+				
+					<td>사원번호</td><td><input type="text" name="empId" id="orderNum" readonly th:value='${#authentication.principal.empId}'></td>
+				</tr>
+				<tr>
+					<td>거래처명</td><td><input type="text" id="busName" style="width : 165px;" readonly>
+					<button type="button" data-bs-toggle="modal" id="search1Btn"
+						class="sixBtn2" data-bs-target="#search1Modal">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+							fill="currentColor" class="bi bi-search" viewBox="0 2 16 16">
             <path
-										d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
-							</button></td>
-
-						<td>거래처코드</td>
-						<td><input type="text" name="busId" id="busCode" readonly></td>
-					</tr>
-					<tr>
-						<td>사업자번호</td>
-						<td><input type="text" id="busNum" readonly></td>
-
-						<td>주소</td>
-						<td><input type="text" id="busAddr" readonly></td>
-					</tr>
-					<tr>
-						<td>전화번호</td>
-						<td><input type="text" id="busTel" readonly></td>
-					</tr>
+					</button></td>
+					
+					<td>거래처코드</td><td><input type="text" name="busId" id="busCode" readonly></td>
+				</tr>
+				<tr>
+				 	<td>사업자번호</td><td><input type="text" id="busNum" readonly></td>
+					
+					<td>주소</td><td><input type="text" id="busAddr" readonly></td>
+				</tr>
+				<tr>
+					<td>전화번호</td><td><input type="text" id="busTel" readonly></td>
+				</tr>
 				</table>
 			</form>
 		</div>
-		<div class="divBtn">
-			<div id="bottom">
-				<button class="sixBtn4" id="orderDelete">초기화</button>
-				<button class="sixBtn4" id="productConfirm">상품추가</button>
-				<button class="sixBtn4" id="productDelete">상품삭제</button>
-			</div>
+		<div class="divBtn">		
+		<div id="bottom">
+			<button class="sixBtn4" id="orderDelete">초기화</button>
+			<button class="sixBtn4" id="productConfirm">상품추가</button>
+			<button class="sixBtn4" id="productDelete">상품삭제</button>
+		</div>
 		</div>
 
 		<!-- 모달창 사원조회 -->
@@ -141,8 +134,7 @@ h1 {
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="searchModalLabel"
-								style="font-family: 'MaruBuri';">거래처 조회</h1>
+							<h1 class="modal-title fs-5" id="searchModalLabel" style="font-family: 'MaruBuri';">거래처 조회</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
@@ -165,8 +157,7 @@ h1 {
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="searchModalLabel"
-								style="font-family: 'MaruBuri';">상품 목록 조회</h1>
+							<h1 class="modal-title fs-5" id="searchModalLabel" style="font-family: 'MaruBuri';">상품 목록 조회</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
@@ -183,13 +174,13 @@ h1 {
 		</div>
 		<div id="gridy"></div>
 		<div class="divBtn">
-			<button class="sixBtn6" id="orderComplete">주문서 완료</button>
-			<button class="sixBtn6" id="orderModify">주문서 수정</button>
-			<button class="sixBtn6" id="deletComplete">주문서 삭제</button>
+		<button class="sixBtn6" id="orderComplete">주문서 완료</button>
+		<button class="sixBtn6" id="orderModify">주문서 수정</button>
+		<button class="sixBtn6" id="deletComplete">주문서 삭제</button>
 		</div>
 		<div id="orderingGrid"></div>
-
-
+		
+		
 		<script th:inline="javascript">
 
 		
@@ -227,7 +218,8 @@ window.onload = function() {
     		})
 		} 
       });	
-
+	
+  	
   	//주문서 초기화 버튼 
 	 $("#orderDelete").on("click", function(){
 		 location.reload();
@@ -244,10 +236,7 @@ window.onload = function() {
 			success : function(result) {
 				orderingGrid.resetData(result);
 				setTimeout(()=>orderingGrid.refreshLayout(),400);
-			},
-			error:function(reject){
-			Msg.error('주문내여조회 중 오류가 발생하였습니다.', 2000);
-		}
+			}
 		});
 	}
 
@@ -277,17 +266,22 @@ window.onload = function() {
 			success:function(result){
 				console.log(result)
 				 $('#codeBox').val(null);
+				 $('#ordDate').val(null);
+				 $('#orderName').val(null);
+				 $('#orderNum').val(null);
 				 $('#busName').val(null);
 				 $('#busCode').val(null);
 				 $('#busNum').val(null);
 				 $('#busAddr').val(null);
 				 $('#busTel').val(null);
-				gridy.clear();
+				 
+				 gridy.clear();
 				orderingList();
-				Msg.success('주문서등록이 완료되었습니다.', 2000);			
+				////////////////////////////////////////////////////////////////////////////
+			
 			},
 			error:function(result){
-				Msg.error('주문서등록과정 중 오류가 발생하였습니다.', 2000);
+				alert('주문서등록과정에서 에러가 발생하였습니다.')
 			}
 		})
 		} else{
@@ -320,7 +314,7 @@ window.onload = function() {
 			},
 			error:function(reject){
 				console.log(reject);
-				Msg.error('주문서수정과정 중 오류가 발생하였습니다.', 2000);
+				alert('주문서수정과정에서 에러가 발생하였습니다.')
 			}
 		})
 			
@@ -333,7 +327,7 @@ window.onload = function() {
 			contentType : 'application/json',
 			data:JSON.stringify(gridy.getModifiedRows()),
 			success:function(result){
-				Msg.success('주문서수정이 완료되었습니다.', 2000);		
+				alert('주문서 수정이 성공적으로 처리되었습니다.')
 				 $('#codeBox').val(null);
 				 $('#ordDate').val(null);
 				 $('#orderName').val(null);
@@ -348,7 +342,7 @@ window.onload = function() {
 			},
 			error:function(reject){
 				console.log(reject);
-				Msg.error('주문서수정과정 중 오류가 발생하였습니다.', 2000);
+				alert('주문서상세등록과정에서 에러가 발생하였습니다.')
 			}
 			
 		})   
@@ -378,12 +372,12 @@ window.onload = function() {
 				 $('#busTel').val(null);
 				 $('#orderName').val(eName);
 				 $('#orderNum').val(eId);
-				 Msg.success('주문서가 삭제가 되었습니다..', 2000);
+				 
 				 
 			},
 			error:function(reject){
 				console.log(reject);
-				Msg.error('주문서삭제과정 중 오류가 발생하였습니다.', 2000);
+				alert('주문서삭제과정 에러가 발생하였습니다.')
 			}
 			
 		})
@@ -396,7 +390,7 @@ window.onload = function() {
 	---------------------------------*/	
 	$("#productConfirm").on("click", function(e) {
   		if ($('#ordDate').val() === "" || $('#orderName').val() === "" || $('#busName').val() === "") {
-  		Msg.warning('주문정보를 먼저 입력을 하십시오');
+    	alert("주문정보를 먼저 입력을 하십시오");
   		}else {
   			let icon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search icon" viewBox="0 0 16 16" style="color:#a6a6a6">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>

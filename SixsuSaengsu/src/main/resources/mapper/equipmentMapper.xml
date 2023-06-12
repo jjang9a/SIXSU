@@ -169,13 +169,12 @@
 	  			   o.oper_code,
 		  		   c.equ_code,
 		  		   c.equ_name,
-		  		   c.equ_check || '개월' as equ_check,
+		  		   c.equ_check,
 		  		   i.equ_suit,
 		  		   i.check_type,
 		  		   to_char(i.check_date, 'yyyy-mm-dd') as check_date,
 		  		   to_char(i.check_next, 'yyyy-mm-dd') as check_next ,
-		  		   i.check_info,
-		  		   i.check_com,
+		  		   i.check_info, i.check_com,
 		  		   i.check_note,
 		  		   to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start,
 		  		   i.emp_id,
@@ -188,19 +187,18 @@
 			  ORDER BY i.check_code desc
   	</select>
   	
-  	<!-- 점검조회 (검색) --> 
+  	<!-- 점검조회 (검색) -->
 	<select id="equCheckSearch" resultType="EquInspVO" parameterType="EquSearchDTO">
   		SELECT 	   i.check_code,
 	  			   o.oper_code,
 		  		   c.equ_code,
 		  		   c.equ_name,
-		  		   c.equ_check || '개월' as equ_check,
+		  		   c.equ_check,
 		  		   i.equ_suit,
 		  		   i.check_type,
 		  		   to_char(i.check_date, 'yyyy-mm-dd') as check_date,
-		  		   to_char(i.check_next, 'yyyy-mm-dd') as check_next,
-		  		   i.check_info,
-		  		   i.check_com,
+		  		   to_char(i.check_next, 'yyyy-mm-dd') as check_next ,
+		  		   i.check_info, i.check_com,
 		  		   i.check_note,
 		  		   to_char(o.oper_start, 'yyyy-mm-dd - hh:mm') as oper_start,
 		  		   i.emp_id,
@@ -210,7 +208,7 @@
 				ON c.equ_code = i.equ_code
 			  left JOIN equ_oper o
 				ON c.equ_code = o.equ_code
-			  <!-- ORDER BY i.check_code desc -->
+			  ORDER BY i.check_code desc
 		 
 			<where> 
 				<!-- <if test='searchType.equals("code")'>
@@ -307,7 +305,7 @@
   	
     <!-- 비가동 조회(검색) -->
 	<select id="equOperSearch" resultType="EquOperVO" >
-  	 SELECT  o.oper_code,
+  	SELECT  o.oper_code,
   	        c.equ_code,
   	        c.equ_name, 
   	        o.oper_type, 
@@ -319,23 +317,8 @@
   	        
 	   FROM equ_con c
 	   JOIN equ_oper o
-		 ON c.equ_code = o.equ_code 
-	  <!--  	SELECT  o.oper_code,
-  	        c.equ_code,
-  	        c.equ_name, 
-  	        o.oper_type, 
-  	        to_char(o.oper_start, 'yyyy-MM-dd - hh:mm') as oper_start, 
-  	        to_char(o.oper_fnish, 'yyyy-MM-dd - hh:mm') as oper_fnish, 
-  	        get_emp_name(c.emp_id) as empName, 
-  	        o.oper_note, 
-  	        c.equ_stat
-  	       
-	   FROM equ_con c
-	   JOIN equ_oper o
 		 ON c.equ_code = o.equ_code
-	  ORDER BY o.oper_code -->
-		 
-		 
+	   
 		 
 		 <include refid="criteria"></include>
 		 	
