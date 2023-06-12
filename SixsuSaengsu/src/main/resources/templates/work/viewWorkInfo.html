@@ -6,50 +6,24 @@
 <head>
 <meta charset="UTF-8">
 <title>조회</title>
-<!-- 토스트~ -->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<!-- 부트스트라프 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-	crossorigin="anonymous"></script>
-<!-- 제이쿼리 -->
-<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-<!-- 타임리프 -->
-
-<!-- <html xmlns:th="http://www.thymeleaf.org"></html> -->
-<!-- 페이징 눼이쉔~ -->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script type="text/javascript"
-	src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
-<script type="text/javascript"
-	src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<style>
-.set_color_false {
-	background-color: #DADDDE;
-}
-
-.set_color_true {
-	background-color: #ECECEC;
-}
-
-.text_container {
-	float: right;
-}
-
-.filter_text {
-	font-size: 12px;
-	color: blue;
-}
-</style>
+	<style>
+		.set_color_false {
+			background-color: #DADDDE !important;
+		}
+		
+		.set_color_true {
+			background-color: #ECECEC !important;
+		}
+		
+		.text_container {
+			float: right;
+		}
+		
+		.filter_text {
+			font-size: 12px;
+			color: blue;
+		}
+	</style>
 
 </head>
 <body>
@@ -336,105 +310,91 @@
 				$('#workFilter_modal').modal('show');
 			})
 
-			$(".filter_submit")
-					.on(
-							"click",
-							function() {
+			$(".filter_submit").on("click",function() {
+				var statusCheckbox = [];
+				$('input[name="상태"]:checked').each(function() {
+					statusCheckbox.push($(this).val());
+				});
 
-								var statusCheckbox = [];
-								$('input[name="상태"]:checked').each(function() {
-									statusCheckbox.push($(this).val());
-								});
+				var searchData = {};
 
-								var searchData = {};
+				searchData.productName = $('input[name="제품명"]').val();
+				searchData.workNo = $('input[name="계획"]').val();
+				searchData.writer = $('input[name="작성자"]').val();
+				searchData.makeFrom = $('input[name="makeFrom"]').val();
+				searchData.makeTo = $('input[name="makeTo"]').val();
+				searchData.workFrom = $('input[name="workFrom"]').val();
+				searchData.workTo = $('input[name="workTo"]').val();
 
-								searchData.productName = $('input[name="제품명"]')
-										.val();
-								searchData.workNo = $('input[name="계획"]').val();
-								searchData.writer = $('input[name="작성자"]')
-										.val();
-								searchData.makeFrom = $(
-										'input[name="makeFrom"]').val();
-								searchData.makeTo = $('input[name="makeTo"]')
-										.val();
-								searchData.workFrom = $(
-										'input[name="workFrom"]').val();
-								searchData.workTo = $('input[name="workTo"]')
-										.val();
+				if (searchData.makeFrom != '' || searchData.makeTo != '') {
+					if (searchData.makeFrom > searchData.makeTo || searchData.makeFrom == '') {
+						워닝알람('생성일자 범위를 수정해주세요', 2000);
+						return;
+					}
+				}
 
-								if (searchData.makeFrom != ''
-										|| searchData.makeTo != '') {
-									if (searchData.makeFrom > searchData.makeTo
-											|| searchData.makeFrom == '') {
-										alert('생성일자 범위를 수정해주세요')
-										return;
-									}
-								}
+				if (searchData.workFrom != '' || searchData.workTo != '') {
+					if (searchData.workFrom > searchData.workTo || searchData.workFrom == '') {
+						워닝알람('착수일 범위를 수정해주세요', 2000);
+						return;
+					}
+				}
 
-								if (searchData.workFrom != ''
-										|| searchData.workTo != '') {
-									if (searchData.workFrom > searchData.workTo
-											|| searchData.workFrom == '') {
-										alert('착수일 범위를 수정해주세요')
-										return;
-									}
-								}
+				searchData.statusCheckbox = statusCheckbox;
+				console.log(searchData);
 
-								searchData.statusCheckbox = statusCheckbox;
-								console.log(searchData);
+				$.ajax({
+					url : "/ajax/workFilterAjax",
+					method : "POST",
+					contentType : "application/json",
+					data : JSON.stringify(searchData),
+					success : function(result) {
+						console.log('RESULT :');
+						console.log(result);
+						grid1.resetData(result);
+						그리드초기수정();
+					},
+					error : function(reject) {
+						console.err(reject)
+					}
+				})
+				let readyToText = '';
+				if (searchData.productName != '') {
+					readyToText += ' | 제품명: '
+							+ searchData.productName;
+				}
+				if (searchData.workNo != '') {
+					readyToText += ' | 지시번호: '
+							+ searchData.workNo;
+				}
+				if (searchData.writer != '') {
+					readyToText += ' | 작성자: '
+							+ searchData.writer;
+				}
+				if (searchData.makeFrom != '') {
+					readyToText += ' | 생성일자: '
+							+ searchData.makeFrom + '~'
+							+ searchData.makeTo;
+				}
+				if (searchData.workFrom != '') {
+					readyToText += ' | 착수일: '
+							+ searchData.workFrom + '~'
+							+ searchData.workTo;
+				}
+				if (statusCheckbox.length > 0) {
+					readyToText += ' | 지시상태 : ';
+					for ( let i in statusCheckbox) {
+						readyToText += statusCheckbox[i]
+						if (statusCheckbox.length - 1 != i) {
+							readyToText += ', ';
+						}
+					}
+				}
 
-								$.ajax({
-									url : "/ajax/workFilterAjax",
-									method : "POST",
-									contentType : "application/json",
-									data : JSON.stringify(searchData),
-									success : function(result) {
-										console.log('RESULT :');
-										console.log(result);
-										grid1.resetData(result);
-										그리드초기수정();
-									},
-									error : function(reject) {
-										console.err(reject)
-									}
-								})
-								let readyToText = '';
-								if (searchData.productName != '') {
-									readyToText += ' | 제품명: '
-											+ searchData.productName;
-								}
-								if (searchData.workNo != '') {
-									readyToText += ' | 지시번호: '
-											+ searchData.workNo;
-								}
-								if (searchData.writer != '') {
-									readyToText += ' | 작성자: '
-											+ searchData.writer;
-								}
-								if (searchData.makeFrom != '') {
-									readyToText += ' | 생성일자: '
-											+ searchData.makeFrom + '~'
-											+ searchData.makeTo;
-								}
-								if (searchData.workFrom != '') {
-									readyToText += ' | 착수일: '
-											+ searchData.workFrom + '~'
-											+ searchData.workTo;
-								}
-								if (statusCheckbox.length > 0) {
-									readyToText += ' | 지시상태 : ';
-									for ( let i in statusCheckbox) {
-										readyToText += statusCheckbox[i]
-										if (statusCheckbox.length - 1 != i) {
-											readyToText += ', ';
-										}
-									}
-								}
+				$('.filter_text').text(readyToText)
 
-								$('.filter_text').text(readyToText)
-
-								$('#workFilter_modal').modal('hide');
-							})
+				$('#workFilter_modal').modal('hide');
+			})
 
 			$('.filter_reset').on('click', function() {
 				$('input[name="제품명"]').val('');
@@ -468,6 +428,10 @@
 					result.push([])
 				} */
 				grid1.resetData(result);
+			}
+			
+			function 워닝알람(text){
+				Msg.warning(text, 2000);
 			}
 		</script>
 
