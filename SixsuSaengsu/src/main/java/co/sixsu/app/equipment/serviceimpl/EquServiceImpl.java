@@ -47,7 +47,10 @@ public class EquServiceImpl implements EquService{
 	@Override
 	public boolean equUpdate(EquConVO data) { // 설비관리(수정)
 		System.out.println("서비스 도착 " + data);
+		String numbersOnly = data.getEquCheck().replaceAll("[^0-9]", "");
+		data.setEquCheck(numbersOnly);
 		return mapper.equUpdate(data) == 1;
+		
 	}
 
 	@Override

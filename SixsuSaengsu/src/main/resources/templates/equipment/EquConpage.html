@@ -41,7 +41,7 @@
 			margin: auto;
 			text-align: center;
 			/* height: 400px; */
-			width: 500px;
+			width: 450px;
 			background: #e5edf5;
 			padding-right: 10px;
 		}	
@@ -55,9 +55,7 @@
 <body>
 	<div layout:fragment="content">
 	
-		 
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비관리</h1>
-		
 		
 		<!-- 인풋창 -->
 		<form action="" method="post" id="addForm">
@@ -67,38 +65,33 @@
 					<td><input type="text" name="equCode" id="equCode"
 						style="background: #ccdceb;" class="empty" readonly></td>
 				
+					<td>공정코드<span class="needStar"> * </span></td>
+					<td colspan="2"><input type="text" name="procId" id="procId" class="empty" readonly style="background: #ccdceb;">
+						<button type="button" id="pdBtn" class="sixBtn2" style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
+				</tr>
+				<tr>
 					<td>설비명<span class="needStar"> * </span></td>
-					<td><input type="text" name="equName" id="equName"
-						class="empty"></td>
-				
-					<td>모델<span class="needStar"> * </span></td>
-					<td><input type="text" name="equModel" id="equModel"
-						class="empty"></td>
+					<td><input type="text" name="equName" id="equName" class="empty"></td>
+						
+					<td>모델<span class="needStar"> * </span></td><td><input type="text" name="equModel" id="equModel" class="empty"></td>
 				</tr>
 				<tr>
 					<td>설비라인<span class="needStar"> *</span></td>
 					<td><input type="text" name="equLine" id="equLine"
 						class="empty"></td>
 				
-					<td>표준온도<span class="needStar"> *</span></td>
+					<td>기준온도(℃)<span class="needStar"> *</span></td>
 					<td><input type="text" name="ctemp" id="ctemp" class="empty" placeholder=" * 숫자만 입력하시오 * "></td>
-				
-					<td>공정코드<span class="needStar"> * </span></td>
-					<td colspan="2"><input type="text" name="procId" id="procId"
-						class="empty" readonly style="background: #ccdceb;">
-						<button type="button" id="pdBtn" class="sixBtn2"
-							style="margin-right: 10px;" data-bs-toggle="modal">조회</button></td>
-				</tr>
 				<tr>
-					<td>점검주기<span class="needStar"> *</span></td>
-					<td><input type="text" name="equCheck" id="equCheck"
-						class="empty"></td>
-				
+				</tr>
 					<td>등록일자<span class="needStar"> *</span></td>
 					<td><input type="date" name="addDate" id="addDate" class="empty"></td>
 				
+					<td>점검주기<span class="needStar"> *</span></td>
+					<td><input type="text" name="equCheck" id="equCheck"
+						class="empty" placeholder=" * 숫자만 입력하시오 * "></td>
+
 					<td>담당자<span class="needStar"> *</span></td>
-					
 					<td><input type="text" name="empName" id="empName" th:value='${#authentication.principal.empName}'></td> 
 					<td><input type="hidden" name="empId" id="empId" th:value='${#authentication.principal.empId}'></td>
 				</tr>
@@ -115,39 +108,30 @@
 			
 
 			<!-- 공정코드 선택 Modal 시작 -->
-			<div class="modal fade" id="pdModal" data-bs-backdrop="static"
-				data-bs-keyboard="false" tabindex="-1" aria-labelledby="pdModal"
-				aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<!-- 모달 헤더 -->
+			<div class="modal fade" id="pdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pdModal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<!-- 모달 헤더 -->
 						<div class="modal-header">
-							<h5 class="modal-title" id="pdModalLabel"
-								style="font-family: 'MaruBuri';">공정코드 선택</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
+							<h5 class="modal-title" id="pdModalLabel" style="font-family: 'MaruBuri';">공정코드 선택</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
-						<!-- 모달 바디 -->
+					<!-- 모달 바디 -->
 						<div class="modal-body">
-							<div id="pdGrid"></div>
-						</div>
-						<!-- 모달 푸터(버튼부분) -->
-						<div class="modal-footer"></div>
+						<div id="pdGrid"></div>
+					</div>
+					<!-- 모달 푸터(버튼부분) -->
+					<div class="modal-footer"></div>
 					</div>
 				</div>
 			</div>
-
-
-			
 		</form>
 
-		
 		<div id="grid"></div>
 
 		<script th:inline="javascript">
 		
 			let equStat = [[${equStat}]];
-
 
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
@@ -203,10 +187,17 @@
 					{
 						header: '점검주기',
 						name: 'equCheck',
-						align: 'center'
+						align: 'center',
+						formatter: ({ value }) => {
+							if(value == null){
+								return ''
+							}else{
+						 return `${value}개월`;
+							}
+						}
 					},
 					{
-						header: '기준온도',
+						header: '기준온도(℃)',
 						name: 'ctemp',
 						align: 'center'
 					},
@@ -242,6 +233,7 @@
 				});
 			};
 
+			// 설비리스트 
 			equList();
 
 			// 색 테마 적용
@@ -336,8 +328,7 @@
 				console.log(dataRow.equCode);
 				console.log(dataRow);
 
-				// 클릭시 인풋창에 데이터 불러오기
-
+				// 데이터 값 받아오기
 				$('#equCode').val(dataRow.equCode);
 				$('#procId').val(dataRow.procId);
 				$('#equName').val(dataRow.equName);
@@ -346,7 +337,8 @@
 				$('#equStat').val(dataRow.equStat); // 설비상태
 				$('#equCheck').val(dataRow.equCheck);
 				$('#addDate').val(dataRow.addDate);
-				$('#empId').val(dataRow.empId);
+				//$('#empId').val(dataRow.empId);
+				$('#empName').val(dataRow.empName);
 				$('#ctemp').val(dataRow.ctemp);
 
 				
@@ -389,7 +381,6 @@
 				}  
 			});
 			
-			
 			// 설비정보 수정 
 			$('#modBtn').on('click', function (e) {
 				if (selRow === 999) {
@@ -415,6 +406,7 @@
 						console.log(reject);
 					}
 				});
+				// 인풋 비워주기.
 				$('.empty').val('');
 				
 			  }
@@ -444,6 +436,7 @@
 						// 삭제 성공 시의 처리
 						Msg.success('삭제가 완료되었습니다.', 2000);
 
+						// 셀 하나지우기
 						//grid.removeRow(selRow)
 						selRow = '';
 						// 삭제 기능을 하면서 인풋창을 비워주고 선택한 행을 지워주는?

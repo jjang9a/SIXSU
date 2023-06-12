@@ -7,13 +7,12 @@
 	<title>설비 비가동 관리</title>
 	<style>
 		h1 {
-			margin-bottom: 40px;
 		}
 		.sixBtn2 {
 			margin-right: 7px;
 		}
 		#addForm {
-			margin: auto;
+			margin: 0 auto;
 		    margin-left: 150px;
 		}
 		#addForm td {
@@ -30,7 +29,7 @@
 			height: 30px;
 		}
 		.operBtn {
-			margin-top: 50px;
+			margin-top: 30px;
 			margin-right: 50px;
 		    margin-left: 140px; 
 			height: 190px;
@@ -38,7 +37,7 @@
 			border-radius: 35px;
 			font-weight: bolder;
 			font-size: 35px;
-			margin-bottom: 60px;
+			margin-bottom: 30px;
 		}
 		#startBtn {
 			background-color: #ea9999;
@@ -51,11 +50,11 @@
 		}
 		.divBtn {
 			text-align: center;
-			padding: 15px 0 30px 0;
-			margin: auto;
+			margin: 0 auto;
+			
 		}
 		.modalTbl {
-			margin: auto;
+			margin: 0 auto;
 			text-align: center;
 			height: 330px;
 		}
@@ -68,22 +67,16 @@
 		.modal-footer {
 			text-align: center;
 		}
-		
 	</style>
 </head>
 
 <body>
 	<div layout:fragment="content">
 
-		
 		<h1 class="mt-4" style="font-family: 'MaruBuri';">설비 비가동 관리</h1>
 
-		
 		<!-- 인풋창 -->
 		<form action="mt-4" method="post" id="addForm">
-			
-
-
 			<table>
 				<tr>
 					<td>
@@ -114,8 +107,6 @@
 										<label for="equStat2">비가동</label>
 									</div>
 								</td> 
-								
-							
 							</tr>
 							<tr>
 								<td>비가동시작<span class="needStar"> *</span></td>
@@ -126,7 +117,6 @@
 							</tr>
 								<td>가동시작<span class="needStar"> *</span></td>
 								<td><input type="text" name="operFnish" id="operFnish" class="empty" readonly style="background: #ccdceb;"></td>
-							
 							<tr>
 								<td>비고<span class="needStar"> *</span></td>
 								<td><input type="text" name="operNote" id="operNote" class="empty"></td>
@@ -137,38 +127,30 @@
 							</tr>
 							
 						</table>
-					</td>
-					<td>
-						<td>
-							<!-- 가동 비가동 버튼 -->
-							<div id="">
-								<button type="button" class="operBtn" id="startBtn">비가동</button>
-								<button type="button" class="operBtn" id="endBtn">가동</button>
-							</div>
-						</td>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">	
-						<!-- 수정 삭제 버튼 -->
-						<div class="divBtn">
-							<button type="button" class="sixBtn2" id="modBtn">수정</button>
-							<button type="button" class="sixBtn2" id="delBtn">삭제</button>
-						</div>
-					</td>
-				</tr>
+								<td>
+									<td>
+										<!-- 가동 비가동 버튼 -->
+										<div id="">
+											<button type="button" class="operBtn" id="startBtn">비가동</button>
+											<button type="button" class="operBtn" id="endBtn">가동</button>
+										</div>
+									</td>
+								</td>
+
+						<tr>
+							<td colspan="2">	
+								<!-- 수정 삭제 버튼 -->
+								<div class="divBtn">
+									<button type="button" class="sixBtn2" id="modBtn">수정</button>
+									<button type="button" class="sixBtn2" id="delBtn">삭제</button>
+								</div>
+							</td>
+						</tr>
 			</table>
 		</form>
 
-			
-			
-		
-			
-			
-			
 			<!-- 설비코드 선택 Modal 시작 -->
-			<div class="modal fade" id="eqModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-				aria-labelledby="eqModal" aria-hidden="true">
+			<div class="modal fade" id="eqModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="eqModal" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<!-- 모달 헤더 -->
@@ -193,18 +175,17 @@
 		<script th:inline="javascript">
 
 			let operType = [[${operType}]];
-	
 			let equStat = [[${equStat}]];
 
 			const grid = new tui.Grid({
 				el: document.getElementById('grid'),
 				scrollX: false,
 				scrollY: false,
-				minBodyHeight: 450,
+				minBodyHeight: 400,
 				rowHeight: 45,
 				pageOptions: {
 					useClient: true,
-					perPage: 10
+					perPage: 9
 				},
 				rowHeaders: ['rowNum'],
 				columns: [{
@@ -302,7 +283,6 @@
 							}
 						}
 					}
-
 				]
 			});
 			// 그리드 높이 & 색 변경 테마 적용
@@ -361,6 +341,7 @@
 				});
 			};
 
+			// 비가동 리스트 
 			operList();
 
 			// 색 테마 적용
@@ -402,19 +383,12 @@
 				//$('#equStat').val(dataRow.equStat).prop("selected", true); // 설비상태 셀렉트 박스
 				$('#operType').val(dataRow.operType).prop("selected", true); // 비가동 구분 
 				$("input:radio[name='equStat']:radio[value="+dataRow.equStat+"]").prop('checked', true); //설비상태
-
-
 			});
 
 			// 비가동
 			// 비가동 시작(등록)버튼 기능 구현
-			// 동시에 처리 설비 테이블에 설비상태 비가동으로 업데이트 비가동 등록.
+			// 동시에 처리하는 기능, 설비 테이블에 설비상태를 비가동으로 업데이트 하고 비가동 등록(Insert).
 			$('#startBtn').on('click', function (e) {
-				// if (selRow == 999) {
-					
-				// 	alert('등록 정보를 입력하시오.')
-				// } else {
-
 					console.log($('#addForm').serialize())
 					$.ajax({
 						url: 'startIn.Ajax',
@@ -422,22 +396,17 @@
 						data: $('#addForm').serialize(),
 						dataType: 'json',
 						success: function (result) {
-							
 							Msg.success('등록이 완료되었습니다.', 2000);
 
 							const appendedData = result
 							grid.prependRow(appendedData);
 
-							// operList();
-
-
+							operList();
 							
-							// console.log('result : ');
-							// console.log(result);
-							// //등록 버튼을 누르면 리스트에 삽입된다.     
-							// // 리스트를 리셋. 등록데이터가 바로 뜸.
-							 grid.resetData(result);
-							 setTimeout(() => orderingGrid.refreshLayout(), 1000);
+							// 등록 버튼을 누르면 리스트에 삽입된다.     
+							// 리스트를 리셋. 등록데이터가 바로 뜸.
+							 /* grid.resetData(result);
+							 setTimeout(() => orderingGrid.refreshLayout(), 1000); */
 						},
 						error: function (reject) {
 							Msg.error('등록 중 오류가 발생하였습니다.', 2000);
@@ -462,13 +431,9 @@
 
 			// 가동
 			// 비가동 종료(등록)버튼 기능 구현
-			// 동시에 처리 설비 테이블에 설비상태 가동으로 업데이트 가동 등록.
+			// 동시에 처리하는 기능. 설비 테이블에 설비상태 가동으로 업데이트후 가동으로 업데이트.
 
 			$('#endBtn').on('click', function (e) {
-				// if (selRow == 999) {
-				// 	alert('수정할 데이터가 없습니다.')
-				// } else {
-					
 					console.log($('#addForm').serialize())
 					$.ajax({
 						url: 'fnishIn.Ajax',
@@ -496,14 +461,11 @@
 			//	}
 			})
 
-
-
 			// 비가동관리(수정) 
 			$('#modBtn').on('click', function (e) {
 				if (selRow == 999) {
 					Msg.warning('수정할 데이터가 없습니다.');
 				} else {
-
 					console.log($('#addForm').serialize())
 					$.ajax({
 						url: 'oUpdate.Ajax',
@@ -516,7 +478,6 @@
 							const setData = result
 							grid.setRow(selRow, setData);
 							//리스트 반환operList();
-							
 							selRow = '';
 						},
 						error: function (reject) {
@@ -537,7 +498,6 @@
 				if (selRow == 999) {
 					Msg.warning('삭제할 열이 선택되지 않았습니다.');
 				} else {
-
 					e.preventDefault();
 					console.log(selRow);
 
@@ -563,7 +523,6 @@
 							// 라디오 버튼 초기화
 							$("input:radio[name='equStat']:radio[value='STAT-1']").prop('checked', true);
 						
-							
 						},
 						error: function (reject) {
 							console.log('설비 삭제 중 오류가 발생했습니다.');
