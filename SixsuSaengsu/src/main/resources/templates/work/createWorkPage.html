@@ -148,7 +148,7 @@
 						<td style="text-align: center;">지시상태</td>
 					</tr>
 					<tr>
-						<td><input type="text" class="form-control" placeholder="등록일"></td>
+						<td><input type="text" class="form-control reg_regDate" placeholder="등록일"></td>
 						<td><select class="form-select" id="inputGroupSelect01">
 								<option selected>대기</option>
 								<option>진행중</option>
@@ -287,6 +287,10 @@
 </script>
 
 		<script>
+		
+		var today = new Date().toISOString().slice(0,10);
+		console.log(today + '오늘날')
+		$('.reg_regDate').val(today);
 	
 	let cell
 	{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
@@ -816,7 +820,6 @@
 				},
 				error : function(reject){
 					console.log(reject)
-					실패알람()
 				}
 			})
 		showBom()
@@ -843,7 +846,6 @@
 					},
 					error : function(reject){
 						console.log(reject)
-						실패알람()
 					}
 				});
 		});
