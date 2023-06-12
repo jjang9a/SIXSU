@@ -18,7 +18,7 @@
 			<h1 class="mt-4" style="font-family: 'MaruBuri';">반제품 재고 조정</h1>
 			<div id="left">
 				반제품LOT번호 <input type="text" id="spLotId" name="spLotId">
-				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn2" id="check">검색</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
 			<div class="rightBtn">
@@ -146,7 +146,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
-						Msg.error('입고 등록 중 오류가 발생하였습니다.', 2000);
+						Msg.error('입고중 오류가 발생하였습니다.', 2000);
 					}
  				})
  			});
@@ -154,13 +154,12 @@
  			//반제품조정출고버튼
  			$('#adjdelete').on('click', function(){
  				gridm.blur();
- 				//출고 조건
  			    var checkedRows = gridm.getCheckedRows();
  			    var invalidRows = checkedRows.filter(function(row) {
  			        return parseInt(row.spAdjQt) > parseInt(row.spQt);
  			    });
  			    if (invalidRows.length > 0) {
- 			    	Msg.error('출고 수량이 현재 수량보다 많습니다.', 2000);
+ 			        alert('출고 수량이 현재 수량보다 많습니다');
  			    } else {
 	 				$.ajax({
 						url: "/materials/spshipadj.Ajax",
@@ -174,7 +173,7 @@
 						},
 						error : function(reject){
 							console.log(reject);
-							Msg.error('출고 등록 중 오류가 발생하였습니다.', 2000);
+							Msg.error('출고중 오류가 발생하였습니다.', 2000);
 						}
 	 				})
  			    }

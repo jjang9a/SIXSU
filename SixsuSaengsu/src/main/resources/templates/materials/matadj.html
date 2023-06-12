@@ -19,7 +19,7 @@
 	
 			<div id="left">
 				자재LOT번호 <input type="text" id="matLotId" name="matLotId">
-				<button class="sixBtn2" id="check">조회</button>
+				<button class="sixBtn2" id="check">검색</button>
 				<button class="sixBtn4" id="reset">초기화</button>
 			</div>
 			<div class="rightBtn">
@@ -151,7 +151,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
-						Msg.error('입고 등록 중 오류가 발생하였습니다.', 2000);
+						Msg.error('입고중 오류가 발생하였습니다.', 2000);
 					}
  				})
  			});
@@ -177,13 +177,12 @@
  			//자재조정출고버튼
  			$('#adjdelete').on('click', function(){
  				gridm.blur();
- 				//출고 조건
  			    var checkedRows = gridm.getCheckedRows();
  			    var invalidRows = checkedRows.filter(function(row) {
  			        return parseInt(row.matAdjQt) > parseInt(row.matQt);
  			    });
  			    if (invalidRows.length > 0) {
- 			    	Msg.error('출고 수량이 현재 수량보다 많습니다.', 2000);
+ 			        alert('출고 수량이 현재 수량보다 많습니다');
  			    } else {
  			        $.ajax({
  			            url: "/materials/matshipadj.Ajax",
@@ -192,12 +191,12 @@
  			            data: JSON.stringify(gridm.getCheckedRows()),
  			            success: function (result) {
  			                console.log(result);
- 			                //alert('출고 완료');
  			               Msg.success('출고 완료되었습니다.', 2000);
+ 			               matAdjList(matLotId);
  			            },
  			            error: function (reject) {
- 			                console.log(reject);
- 			               Msg.error('출고 등록 중 오류가 발생하였습니다.', 2000);
+ 			               console.log(reject);
+ 			               Msg.error('출고중 오류가 발생하였습니다.', 2000);
  			            }
  			        });
  			    }
