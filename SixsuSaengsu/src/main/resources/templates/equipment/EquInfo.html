@@ -99,13 +99,11 @@
 						<form action="" method="post" id="addForm">
 							<div id="modalTbl">
 								<table class="table">
-							
 									<tr>
 										<td>설비코드<span class="needStar"> * </span></td>
 										<td><input type="text" name="equCode" id="equCode"></td>
 									</tr>
 									<tr>
-										
 										<td>공정코드<span class="needStar"> * </span></td>
 										<td><input type="text" name="procId" id="procId"></td>
 									</tr>
@@ -118,19 +116,17 @@
 												</option>
 											</select>
 										</td> 
-										
 									</tr>
 									<tr>
 										<td>설비명<span class="needStar"> * </span></td>
 										<td><input type="text" name="equName" id="equName"></td>
 									</tr>
 									<tr>
-										
 										<td>설비라인<span class="needStar"> *</span></td>
 										<td><input type="text" name="equLine" id="equLine"></td>
 									</tr>
 									<tr>
-										<td>기준온도<span class="needStar"> *</span></td>
+										<td>기준온도(℃)<span class="needStar"> *</span></td>
 										<td><input type="text" name="ctemp" id="ctemp"></td>
 									</tr>
 									<tr>
@@ -138,8 +134,7 @@
 										<td>
 											<select id="equSuit" name="equSuit">
 												<option value=''>===== 선택 =====</option>
-												<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}">
-												</option>
+												<option th:each="type : ${equSuit}" th:value="${type.value}" th:text="${type.text}"></option>
 										</td> 
 									</tr>
 									<tr>
@@ -151,41 +146,31 @@
 										<td><input type="text" name="equCheck" id="equCheck"></td>
 									</tr>
 									<tr>
-										
 										<td>차기 점검일<span class="needStar"> *</span></td>
 										<td><input type="text" name="checkNext" id="checkNext"></td>
 									</tr>
 									<tr>
 										<td>점검구분<span class="needStar"> *</span></td>
 										<td>
-										<!--	<input type="text" name="checkType" id="checkType">  -->
-										
-											 <select id="checkType" name="checkType">
+											<select id="checkType" name="checkType">
 												<option value=''>===== 선택 =====</option>
-												<option th:each="type : ${checkType}" th:value="${type.value}" th:text="${type.text}">
-												</option>
+												<option th:each="type : ${checkType}" th:value="${type.value}" th:text="${type.text}"></option>
 										</td> 
 									</tr>
 									<tr>
-										
 										<td>비가동시간<span class="needStar"> *</span></td>
 										<td><input type="text" name="operStart" id="operStart"></td>
 									</tr>
 									<tr>
-										
 										<td>비가동사유<span class="needStar"> *</span></td>
 										<td><input type="text" name="operNote" id="operNote"></td>
 									</tr>
 									<tr>
-										
 										<td id="select">비가동구분<span class="needStar"> *</span></td>
-										<!-- <td><input type="text" name="operType" id="operType"></td> -->
-										
 										 <td>
 											<select id="operType" name="operType">
 											<option value=''>===== 선택 =====</option>
-											<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}">
-											</option>
+											<option th:each="type : ${operType}" th:value="${type.value}" th:text="${type.text}"></option>
 										</td> 
 									</tr>
 								</table>
@@ -195,14 +180,14 @@
 					<!-- 모달 푸터(버튼부분) -->
 					<div class="modal-footer">
 						<button type="button" class="sixBtn2" data-bs-dismiss="modal">닫기</button>
-
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- Modal 끝 -->
 	
-		
+		<!-- 그리드(리스트)시작 -->
+		<!-- 공통코드 불러옴(선언) -->
 
 		<script th:inline="javascript">
 		
@@ -258,20 +243,6 @@
 				listItems: equStat
 						}
 					}
-			// header: '설비상태',
-			// name: 'equStat',
-			// filter: 'select',
-			// align: 'center',
-			// formatter: 'listItemText',
-			// editor: {
-			// type: 'select',
-			// options: {
-			// 		listItems: [
-			// 			{text: '가동', value: 'STAT-1'},
-			// 			{text: '비가동', value: 'STAT-2'},	
-			// 		]
-			// 	}
-			// }
 	      },
           {
              header: '설비라인',
@@ -279,9 +250,16 @@
              align: 'center'
           },
           {
-             header: '점검주기',
-             name: 'equCheck',
-             align: 'center'
+        	header: '점검주기',
+			name: 'equCheck',
+			align: 'center',
+			formatter: ({ value }) => {
+				if(value == null){
+					return ''
+				}else{
+				return `${value}개월`;
+				}
+			}
           },
           {
 			 header: '등록일자',
@@ -352,16 +330,15 @@
 		     }
           }, 
           {
-              header: '기준온도',
+              header: '기준온도(℃)',
               name: 'ctemp',
               hidden : true
           },
         ]
      });
         
-     
-	    window.onload = function(){
-	    	
+    // 페이지 첫 화면 기능
+	window.onload = function(){
 	    	$.ajax({
 	    		url : "equCon.Ajax",
 	    		method : "GET",
@@ -373,9 +350,8 @@
 					grid.resetData(result);
 	    		}
 	    	});
-	  
 	    };
-      
+     // 테마 적용
      tui.Grid.applyTheme('default', {
         cell: {
             header: {
@@ -409,6 +385,7 @@
     	// 한 열을 클릭시 모달창 띄우기.
     	$('#staticBackdrop').modal('show');
     	
+		// 데이터 값 불러오기
     	$('#equCode').val(dataRow.equCode); // 설비코드
 	    $('#procId').val(dataRow.procId); // 공정코드
 	    $('#equName').val(dataRow.equName); // 설비명
@@ -424,14 +401,12 @@
 	    $('#operNote').val(dataRow.operNote); // 비가동 사유
 	    $('#operType').val(dataRow.operType); // 비가동 구분
 	    $('#ctemp').val(dataRow.ctemp); // 비가동 구분
-	  	
       });
 
-
-    // 조회 검색버튼 기능
-    let searchType = '';
-    let searchKey = '';
-    
+	// 타입 키값을 받아와서 처리
+	let searchType = '';
+	let searchKey = '';
+	// 조회 검색버튼 기능
     $('#searchBtn').on('click', function(){
     
 			$.ajax({
@@ -452,7 +427,6 @@
 				})
 		})
     		
-    
     //초기화 버튼 기능
 			$('#reset').on("click", function (e) {
 				$('#code').val('');
@@ -471,7 +445,6 @@
 						Msg.error('오류가 발생하였습니다.', 2000);
 					}
 				});
-				
 			});
 
     </script>
