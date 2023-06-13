@@ -197,7 +197,7 @@
 					// 입고버튼 클릭 이벤트
 					$('#recBtn').on('click', (e) => {
 						if (readyGrid.getCheckedRows().length == 0) {
-							alert('입고할 제품을 선택해주세요.')
+							Msg.warning('입고할 제품을 선택해주세요.',2000)
 						} else {
 							$.ajax({
 								url: "/prod/spRec.Ajax",
@@ -209,7 +209,7 @@
 									// let appData = result;
 									// grid.appendRows(appData);
 									readyGrid.removeCheckedRows(false);
-									alert('입고가 완료되었습니다.')
+									Msg.success('입고가 완료되었습니다.', 2000);
 									$.ajax({
 										url: "/prod/spRecList.Ajax",
 										method: "GET",
@@ -223,7 +223,7 @@
 								},
 								error: function (reject) {
 									console.log(reject)
-									alert('입고 과정에서 에러가 발생하였습니다.')
+									Msg.error('입고 과정에서 에러가 발생하였습니다.',2000)
 								}
 							})
 						}

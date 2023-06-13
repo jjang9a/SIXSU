@@ -247,16 +247,16 @@
 
 <select id="getMonthlySales" resultType="SalesVO">
 	<![CDATA[
-	SELECT TO_CHAR(b.dt, 'YYYY-MM') AS date1, NVL(SUM(a.sales), 0) sales
-	FROM ( SELECT TO_CHAR(cp_ship_req_date, 'YYYY-MM-DD') AS cp_ship_req_date, sum(ord_sale_price) sales
-	           FROM det_ord d join pro_ship s on d.ord_det_id = s.ord_det_id 
-	            where cp_ship_req_date between add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) and
-	                                            to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD. HH24:MI:SS')
-	           and ORD_STAT_DET ='ORD_DET_COM'
-	           GROUP BY cp_ship_req_date
+	  SELECT TO_CHAR(b.dt, 'YYYY-MM') AS date1, NVL(SUM(a.sales), 0) sales
+	  FROM ( SELECT TRUNC(cp_ship_req_date) AS cp_ship_req_date, sum(ord_sale_price) sales
+	         FROM det_ord d join pro_ship s on d.ord_det_id = s.ord_det_id 
+	         WHERE cp_ship_req_date between add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12)
+	         								and to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD. HH24:MI:SS')
+	         AND ORD_STAT_DET ='ORD_DET_COM'
+	         GROUP BY cp_ship_req_date
 	        ) a
-	      , ( SELECT add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) + LEVEL - 1 AS dt
-	            FROM dual 
+	      ,( SELECT add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) + LEVEL - 1 AS dt
+	         FROM dual 
 	         CONNECT BY LEVEL <= (to_date(#{date2}|| ' 23:59:59', 'YYYY. MM. DD. HH24:MI:SS') 
 	                            - add_months(trunc(to_date(#{date2}, 'YYYY. MM. DD.'), 'MONTH'),-12) + 1)
 	        ) b
