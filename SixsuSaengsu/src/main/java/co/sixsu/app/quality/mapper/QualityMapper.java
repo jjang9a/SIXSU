@@ -41,6 +41,7 @@ public interface QualityMapper {
 	List<PrdInspVO> prwList(); // 공정 검사 대기 리스트
 	int prdComUpdate(PrdInspVO prd); // 공정 검사 결과 등록 검사 공통 업데이트
 	List<PrdInspVO> prdComList(); // 공정 검사 완료 리스트
+	int modPrdCom(QuaVO qua);// 공정 검사 수정 공통
 	//int delPrdInsp(String inspNum); // 공정 검사 완료 단건 삭제
 	
 	

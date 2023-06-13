@@ -482,7 +482,7 @@
             let inBusId = grid.getRow(0).busId;
             let inMatEndDate = grid.getRow(0).matEndDate;
             
-            if(inMatId != null && inMatReqQt != null && inBusId != null && inMatEndDate != null && inMatReqQt <= 0){
+            if(inMatId != null && inMatReqQt != null && inBusId != null && inMatEndDate != null && inMatReqQt > 0){
             	
 	            $.ajax({
 	               url: "/materials/insertmatreq.Ajax",

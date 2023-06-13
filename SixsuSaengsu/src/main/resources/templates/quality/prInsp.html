@@ -686,6 +686,7 @@
 				}, {
 					header: '검사번호',
 					name: 'inspNum',
+		            width: 120,
 					align: 'center'
 
 				}, {
@@ -693,22 +694,30 @@
 					name: 'pdId',
 					align: 'center',
 					width: 'auto',
-					minWidth: 85
+					minWidth: 80
 
 				}, {
 					header: '제품명',
 					name: 'pdName',
-					align: 'center'
+					align: 'center',
+		            width: 'auto',
+		            minWidth: 100
+
 				}, {
 					header: '공정',
 					name: 'procName',
 					align: 'center',
+		            width: 'auto',
+		            minWidth: '125',
+
 					filter: 'select'
 				}, {
 					header: '검사수량',
 					name: 'detaQt',
 					align : 'right',
-					
+		            width: 'auto',
+		            minWidth: 80,
+
 					formatter: ({ value }) => {
 						if(value != null){
 							return value.toLocaleString();
@@ -721,7 +730,9 @@
 					name: 'goodQt',
 					editor: 'text',
 					align : 'right',
-					
+		            width: 'auto',
+		            minWidth: 80,
+
 					formatter: ({ value }) => {
 						if(value != null){
 							return value.toLocaleString();
@@ -746,11 +757,13 @@
 					header: '검사자',
 					name: 'empId',
 					width: 'auto',
-					minWidth: 90,
+					//minWidth: 90,
 					align: 'center'
 				}, {
 					header: '검사일자',
 					name: 'inspDate',
+		            width: 'auto',
+		            minWidth: 90,
 					sortable: true,
 					align: 'center'
 				}]
@@ -805,18 +818,18 @@
 					},
 					{
 						header: '설명',
-						width: 350,
 						name: 'inspExp',
 						align: 'center'
 					},
 					{
 						header: '기준값',
-						width: 110,
+						width: 'auto',
+						minWidth: 130,
 						name: 'stdVal',
 						align: 'center'
 					}, {
 						header: '결과값',
-						width: 110,
+						width: 'auto',
 						name: 'resVal',
 						editor: 'text',
 						formatter: ({ value }) => {
@@ -830,7 +843,7 @@
 					},
 					 {
 						header: '부적합 수량',
-						width: 110,
+						width: 'auto',
 						name: 'nsuitQt',
 						editor: 'text',
 						formatter: ({ value }) => {

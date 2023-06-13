@@ -33,7 +33,7 @@ public class ShipController {
 	@RequestMapping("orderedList.Ajax")
 	public List<OrdVO> orderingList(OrdVO vo){
 		List<OrdVO> list = service.orderingList(vo);
-		
+		System.out.println("-----------");
 		return list;
 	}
 	//모달창 품목별 lot 재고현황
