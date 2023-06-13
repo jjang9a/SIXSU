@@ -208,11 +208,10 @@ public class MaterialsServiceImpl implements MaterialsService{
 		//불량자재 불량처리
 		@Override
 		public void insertMatDmg(List<MatDmgVO> vo) {
-			String stat = vo.get(0).getDmatResult();
 			String id = vo.get(0).getEmpId();
 			for(MatDmgVO i : vo) {
-				i.setDmatStat(stat);
 				i.setEmpId(id);
+				System.err.println(i);
 				mapper.insertMatDmg(i);
 			}
 			

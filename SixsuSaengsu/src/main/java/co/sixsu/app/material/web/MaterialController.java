@@ -340,6 +340,7 @@ public class MaterialController {
 	 @ResponseBody 
 	 public void insertMatDmg2(@RequestBody List<MatDmgVO> vo, Principal principal) {
 		 vo.get(0).setEmpId(principal.getName()); // 로그인 아이디 가져오기
+		 System.err.println(vo);
 		 service.insertMatDmg(vo);
 	 }
 	 
