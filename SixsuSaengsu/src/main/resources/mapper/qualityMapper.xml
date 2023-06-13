@@ -265,7 +265,7 @@ left outer join qua_insp_list l
 		    on r.bus_id = b.bus_id
 		
 		 WHERE r.mat_req_stat='C'
-		 OR r.mat_req_stat='D'
+		 <!-- OR r.mat_req_stat='D' -->
 		 AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
 <!-- 		 <if test="inspDate == null">
   		 AND TRUNC(q.insp_date) >= TRUNC(SYSDATE) - 14
