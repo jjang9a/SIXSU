@@ -343,6 +343,7 @@ public class QualityServiceImpl implements QualityService {
 			ship.setResStat("STAT-A");
 			ship.setSuitQt(amount);
 			ship.setNsuitQt(0);	
+			ship.setEmpId(result); //06.13.다시보기
 			ship.setResVal(result);
 			ship.setCpShipStat("CP_SHIP_COMP");
 		} else {
