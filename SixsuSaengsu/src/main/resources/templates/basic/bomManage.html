@@ -573,8 +573,8 @@
 				let checkBlank = 0;
 				for (let i = 0; i < grid.getRowCount(); i++) {
 					let check = all[i];
-					if (grid.getRow(i).bomMat == '' || grid.getRow(i).bomMat == null || grid.getRow(i).bomNum == '' ||
-						grid.getRow(i).bomNum == null) {
+					if (check.bomMat == '' || check.bomMat == null || check.bomNum == '' ||
+							check.bomNum == null) {
 						checkBlank += 1;
 						break;
 					}
