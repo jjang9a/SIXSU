@@ -621,7 +621,7 @@
 	<!-- 자재 불량처리 -->
   	<insert id="insertMatDmg" parameterType="MatDmgVO">
 		insert into damaged_mat (dmat_id, dmat_stat, emp_Id, insp_num)
-		values (GET_MAT_DMG_ID(), #{dmatStat}, #{empId}, #{inspNum})
+		values (GET_MAT_DMG_ID(), #{dmatResult}, #{empId}, #{inspNum})
   	</insert>
 	
 	<!-- 반제품 리스트 -->

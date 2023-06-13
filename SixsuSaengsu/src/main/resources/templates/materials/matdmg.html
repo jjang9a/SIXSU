@@ -263,10 +263,10 @@
 			
 			//반품버튼
  			$('#returnBtn').on('click', function () {
- 				grid.setValue(0, "dmatResult", "반품");
-				console.log(grid.getCheckedRows()[0].dmatResult);
-				console.log(grid.getCheckedRows().length);
-				console.log(JSON.stringify(grid.getCheckedRows()));
+ 				let dataLength = grid.getData().length;
+				for(let i=0; i<grid.getData().length; i++){
+	 				grid.setValue(i, "dmatResult", "반품");
+ 				}
 				$.ajax({
 					url: "/materials/insertMatDmg.Ajax",
 					method: "POST",
@@ -288,7 +288,13 @@
 			})
 			//폐기버튼
  			$('#dropBtn').on('click', function () {
- 				grid.setValue(0, "dmatResult", "폐기");
+/*  				for(let i=0; i<grid.getCheckedRows().length; i++){
+ 					grid.getCheckedRows()[i].dmatResult = "폐기"
+ 				} */
+ 				let dataLength = grid.getData().length;
+				for(let i=0; i<grid.getData().length; i++){
+	 				grid.setValue(i, "dmatResult", "폐기");
+ 				}
 				console.log(grid.getCheckedRows()[0].dmatResult);
 				console.log(grid.getCheckedRows().length);
 				console.log(JSON.stringify(grid.getCheckedRows()));
