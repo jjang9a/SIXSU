@@ -437,6 +437,7 @@ with work as (
 		                        WHERE WK_DETA_ID = #{detaCode})
 </select>
 
+
 <select id="getLotInfoList" resultType="MatLotVO">
 	SELECT *
 	FROM(SELECT *
