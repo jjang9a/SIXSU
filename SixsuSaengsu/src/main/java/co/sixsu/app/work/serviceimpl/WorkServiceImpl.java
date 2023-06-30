@@ -116,6 +116,7 @@ public class WorkServiceImpl implements WorkService{
 	}
 
 	@Override
+	@Transactional
 	public String addWork() {
 		String orderCode = mapper.getOrderCode();
 		mapper.addWork(orderCode);
